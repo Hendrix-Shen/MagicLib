@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "magiclib",
+  "version": "${mod_version}",
+  "name": "MagicLib",
+  "description": "",
+  "authors": [
+    {
+      "name": "Hendrix-Shen",
+      "contact": {
+        "homepage": "https://github.com/Hendrix-Shen"
+      }
+    }
+  ],
+  "contributors": [
+  ],
+  "contact": {
+    "homepage": "https://github.com/Hendrix-Shen",
+    "issues": "https://github.com/Hendrix-Shen/MagicLib/issues",
+    "sources": "https://github.com/Hendrix-Shen/MagicLib"
+  },
+  "license": "GPL-v3",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "top.hendrixshen.magiclib.MagicLib"
+    ]
+  },
+  "mixins": [],
+  "depends": {
+    "fabricloader": ">=0.9.0",
+    "minecraft": "*"
+  }
+}

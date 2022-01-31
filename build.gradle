@@ -1,0 +1,106 @@
+import com.modrinth.minotaur.TaskModrinthUpload
+import com.modrinth.minotaur.request.VersionType
+
+plugins {
+    id 'fabric-loom' version '0.10-SNAPSHOT'
+    id 'maven-publish'
+	id "com.modrinth.minotaur" version "1.2.1"
+}
+
+group = "${project.group}.${project.mod_id}" as String
+archivesBaseName = "${project.mod_id}"
+
+def baseVersion = "${project.mod_version}" as String
+def ENV = System.getenv()
+
+if (ENV.BUILD_NUMBER) {
+	version = baseVersion + '.' + ENV.BUILD_NUMBER
+} else {
+	version = baseVersion + '.local'
+}
+
+dependencies {
+	minecraft("com.mojang:minecraft:${project.minecraft_version}")
+	mappings(loom.officialMojangMappings())
+	modApi("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        include "fabric.mod.json"
+        expand "mod_version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
+	it.sourceCompatibility = JavaVersion.VERSION_1_8
+	it.targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+task publishModrinth (type: TaskModrinthUpload) {
+	onlyIf {
+		System.getenv("MODRINTH_API_TOKEN")
+	}
+	token = System.getenv("MODRINTH_API_TOKEN")
+	projectId = "${project.modrinth_project_id}"
+	versionNumber = System.getenv("VERSION_NUMBER")
+	changelog = System.getenv("CHANGE_LOG")
+	uploadFile = remapJar
+	switch ("${project.modrinth_release_type}") {
+		case "alpha":
+			versionType = VersionType.ALPHA
+			break
+		case "beta":
+			versionType = VersionType.BETA
+			break
+		case "release":
+			versionType = VersionType.RELEASE
+			break
+	}
+	addGameVersion("${project.minecraft_version}")
+	addLoader('fabric')
+}
+
+runClient {
+	defaultCharacterEncoding = "UTF-8"
+}
+
+runServer {
+	defaultCharacterEncoding = "UTF-8"
+}
+
+java {
+	withSourcesJar()
+}
+
+jar {
+	from("LICENSE")
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			groupId(project.group)
+			artifactId(project.archivesBaseName)
+			version(project.version)
+			from(components.java)
+		}
+
+		snapshot(MavenPublication) {
+			groupId(project.group)
+			artifactId(project.archivesBaseName)
+			version(baseVersion + '-SNAPSHOT')
+			from(components.java)
+		}
+	}
+
+	repositories {
+		maven {
+			url "$projectDir/publish"
+		}
+	}
+}
+
