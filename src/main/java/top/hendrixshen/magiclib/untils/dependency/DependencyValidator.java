@@ -10,6 +10,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
+/**
+ * To verify that the current runtime environment has the required mos loaded.
+ */
 public class DependencyValidator {
     private static Method oldMatchesMethod;
 
@@ -21,6 +24,15 @@ public class DependencyValidator {
         }
     }
 
+    /**
+     * Verify that the Fabric Loader has loaded the qualified mods.
+     *
+     * @param version Version provided by the fabric loader.
+     * @param versionExpr Semantic versioning expressions.
+     *
+     * @return True if the Fabric Loader finds a matching mods from the list of
+     * loaded mods, false otherwise.
+     */
     public static boolean checkDependency(Version version, String versionExpr) {
         try {
             if (oldMatchesMethod != null) {
@@ -33,11 +45,21 @@ public class DependencyValidator {
         }
     }
 
-    public static boolean checkDependency(String modId, String version, Dependency.DependencyType type) {
+    /**
+     * Verify that the Fabric Loader has loaded the qualified mods.
+     *
+     * @param modId Mod Identifier.
+     * @param versionExpr Semantic versioning expressions.
+     * @param type Dependency type.
+     *
+     * @return True if the Fabric Loader finds a matching mods from the list of
+     * loaded mods, false otherwise.
+     */
+    public static boolean checkDependency(String modId, String versionExpr, Dependency.DependencyType type) {
         Optional<ModContainer> modContainerOptional = FabricLoader.getInstance().getModContainer(modId);
         if (modContainerOptional.isPresent()) {
             ModContainer modContainer = modContainerOptional.get();
-            return DependencyValidator.checkDependency(modContainer.getMetadata().getVersion(), version) && type != Dependency.DependencyType.CONFLICT;
+            return DependencyValidator.checkDependency(modContainer.getMetadata().getVersion(), versionExpr) && type != Dependency.DependencyType.CONFLICT;
         }
         return false;
     }
