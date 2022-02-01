@@ -1,9 +1,10 @@
 package top.hendrixshen.magiclib.untils.mixin;
 
+import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.untils.dependency.CustomDependencyPredicate;
 import top.hendrixshen.magiclib.untils.dependency.Dependencies;
 import top.hendrixshen.magiclib.untils.dependency.Dependency;
-import top.hendrixshen.magiclib.untils.dependency.DependencyValidator;
+import top.hendrixshen.magiclib.untils.FabricLoader.DependencyValidator;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -66,7 +67,7 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
                         return false;
                     }
                 } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-                    e.printStackTrace();
+                    MagicLib.getLogger().error(e);
                     throw new IllegalStateException("Cant get CustomDependencyPredicate!");
                 }
             }
