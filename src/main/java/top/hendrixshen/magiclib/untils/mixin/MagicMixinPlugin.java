@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class MagicMixinPlugin extends EmptyMixinPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
@@ -50,7 +51,7 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
         Dependency.DependencyType type = Annotations.getValue(dependency, "dependencyType", Dependency.DependencyType.class, Dependency.DependencyType.NORMAL);
 
         for (String version : versionList) {
-            if (!DependencyValidator.checkDependency(modId, version, type)) {
+            if (!DependencyValidator.isModLoaded(modId, version, type)) {
                 return false;
             }
         }

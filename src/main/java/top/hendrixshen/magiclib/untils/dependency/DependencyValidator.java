@@ -33,7 +33,7 @@ public class DependencyValidator {
      * @return True if the Fabric Loader finds a matching mods from the list of
      * loaded mods, false otherwise.
      */
-    public static boolean checkDependency(Version version, String versionExpr) {
+    public static boolean isModLoaded(Version version, String versionExpr) {
         try {
             if (oldMatchesMethod != null) {
                 return (boolean) oldMatchesMethod.invoke(null, version, versionExpr);
@@ -55,11 +55,11 @@ public class DependencyValidator {
      * @return True if the Fabric Loader finds a matching mods from the list of
      * loaded mods, false otherwise.
      */
-    public static boolean checkDependency(String modId, String versionExpr, Dependency.DependencyType type) {
+    public static boolean isModLoaded(String modId, String versionExpr, Dependency.DependencyType type) {
         Optional<ModContainer> modContainerOptional = FabricLoader.getInstance().getModContainer(modId);
         if (modContainerOptional.isPresent()) {
             ModContainer modContainer = modContainerOptional.get();
-            return DependencyValidator.checkDependency(modContainer.getMetadata().getVersion(), versionExpr) && type != Dependency.DependencyType.CONFLICT;
+            return DependencyValidator.isModLoaded(modContainer.getMetadata().getVersion(), versionExpr) && type != Dependency.DependencyType.CONFLICT;
         }
         return false;
     }
