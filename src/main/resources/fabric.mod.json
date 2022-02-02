@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "id": "magiclib",
   "version": "${mod_version}",
+  "icon": "assets/magiclib/icon.png",
   "name": "MagicLib",
   "description": "",
   "authors": [
