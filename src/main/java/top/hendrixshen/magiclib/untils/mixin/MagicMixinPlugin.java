@@ -1,15 +1,15 @@
 package top.hendrixshen.magiclib.untils.mixin;
 
-import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.untils.dependency.CustomDependencyPredicate;
-import top.hendrixshen.magiclib.untils.dependency.Dependencies;
-import top.hendrixshen.magiclib.untils.dependency.Dependency;
-import top.hendrixshen.magiclib.untils.fabricloader.DependencyValidator;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.service.MixinService;
 import org.spongepowered.asm.util.Annotations;
+import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.untils.dependency.CustomDependencyPredicate;
+import top.hendrixshen.magiclib.untils.dependency.Dependencies;
+import top.hendrixshen.magiclib.untils.dependency.Dependency;
+import top.hendrixshen.magiclib.untils.fabricloader.DependencyValidator;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
