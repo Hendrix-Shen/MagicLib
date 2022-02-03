@@ -19,10 +19,17 @@ if (ENV.BUILD_NUMBER) {
 	version = baseVersion + '.local'
 }
 
+repositories {
+	maven {
+		url 'https://masa.dy.fi/maven'
+	}
+}
+
 dependencies {
 	minecraft("com.mojang:minecraft:${project.minecraft_version}")
 	mappings(loom.officialMojangMappings())
 	modApi("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
+	modCompileOnly("fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version_masa}:${project.malilib_version}")
 }
 
 processResources {
