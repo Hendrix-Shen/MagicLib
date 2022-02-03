@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.untils.FabricLoader;
+package top.hendrixshen.magiclib.untils.fabricloader;
 
 import net.fabricmc.loader.impl.gui.FabricGuiEntry;
 import top.hendrixshen.magiclib.MagicLib;

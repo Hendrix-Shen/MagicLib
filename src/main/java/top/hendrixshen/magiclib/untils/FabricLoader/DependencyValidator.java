@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.untils.FabricLoader;
+package top.hendrixshen.magiclib.untils.fabricloader;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;

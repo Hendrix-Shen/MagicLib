@@ -4,7 +4,7 @@ import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.untils.dependency.CustomDependencyPredicate;
 import top.hendrixshen.magiclib.untils.dependency.Dependencies;
 import top.hendrixshen.magiclib.untils.dependency.Dependency;
-import top.hendrixshen.magiclib.untils.FabricLoader.DependencyValidator;
+import top.hendrixshen.magiclib.untils.fabricloader.DependencyValidator;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
