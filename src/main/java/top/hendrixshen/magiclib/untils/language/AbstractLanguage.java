@@ -79,47 +79,4 @@ public abstract class AbstractLanguage {
     public abstract List<String> getFallbackLanguages();
 
     public abstract void loadTranslation(String lang);
-
-    /*
-    public static void reloadLanguage() {
-        fallbackLanguage.add("zh_cn");
-        fallbackLanguage.add("zh_tw");
-        fallbackLanguage.add("zh_hk");
-        for (String lang : fallbackLanguage) {
-            load(lang);
-        }
-
-        load(DEFAULT_LANGUAGE);
-    }
-
-    public static void load(String lang) {
-        HashMap<String, String> map = loadTranslationFromJson(lang);
-
-        for (String key: map.keySet()) {
-            if (I18n.tr(key).contentEquals(key)) {
-                translations.put(key, map.get(key));
-            }
-        }
-    }
-
-    public static HashMap<String, String> loadTranslationFromJson(String lang) {
-        HashMap<String, String> map = Maps.newHashMap();
-
-        for (String mod : MagicLib.getModList()) {
-            try {
-                InputStream inputStream = MagicLib.getMinecraftServer().getResourceManager().getResource(new ResourceLocation(mod, String.format("lang/%s.json", lang))).getInputStream();
-
-                JsonObject jsonObject = GSON.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
-
-                for (Map.Entry<String, JsonElement> stringJsonElementEntry : jsonObject.entrySet()) {
-                    map.put(stringJsonElementEntry.getKey(), stringJsonElementEntry.getValue().getAsString());
-                }
-
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return map;
-    }*/
 }
