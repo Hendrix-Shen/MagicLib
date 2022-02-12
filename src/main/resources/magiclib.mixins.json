@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "top.hendrixshen.magiclib.mixin",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [],
+  "client": [
+    "client.MixinLanguageManager"
+  ],
+  "server": [
+    "server.MixinDedicatedServer"
+  ]
+}

@@ -27,7 +27,9 @@
       "top.hendrixshen.magiclib.MagicLib"
     ]
   },
-  "mixins": [],
+  "mixins": [
+    "magiclib.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.9.0",
     "minecraft": "*"
