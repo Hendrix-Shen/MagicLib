@@ -2,8 +2,11 @@ package top.hendrixshen.magiclib.untils.malilib;
 
 import fi.dy.masa.malilib.config.options.ConfigDouble;
 import fi.dy.masa.malilib.util.StringUtils;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 @SuppressWarnings("unused")
+@Environment(EnvType.CLIENT)
 public class TranslatableConfigDouble extends ConfigDouble {
     private final String guiDisplayName;
 

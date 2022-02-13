@@ -3,8 +3,11 @@ package top.hendrixshen.magiclib.untils.malilib;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import fi.dy.masa.malilib.util.StringUtils;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 @SuppressWarnings("unused")
+@Environment(EnvType.CLIENT)
 public class TranslatableConfigOptionList extends ConfigOptionList {
     private final String guiDisplayName;
 

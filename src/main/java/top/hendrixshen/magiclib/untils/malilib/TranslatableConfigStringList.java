@@ -3,8 +3,11 @@ package top.hendrixshen.magiclib.untils.malilib;
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.options.ConfigStringList;
 import fi.dy.masa.malilib.util.StringUtils;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 @SuppressWarnings("unused")
+@Environment(EnvType.CLIENT)
 public class TranslatableConfigStringList extends ConfigStringList {
     private final String guiDisplayName;
 
