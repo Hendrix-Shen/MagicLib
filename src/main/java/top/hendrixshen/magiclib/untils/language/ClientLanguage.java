@@ -19,6 +19,7 @@ public class ClientLanguage extends AbstractLanguage {
 
     @Override
     public void load() {
+        I18n.translations.clear();
         this.loadTranslation(getCurrentLanguage());
         super.load();
     }
