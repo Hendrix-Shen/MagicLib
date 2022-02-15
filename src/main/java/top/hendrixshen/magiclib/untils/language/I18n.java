@@ -24,22 +24,10 @@ public class I18n implements ILanguageDispatcher {
      * @return Formatted localised string.
      */
     public static String translate(String key, Object... objects) {
-        return translate(key, key, objects);
-    }
-
-    /**
-     * Get the formatted localised text with custom default text.
-     *
-     * @param key          Localisation key.
-     * @param defaultValue Default value used when query result does not exist.
-     * @param objects      Objects list.
-     * @return Formatted localised string.
-     */
-    public static String translate(String key, String defaultValue, Object... objects) {
         try {
-            return String.format(getOriginal(key, defaultValue), objects);
+            return String.format(getOriginal(key), objects);
         } catch (IllegalFormatException e) {
-            return String.format("Format error: %s", getOriginal(key, defaultValue));
+            return String.format("Format error: %s", getOriginal(key));
         }
     }
 
