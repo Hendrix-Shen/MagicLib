@@ -93,7 +93,7 @@ public class DependencyValidator {
     public static void customValidator(String currentModId, String dependencyType) {
         Optional<ModContainer> currentModContainer = fabricLoader.getModContainer(currentModId);
         if (currentModContainer.isPresent()) {
-            String exceptionString = "Mod resolution encountered an incompatible mod set!";
+            String exceptionString = "";
             for (Map.Entry<String, CustomValue> customValue : currentModContainer.get().getMetadata().getCustomValue(dependencyType).getAsObject()) {
                 if (FabricLoader.getInstance().isModLoaded(customValue.getKey()) && !isModLoaded(customValue.getKey(), customValue.getValue().getAsString())) {
                     if (fabricLoader.getModContainer(customValue.getKey()).isPresent()) {
@@ -105,7 +105,9 @@ public class DependencyValidator {
                     }
                 }
             }
-            FabricGui.displayCriticalError(new IllegalStateException(exceptionString));
+            if (!exceptionString.contentEquals("")) {
+                FabricGui.displayCriticalError(new IllegalStateException(String.format("Mod resolution encountered an incompatible mod set!%s", exceptionString)));
+            }
         }
     }
 }
