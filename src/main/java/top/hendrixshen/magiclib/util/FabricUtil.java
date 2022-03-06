@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.untils.fabricloader;
+package top.hendrixshen.magiclib.util;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -6,22 +6,20 @@ import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.VersionParsingException;
 import net.fabricmc.loader.api.metadata.CustomValue;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.fabricmc.loader.impl.gui.FabricGuiEntry;
 import net.fabricmc.loader.impl.util.version.VersionPredicateParser;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.untils.dependency.Dependency;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * To verify that the current runtime environment has the required mos loaded.
- */
-@SuppressWarnings("unused")
-public class DependencyValidator {
+public class FabricUtil {
     // Fabric Loader 0.11 and below support
     private static Method legacyVersionPredicateParser;
+    private static Method legacyDisplayCriticalError;
 
     private final static FabricLoader fabricLoader = FabricLoader.getInstance();
 
@@ -29,24 +27,39 @@ public class DependencyValidator {
         try {
             legacyVersionPredicateParser = Class.forName("net.fabricmc.loader.util.version.VersionPredicateParser").getMethod("matches", Version.class, String.class);
         } catch (ClassNotFoundException | NoSuchMethodException ignored) {
-            // Ignored
+        }
+        try {
+            legacyDisplayCriticalError = Class.forName("net.fabricmc.loader.gui.FabricGuiEntry").getMethod("displayCriticalError", Throwable.class, boolean.class);
+        } catch (ClassNotFoundException | NoSuchMethodException ignored) {
         }
     }
 
     /**
      * Verify that the Fabric Loader has loaded the qualified mods.
      *
-     * @param version     Version provided by the fabric loader.
-     * @param versionExpr Semantic versioning expressions.
+     * @param version           Version provided by the fabric loader.
+     * @param versionPredicates Semantic versioning expressions collection.
      * @return True if the Fabric Loader finds a matching mods from the list of
      * loaded mods, false otherwise.
      */
-    public static boolean isModLoaded(Version version, String versionExpr) {
+    public static boolean isModsLoaded(Version version, Collection<String> versionPredicates) {
+        return versionPredicates.isEmpty() || versionPredicates.stream().anyMatch(vp -> isModLoaded(version, vp));
+    }
+
+    /**
+     * Verify that the Fabric Loader has loaded the qualified mods.
+     *
+     * @param version           Version provided by the fabric loader.
+     * @param versionPredicates Semantic versioning expressions.
+     * @return True if the Fabric Loader finds a matching mods from the list of
+     * loaded mods, false otherwise.
+     */
+    public static boolean isModLoaded(Version version, String versionPredicates) {
         try {
             if (legacyVersionPredicateParser != null) {
-                return (boolean) legacyVersionPredicateParser.invoke(null, version, versionExpr);
+                return (boolean) legacyVersionPredicateParser.invoke(null, version, versionPredicates);
             }
-            return VersionPredicateParser.parse(versionExpr).test(version);
+            return VersionPredicateParser.parse(versionPredicates).test(version);
         } catch (VersionParsingException | InvocationTargetException | IllegalAccessException e) {
             MagicLib.getLogger().error(e);
             return false;
@@ -56,29 +69,26 @@ public class DependencyValidator {
     /**
      * Verify that the Fabric Loader has loaded the qualified mods.
      *
-     * @param modId       Mod Identifier.
-     * @param versionExpr Semantic versioning expressions.
-     * @param type        Dependency type.
-     * @return True if the Fabric Loader finds a matching mods from the list of
+     * @param modId Version provided by the fabric loader.
+     * @return True if the Fabric Loader finds a matching mod from the list of
      * loaded mods, false otherwise.
      */
-    public static boolean isModLoaded(String modId, String versionExpr, Dependency.DependencyType type) {
-        return isModLoaded(modId, versionExpr) && type != Dependency.DependencyType.CONFLICT;
+    public static boolean isModLoaded(String modId) {
+        return FabricLoader.getInstance().isModLoaded(modId);
     }
 
     /**
-     * Verify that the Fabric Loader has loaded the qualified mods.
+     * Verify that the Fabric Loader has loaded the qualified mod.
      *
-     * @param modId       Mod Identifier.
-     * @param versionExpr Semantic versioning expressions.
-     * @return True if the Fabric Loader finds a matching mods from the list of
+     * @param modId Version provided by the fabric loader.
+     * @return True if the Fabric Loader finds a matching mod from the list of
      * loaded mods, false otherwise.
      */
-    public static boolean isModLoaded(String modId, String versionExpr) {
+    public static boolean isModLoaded(String modId, String versionPredicates) {
         Optional<ModContainer> modContainerOptional = FabricLoader.getInstance().getModContainer(modId);
         if (modContainerOptional.isPresent()) {
             ModContainer modContainer = modContainerOptional.get();
-            return DependencyValidator.isModLoaded(modContainer.getMetadata().getVersion(), versionExpr);
+            return isModLoaded(modContainer.getMetadata().getVersion(), versionPredicates);
         }
         return false;
     }
@@ -88,13 +98,12 @@ public class DependencyValidator {
      * match the rules in the list.
      *
      * @param currentModId   Your Mod Identifier.
-     * @param dependencyType Your fabric.mod.json custom key.
      */
-    public static void customValidator(String currentModId, String dependencyType) {
+    public static void customValidator(String currentModId) {
         Optional<ModContainer> currentModContainer = fabricLoader.getModContainer(currentModId);
         if (currentModContainer.isPresent()) {
             String exceptionString = "";
-            for (Map.Entry<String, CustomValue> customValue : currentModContainer.get().getMetadata().getCustomValue(dependencyType).getAsObject()) {
+            for (Map.Entry<String, CustomValue> customValue : currentModContainer.get().getMetadata().getCustomValue("compat").getAsObject()) {
                 if (FabricLoader.getInstance().isModLoaded(customValue.getKey()) && !isModLoaded(customValue.getKey(), customValue.getValue().getAsString())) {
                     if (fabricLoader.getModContainer(customValue.getKey()).isPresent()) {
                         ModMetadata metadata = fabricLoader.getModContainer(customValue.getKey()).get().getMetadata();
@@ -106,8 +115,31 @@ public class DependencyValidator {
                 }
             }
             if (!exceptionString.contentEquals("")) {
-                FabricGui.displayCriticalError(new IllegalStateException(String.format("Mod resolution encountered an incompatible mod set!%s", exceptionString)));
+                displayCriticalError(new IllegalStateException(String.format("Mod resolution encountered an incompatible mod set!%s", exceptionString)));
             }
         }
+    }
+
+    /**
+     * Exposing the Fabric loader graphical exception display window method.
+     * @param exception Thrown exceptions.
+     */
+    public static void displayCriticalError(Throwable exception) {
+        if (legacyDisplayCriticalError != null) {
+            try {
+                legacyDisplayCriticalError.invoke(null, exception, true);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                MagicLib.getLogger().error(e);
+            }
+        } else {
+            FabricGuiEntry.displayCriticalError(exception, true);
+        }
+    }
+
+    /**
+     * @return True if started with Fabric Loom.
+     */
+    public static boolean isDevelopmentEnvironment() {
+        return FabricLoader.getInstance().isDevelopmentEnvironment();
     }
 }

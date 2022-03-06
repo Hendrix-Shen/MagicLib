@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.untils.dependency;
+package top.hendrixshen.magiclib.api.annotation;
 
 import org.objectweb.asm.tree.ClassNode;
 

@@ -4,7 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import top.hendrixshen.magiclib.helpers.OMMCConfig;
-import top.hendrixshen.magiclib.untils.fabricloader.DependencyValidator;
+import top.hendrixshen.magiclib.util.FabricUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +32,7 @@ public class ClientLanguage extends AbstractLanguage {
     @Override
     public List<String> getFallbackLanguages() {
         // Get fallback language from ommc
-        if (DependencyValidator.isModLoaded("ommc", ">=0.3.7")) {
+        if (FabricUtil.isModLoaded("ommc", ">=0.3.7")) {
             return OMMCConfig.getFallbackListFromOMMC();
         }
         return null;
