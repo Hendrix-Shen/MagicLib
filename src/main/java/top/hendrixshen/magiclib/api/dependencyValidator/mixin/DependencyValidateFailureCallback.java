@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.api.mixin;
+package top.hendrixshen.magiclib.api.dependencyValidator.mixin;
 
 @FunctionalInterface
 public interface DependencyValidateFailureCallback {

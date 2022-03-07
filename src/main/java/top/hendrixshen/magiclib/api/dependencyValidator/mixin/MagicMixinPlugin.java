@@ -1,7 +1,7 @@
-package top.hendrixshen.magiclib.api.mixin;
+package top.hendrixshen.magiclib.api.dependencyValidator.mixin;
 
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.impl.dependency.CacheDependency;
+import top.hendrixshen.magiclib.impl.dependencyValidator.CacheDependency;
 
 public class MagicMixinPlugin extends EmptyMixinPlugin {
     protected final CacheDependency cache = new CacheDependency();

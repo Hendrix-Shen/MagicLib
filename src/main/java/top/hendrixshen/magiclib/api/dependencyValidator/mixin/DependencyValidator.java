@@ -1,6 +1,6 @@
-package top.hendrixshen.magiclib.api.mixin;
+package top.hendrixshen.magiclib.api.dependencyValidator.mixin;
 
-import top.hendrixshen.magiclib.api.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
 
 /**
  * A helper class to for checking if {@link Dependencies} annotation on a mixin class is satisfied.

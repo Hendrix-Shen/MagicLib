@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.api.annotation;
+package top.hendrixshen.magiclib.api.dependencyValidator.annotation;
 
 import java.lang.annotation.Retention;
 

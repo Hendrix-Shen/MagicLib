@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.impl.dependency;
+package top.hendrixshen.magiclib.impl.dependencyValidator;
 
 import com.google.common.collect.Lists;
 import com.plusls.ommc.compat.CustomDepPredicate;
