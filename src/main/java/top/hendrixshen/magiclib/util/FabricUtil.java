@@ -47,6 +47,20 @@ public class FabricUtil {
     }
 
     /**
+     * Verify that the Fabric Loader has loaded the qualified mod.
+     *
+     * @param modId Version provided by the fabric loader.
+     * @param versionPredicates versionPredicates – Semantic versioning expressions.
+     * @return True if the Fabric Loader finds a matching mod from the list of
+     * loaded mods, false otherwise.
+     */
+    public static boolean isModsLoaded(String modId, Collection<String> versionPredicates) {
+        return FabricLoader.getInstance().getModContainer(modId).
+                map(mod -> isModsLoaded(mod.getMetadata().getVersion(), versionPredicates)).
+                orElse(false);
+    }
+
+    /**
      * Verify that the Fabric Loader has loaded the qualified mods.
      *
      * @param version           Version provided by the fabric loader.

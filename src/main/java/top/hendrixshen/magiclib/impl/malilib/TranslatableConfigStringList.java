@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.untils.malilib;
+package top.hendrixshen.magiclib.impl.malilib;
 
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.options.ConfigStringList;
@@ -12,8 +12,8 @@ public class TranslatableConfigStringList extends ConfigStringList {
     private final String guiDisplayName;
 
     public TranslatableConfigStringList(String prefix, String name, ImmutableList<String> defaultValue) {
-        super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        super(name, defaultValue, String.format("%s.config.%s.comment", prefix, name));
+        this.guiDisplayName = String.format("%s.config.%s.name", prefix, name);
     }
 
     @Override
