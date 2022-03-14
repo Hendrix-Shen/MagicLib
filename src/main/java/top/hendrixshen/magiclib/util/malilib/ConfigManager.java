@@ -63,8 +63,6 @@ public class ConfigManager {
                     if (!this.CATEGORIES.contains(category)) {
                         this.CATEGORIES.add(category);
                     }
-                    MagicLib.getLogger().info(this.compatOldMalilib);
-                    MagicLib.getLogger().warn(config instanceof ConfigBooleanHotkeyed);
                     if (this.compatOldMalilib && config instanceof ConfigBooleanHotkeyed) {
                         String compatCategory = String.format("%s_hotkey", category);
                         if (!this.CATEGORIES.contains(compatCategory)) {
