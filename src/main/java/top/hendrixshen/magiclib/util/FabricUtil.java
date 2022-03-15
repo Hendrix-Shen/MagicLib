@@ -49,7 +49,7 @@ public class FabricUtil {
     /**
      * Verify that the Fabric Loader has loaded the qualified mod.
      *
-     * @param modId Version provided by the fabric loader.
+     * @param modId             Version provided by the fabric loader.
      * @param versionPredicates versionPredicates – Semantic versioning expressions.
      * @return True if the Fabric Loader finds a matching mod from the list of
      * loaded mods, false otherwise.
@@ -71,11 +71,15 @@ public class FabricUtil {
     public static boolean isModLoaded(Version version, String versionPredicates) {
         try {
             if (legacyVersionPredicateParser != null) {
-                return (boolean) legacyVersionPredicateParser.invoke(null, version, versionPredicates);
+                try {
+                    return (boolean) legacyVersionPredicateParser.invoke(null, version, versionPredicates);
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    MagicLib.getLogger().error("Failed to invoke VersionPredicateParser#matches", e);
+                }
             }
             return VersionPredicateParser.parse(versionPredicates).test(version);
-        } catch (VersionParsingException | InvocationTargetException | IllegalAccessException e) {
-            MagicLib.getLogger().error(e);
+        } catch (VersionParsingException e) {
+            MagicLib.getLogger().error("Failed to parse version or version predicate {} {}: {}", version.getFriendlyString(), versionPredicates, e);
             return false;
         }
     }
@@ -111,7 +115,7 @@ public class FabricUtil {
      * Interrupted only if the FabricLoader loads a mod version that does not
      * match the rules in the list.
      *
-     * @param currentModId   Your Mod Identifier.
+     * @param currentModId Your Mod Identifier.
      */
     public static void customValidator(String currentModId) {
         Optional<ModContainer> currentModContainer = fabricLoader.getModContainer(currentModId);
@@ -136,6 +140,7 @@ public class FabricUtil {
 
     /**
      * Exposing the Fabric loader graphical exception display window method.
+     *
      * @param exception Thrown exceptions.
      */
     public static void displayCriticalError(Throwable exception) {
