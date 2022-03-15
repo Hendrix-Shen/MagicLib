@@ -25,8 +25,7 @@ public class ModDependency {
         return new ModDependency(dependencies, dependencyPredicate);
     }
 
-    public static ModDependency of(Dependencies dependencies)
-    {
+    public static ModDependency of(Dependencies dependencies) {
         return new ModDependency(dependencies, c -> true);
     }
 
@@ -37,28 +36,23 @@ public class ModDependency {
                 collect(Collectors.toList());
     }
 
-    public boolean isRequirementsSatisfied()
-    {
+    public boolean isRequirementsSatisfied() {
         return this.requirementsSatisfied;
     }
 
-    public boolean isNoConflicts()
-    {
+    public boolean isNoConflicts() {
         return this.noConflicts;
     }
 
-    public boolean isSatisfied()
-    {
+    public boolean isSatisfied() {
         return this.isRequirementsSatisfied() && this.isNoConflicts();
     }
 
-    public List<ModPredicate> getRequirements()
-    {
+    public List<ModPredicate> getRequirements() {
         return this.requirements;
     }
 
-    public List<ModPredicate> getConflicts()
-    {
+    public List<ModPredicate> getConflicts() {
         return this.conflicts;
     }
 }

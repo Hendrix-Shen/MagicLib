@@ -38,6 +38,7 @@ public class ConfigManager {
 
     /**
      * Magic Configuration Manager constructor.
+     *
      * @param identifier Your mod identifier.
      */
     public ConfigManager(String identifier) {
@@ -46,6 +47,7 @@ public class ConfigManager {
 
     /**
      * Parsing configuration class to MagicLib Config Manager.
+     *
      * @param configClass Your configuration class.
      */
     public void parseConfigClass(Class configClass) {
@@ -86,6 +88,7 @@ public class ConfigManager {
 
     /**
      * Get configuration item display status. For more information, see {@link ConfigGui#getConfigs()}.
+     *
      * @return True if configuration items marked for debugging are displayed.
      */
     public boolean isHideDebug() {
@@ -94,6 +97,7 @@ public class ConfigManager {
 
     /**
      * Get configuration item display status. For more information, see {@link ConfigGui#getConfigs()}.
+     *
      * @return True if configuration items marked for development are displayed.
      */
     public boolean isHideDevOnly() {
@@ -102,6 +106,7 @@ public class ConfigManager {
 
     /**
      * Get configuration item display status. For more information, see {@link ConfigGui#getConfigs()}.
+     *
      * @return True if configuration items marked as incompatible with the current mods are displayed.
      */
     public boolean isHideDisabled() {
@@ -110,6 +115,7 @@ public class ConfigManager {
 
     /**
      * Get configuration item display status. For more information, see {@link ConfigGui#getConfigs()}.
+     *
      * @return True if configuration items marked as incompatible with the current Minecraft version are displayed.
      */
     public boolean isHideUnmatchedMinecraftVersion() {
@@ -118,6 +124,7 @@ public class ConfigManager {
 
     /**
      * Older versions of Malilib UI compatible. For more information, see {@link ConfigGui#getConfigs()}.
+     *
      * @return True if old Malilib tab compatibility is enabled.
      */
     public boolean isCompatOldMalilib() {
@@ -161,6 +168,7 @@ public class ConfigManager {
 
     /**
      * Get all configuration item categories.
+     *
      * @return A list of categories.
      */
     public List<String> getCategories() {
@@ -169,6 +177,7 @@ public class ConfigManager {
 
     /**
      * Get old Malilib compatible categories.
+     *
      * @return A list of categories.
      */
     public List<String> getCompatCategories() {
@@ -177,6 +186,7 @@ public class ConfigManager {
 
     /**
      * Get all configuration items under the specified category.
+     *
      * @return A list of configurations.
      */
     public List<IConfigBase> getConfigsByCategory(String category) {
@@ -185,6 +195,7 @@ public class ConfigManager {
 
     /**
      * Get all options items under the specified category.
+     *
      * @return A list of options.
      */
     public List<Option> getOptionsByCategory(String category) {
@@ -193,6 +204,7 @@ public class ConfigManager {
 
     /**
      * Get all options stream.
+     *
      * @return Options Stream.
      */
     public Stream<IConfigBase> getAllConfigOptionStream() {
@@ -201,6 +213,7 @@ public class ConfigManager {
 
     /**
      * Get configuration according to option.
+     *
      * @return A configuration.
      */
     public Optional<Option> getOptionFromConfig(IConfigBase iConfigBase) {
@@ -209,15 +222,17 @@ public class ConfigManager {
 
     /**
      * Get whether the specified configuration exists.
+     *
      * @return True if this configuration exists.
      */
-	public boolean hasConfig(IConfigBase iConfigBase) {
-		return this.getOptionFromConfig(iConfigBase).isPresent();
-	}
+    public boolean hasConfig(IConfigBase iConfigBase) {
+        return this.getOptionFromConfig(iConfigBase).isPresent();
+    }
 
     /**
      * Create a {@link TranslatableConfigBoolean} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
      * @return A boolean configuration object.
      */
@@ -227,8 +242,9 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigBooleanHotkeyed} type configuration.
-     * @param name Configuration name.
-     * @param defaultValue Configuration default value.
+     *
+     * @param name          Configuration name.
+     * @param defaultValue  Configuration default value.
      * @param defaultHotkey Configuration default hotkey.
      * @return A boolean with hotkey configuration object.
      */
@@ -238,10 +254,11 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigBooleanHotkeyed} type configuration.
-     * @param name Configuration name.
-     * @param defaultValue Configuration default value.
+     *
+     * @param name          Configuration name.
+     * @param defaultValue  Configuration default value.
      * @param defaultHotkey Configuration default hotkey.
-     * @param settings Configuration default key bind setting.
+     * @param settings      Configuration default key bind setting.
      * @return A boolean with hotkey configuration object.
      */
     public TranslatableConfigBooleanHotkeyed createBooleanHotkeyed(String name, boolean defaultValue, String defaultHotkey, KeybindSettings settings) {
@@ -250,7 +267,8 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigColor} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
      * @return A color configuration object.
      */
@@ -260,7 +278,8 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigDouble} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
      * @return A color configuration object.
      */
@@ -270,10 +289,11 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigDouble} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
-     * @param minValue Configuration min value limits.
-     * @param maxValue Configuration max value limits.
+     * @param minValue     Configuration min value limits.
+     * @param maxValue     Configuration max value limits.
      * @return A double configuration object.
      */
     public TranslatableConfigDouble createDouble(String name, double defaultValue, double minValue, double maxValue) {
@@ -282,11 +302,12 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigDouble} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
-     * @param minValue Configuration min value limits.
-     * @param maxValue Configuration max value limits.
-     * @param useSlider Enable or disable the slider by default.
+     * @param minValue     Configuration min value limits.
+     * @param maxValue     Configuration max value limits.
+     * @param useSlider    Enable or disable the slider by default.
      * @return A double configuration object.
      */
     public TranslatableConfigDouble createDouble(String name, double defaultValue, double minValue, double maxValue, boolean useSlider) {
@@ -295,7 +316,8 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigHotkey} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name                 Configuration name.
      * @param defaultStorageString Configuration default value.
      * @return A hotkey configuration object.
      */
@@ -305,9 +327,10 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigHotkey} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name                 Configuration name.
      * @param defaultStorageString Configuration default value.
-     * @param settings Configuration default key bind setting.
+     * @param settings             Configuration default key bind setting.
      * @return A hotkey configuration object.
      */
     public TranslatableConfigHotkey createHotkey(String name, String defaultStorageString, KeybindSettings settings) {
@@ -316,7 +339,8 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigInteger} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
      * @return An integer configuration object.
      */
@@ -326,10 +350,11 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigInteger} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
-     * @param minValue Configuration min value limits.
-     * @param maxValue Configuration max value limits.
+     * @param minValue     Configuration min value limits.
+     * @param maxValue     Configuration max value limits.
      * @return An integer configuration object.
      */
     public TranslatableConfigInteger createInteger(String name, int defaultValue, int minValue, int maxValue) {
@@ -338,11 +363,12 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigInteger} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
-     * @param minValue Configuration min value limits.
-     * @param maxValue Configuration max value limits.
-     * @param useSlider Enable or disable the slider by default.
+     * @param minValue     Configuration min value limits.
+     * @param maxValue     Configuration max value limits.
+     * @param useSlider    Enable or disable the slider by default.
      * @return An integer configuration object.
      */
     public TranslatableConfigInteger createInteger(String name, int defaultValue, int minValue, int maxValue, boolean useSlider) {
@@ -351,7 +377,8 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigOptionList} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
      * @return An option list configuration object.
      */
@@ -361,7 +388,8 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigString} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
      * @return A string configuration object.
      */
@@ -371,7 +399,8 @@ public class ConfigManager {
 
     /**
      * Create a {@link TranslatableConfigStringList} type configuration.
-     * @param name Configuration name.
+     *
+     * @param name         Configuration name.
      * @param defaultValue Configuration default value.
      * @return A string list configuration object.
      */

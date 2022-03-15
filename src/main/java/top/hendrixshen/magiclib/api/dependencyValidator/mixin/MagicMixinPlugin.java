@@ -11,8 +11,7 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
     }
 
     @Override
-    public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
-    {
+    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         return this.cache.checkDependency(targetClassName, mixinClassName);
     }
 

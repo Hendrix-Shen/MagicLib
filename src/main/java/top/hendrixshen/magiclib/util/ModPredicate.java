@@ -31,6 +31,6 @@ public class ModPredicate {
 
     @Override
     public String toString() {
-        return String.format("%s -%s",this.modId, this.getVersionPredicatesString());
+        return String.format("%s - %s", this.modId, this.getVersionPredicatesString());
     }
 }
