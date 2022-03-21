@@ -12,16 +12,15 @@ public class TranslatableConfigHotkey extends ConfigHotkey {
     private final String guiDisplayName;
 
     public TranslatableConfigHotkey(String prefix, String name, String defaultStorageString) {
-        super(name, defaultStorageString, String.format("%s.config.%s.comment", prefix, name),
-                String.format("%s.config.%s.pretty_name", prefix, name));
-        this.guiDisplayName = String.format("%s.config.%s.name", prefix, name);
-
+        super(name, defaultStorageString, String.format("%s.%s.comment", prefix, name),
+                String.format("%s.%s.pretty_name", prefix, name));
+        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
     }
 
     public TranslatableConfigHotkey(String prefix, String name, String defaultStorageString, KeybindSettings settings) {
-        super(name, defaultStorageString, settings, String.format("%s.config.%s.comment", prefix, name),
-                String.format("%s.config.%s.pretty_name", prefix, name));
-        this.guiDisplayName = String.format("%s.config.%s.name", prefix, name);
+        super(name, defaultStorageString, settings, String.format("%s.%s.comment", prefix, name),
+                String.format("%s.%s.pretty_name", prefix, name));
+        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
     }
 
 

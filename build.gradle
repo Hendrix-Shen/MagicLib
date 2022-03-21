@@ -26,14 +26,23 @@ repositories {
     maven {
         url 'https://www.cursemaven.com/'
     }
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
     mappings(loom.officialMojangMappings())
-    modApi("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
-    modCompileOnly("fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version_masa}:${project.malilib_version}")
-    modCompileOnly("curse.maven:oh-my-minecraft-client-454900:${project.ommc_version}")
+    modApi("fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version_masa}:${project.malilib_version}")
+    modImplementation("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
+    modImplementation("curse.maven:oh-my-minecraft-client-454900:${project.ommc_version}")
+    modImplementation("maven.modrinth:modmenu:${project.mod_menu_version}")
+
+    modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
+    modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
+    modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.in_game_account_switcher_version}")
+    modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
 }
 
 processResources {

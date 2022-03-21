@@ -43,7 +43,7 @@ public class FabricUtil {
      * loaded mods, false otherwise.
      */
     public static boolean isModsLoaded(Version version, Collection<String> versionPredicates) {
-        return versionPredicates.isEmpty() || versionPredicates.stream().anyMatch(vp -> isModLoaded(version, vp));
+        return versionPredicates.isEmpty() || versionPredicates.stream().allMatch(vp -> isModLoaded(version, vp));
     }
 
     /**

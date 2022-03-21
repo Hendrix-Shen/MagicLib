@@ -1,6 +1,8 @@
 package top.hendrixshen.magiclib.api.malilib.annotation;
 
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependencyValidator.annotation.OptionDependencyPredicate;
+import top.hendrixshen.magiclib.util.malilib.Option;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,9 +14,8 @@ import java.lang.annotation.Target;
 public @interface Config {
     String category();
 
-    Dependencies[] dependencies() default {};
+    Dependencies dependencies() default @Dependencies;
 
-    boolean debug() default false;
+    Class<? extends OptionDependencyPredicate> predicate() default OptionDependencyPredicate.class;
 
-    boolean devOnly() default false;
 }

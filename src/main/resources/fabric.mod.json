@@ -25,6 +25,9 @@
   "entrypoints": {
     "main": [
       "top.hendrixshen.magiclib.MagicLib"
+    ],
+    "modmenu": [
+      "top.hendrixshen.magiclib.compat.modmenu.ModMenuApiImpl"
     ]
   },
   "mixins": [

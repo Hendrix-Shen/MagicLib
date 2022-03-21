@@ -12,9 +12,9 @@ public class TranslatableConfigOptionList extends ConfigOptionList {
     private final String guiDisplayName;
 
     public TranslatableConfigOptionList(String prefix, String name, IConfigOptionListEntry defaultValue) {
-        super(name, defaultValue, String.format("%s.config.%s.comment", prefix, name),
-                String.format("%s.config.%s.pretty_name", prefix, name));
-        this.guiDisplayName = String.format("%s.config.%s.name", prefix, name);
+        super(name, defaultValue, String.format("%s.%s.comment", prefix, name),
+                String.format("%s.%s.pretty_name", prefix, name));
+        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
     }
 
     @Override

@@ -11,19 +11,27 @@ public class TranslatableConfigDouble extends ConfigDouble {
     private final String guiDisplayName;
 
     public TranslatableConfigDouble(String prefix, String name, double defaultValue) {
-        super(name, defaultValue, String.format("%s.config.%s.comment", prefix, name));
-
-        this.guiDisplayName = String.format("%s.config.%s.name", prefix, name);
+        super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
+        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
     }
 
     public TranslatableConfigDouble(String prefix, String name, double defaultValue, double minValue, double maxValue) {
-        super(name, defaultValue, minValue, maxValue, String.format("%s.config.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.config.%s.name", prefix, name);
+        super(name, defaultValue, minValue, maxValue, String.format("%s.%s.comment", prefix, name));
+        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
     }
 
     public TranslatableConfigDouble(String prefix, String name, double defaultValue, double minValue, double maxValue, boolean useSlider) {
-        super(name, defaultValue, minValue, maxValue, useSlider, String.format("%s.config.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.config.%s.name", prefix, name);
+        super(name, defaultValue, minValue, maxValue, useSlider, String.format("%s.%s.comment", prefix, name));
+        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+    }
+
+    @Override
+    public String getPrettyName() {
+        String ret = super.getPrettyName();
+        if (ret.contains("pretty_name")) {
+            ret = StringUtils.splitCamelCase(this.getConfigGuiDisplayName());
+        }
+        return ret;
     }
 
     @Override

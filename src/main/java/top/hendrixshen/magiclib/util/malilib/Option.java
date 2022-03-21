@@ -1,51 +1,67 @@
 package top.hendrixshen.magiclib.util.malilib;
 
-import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.config.options.ConfigBase;
+import top.hendrixshen.magiclib.api.dependencyValidator.annotation.OptionDependencyPredicate;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
-import top.hendrixshen.magiclib.util.ModDependency;
+import top.hendrixshen.magiclib.util.ModDependencies;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class Option {
     private final Config annotation;
-    private final IConfigBase config;
-    private final List<ModDependency> modDependencies;
-    private final List<ModDependency> minecraftDependencies;
+    private final ConfigBase<?> config;
+    private final ModDependencies modDependencies;
+    private final OptionDependencyPredicate predicate;
 
-    public Option(Config annotation, IConfigBase config) {
+    private Consumer<Option> valueChangeCallback = option -> {
+    };
+
+    public Option(Config annotation, ConfigBase<?> config) {
         this.annotation = annotation;
         this.config = config;
-        this.modDependencies = Arrays.stream(annotation.dependencies()).map(ModDependency::of).collect(Collectors.toList());
-        this.minecraftDependencies = Arrays.stream(annotation.dependencies()).map(r -> ModDependency.of(r, dp -> dp.value().equals("minecraft"))).collect(Collectors.toList());
+        this.modDependencies = ModDependencies.of(annotation.dependencies(), this);
+        try {
+            this.predicate = annotation.predicate().getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public String getCategory() {
         return this.annotation.category();
     }
 
-    public List<ModDependency> getModDependencies() {
+    public String getName() {
+        return this.config.getName();
+    }
+
+    public ModDependencies getModDependencies() {
         return this.modDependencies;
     }
 
     public boolean isEnabled() {
-        return this.modDependencies.isEmpty() || this.modDependencies.stream().anyMatch(ModDependency::isSatisfied);
+        return this.modDependencies.satisfied && predicate.test(this);
     }
 
-    public boolean isMatchedMinecraftVersion() {
-        return this.minecraftDependencies.isEmpty() || this.minecraftDependencies.stream().anyMatch(ModDependency::isSatisfied);
-    }
-
-    public boolean isDebug() {
-        return this.annotation.debug();
-    }
-
-    public boolean isDevOnly() {
-        return this.annotation.devOnly();
-    }
-
-    public IConfigBase getConfig() {
+    public ConfigBase<?> getConfig() {
         return this.config;
+    }
+
+    public <T> Optional<T> getConfig(Class<T> clazz) {
+        if (clazz.isInstance(this.config)) {
+            return Optional.of(clazz.cast(this.config));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public void setValueChangeCallback(Consumer<Option> valueChangeCallback) {
+        this.valueChangeCallback = valueChangeCallback;
+    }
+
+    public Consumer<Option> getValueChangeCallback() {
+        return this.valueChangeCallback;
     }
 }

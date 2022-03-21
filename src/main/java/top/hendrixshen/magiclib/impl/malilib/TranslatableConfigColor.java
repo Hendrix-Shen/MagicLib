@@ -11,8 +11,8 @@ public class TranslatableConfigColor extends ConfigColor {
     private final String guiDisplayName;
 
     public TranslatableConfigColor(String prefix, String name, String defaultValue) {
-        super(name, defaultValue, String.format("%s.config.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.config.%s.name", prefix, name);
+        super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
+        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
     }
 
     @Override

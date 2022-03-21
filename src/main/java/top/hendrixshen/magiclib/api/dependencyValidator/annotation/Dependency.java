@@ -1,9 +1,8 @@
 package top.hendrixshen.magiclib.api.dependencyValidator.annotation;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.function.Predicate;
 
 /**
  * <p>
@@ -32,13 +31,20 @@ public @interface Dependency {
      *
      * @return predicates list.
      */
-    String[] versionPredicates();
+    String[] versionPredicates() default {};
 
     /**
      * Dependency custom predicate.
      *
      * @return Custom Predicate Classes.
      */
-    @Nullable
-    Class<? extends CustomDependencyPredicate>[] predicate() default {};
+    Class<? extends Predicate<?>> predicate() default DefaultPredicate.class;
+
+    class DefaultPredicate implements Predicate<Object> {
+        @Override
+        public boolean test(Object option) {
+            return true;
+        }
+    }
+
 }
