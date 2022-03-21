@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.api.malilib.annotation;
+package top.hendrixshen.magiclib.config.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

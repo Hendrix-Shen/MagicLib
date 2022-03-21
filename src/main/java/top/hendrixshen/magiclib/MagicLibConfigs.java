@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.config;
+package top.hendrixshen.magiclib;
 
 import com.google.common.collect.Lists;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
@@ -8,18 +8,16 @@ import fi.dy.masa.malilib.util.Color4f;
 import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
-import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependency;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.OptionDependencyPredicate;
-import top.hendrixshen.magiclib.api.malilib.annotation.Config;
-import top.hendrixshen.magiclib.api.malilib.annotation.Hotkey;
-import top.hendrixshen.magiclib.util.malilib.Option;
+import top.hendrixshen.magiclib.config.annotation.Config;
+import top.hendrixshen.magiclib.config.annotation.Hotkey;
+import top.hendrixshen.magiclib.config.Option;
 
 import java.util.ArrayList;
 
-public class Configs {
+public class MagicLibConfigs {
 
     @Hotkey(hotkey = "M,A,G")
     @Config(category = ConfigCategory.GENERIC)
@@ -70,7 +68,7 @@ public class Configs {
 
     public static void init() {
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
-            Minecraft.getInstance().setScreen(GuiConfigs.getInstance());
+            Minecraft.getInstance().setScreen(MagiclibConfigGui.getInstance());
             return true;
         });
 
@@ -80,7 +78,7 @@ public class Configs {
             } else {
                 Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("INFO"));
             }
-            GuiConfigs.getInstance().reDraw();
+            MagiclibConfigGui.getInstance().reDraw();
         });
         if (debug) {
             Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("DEBUG"));

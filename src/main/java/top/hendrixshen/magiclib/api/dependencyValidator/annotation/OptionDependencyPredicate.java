@@ -1,6 +1,6 @@
 package top.hendrixshen.magiclib.api.dependencyValidator.annotation;
 
-import top.hendrixshen.magiclib.util.malilib.Option;
+import top.hendrixshen.magiclib.config.Option;
 
 import java.util.function.Predicate;
 

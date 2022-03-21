@@ -1,16 +1,17 @@
-package top.hendrixshen.magiclib.impl.malilib;
+package top.hendrixshen.magiclib.config;
 
-import fi.dy.masa.malilib.config.options.ConfigBoolean;
+import fi.dy.masa.malilib.config.IConfigOptionListEntry;
+import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import fi.dy.masa.malilib.util.StringUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
-public class TranslatableConfigBoolean extends ConfigBoolean {
+public class TranslatableConfigOptionList extends ConfigOptionList {
     private final String guiDisplayName;
 
-    public TranslatableConfigBoolean(String prefix, String name, boolean defaultValue) {
+    public TranslatableConfigOptionList(String prefix, String name, IConfigOptionListEntry defaultValue) {
         super(name, defaultValue, String.format("%s.%s.comment", prefix, name),
                 String.format("%s.%s.pretty_name", prefix, name));
         this.guiDisplayName = String.format("%s.%s.name", prefix, name);

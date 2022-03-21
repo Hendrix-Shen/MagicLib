@@ -1,12 +1,12 @@
-package top.hendrixshen.magiclib.impl.malilib;
+package top.hendrixshen.magiclib.gui;
 
 import com.google.common.collect.Lists;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.util.StringUtils;
-import top.hendrixshen.magiclib.util.malilib.ConfigManager;
-import top.hendrixshen.magiclib.util.malilib.Option;
+import top.hendrixshen.magiclib.config.ConfigManager;
+import top.hendrixshen.magiclib.config.Option;
 
 import java.util.List;
 import java.util.Objects;

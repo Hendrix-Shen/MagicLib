@@ -9,8 +9,7 @@ package top.hendrixshen.magiclib;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import top.hendrixshen.magiclib.config.Configs;
-import top.hendrixshen.magiclib.util.malilib.ConfigManager;
+import top.hendrixshen.magiclib.config.ConfigManager;
 
 public class MagicLib implements ModInitializer {
     public static Logger getLogger() {
@@ -21,7 +20,7 @@ public class MagicLib implements ModInitializer {
     @Override
     public void onInitialize() {
         getLogger().info(String.format("[%s]: Mod initialized - Version: %s", MagicLibReference.getModName(), MagicLibReference.getModVersion()));
-        cm.parseConfigClass(Configs.class);
-        Configs.init();
+        cm.parseConfigClass(MagicLibConfigs.class);
+        MagicLibConfigs.init();
     }
 }
