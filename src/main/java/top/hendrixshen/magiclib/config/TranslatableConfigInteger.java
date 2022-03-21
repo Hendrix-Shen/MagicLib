@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.impl.malilib;
+package top.hendrixshen.magiclib.config;
 
 import fi.dy.masa.malilib.config.options.ConfigInteger;
 import fi.dy.masa.malilib.util.StringUtils;

@@ -1,14 +1,12 @@
-package top.hendrixshen.magiclib.util.malilib;
+package top.hendrixshen.magiclib.config;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.config.options.*;
 import fi.dy.masa.malilib.util.Color4f;
-import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.malilib.annotation.Config;
-import top.hendrixshen.magiclib.api.malilib.annotation.Hotkey;
-import top.hendrixshen.magiclib.impl.malilib.*;
+import top.hendrixshen.magiclib.config.annotation.Config;
+import top.hendrixshen.magiclib.config.annotation.Hotkey;
 
 import java.lang.reflect.Field;
 import java.util.*;

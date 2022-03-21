@@ -1,8 +1,8 @@
-package top.hendrixshen.magiclib.util.malilib;
+package top.hendrixshen.magiclib.config;
 
 import fi.dy.masa.malilib.config.options.ConfigBase;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.OptionDependencyPredicate;
-import top.hendrixshen.magiclib.api.malilib.annotation.Config;
+import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.util.ModDependencies;
 
 import java.lang.reflect.InvocationTargetException;

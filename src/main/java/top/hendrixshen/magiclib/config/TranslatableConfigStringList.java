@@ -1,16 +1,17 @@
-package top.hendrixshen.magiclib.impl.malilib;
+package top.hendrixshen.magiclib.config;
 
-import fi.dy.masa.malilib.config.options.ConfigColor;
+import com.google.common.collect.ImmutableList;
+import fi.dy.masa.malilib.config.options.ConfigStringList;
 import fi.dy.masa.malilib.util.StringUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
-public class TranslatableConfigColor extends ConfigColor {
+public class TranslatableConfigStringList extends ConfigStringList {
     private final String guiDisplayName;
 
-    public TranslatableConfigColor(String prefix, String name, String defaultValue) {
+    public TranslatableConfigStringList(String prefix, String name, ImmutableList<String> defaultValue) {
         super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
         this.guiDisplayName = String.format("%s.%s.name", prefix, name);
     }
