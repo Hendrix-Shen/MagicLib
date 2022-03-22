@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.config.annotation;
 
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.OptionDependencyPredicate;
+import top.hendrixshen.magiclib.util.Predicates;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,6 +16,6 @@ public @interface Config {
 
     Dependencies dependencies() default @Dependencies;
 
-    Class<? extends OptionDependencyPredicate> predicate() default OptionDependencyPredicate.class;
+    Class<? extends OptionDependencyPredicate> predicate() default Predicates.TrueOptionPredicate.class;
 
 }

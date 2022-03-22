@@ -1,4 +1,7 @@
 dependencies {
     minecraft("com.mojang:minecraft:1.14.4")
-    modCompileOnly("curse.maven:modmenu-308702:3121565")
+    modImplementation("curse.maven:modmenu-308702:3121565")
+    modImplementation("curse.maven:malilib-303119:2876325")
+    modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:0.28.5+1.14")
+    modRuntimeOnly("curse.maven:in-game-account-switcher-232676:3493805")
 }

@@ -10,10 +10,9 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependency;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.OptionDependencyPredicate;
 import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
-import top.hendrixshen.magiclib.config.Option;
+import top.hendrixshen.magiclib.util.Predicates;
 
 import java.util.ArrayList;
 
@@ -26,45 +25,33 @@ public class MagicLibConfigs {
     @Config(category = ConfigCategory.GENERIC)
     public static boolean debug = false;
 
-    @Config(category = ConfigCategory.TEST, predicate = DebugPredicate.class)
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static int intConfig = 0;
 
-    @Config(category = ConfigCategory.TEST, predicate = DebugPredicate.class)
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static String stringConfig = "string";
 
-    @Config(category = ConfigCategory.TEST, predicate = DebugPredicate.class)
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static boolean booleanConfig = false;
 
     @Hotkey
-    @Config(category = ConfigCategory.TEST, predicate = DebugPredicate.class)
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static boolean booleanHotkeyConfig = false;
 
-    @Config(category = ConfigCategory.TEST, predicate = DebugPredicate.class)
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static double doubleConfig = 0.1;
 
-    @Config(category = ConfigCategory.TEST, predicate = DebugPredicate.class)
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static Color4f colorConfig = Color4f.ZERO;
 
-    @Config(category = ConfigCategory.TEST, predicate = DebugPredicate.class)
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static ArrayList<String> stringListConfig = Lists.newArrayList("test1", "test2");
 
-    @Config(category = ConfigCategory.TEST, predicate = DebugPredicate.class)
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static IConfigOptionListEntry optionListConfig = ActiveMode.ALWAYS;
 
-    @Config(category = ConfigCategory.TEST, predicate = DebugPredicate.class, dependencies = @Dependencies(require = @Dependency(value = "sodium", versionPredicates = "*")))
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class, dependencies = @Dependencies(require = @Dependency(value = "sodium", versionPredicates = "*")))
     public static boolean sodiumTest = false;
-
-    public static class ConfigCategory {
-        public static final String GENERIC = "generic";
-        public static final String TEST = "test";
-    }
-
-    public static class DebugPredicate extends OptionDependencyPredicate {
-        @Override
-        public boolean test(Option option) {
-            return debug;
-        }
-    }
 
     public static void init() {
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
@@ -83,5 +70,10 @@ public class MagicLibConfigs {
         if (debug) {
             Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("DEBUG"));
         }
+    }
+
+    public static class ConfigCategory {
+        public static final String GENERIC = "generic";
+        public static final String TEST = "test";
     }
 }
