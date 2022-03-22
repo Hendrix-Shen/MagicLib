@@ -1,0 +1,4 @@
+dependencies {
+    minecraft("com.mojang:minecraft:1.15.2")
+    modCompileOnly("curse.maven:modmenu-308702:3271693")
+}

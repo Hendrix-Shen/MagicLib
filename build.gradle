@@ -19,41 +19,78 @@ if (ENV.BUILD_NUMBER) {
     version = baseVersion + '.local'
 }
 
-repositories {
-    maven {
-        url 'https://www.cursemaven.com/'
-    }
-    maven {
-        url = "https://api.modrinth.com/maven"
-    }
-}
-
 dependencies {
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
-    mappings(loom.officialMojangMappings())
-    modImplementation("curse.maven:malilib-303119:${project.malilib_version}")
-    modImplementation("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
     modImplementation("maven.modrinth:modmenu:${project.mod_menu_version}")
 
     modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
     modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
     modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.in_game_account_switcher_version}")
     modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
-}
 
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        include "fabric.mod.json"
-        expand "mod_version": project.version
+    subprojects.each {
+        include project("${it.name}:")
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.sourceCompatibility = JavaVersion.VERSION_1_8
-    it.targetCompatibility = JavaVersion.VERSION_1_8
+allprojects {
+    apply plugin: "maven-publish"
+    apply plugin: "fabric-loom"
+
+    version = rootProject.version
+    group = rootProject.group
+
+    repositories {
+        maven {
+            url 'https://www.cursemaven.com/'
+        }
+        maven {
+            url = "https://api.modrinth.com/maven"
+        }
+    }
+
+    dependencies {
+        mappings(loom.officialMojangMappings())
+        modImplementation("net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}")
+        modImplementation("curse.maven:malilib-303119:${project.malilib_version}")
+    }
+
+    runClient {
+        defaultCharacterEncoding = "UTF-8"
+    }
+
+    runServer {
+        defaultCharacterEncoding = "UTF-8"
+    }
+
+    java {
+        withSourcesJar()
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = "UTF-8"
+        it.sourceCompatibility = JavaVersion.VERSION_1_8
+        it.targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    processResources {
+        inputs.property "version", rootProject.version
+
+        filesMatching("fabric.mod.json") {
+            include "fabric.mod.json"
+            expand "mod_version": rootProject.version
+        }
+    }
+}
+
+subprojects {
+    dependencies {
+        implementation(rootProject)
+    }
+}
+
+jar {
+    from("LICENSE")
 }
 
 task publishModrinth(type: TaskModrinthUpload) {
@@ -80,22 +117,6 @@ task publishModrinth(type: TaskModrinthUpload) {
     addLoader('fabric')
 }
 
-runClient {
-    defaultCharacterEncoding = "UTF-8"
-}
-
-runServer {
-    defaultCharacterEncoding = "UTF-8"
-}
-
-java {
-    withSourcesJar()
-}
-
-jar {
-    from("LICENSE")
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -119,4 +140,3 @@ publishing {
         }
     }
 }
-

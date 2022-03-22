@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "magiclib",
+  "id": "magiclib-compat-mc1_16",
   "version": "${mod_version}",
   "icon": "assets/magiclib/icon.png",
-  "name": "MagicLib",
-  "description": "",
+  "name": "MagicLib Compat",
+  "description": "MagicLib compat for Minecraft 1.16.x",
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -31,24 +31,24 @@
   "entrypoints": {
     "main": [
       "top.hendrixshen.magiclib.MagicLib"
-    ],
-    "modmenu": [
-      "top.hendrixshen.magiclib.compat.modmenu.ModMenuApiImpl"
     ]
   },
   "mixins": [
-    "magiclib.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.9.0",
-    "minecraft": "*"
+    "minecraft": "1.16.x",
+    "malilib": "*"
   },
   "custom": {
     "modmenu:api": true,
+    "modmenu:parent": "magiclib",
+    "modmenu:clientsideOnly": true,
     "modmenu": {
       "badges": [
         "library"
-      ]
+      ],
+      "parent": "magiclib"
     }
   }
 }
