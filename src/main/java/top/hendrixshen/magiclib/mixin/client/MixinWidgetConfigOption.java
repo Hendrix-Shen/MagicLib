@@ -57,6 +57,18 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
         super(x, y, width, height, parent, entry, listIndex);
     }
 
+    @SuppressWarnings("unchecked")
+    private static void addKeybindChangeListener(Object obj, ConfigOptionChangeListenerKeybind resetListener) {
+        try {
+            Field hotkeyChangeListenersField = GuiConfigsBase.class.getDeclaredField("hotkeyChangeListeners");
+            hotkeyChangeListenersField.setAccessible(true);
+            List<ConfigOptionChangeListenerKeybind> hotkeyChangeListeners = (List<ConfigOptionChangeListenerKeybind>) hotkeyChangeListenersField.get(obj);
+            hotkeyChangeListeners.add(resetListener);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void initConfigBooleanHotkeyed(int x, int y, int width, int height, int labelWidth, int configWidth,
                                            GuiConfigsBase.ConfigOptionWrapper wrapper, int listIndex, IKeybindConfigGui host,
@@ -120,17 +132,5 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
         this.addButton(booleanButton, booleanChangeListener);
         this.addButton(keybindButton, this.host.getButtonPressListener());
         this.addButton(resetButton, resetListener);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static void addKeybindChangeListener(Object obj, ConfigOptionChangeListenerKeybind resetListener) {
-        try {
-            Field hotkeyChangeListenersField = GuiConfigsBase.class.getDeclaredField("hotkeyChangeListeners");
-            hotkeyChangeListenersField.setAccessible(true);
-            List<ConfigOptionChangeListenerKeybind> hotkeyChangeListeners = (List<ConfigOptionChangeListenerKeybind>)hotkeyChangeListenersField.get(obj);
-            hotkeyChangeListeners.add(resetListener);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

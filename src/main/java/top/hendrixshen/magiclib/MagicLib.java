@@ -7,10 +7,11 @@ import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.util.FabricUtil;
 
 public class MagicLib implements ModInitializer {
+    public static ConfigManager cm;
+
     public static Logger getLogger() {
         return LogManager.getLogger(MagicLibReference.getModId());
     }
-    public static ConfigManager cm;
 
     @Override
     public void onInitialize() {

@@ -1,4 +1,5 @@
 # MagicLib
+
 [![License](https://img.shields.io/github/license/Hendrix-Shen/MagicLib?label=License&style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/blob/master/LICENSE)
 ![Languages](https://img.shields.io/github/languages/top/Hendrix-Shen/MagicLib?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-8%20%7C%209%20%7C%2010%20%7C%2011%20%7C%2012%20%7C%2013%20%7C%2014%20%7C%2015%20%7C%2016%7C%2017-orange?style=flat-square)

@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractLanguage {
-    private final Gson GSON = new GsonBuilder().enableComplexMapKeySerialization().create();
     public static String DEFAULT_LANGUAGE = "en_us";
+    private final Gson GSON = new GsonBuilder().enableComplexMapKeySerialization().create();
 
     public void load() {
         if (getFallbackLanguages() != null) {

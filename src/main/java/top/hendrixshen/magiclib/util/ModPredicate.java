@@ -29,7 +29,8 @@ public class ModPredicate {
             predicate = dependency.predicate().getDeclaredConstructor().newInstance();
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
-            predicate = new Dependency.DefaultPredicate() {};
+            predicate = new Dependency.DefaultPredicate() {
+            };
         }
         String modId = dependency.value();
         List<String> versionPredicates = Arrays.asList(dependency.versionPredicates());

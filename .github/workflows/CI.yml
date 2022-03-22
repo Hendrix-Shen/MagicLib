@@ -10,8 +10,8 @@ jobs:
     if: ${{ github.event_name == 'push' }}
     strategy:
       matrix:
-        java: [17]
-        os: [ubuntu-latest]
+        java: [ 17 ]
+        os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout the sources
@@ -59,8 +59,8 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     strategy:
       matrix:
-        java: [17]
-        os: [ubuntu-20.04]
+        java: [ 17 ]
+        os: [ ubuntu-20.04 ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout the sources

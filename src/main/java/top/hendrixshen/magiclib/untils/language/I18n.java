@@ -10,11 +10,10 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 public class I18n implements ILanguageDispatcher {
-    protected final Map<String, List<String>> mods = Maps.newHashMap();
     protected static final HashMap<String, String> translations = Maps.newHashMap();
     protected static final List<String> fallbackLanguage = Lists.newArrayList(); // Wait for OMMC
-
     private static final I18n INSTANCE = new I18n();
+    protected final Map<String, List<String>> mods = Maps.newHashMap();
 
     /**
      * Get the formatted localised text
@@ -61,6 +60,10 @@ public class I18n implements ILanguageDispatcher {
         return fallbackLanguage;
     }
 
+    public static I18n getInstance() {
+        return INSTANCE;
+    }
+
     /**
      * Register the localised language for your mod.
      *
@@ -77,9 +80,5 @@ public class I18n implements ILanguageDispatcher {
         if (!this.mods.get(modId).contains(language)) {
             this.mods.get(modId).add(language);
         }
-    }
-
-    public static I18n getInstance() {
-        return INSTANCE;
     }
 }

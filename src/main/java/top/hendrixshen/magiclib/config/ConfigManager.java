@@ -29,6 +29,24 @@ public class ConfigManager {
         this.identifier = identifier;
     }
 
+    private static void setFieldValue(Field field, Object obj, Object value) {
+        try {
+            field.set(obj, value);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static ImmutableList<String> immutableStringListHelper(List<?> list) {
+        return ImmutableList.copyOf((List<String>) list);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<String> stringListHelper(List<?> list) {
+        return (List<String>) list;
+    }
+
     public boolean setValueChangeCallback(String optionName, Consumer<Option> callback) {
         return getOption(optionName).map(option -> {
             option.setValueChangeCallback(callback);
@@ -76,14 +94,6 @@ public class ConfigManager {
             return true;
         } else {
             return false;
-        }
-    }
-
-    private static void setFieldValue(Field field, Object obj, Object value) {
-        try {
-            field.set(obj, value);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
         }
     }
 
@@ -191,16 +201,6 @@ public class ConfigManager {
                 }
             }
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static ImmutableList<String> immutableStringListHelper(List<?> list) {
-        return ImmutableList.copyOf((List<String>) list);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static List<String> stringListHelper(List<?> list) {
-        return (List<String>) list;
     }
 
     /**

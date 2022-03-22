@@ -57,11 +57,11 @@ public class Option {
         }
     }
 
-    public void setValueChangeCallback(Consumer<Option> valueChangeCallback) {
-        this.valueChangeCallback = valueChangeCallback;
-    }
-
     public Consumer<Option> getValueChangeCallback() {
         return this.valueChangeCallback;
+    }
+
+    public void setValueChangeCallback(Consumer<Option> valueChangeCallback) {
+        this.valueChangeCallback = valueChangeCallback;
     }
 }

@@ -1,7 +1,7 @@
 package top.hendrixshen.magiclib;
 
-import top.hendrixshen.magiclib.gui.ConfigGui;
 import top.hendrixshen.magiclib.config.ConfigManager;
+import top.hendrixshen.magiclib.gui.ConfigGui;
 
 public class MagiclibConfigGui extends ConfigGui {
     private static MagiclibConfigGui INSTANCE;

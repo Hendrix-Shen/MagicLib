@@ -17,11 +17,10 @@ import java.util.Map;
 import java.util.Optional;
 
 public class FabricUtil {
+    private final static FabricLoader fabricLoader = FabricLoader.getInstance();
     // Fabric Loader 0.11 and below support
     private static Method legacyVersionPredicateParser;
     private static Method legacyDisplayCriticalError;
-
-    private final static FabricLoader fabricLoader = FabricLoader.getInstance();
 
     static {
         try {

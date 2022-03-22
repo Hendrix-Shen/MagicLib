@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class ConfigGui extends GuiConfigsBase {
+    private static String tab;
     private final String identifier;
     private final ConfigManager configManager;
-    private static String tab;
 
     public ConfigGui(String identifier, String defaultTab, ConfigManager configManager, String title) {
         super(10, 50, identifier, null, title);

@@ -26,6 +26,16 @@ import java.util.Optional;
 public class AbstractDependencyValidator implements DependencyValidator {
     private DependencyValidateFailureCallback failureCallback = null;
 
+    private static ClassNode loadClassNode(String className) {
+        ClassNode classNode;
+        try {
+            classNode = MixinService.getService().getBytecodeProvider().getClassNode(className);
+        } catch (ClassNotFoundException | IOException e) {
+            throw new IllegalStateException(String.format("load ClassNode: %s fail.", className));
+        }
+        return classNode;
+    }
+
     @Override
     public boolean checkDependency(String targetClassName, String mixinClassName) {
         AnnotationNode validator = getDependencyAnnotation(mixinClassName);
@@ -123,15 +133,5 @@ public class AbstractDependencyValidator implements DependencyValidator {
             this.success = success;
             this.reason = reason;
         }
-    }
-
-    private static ClassNode loadClassNode(String className) {
-        ClassNode classNode;
-        try {
-            classNode = MixinService.getService().getBytecodeProvider().getClassNode(className);
-        } catch (ClassNotFoundException | IOException e) {
-            throw new IllegalStateException(String.format("load ClassNode: %s fail.", className));
-        }
-        return classNode;
     }
 }
