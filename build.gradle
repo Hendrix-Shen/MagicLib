@@ -21,9 +21,6 @@ if (ENV.BUILD_NUMBER) {
 
 repositories {
     maven {
-        url 'https://masa.dy.fi/maven'
-    }
-    maven {
         url 'https://www.cursemaven.com/'
     }
     maven {
@@ -34,9 +31,8 @@ repositories {
 dependencies {
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
     mappings(loom.officialMojangMappings())
-    modApi("fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version_masa}:${project.malilib_version}")
+    modImplementation("curse.maven:malilib-303119:${project.malilib_version}")
     modImplementation("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
-    modImplementation("curse.maven:oh-my-minecraft-client-454900:${project.ommc_version}")
     modImplementation("maven.modrinth:modmenu:${project.mod_menu_version}")
 
     modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")

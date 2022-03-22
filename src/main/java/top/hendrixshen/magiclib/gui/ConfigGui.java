@@ -37,6 +37,9 @@ public class ConfigGui extends GuiConfigsBase {
         int y = 26;
 
         for (String category : configManager.getCategories()) {
+            if (this.configManager.getOptionsByCategory(category).stream().noneMatch(Option::isEnabled)) {
+                continue;
+            }
             x += this.createNavigationButton(x, y, category);
         }
     }

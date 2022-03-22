@@ -185,17 +185,6 @@ public class ConfigManager {
                     if (!this.CATEGORIES.contains(category)) {
                         this.CATEGORIES.add(category);
                     }
-//                    if (this.compatOldMalilib && config instanceof ConfigBooleanHotkeyed) {
-//                        String compatCategory = String.format("%s_hotkey", category);
-//                        if (!this.CATEGORIES.contains(compatCategory)) {
-//                            this.CATEGORIES.add(compatCategory);
-//                        }
-//                        if (!this.COMPAT_CATEGORIES.contains(compatCategory)) {
-//                            this.COMPAT_CATEGORIES.add(compatCategory);
-//                        }
-//                        this.CATEGORY_TO_CONFIG.computeIfAbsent(compatCategory, k -> Lists.newArrayList()).add(config);
-//                        this.CATEGORY_TO_OPTION.computeIfAbsent(compatCategory, k -> Lists.newArrayList()).add(option);
-//                    }
                     this.CONFIG_TO_OPTION.put(option.getConfig(), option);
                 } catch (IllegalAccessException e) {
                     throw new IllegalStateException(e);

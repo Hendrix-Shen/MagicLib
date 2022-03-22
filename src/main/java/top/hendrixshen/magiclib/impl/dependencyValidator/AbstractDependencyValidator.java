@@ -1,7 +1,6 @@
 package top.hendrixshen.magiclib.impl.dependencyValidator;
 
 import com.google.common.collect.Lists;
-import com.plusls.ommc.compat.CustomDepPredicate;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
@@ -13,6 +12,7 @@ import org.spongepowered.asm.service.MixinService;
 import org.spongepowered.asm.util.Annotations;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependencyValidator.annotation.MixinDependencyPredicate;
 import top.hendrixshen.magiclib.api.dependencyValidator.mixin.DependencyValidateFailureCallback;
 import top.hendrixshen.magiclib.api.dependencyValidator.mixin.DependencyValidator;
 import top.hendrixshen.magiclib.util.FabricUtil;
@@ -60,7 +60,7 @@ public class AbstractDependencyValidator implements DependencyValidator {
         ClassNode targetClassNode = loadClassNode(targetClassName);
         for (Type predicateType : customPredicates) {
             try {
-                CustomDepPredicate predicate = Class.forName(predicateType.getClassName()).asSubclass(CustomDepPredicate.class).getDeclaredConstructor().newInstance();
+                MixinDependencyPredicate predicate = Class.forName(predicateType.getClassName()).asSubclass(MixinDependencyPredicate.class).getDeclaredConstructor().newInstance();
                 if (!predicate.test(targetClassNode)) {
                     results.add(new Result(false, String.format("Predicate test not passed: %s", predicateType)));
                 }

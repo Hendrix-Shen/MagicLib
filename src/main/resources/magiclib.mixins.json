@@ -3,9 +3,9 @@
   "package": "top.hendrixshen.magiclib.mixin",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [],
   "client": [
-    "client.MixinLanguageManager"
+    "client.MixinLanguageManager",
+    "client.MixinWidgetConfigOption"
   ],
   "server": [
     "server.MixinDedicatedServer"
