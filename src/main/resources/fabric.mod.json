@@ -32,6 +32,9 @@
     "main": [
       "top.hendrixshen.magiclib.MagicLib"
     ],
+    "client": [
+      "top.hendrixshen.magiclib.MagicLib"
+    ],
     "modmenu": [
       "top.hendrixshen.magiclib.compat.modmenu.ModMenuApiImpl"
     ]

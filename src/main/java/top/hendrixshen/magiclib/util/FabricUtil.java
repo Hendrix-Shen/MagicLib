@@ -147,7 +147,7 @@ public class FabricUtil {
             try {
                 legacyDisplayCriticalError.invoke(null, exception, true);
             } catch (IllegalAccessException | InvocationTargetException e) {
-                MagicLib.getLogger().error(e);
+                throw new RuntimeException(e);
             }
         } else {
             FabricGuiEntry.displayCriticalError(exception, true);

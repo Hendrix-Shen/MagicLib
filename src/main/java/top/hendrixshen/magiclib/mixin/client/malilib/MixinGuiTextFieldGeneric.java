@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.client;
+package top.hendrixshen.magiclib.mixin.client.malilib;
 
 import fi.dy.masa.malilib.gui.GuiTextFieldGeneric;
 import net.minecraft.client.gui.Font;

@@ -1,13 +1,15 @@
 package top.hendrixshen.magiclib;
 
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import top.hendrixshen.magiclib.config.ConfigHandler;
 import top.hendrixshen.magiclib.config.ConfigManager;
-import top.hendrixshen.magiclib.util.FabricUtil;
 
-public class MagicLib implements ModInitializer {
+public class MagicLib implements ModInitializer, ClientModInitializer {
     public static ConfigManager cm;
+    private static final int CONFIG_VERSION = 1;
 
     public static Logger getLogger() {
         return LogManager.getLogger(MagicLibReference.getModId());
@@ -16,10 +18,13 @@ public class MagicLib implements ModInitializer {
     @Override
     public void onInitialize() {
         getLogger().info(String.format("[%s]: Mod initialized - Version: %s", MagicLibReference.getModName(), MagicLibReference.getModVersion()));
-        if (FabricUtil.isModLoaded("malilib")) {
-            cm = new ConfigManager(MagicLibReference.getModId());
-            cm.parseConfigClass(MagicLibConfigs.class);
-            MagicLibConfigs.init();
-        }
+    }
+
+    @Override
+    public void onInitializeClient() {
+        cm = new ConfigManager(MagicLibReference.getModId());
+        cm.parseConfigClass(MagicLibConfigs.class);
+        ConfigHandler.register(new ConfigHandler(MagicLibReference.getModId(), cm, CONFIG_VERSION, null, null));
+        MagicLibConfigs.init();
     }
 }

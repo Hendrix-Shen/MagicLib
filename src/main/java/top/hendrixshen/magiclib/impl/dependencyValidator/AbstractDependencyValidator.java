@@ -75,8 +75,8 @@ public class AbstractDependencyValidator implements DependencyValidator {
                     results.add(new Result(false, String.format("Predicate test not passed: %s", predicateType)));
                 }
             } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-                MagicLib.getLogger().info(e);
-                results.add(new Result(false, String.format("Predicate test exception: %s", predicateType)));
+                throw new RuntimeException(e);
+                //results.add(new Result(false, String.format("Predicate test exception: %s", predicateType)));
             }
         }
         return results;
@@ -114,8 +114,7 @@ public class AbstractDependencyValidator implements DependencyValidator {
             ClassNode classNode = MixinService.getService().getBytecodeProvider().getClassNode(className);
             return Annotations.getVisible(classNode, Dependencies.class);
         } catch (ClassNotFoundException | IOException e) {
-            MagicLib.getLogger().info(e);
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

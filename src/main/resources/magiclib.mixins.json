@@ -4,9 +4,10 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "client.MixinGuiTextFieldGeneric",
     "client.MixinLanguageManager",
-    "client.MixinWidgetConfigOption"
+    "client.malilib.MixinConfigBooleanHotkeyed",
+    "client.malilib.MixinGuiTextFieldGeneric",
+    "client.malilib.MixinWidgetConfigOption"
   ],
   "server": [
     "server.MixinDedicatedServer"

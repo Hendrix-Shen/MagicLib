@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.client;
+package top.hendrixshen.magiclib.mixin.client.malilib;
 
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigBoolean;

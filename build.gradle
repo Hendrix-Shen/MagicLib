@@ -48,7 +48,7 @@ allprojects {
         mappings(loom.officialMojangMappings())
         modImplementation("net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}")
         modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
-        modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
+        //modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
     }
 
     runClient {
@@ -80,9 +80,17 @@ allprojects {
 }
 
 subprojects {
-    dependencies {
-        modImplementation(rootProject)
+
+    if (project.gradle.startParameter.taskNames.size() == 1 && project.gradle.startParameter.taskNames.get(0) == "runClient") {
+        dependencies {
+            modImplementation(rootProject)
+        }
+    } else {
+        dependencies {
+            implementation(rootProject)
+        }
     }
+
 }
 
 jar {

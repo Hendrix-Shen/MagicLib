@@ -115,21 +115,17 @@ public class ConfigManager {
                         if (hotkey == null) {
                             config = new TranslatableConfigBoolean(String.format("%s.config.%s", this.identifier, annotation.category()),
                                     field.getName(), (Boolean) configFieldObj);
-                            option = new Option(annotation, config);
-                            config.setValueChangeCallback(c -> {
-                                setFieldValue(field, null, ((ConfigBoolean) c).getBooleanValue());
-                                option.getValueChangeCallback().accept(option);
-                            });
                         } else {
                             config = new TranslatableConfigBooleanHotkeyed(String.format("%s.config.%s", this.identifier, annotation.category()),
                                     field.getName(), (Boolean) configFieldObj, hotkey.hotkey());
-
-                            option = new Option(annotation, config);
-                            config.setValueChangeCallback(c -> {
-                                setFieldValue(field, null, ((ConfigBoolean) c).getBooleanValue());
-                                option.getValueChangeCallback().accept(option);
-                            });
                         }
+                        option = new Option(annotation, config);
+                        config.setValueChangeCallback(c -> {
+                            setFieldValue(field, null, ((ConfigBoolean) c).getBooleanValue());
+                            option.getValueChangeCallback().accept(option);
+                        });
+                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                                c -> setFieldValue(field, null, ((ConfigBoolean) c).getBooleanValue()));
                     } else if (configFieldObj instanceof Integer) {
                         config = new TranslatableConfigInteger(String.format("%s.config.%s", this.identifier, annotation.category()),
                                 field.getName(), (Integer) configFieldObj);
@@ -138,6 +134,8 @@ public class ConfigManager {
                             setFieldValue(field, null, ((ConfigInteger) c).getIntegerValue());
                             option.getValueChangeCallback().accept(option);
                         });
+                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                                c -> setFieldValue(field, null, ((ConfigInteger) c).getIntegerValue()));
                     } else if (configFieldObj instanceof String) {
                         config = new TranslatableConfigString(String.format("%s.config.%s", this.identifier, annotation.category()),
                                 field.getName(), (String) configFieldObj);
@@ -146,6 +144,8 @@ public class ConfigManager {
                             setFieldValue(field, null, ((ConfigString) c).getStringValue());
                             option.getValueChangeCallback().accept(option);
                         });
+                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                                c -> setFieldValue(field, null, ((ConfigString) c).getStringValue()));
                     } else if (configFieldObj instanceof Color4f) {
                         config = new TranslatableConfigColor(String.format("%s.config.%s", this.identifier, annotation.category()),
                                 field.getName(), String.format("#%08X", ((Color4f) configFieldObj).intValue));
@@ -154,6 +154,8 @@ public class ConfigManager {
                             setFieldValue(field, null, ((ConfigColor) c).getColor());
                             option.getValueChangeCallback().accept(option);
                         });
+                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                                c -> setFieldValue(field, null, ((ConfigColor) c).getColor()));
                     } else if (configFieldObj instanceof Double) {
                         config = new TranslatableConfigDouble(String.format("%s.config.%s", this.identifier, annotation.category()),
                                 field.getName(), (Double) configFieldObj);
@@ -162,6 +164,8 @@ public class ConfigManager {
                             setFieldValue(field, null, ((ConfigDouble) c).getDoubleValue());
                             option.getValueChangeCallback().accept(option);
                         });
+                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                                c -> setFieldValue(field, null, ((ConfigDouble) c).getDoubleValue()));
                     } else if (field.getType() == ConfigHotkey.class) {
                         Hotkey hotkey = field.getAnnotation(Hotkey.class);
                         if (hotkey != null) {
@@ -172,7 +176,6 @@ public class ConfigManager {
                         } else {
                             continue;
                         }
-
                     } else if (configFieldObj instanceof List<?>) {
                         config = new TranslatableConfigStringList(String.format("%s.config.%s", this.identifier, annotation.category()),
                                 field.getName(), immutableStringListHelper((List<?>) configFieldObj));
@@ -187,6 +190,8 @@ public class ConfigManager {
                             setFieldValue(field, null, ((ConfigOptionList) c).getOptionListValue());
                             option.getValueChangeCallback().accept(option);
                         });
+                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                                c -> setFieldValue(field, null, ((ConfigOptionList) c).getOptionListValue()));
                     } else {
                         continue;
                     }
