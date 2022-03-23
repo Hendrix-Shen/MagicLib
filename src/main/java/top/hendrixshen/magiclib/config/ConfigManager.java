@@ -4,6 +4,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.config.options.*;
+import fi.dy.masa.malilib.event.InputEventHandler;
+import fi.dy.masa.malilib.hotkeys.IHotkey;
+import fi.dy.masa.malilib.hotkeys.IKeybindManager;
+import fi.dy.masa.malilib.hotkeys.IKeybindProvider;
 import fi.dy.masa.malilib.util.Color4f;
 import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
@@ -14,7 +18,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 //@SuppressWarnings("unused")
-public class ConfigManager {
+public class ConfigManager implements IKeybindProvider {
     private final String identifier;
     private final Map<String, Option> OPTIONS = new HashMap<>();
     private final ArrayList<String> CATEGORIES = new ArrayList<>();
@@ -27,6 +31,7 @@ public class ConfigManager {
      */
     public ConfigManager(String identifier) {
         this.identifier = identifier;
+        InputEventHandler.getKeybindManager().registerKeybindProvider(this);
     }
 
     private static void setFieldValue(Field field, Object obj, Object value) {
@@ -233,5 +238,21 @@ public class ConfigManager {
      */
     public Optional<Option> getOptionFromConfig(ConfigBase<?> configBase) {
         return Optional.ofNullable(this.CONFIG_TO_OPTION.get(configBase));
+    }
+
+    @Override
+    public void addKeysToMap(IKeybindManager iKeybindManager) {
+        for (Option option : OPTIONS.values()) {
+            ConfigBase<?> config = option.getConfig();
+            if (config instanceof IHotkey) {
+                iKeybindManager.addKeybindToMap(((IHotkey) config).getKeybind());
+
+            }
+        }
+    }
+
+    @Override
+    public void addHotkeys(IKeybindManager iKeybindManager) {
+
     }
 }
