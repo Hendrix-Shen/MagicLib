@@ -8,7 +8,6 @@ import top.hendrixshen.magiclib.config.ConfigHandler;
 import top.hendrixshen.magiclib.config.ConfigManager;
 
 public class MagicLib implements ModInitializer, ClientModInitializer {
-    public static ConfigManager cm;
     private static final int CONFIG_VERSION = 1;
 
     public static Logger getLogger() {
@@ -22,9 +21,9 @@ public class MagicLib implements ModInitializer, ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        cm = new ConfigManager(MagicLibReference.getModId());
+        ConfigManager cm = ConfigManager.get(MagicLibReference.getModId());
         cm.parseConfigClass(MagicLibConfigs.class);
         ConfigHandler.register(new ConfigHandler(MagicLibReference.getModId(), cm, CONFIG_VERSION, null, null));
-        MagicLibConfigs.init();
+        MagicLibConfigs.init(cm);
     }
 }

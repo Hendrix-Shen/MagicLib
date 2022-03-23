@@ -13,7 +13,7 @@ public class MagiclibConfigGui extends ConfigGui {
 
     public static MagiclibConfigGui getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new MagiclibConfigGui(MagicLibReference.getModId(), MagicLibConfigs.ConfigCategory.GENERIC, MagicLib.cm);
+            INSTANCE = new MagiclibConfigGui(MagicLibReference.getModId(), MagicLibConfigs.ConfigCategory.GENERIC, ConfigManager.get(MagicLibReference.getModId()));
         }
         return INSTANCE;
     }

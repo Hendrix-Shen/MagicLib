@@ -1,7 +1,6 @@
 package top.hendrixshen.magiclib.config;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.config.options.*;
 import fi.dy.masa.malilib.event.InputEventHandler;
@@ -13,25 +12,47 @@ import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 //@SuppressWarnings("unused")
 public class ConfigManager implements IKeybindProvider {
+    private static final ConcurrentHashMap<String, ConfigManager> INSTANCES = new ConcurrentHashMap<>();
     private final String identifier;
-    private final Map<String, Option> OPTIONS = new HashMap<>();
-    private final ArrayList<String> CATEGORIES = new ArrayList<>();
-    private final Map<ConfigBase<?>, Option> CONFIG_TO_OPTION = Maps.newLinkedHashMap();
+    private final ConcurrentHashMap<String, Option> OPTIONS = new ConcurrentHashMap<>();
+    private final LinkedBlockingQueue<String> CATEGORIES = new LinkedBlockingQueue<>();
+    private final ConcurrentHashMap<ConfigBase<?>, Option> CONFIG_TO_OPTION = new ConcurrentHashMap<>();
 
     /**
      * Magic Configuration Manager constructor.
      *
      * @param identifier Your mod identifier.
      */
-    public ConfigManager(String identifier) {
+    protected ConfigManager(String identifier) {
         this.identifier = identifier;
-        InputEventHandler.getKeybindManager().registerKeybindProvider(this);
+    }
+
+    public static ConfigManager get(String identifier) {
+        ConfigManager configManager = INSTANCES.get(identifier);
+        if (configManager == null) {
+            configManager = new ConfigManager(identifier);
+            INSTANCES.put(identifier, configManager);
+            InputEventHandler.getKeybindManager().registerKeybindProvider(configManager);
+        }
+        return configManager;
+    }
+
+    public static ConfigManager remove(String identifier) {
+        ConfigManager cm = INSTANCES.remove(identifier);
+        if (cm != null) {
+            InputEventHandler.getKeybindManager().unregisterKeybindProvider(cm);
+        }
+        return cm;
     }
 
     private static void setFieldValue(Field field, Object obj, Object value) {
@@ -218,7 +239,7 @@ public class ConfigManager implements IKeybindProvider {
      *
      * @return A list of categories.
      */
-    public ArrayList<String> getCategories() {
+    public LinkedBlockingQueue<String> getCategories() {
         return this.CATEGORIES;
     }
 

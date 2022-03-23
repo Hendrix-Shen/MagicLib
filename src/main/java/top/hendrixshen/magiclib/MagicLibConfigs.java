@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependency;
+import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
 import top.hendrixshen.magiclib.util.Predicates;
@@ -53,13 +54,13 @@ public class MagicLibConfigs {
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class, dependencies = @Dependencies(require = @Dependency(value = "sodium", versionPredicates = "*")))
     public static boolean sodiumTest = false;
 
-    public static void init() {
+    public static void init(ConfigManager cm) {
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
             Minecraft.getInstance().setScreen(MagiclibConfigGui.getInstance());
             return true;
         });
 
-        MagicLib.cm.setValueChangeCallback("debug", option -> {
+        cm.setValueChangeCallback("debug", option -> {
             if (debug) {
                 Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("DEBUG"));
             } else {
