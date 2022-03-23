@@ -81,7 +81,7 @@ allprojects {
 
 subprojects {
     dependencies {
-        implementation(rootProject)
+        modImplementation(rootProject)
     }
 }
 
