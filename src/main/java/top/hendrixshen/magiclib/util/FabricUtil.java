@@ -12,12 +12,10 @@ import top.hendrixshen.magiclib.MagicLib;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
 public class FabricUtil {
-    private final static FabricLoader fabricLoader = FabricLoader.getInstance();
     // Fabric Loader 0.11 and below support
     private static Method legacyVersionPredicateParser;
     private static Method legacyDisplayCriticalError;
@@ -36,49 +34,23 @@ public class FabricUtil {
     /**
      * Verify that the Fabric Loader has loaded the qualified mods.
      *
-     * @param version           Version provided by the fabric loader.
-     * @param versionPredicates Semantic versioning expressions collection.
+     * @param version          Version provided by the fabric loader.
+     * @param versionPredicate Semantic versioning expression.
      * @return True if the Fabric Loader finds a matching mods from the list of
      * loaded mods, false otherwise.
      */
-    public static boolean isModsLoaded(Version version, Collection<String> versionPredicates) {
-        return versionPredicates.isEmpty() || versionPredicates.stream().allMatch(vp -> isModLoaded(version, vp));
-    }
-
-    /**
-     * Verify that the Fabric Loader has loaded the qualified mod.
-     *
-     * @param modId             Version provided by the fabric loader.
-     * @param versionPredicates versionPredicates – Semantic versioning expressions.
-     * @return True if the Fabric Loader finds a matching mod from the list of
-     * loaded mods, false otherwise.
-     */
-    public static boolean isModsLoaded(String modId, Collection<String> versionPredicates) {
-        return FabricLoader.getInstance().getModContainer(modId).
-                map(mod -> isModsLoaded(mod.getMetadata().getVersion(), versionPredicates)).
-                orElse(false);
-    }
-
-    /**
-     * Verify that the Fabric Loader has loaded the qualified mods.
-     *
-     * @param version           Version provided by the fabric loader.
-     * @param versionPredicates Semantic versioning expressions.
-     * @return True if the Fabric Loader finds a matching mods from the list of
-     * loaded mods, false otherwise.
-     */
-    public static boolean isModLoaded(Version version, String versionPredicates) {
+    public static boolean isModLoaded(Version version, String versionPredicate) {
         try {
             if (legacyVersionPredicateParser != null) {
                 try {
-                    return (boolean) legacyVersionPredicateParser.invoke(null, version, versionPredicates);
+                    return (boolean) legacyVersionPredicateParser.invoke(null, version, versionPredicate);
                 } catch (InvocationTargetException | IllegalAccessException e) {
                     MagicLib.getLogger().error("Failed to invoke VersionPredicateParser#matches", e);
                 }
             }
-            return VersionPredicateParser.parse(versionPredicates).test(version);
+            return VersionPredicateParser.parse(versionPredicate).test(version);
         } catch (VersionParsingException e) {
-            MagicLib.getLogger().error("Failed to parse version or version predicate {} {}: {}", version.getFriendlyString(), versionPredicates, e);
+            MagicLib.getLogger().error("Failed to parse version or version predicate {} {}: {}", version.getFriendlyString(), versionPredicate, e);
             return false;
         }
     }
@@ -97,15 +69,16 @@ public class FabricUtil {
     /**
      * Verify that the Fabric Loader has loaded the qualified mod.
      *
-     * @param modId Version provided by the fabric loader.
+     * @param modId            Version provided by the fabric loader.
+     * @param versionPredicate Semantic versioning expression.
      * @return True if the Fabric Loader finds a matching mod from the list of
      * loaded mods, false otherwise.
      */
-    public static boolean isModLoaded(String modId, String versionPredicates) {
+    public static boolean isModLoaded(String modId, String versionPredicate) {
         Optional<ModContainer> modContainerOptional = FabricLoader.getInstance().getModContainer(modId);
         if (modContainerOptional.isPresent()) {
             ModContainer modContainer = modContainerOptional.get();
-            return isModLoaded(modContainer.getMetadata().getVersion(), versionPredicates);
+            return isModLoaded(modContainer.getMetadata().getVersion(), versionPredicate);
         }
         return false;
     }
@@ -116,24 +89,31 @@ public class FabricUtil {
      *
      * @param currentModId Your Mod Identifier.
      */
-    public static void customValidator(String currentModId) {
+    public static void compatVersionCheck(String currentModId) {
+        FabricLoader fabricLoader = FabricLoader.getInstance();
         Optional<ModContainer> currentModContainer = fabricLoader.getModContainer(currentModId);
         if (currentModContainer.isPresent()) {
-            String exceptionString = "";
-            for (Map.Entry<String, CustomValue> customValue : currentModContainer.get().getMetadata().getCustomValue("compat").getAsObject()) {
-                if (FabricLoader.getInstance().isModLoaded(customValue.getKey()) && !isModLoaded(customValue.getKey(), customValue.getValue().getAsString())) {
-                    if (fabricLoader.getModContainer(customValue.getKey()).isPresent()) {
-                        ModMetadata metadata = fabricLoader.getModContainer(customValue.getKey()).get().getMetadata();
+            StringBuilder exceptionString = new StringBuilder();
+            CustomValue customValue = currentModContainer.get().getMetadata().getCustomValue("compat");
+            if (customValue == null) {
+                return;
+            }
+            for (Map.Entry<String, CustomValue> customValueEntry : customValue.getAsObject()) {
+                if (isModLoaded(customValueEntry.getKey()) && !isModLoaded(customValueEntry.getKey(), customValueEntry.getValue().getAsString())) {
+                    fabricLoader.getModContainer(customValueEntry.getKey()).ifPresent(modContainer -> {
+                        ModMetadata metadata = modContainer.getMetadata();
                         String targetModId = metadata.getId();
                         String targetModName = metadata.getName();
                         String targetModVersion = metadata.getVersion().getFriendlyString();
-                        exceptionString = String.format("%s\n\tMod %s (%s) detected. Requires [%s], but found %s!", exceptionString, targetModName, targetModId, customValue.getValue().getAsString(), targetModVersion);
-                    }
+                        exceptionString.append(String.format("\n\tMod %s (%s) detected. Requires [%s], but found %s!",
+                                targetModName, targetModId, customValueEntry.getValue().getAsString(), targetModVersion));
+                    });
                 }
             }
-            if (!exceptionString.contentEquals("")) {
+            if (!exceptionString.toString().isEmpty()) {
                 displayCriticalError(new IllegalStateException(String.format("Mod resolution encountered an incompatible mod set!%s", exceptionString)));
             }
+
         }
     }
 

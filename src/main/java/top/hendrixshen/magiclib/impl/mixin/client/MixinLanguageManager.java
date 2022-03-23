@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.client;
+package top.hendrixshen.magiclib.impl.mixin.client;
 
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.server.packs.resources.ResourceManager;

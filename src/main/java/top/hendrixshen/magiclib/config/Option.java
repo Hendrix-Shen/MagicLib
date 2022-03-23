@@ -1,9 +1,9 @@
 package top.hendrixshen.magiclib.config;
 
 import fi.dy.masa.malilib.config.options.ConfigBase;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.OptionDependencyPredicate;
 import top.hendrixshen.magiclib.config.annotation.Config;
-import top.hendrixshen.magiclib.util.ModDependencies;
+import top.hendrixshen.magiclib.dependency.Dependencies;
+import top.hendrixshen.magiclib.dependency.annotation.OptionDependencyPredicate;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 public class Option {
     private final Config annotation;
     private final ConfigBase<?> config;
-    private final ModDependencies modDependencies;
+    private final Dependencies<Option> modDependencies;
     private final OptionDependencyPredicate predicate;
 
     private Consumer<Option> valueChangeCallback = option -> {
@@ -21,11 +21,11 @@ public class Option {
     public Option(Config annotation, ConfigBase<?> config) {
         this.annotation = annotation;
         this.config = config;
-        this.modDependencies = ModDependencies.of(annotation.dependencies(), this);
+        this.modDependencies = Dependencies.of(annotation.dependencies(), Option.class);
         try {
             this.predicate = annotation.predicate().getDeclaredConstructor().newInstance();
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalStateException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -37,12 +37,12 @@ public class Option {
         return this.config.getName();
     }
 
-    public ModDependencies getModDependencies() {
+    public Dependencies<Option> getModDependencies() {
         return this.modDependencies;
     }
 
     public boolean isEnabled() {
-        return this.modDependencies.satisfied && predicate.test(this);
+        return this.modDependencies.satisfied(this) && predicate.test(this);
     }
 
     public ConfigBase<?> getConfig() {

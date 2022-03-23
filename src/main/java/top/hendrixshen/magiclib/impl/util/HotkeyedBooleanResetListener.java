@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.util;
+package top.hendrixshen.magiclib.impl.util;
 
 import fi.dy.masa.malilib.config.gui.ConfigOptionChangeListenerKeybind;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;

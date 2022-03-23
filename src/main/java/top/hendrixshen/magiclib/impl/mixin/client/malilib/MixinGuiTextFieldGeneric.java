@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.client.malilib;
+package top.hendrixshen.magiclib.impl.mixin.client.malilib;
 
 import fi.dy.masa.malilib.gui.GuiTextFieldGeneric;
 import net.minecraft.client.gui.Font;
@@ -8,12 +8,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependency;
-import top.hendrixshen.magiclib.util.Predicates;
+import top.hendrixshen.magiclib.dependency.Predicates;
+import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
 // Fix mojang mappings stackoverflow
-@Dependencies(require = @Dependency(value = "malilib", predicate = Predicates.DevMixinPredicate.class))
+@Dependencies(and = @Dependency(value = "malilib"), predicate = Predicates.DevMixinPredicate.class)
 @Mixin(value = GuiTextFieldGeneric.class, remap = false)
 public abstract class MixinGuiTextFieldGeneric extends EditBox {
     private boolean setCursorPositionCalled = false;

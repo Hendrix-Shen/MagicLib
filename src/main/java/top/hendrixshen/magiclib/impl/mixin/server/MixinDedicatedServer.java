@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.server;
+package top.hendrixshen.magiclib.impl.mixin.server;
 
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.spongepowered.asm.mixin.Mixin;

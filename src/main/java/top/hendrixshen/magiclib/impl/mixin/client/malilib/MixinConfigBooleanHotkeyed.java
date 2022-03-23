@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.client.malilib;
+package top.hendrixshen.magiclib.impl.mixin.client.malilib;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -14,11 +14,11 @@ import fi.dy.masa.malilib.util.JsonUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependency;
+import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
 // backport new ConfigBooleanHotkeyed
-@Dependencies(require = @Dependency(value = "malilib", versionPredicates = "<0.11.4"))
+@Dependencies(and = @Dependency(value = "malilib", versionPredicate = "<0.11.4"))
 @Mixin(value = ConfigBooleanHotkeyed.class, remap = false)
 public abstract class MixinConfigBooleanHotkeyed extends ConfigBoolean implements IHotkeyTogglable {
 

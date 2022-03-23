@@ -8,12 +8,12 @@ import fi.dy.masa.malilib.util.Color4f;
 import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependency;
 import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
-import top.hendrixshen.magiclib.util.Predicates;
+import top.hendrixshen.magiclib.dependency.Predicates;
+import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
 import java.util.ArrayList;
 
@@ -51,7 +51,7 @@ public class MagicLibConfigs {
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static IConfigOptionListEntry optionListConfig = ActiveMode.ALWAYS;
 
-    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class, dependencies = @Dependencies(require = @Dependency(value = "sodium", versionPredicates = "*")))
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class, dependencies = @Dependencies(and = @Dependency(value = "sodium", versionPredicate = ">=0.1")))
     public static boolean sodiumTest = false;
 
     public static void init(ConfigManager cm) {

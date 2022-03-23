@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.api.dependencyValidator.annotation;
+package top.hendrixshen.magiclib.dependency.annotation;
 
 import org.objectweb.asm.tree.ClassNode;
 

@@ -1,8 +1,7 @@
-package top.hendrixshen.magiclib.api.dependencyValidator.annotation;
+package top.hendrixshen.magiclib.dependency.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.function.Predicate;
 
 /**
  * <p>
@@ -19,6 +18,7 @@ import java.util.function.Predicate;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dependency {
+
     /**
      * Dependency mod.
      *
@@ -29,22 +29,8 @@ public @interface Dependency {
     /**
      * Semantic versioning expressions.
      *
-     * @return predicates list.
+     * @return versionPredicate.
      */
-    String[] versionPredicates() default {};
-
-    /**
-     * Dependency custom predicate.
-     *
-     * @return Custom Predicate Classes.
-     */
-    Class<? extends Predicate<?>> predicate() default DefaultPredicate.class;
-
-    class DefaultPredicate implements Predicate<Object> {
-        @Override
-        public boolean test(Object option) {
-            return true;
-        }
-    }
+    String versionPredicate() default "*";
 
 }

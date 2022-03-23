@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.client.malilib;
+package top.hendrixshen.magiclib.impl.mixin.client.malilib;
 
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigBoolean;
@@ -24,17 +24,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependency;
 import top.hendrixshen.magiclib.config.TranslatableConfigBooleanHotkeyed;
-import top.hendrixshen.magiclib.util.HotkeyedBooleanResetListener;
+import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.impl.util.HotkeyedBooleanResetListener;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
 
-@Dependencies(require = @Dependency(value = "malilib", versionPredicates = "<0.11.4"))
+@Dependencies(and = @Dependency(value = "malilib", versionPredicate = "<0.11.4"))
 @Mixin(value = WidgetConfigOption.class, remap = false)
 public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
 

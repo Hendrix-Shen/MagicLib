@@ -1,8 +1,8 @@
 package top.hendrixshen.magiclib.config.annotation;
 
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependencyValidator.annotation.OptionDependencyPredicate;
-import top.hendrixshen.magiclib.util.Predicates;
+import top.hendrixshen.magiclib.dependency.Predicates;
+import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.annotation.OptionDependencyPredicate;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
