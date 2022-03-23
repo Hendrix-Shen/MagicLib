@@ -54,14 +54,14 @@ public class TranslatableConfigBooleanHotkeyed extends ConfigBooleanHotkeyed imp
     }
 
     @Override
-    public void setValueChangedFromJsonCallback(@Nullable Consumer<ConfigBase<?>> valueChangedFromJsonCallback) {
-        this.valueChangedFromJsonCallback = valueChangedFromJsonCallback;
-    }
-
-    @Override
     @Nullable
     public Consumer<ConfigBase<?>> getValueChangedFromJsonCallback() {
         return this.valueChangedFromJsonCallback;
+    }
+
+    @Override
+    public void setValueChangedFromJsonCallback(@Nullable Consumer<ConfigBase<?>> valueChangedFromJsonCallback) {
+        this.valueChangedFromJsonCallback = valueChangedFromJsonCallback;
     }
 
 }

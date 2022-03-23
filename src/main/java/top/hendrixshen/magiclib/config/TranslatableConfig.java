@@ -6,9 +6,9 @@ import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public interface TranslatableConfig {
-    void setValueChangedFromJsonCallback(@Nullable Consumer<ConfigBase<?>> valueChangedFromJsonCallback);
-
     @Nullable
     Consumer<ConfigBase<?>> getValueChangedFromJsonCallback();
+
+    void setValueChangedFromJsonCallback(@Nullable Consumer<ConfigBase<?>> valueChangedFromJsonCallback);
 
 }

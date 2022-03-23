@@ -10,7 +10,6 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.service.MixinService;
 import org.spongepowered.asm.util.Annotations;
-import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependencyValidator.annotation.MixinDependencyPredicate;
 import top.hendrixshen.magiclib.api.dependencyValidator.mixin.DependencyValidateFailureCallback;

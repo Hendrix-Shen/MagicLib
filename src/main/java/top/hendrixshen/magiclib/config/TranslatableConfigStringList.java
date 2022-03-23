@@ -38,13 +38,13 @@ public class TranslatableConfigStringList extends ConfigStringList implements Tr
     }
 
     @Override
-    public void setValueChangedFromJsonCallback(@Nullable Consumer<ConfigBase<?>> valueChangedFromJsonCallback) {
-        this.valueChangedFromJsonCallback = valueChangedFromJsonCallback;
-    }
-
-    @Override
     @Nullable
     public Consumer<ConfigBase<?>> getValueChangedFromJsonCallback() {
         return this.valueChangedFromJsonCallback;
+    }
+
+    @Override
+    public void setValueChangedFromJsonCallback(@Nullable Consumer<ConfigBase<?>> valueChangedFromJsonCallback) {
+        this.valueChangedFromJsonCallback = valueChangedFromJsonCallback;
     }
 }

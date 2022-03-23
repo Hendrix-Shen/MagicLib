@@ -37,13 +37,13 @@ public class TranslatableConfigString extends ConfigString implements Translatab
     }
 
     @Override
-    public void setValueChangedFromJsonCallback(@Nullable Consumer<ConfigBase<?>> valueChangedFromJsonCallback) {
-        this.valueChangedFromJsonCallback = valueChangedFromJsonCallback;
-    }
-
-    @Override
     @Nullable
     public Consumer<ConfigBase<?>> getValueChangedFromJsonCallback() {
         return this.valueChangedFromJsonCallback;
+    }
+
+    @Override
+    public void setValueChangedFromJsonCallback(@Nullable Consumer<ConfigBase<?>> valueChangedFromJsonCallback) {
+        this.valueChangedFromJsonCallback = valueChangedFromJsonCallback;
     }
 }
