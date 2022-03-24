@@ -1,19 +1,25 @@
 package top.hendrixshen.magiclib.util;
 
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.VersionParsingException;
-import net.fabricmc.loader.api.metadata.CustomValue;
-import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.impl.gui.FabricGuiEntry;
 import net.fabricmc.loader.impl.util.version.VersionPredicateParser;
 import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.dependency.DepCheckException;
+import top.hendrixshen.magiclib.dependency.Dependencies;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public class FabricUtil {
     // Fabric Loader 0.11 and below support
@@ -83,37 +89,53 @@ public class FabricUtil {
         return false;
     }
 
+
+    private static Map<String, Dependencies<Object>> getModInitDependencies(Class<?> clazz, String entryKey, String entryMethod) {
+        Map<String, Dependencies<Object>> ret = new HashMap<>();
+        FabricLoader.getInstance().getEntrypointContainers(entryKey, clazz).forEach(entrypointContainer -> {
+            top.hendrixshen.magiclib.dependency.annotation.Dependencies dependenciesAnnotation;
+            try {
+                dependenciesAnnotation = entrypointContainer.getEntrypoint().getClass().getMethod(entryMethod).getAnnotation(top.hendrixshen.magiclib.dependency.annotation.Dependencies.class);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+                return;
+            }
+            if (dependenciesAnnotation == null) {
+                return;
+            }
+            ret.put(entrypointContainer.getProvider().getMetadata().getId(), Dependencies.of(dependenciesAnnotation, Object.class));
+        });
+        return ret;
+    }
+
     /**
      * Interrupted only if the FabricLoader loads a mod version that does not
      * match the rules in the list.
-     *
-     * @param currentModId Your Mod Identifier.
      */
-    public static void compatVersionCheck(String currentModId) {
+    public static void compatVersionCheck() {
         FabricLoader fabricLoader = FabricLoader.getInstance();
-        Optional<ModContainer> currentModContainer = fabricLoader.getModContainer(currentModId);
-        if (currentModContainer.isPresent()) {
-            StringBuilder exceptionString = new StringBuilder();
-            CustomValue customValue = currentModContainer.get().getMetadata().getCustomValue("compat");
-            if (customValue == null) {
-                return;
-            }
-            for (Map.Entry<String, CustomValue> customValueEntry : customValue.getAsObject()) {
-                if (isModLoaded(customValueEntry.getKey()) && !isModLoaded(customValueEntry.getKey(), customValueEntry.getValue().getAsString())) {
-                    fabricLoader.getModContainer(customValueEntry.getKey()).ifPresent(modContainer -> {
-                        ModMetadata metadata = modContainer.getMetadata();
-                        String targetModId = metadata.getId();
-                        String targetModName = metadata.getName();
-                        String targetModVersion = metadata.getVersion().getFriendlyString();
-                        exceptionString.append(String.format("\n\tMod %s (%s) detected. Requires [%s], but found %s!",
-                                targetModName, targetModId, customValueEntry.getValue().getAsString(), targetModVersion));
-                    });
-                }
-            }
-            if (!exceptionString.toString().isEmpty()) {
-                displayCriticalError(new IllegalStateException(String.format("Mod resolution encountered an incompatible mod set!%s", exceptionString)));
-            }
 
+        StringBuilder result = new StringBuilder();
+        BiConsumer<String, Dependencies<Object>> depCheckCallback = (modId, dependencies) -> {
+            String depResult = dependencies.getCheckResult(null);
+            if (!depResult.equals(Dependencies.SATISFIED)) {
+                if (result.length() != 0) {
+                    result.append("\n");
+                }
+                result.append(String.format("Mod %s compat version check failed.\n", modId));
+                result.append(depResult);
+            }
+        };
+
+        getModInitDependencies(ModInitializer.class, "main", "onInitialize").forEach(depCheckCallback);
+        if (fabricLoader.getEnvironmentType() == EnvType.CLIENT) {
+            getModInitDependencies(ClientModInitializer.class, "client", "onInitializeClient").forEach(depCheckCallback);
+        } else {
+            getModInitDependencies(DedicatedServerModInitializer.class, "server", "onInitializeServer").forEach(depCheckCallback);
+        }
+
+        if (result.length() != 0) {
+            displayCriticalError(new DepCheckException(String.format("Mod resolution encountered an incompatible mod set!\n %s", result)));
         }
     }
 
@@ -123,6 +145,10 @@ public class FabricUtil {
      * @param exception Thrown exceptions.
      */
     public static void displayCriticalError(Throwable exception) {
+        String nm = System.getProperty("java.awt.headless");
+        if (Boolean.parseBoolean(nm)) {
+            System.setProperty("java.awt.headless", "");
+        }
         if (legacyDisplayCriticalError != null) {
             try {
                 legacyDisplayCriticalError.invoke(null, exception, true);

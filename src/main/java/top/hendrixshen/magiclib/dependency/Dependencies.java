@@ -25,6 +25,7 @@ public class Dependencies<T> {
     public final boolean orRequirementsSatisfied;
     public final boolean noConflicts;
     public Predicate<?> predicate;
+    public static final String SATISFIED = "Satisfied!";
 
     private Dependencies(List<Dependency> andRequirements, List<Dependency> conflicts, List<Dependency> orRequirements, Predicate<?> predicate) {
         this.andRequirements = andRequirements;
@@ -60,9 +61,39 @@ public class Dependencies<T> {
         return new Dependencies<>(dependencies, clazz);
     }
 
-//    public DepCheckException satisfiedException(@Nullable T obj) {
-//        return this.andRequirementsSatisfied && this.orRequirementsSatisfied && this.noConflicts && testHelper(this.predicate, obj);
-//    }
+    public String getCheckResult(@Nullable T obj) {
+        StringBuilder result = new StringBuilder();
+        if (!this.andRequirementsSatisfied) {
+            result.append("Requirements:");
+            this.andRequirements.forEach(dependency -> result.append(dependency.satisfied ? "" : "\n\t" + dependency.getCheckResult()));
+        }
+        if (!this.orRequirementsSatisfied) {
+            if (result.length() != 0) {
+                result.append("\n");
+            }
+            result.append("Optional Requirements:");
+            this.orRequirements.forEach(dependency -> result.append(dependency.satisfied ? "" : "\n\t" + dependency.getCheckResult()));
+        }
+
+        if (!this.noConflicts) {
+            if (result.length() != 0) {
+                result.append("\n");
+            }
+            result.append("Conflicts:");
+            this.conflicts.forEach(dependency -> result.append(dependency.satisfied ? String.format("\n\tMod %s [%s] detected.", dependency.modId, dependency.versionPredicate) : ""));
+        }
+        if (!testHelper(this.predicate, obj)) {
+            if (result.length() != 0) {
+                result.append("\n");
+            }
+            result.append(String.format("Predicate %s check {%s} failed.", this.predicate, obj));
+        }
+        String ret = result.toString();
+        if (ret.isEmpty()) {
+            ret = SATISFIED;
+        }
+        return ret;
+    }
 
     public static <T> Dependencies<T> of(String mixinClassName, Class<T> clazz) {
         @Nullable
@@ -129,9 +160,9 @@ public class Dependencies<T> {
         if (dependencies == null) {
             return true;
         }
-        boolean ret = dependencies.satisfied(targetClassNode);
-        if (!ret) {
-            depCheckFailureCallback.callback(targetClassName, mixinClassName, new DepCheckException(""));
+        String result = dependencies.getCheckResult(targetClassNode);
+        if (!result.equals(Dependencies.SATISFIED)) {
+            depCheckFailureCallback.callback(targetClassName, mixinClassName, new DepCheckException(result));
             return false;
         }
         return true;

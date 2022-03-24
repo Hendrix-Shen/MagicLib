@@ -33,4 +33,5 @@ public @interface Dependency {
      */
     String versionPredicate() default "*";
 
+    boolean optional() default false;
 }

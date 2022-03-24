@@ -28,11 +28,6 @@
   },
   "license": "GPL-v3",
   "environment": "*",
-  "entrypoints": {
-    "main": [
-      "top.hendrixshen.magiclib.MagicLib"
-    ]
-  },
   "mixins": [
   ],
   "depends": {
