@@ -20,7 +20,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-//@SuppressWarnings("unused")
 public class ConfigManager implements IKeybindProvider {
     private static final ConcurrentHashMap<String, ConfigManager> INSTANCES = new ConcurrentHashMap<>();
     private final String identifier;
@@ -37,6 +36,12 @@ public class ConfigManager implements IKeybindProvider {
         this.identifier = identifier;
     }
 
+    /**
+     * Get magic configuration manager under the specified name.
+     *
+     * @param identifier Your mod identifier.
+     * @return Magic Configuration Manager for specified modid registered.
+     */
     public static ConfigManager get(String identifier) {
         ConfigManager configManager = INSTANCES.get(identifier);
         if (configManager == null) {
@@ -47,6 +52,11 @@ public class ConfigManager implements IKeybindProvider {
         return configManager;
     }
 
+    /**
+     * Remove magic configuration manager under the specified name.
+     *
+     * @param identifier – Your mod identifier.
+     */
     public static ConfigManager remove(String identifier) {
         ConfigManager cm = INSTANCES.remove(identifier);
         if (cm != null) {
@@ -55,37 +65,27 @@ public class ConfigManager implements IKeybindProvider {
         return cm;
     }
 
-    private static void setFieldValue(Field field, Object obj, Object value) {
-        try {
-            field.set(obj, value);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static ImmutableList<String> immutableStringListHelper(List<?> list) {
-        return ImmutableList.copyOf((List<String>) list);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static List<String> stringListHelper(List<?> list) {
-        return (List<String>) list;
-    }
-
     public boolean setValueChangeCallback(String optionName, Consumer<Option> callback) {
-        return getOption(optionName).map(option -> {
+        return getOptionByName(optionName).map(option -> {
             option.setValueChangeCallback(callback);
             return true;
         }).isPresent();
     }
 
-    public Optional<Option> getOption(String optionName) {
+    /**
+     * Get option under the specified name.
+     *
+     * @return A configuration.
+     */
+    public Optional<Option> getOptionByName(String optionName) {
         return Optional.ofNullable(OPTIONS.getOrDefault(optionName, null));
     }
 
+    /**
+     * Get config under the specified name with config type.
+     */
     public <T> Optional<T> getConfig(Class<T> clazz, String optionName) {
-        Optional<Option> optionOptional = getOption(optionName);
+        Optional<Option> optionOptional = getOptionByName(optionName);
         if (optionOptional.isPresent()) {
             return optionOptional.get().getConfig(clazz);
         } else {
@@ -93,8 +93,13 @@ public class ConfigManager implements IKeybindProvider {
         }
     }
 
+    /**
+     * Set values for the configuration under the specified name.
+     *
+     * @return True if set successfully.
+     */
     public boolean setValue(String optionName, Object value) {
-        Optional<Option> optionOptional = getOption(optionName);
+        Optional<Option> optionOptional = getOptionByName(optionName);
         if (optionOptional.isPresent()) {
             ConfigBase<?> configBase = optionOptional.get().getConfig();
 
@@ -253,12 +258,30 @@ public class ConfigManager implements IKeybindProvider {
     }
 
     /**
-     * Get configuration according to option.
+     * Get all options items under the specified config.
      *
      * @return A configuration.
      */
-    public Optional<Option> getOptionFromConfig(ConfigBase<?> configBase) {
+    public Optional<Option> getOptionByConfig(ConfigBase<?> configBase) {
         return Optional.ofNullable(this.CONFIG_TO_OPTION.get(configBase));
+    }
+
+    private static void setFieldValue(Field field, Object obj, Object value) {
+        try {
+            field.set(obj, value);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static ImmutableList<String> immutableStringListHelper(List<?> list) {
+        return ImmutableList.copyOf((List<String>) list);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<String> stringListHelper(List<?> list) {
+        return (List<String>) list;
     }
 
     @Override

@@ -41,8 +41,8 @@ public class Dependencies<T> {
                 new top.hendrixshen.magiclib.dependency.annotation.Dependencies.DefaultPredicate());
         try {
             this.predicate = dependencies.predicate().getDeclaredConstructor().newInstance();
+            // Ensure that the input type is correct.
             if (!(this.predicate instanceof top.hendrixshen.magiclib.dependency.annotation.Dependencies.DefaultPredicate)) {
-                // 确保类型正确
                 this.predicate.getClass().getMethod("test", clazz);
             }
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -87,7 +87,7 @@ public class Dependencies<T> {
         } else {
             try {
                 predicate = (Predicate<?>) Class.forName(predicateType.getClassName()).getDeclaredConstructor().newInstance();
-                // 确保类型正确
+                // Ensure that the input type is correct.
                 predicate.getClass().getMethod("test", clazz);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -141,6 +141,4 @@ public class Dependencies<T> {
     public boolean satisfied(@Nullable T obj) {
         return this.andRequirementsSatisfied && this.orRequirementsSatisfied && this.noConflicts && testHelper(this.predicate, obj);
     }
-
-
 }
