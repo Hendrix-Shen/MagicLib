@@ -26,7 +26,8 @@ dependencies {
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
     modCompileOnly("curse.maven:malilib-303119:${project.malilib_version}")
 
-    if (!project.gradle.startParameter.projectDir.getName().startsWith("magiclib-compat")) {
+    if (project.gradle.startParameter.projectDir != null &&
+            !project.gradle.startParameter.projectDir.getName().startsWith("magiclib-compat")) {
         modRuntimeOnly("curse.maven:malilib-303119:${project.malilib_version}")
         modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
         runtimeOnly fileTree(dir: "magiclib-compat-mc1_18/build/devlibs", include: ["magiclib-compat-mc1_18-0.3.local-dev.jar"])
