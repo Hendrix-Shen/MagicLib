@@ -65,6 +65,24 @@ public class ConfigManager implements IKeybindProvider {
         return cm;
     }
 
+    private static void setFieldValue(Field field, Object obj, Object value) {
+        try {
+            field.set(obj, value);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static ImmutableList<String> immutableStringListHelper(List<?> list) {
+        return ImmutableList.copyOf((List<String>) list);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<String> stringListHelper(List<?> list) {
+        return (List<String>) list;
+    }
+
     public boolean setValueChangeCallback(String optionName, Consumer<Option> callback) {
         return getOptionByName(optionName).map(option -> {
             option.setValueChangeCallback(callback);
@@ -264,24 +282,6 @@ public class ConfigManager implements IKeybindProvider {
      */
     public Optional<Option> getOptionByConfig(ConfigBase<?> configBase) {
         return Optional.ofNullable(this.CONFIG_TO_OPTION.get(configBase));
-    }
-
-    private static void setFieldValue(Field field, Object obj, Object value) {
-        try {
-            field.set(obj, value);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static ImmutableList<String> immutableStringListHelper(List<?> list) {
-        return ImmutableList.copyOf((List<String>) list);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static List<String> stringListHelper(List<?> list) {
-        return (List<String>) list;
     }
 
     @Override

@@ -51,7 +51,8 @@ public class MagicLibConfigs {
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static IConfigOptionListEntry optionListConfig = ActiveMode.ALWAYS;
 
-    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class, dependencies = @Dependencies(and = @Dependency(value = "sodium", versionPredicate = ">=0.1")))
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class,
+            dependencies = @Dependencies(and = @Dependency(value = "sodium", versionPredicate = ">=0.1")))
     public static boolean sodiumTest = false;
 
     public static void init(ConfigManager cm) {

@@ -17,15 +17,14 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Dependencies<T> {
+    public static final String SATISFIED = "Satisfied!";
     public final List<Dependency> andRequirements;
     public final List<Dependency> conflicts;
     public final List<Dependency> orRequirements;
-
     public final boolean andRequirementsSatisfied;
     public final boolean orRequirementsSatisfied;
     public final boolean noConflicts;
     public Predicate<?> predicate;
-    public static final String SATISFIED = "Satisfied!";
 
     private Dependencies(List<Dependency> andRequirements, List<Dependency> conflicts, List<Dependency> orRequirements, Predicate<?> predicate) {
         this.andRequirements = andRequirements;
@@ -59,40 +58,6 @@ public class Dependencies<T> {
 
     public static <T> Dependencies<T> of(top.hendrixshen.magiclib.dependency.annotation.Dependencies dependencies, Class<T> clazz) {
         return new Dependencies<>(dependencies, clazz);
-    }
-
-    public String getCheckResult(@Nullable T obj) {
-        StringBuilder result = new StringBuilder();
-        if (!this.andRequirementsSatisfied) {
-            result.append("Requirements:");
-            this.andRequirements.forEach(dependency -> result.append(dependency.satisfied ? "" : "\n\t" + dependency.getCheckResult()));
-        }
-        if (!this.orRequirementsSatisfied) {
-            if (result.length() != 0) {
-                result.append("\n");
-            }
-            result.append("Optional Requirements:");
-            this.orRequirements.forEach(dependency -> result.append(dependency.satisfied ? "" : "\n\t" + dependency.getCheckResult()));
-        }
-
-        if (!this.noConflicts) {
-            if (result.length() != 0) {
-                result.append("\n");
-            }
-            result.append("Conflicts:");
-            this.conflicts.forEach(dependency -> result.append(dependency.satisfied ? String.format("\n\tMod %s [%s] detected.", dependency.modId, dependency.versionPredicate) : ""));
-        }
-        if (!testHelper(this.predicate, obj)) {
-            if (result.length() != 0) {
-                result.append("\n");
-            }
-            result.append(String.format("Predicate %s check {%s} failed.", this.predicate, obj));
-        }
-        String ret = result.toString();
-        if (ret.isEmpty()) {
-            ret = SATISFIED;
-        }
-        return ret;
     }
 
     public static <T> Dependencies<T> of(String mixinClassName, Class<T> clazz) {
@@ -167,6 +132,40 @@ public class Dependencies<T> {
         }
         return true;
 
+    }
+
+    public String getCheckResult(@Nullable T obj) {
+        StringBuilder result = new StringBuilder();
+        if (!this.andRequirementsSatisfied) {
+            result.append("Requirements:");
+            this.andRequirements.forEach(dependency -> result.append(dependency.satisfied ? "" : "\n\t" + dependency.getCheckResult()));
+        }
+        if (!this.orRequirementsSatisfied) {
+            if (result.length() != 0) {
+                result.append("\n");
+            }
+            result.append("Optional Requirements:");
+            this.orRequirements.forEach(dependency -> result.append(dependency.satisfied ? "" : "\n\t" + dependency.getCheckResult()));
+        }
+
+        if (!this.noConflicts) {
+            if (result.length() != 0) {
+                result.append("\n");
+            }
+            result.append("Conflicts:");
+            this.conflicts.forEach(dependency -> result.append(dependency.satisfied ? String.format("\n\tMod %s [%s] detected.", dependency.modId, dependency.versionPredicate) : ""));
+        }
+        if (!testHelper(this.predicate, obj)) {
+            if (result.length() != 0) {
+                result.append("\n");
+            }
+            result.append(String.format("Predicate %s check {%s} failed.", this.predicate, obj));
+        }
+        String ret = result.toString();
+        if (ret.isEmpty()) {
+            ret = SATISFIED;
+        }
+        return ret;
     }
 
     public boolean satisfied(@Nullable T obj) {

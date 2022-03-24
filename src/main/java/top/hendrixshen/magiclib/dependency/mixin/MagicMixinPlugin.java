@@ -3,7 +3,6 @@ package top.hendrixshen.magiclib.dependency.mixin;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.dependency.Dependencies;
-import top.hendrixshen.magiclib.util.FabricUtil;
 
 import java.util.Optional;
 
