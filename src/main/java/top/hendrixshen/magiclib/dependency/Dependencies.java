@@ -131,7 +131,7 @@ public class Dependencies<T> {
             depCheckFailureCallback.callback(targetClassName, mixinClassName, new DepCheckException(result));
             return false;
         }
-        return false;
+        return true;
 
     }
 
