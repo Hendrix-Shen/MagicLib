@@ -8,6 +8,8 @@ import top.hendrixshen.magiclib.util.FabricUtil;
 import java.util.Optional;
 
 public class MagicMixinPlugin extends EmptyMixinPlugin {
+    private static boolean compatVersionChecked = false;
+
     private DepCheckFailureCallback depCheckFailureCallback =
             (targetClassName, mixinClassName, reason) -> {
                 if (MixinEnvironment.getCurrentEnvironment().getOption(MixinEnvironment.Option.DEBUG_EXPORT)) {
@@ -29,7 +31,10 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        FabricUtil.compatVersionCheck();
+        if (!compatVersionChecked) {
+            FabricUtil.compatVersionCheck();
+            compatVersionChecked = true;
+        }
     }
 
 }
