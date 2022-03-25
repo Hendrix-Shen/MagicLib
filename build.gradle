@@ -27,7 +27,8 @@ dependencies {
             !project.gradle.startParameter.projectDir.getName().startsWith("magiclib-compat")) {
         modRuntimeOnly("curse.maven:malilib-303119:${project.malilib_version}")
         modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-        runtimeOnly fileTree(dir: "magiclib-compat-mc1_18/build/devlibs", include: ["magiclib-compat-mc1_18-0.3.local-dev.jar"])
+        modImplementation("curse.maven:modmenu-308702:${project.modmenu_version}")
+        runtimeOnly fileTree(dir: "magiclib-compat-mc1_18/build/devlibs", include: ["*-dev.jar"])
     }
 
     subprojects.each {
