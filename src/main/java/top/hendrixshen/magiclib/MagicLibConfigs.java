@@ -57,7 +57,7 @@ public class MagicLibConfigs {
 
     public static void init(ConfigManager cm) {
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
-            Minecraft.getInstance().setScreen(MagiclibConfigGui.getInstance());
+            Minecraft.getInstance().setScreen(MagicLibConfigGui.getInstance());
             return true;
         });
 
@@ -67,7 +67,7 @@ public class MagicLibConfigs {
             } else {
                 Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("INFO"));
             }
-            MagiclibConfigGui.getInstance().reDraw();
+            MagicLibConfigGui.getInstance().reDraw();
         });
         if (debug) {
             Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("DEBUG"));

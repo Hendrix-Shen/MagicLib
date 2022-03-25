@@ -19,9 +19,6 @@ if (ENV.BUILD_NUMBER) {
     version = baseVersion + '.local'
 }
 
-println project.gradle.startParameter
-
-
 dependencies {
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
     modCompileOnly("curse.maven:malilib-303119:${project.malilib_version}")
@@ -32,7 +29,6 @@ dependencies {
         modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
         runtimeOnly fileTree(dir: "magiclib-compat-mc1_18/build/devlibs", include: ["magiclib-compat-mc1_18-0.3.local-dev.jar"])
     }
-
 
     subprojects.each {
         include project("${it.name}:")
@@ -95,7 +91,6 @@ allprojects {
 }
 
 subprojects {
-
     if (project.gradle.startParameter.taskNames.size() == 1 && project.gradle.startParameter.taskNames.get(0) == "runClient") {
         dependencies {
             modImplementation(rootProject)
@@ -105,7 +100,6 @@ subprojects {
             implementation(rootProject)
         }
     }
-
 }
 
 jar {
