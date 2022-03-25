@@ -97,7 +97,7 @@ public class FabricUtil {
             try {
                 dependenciesAnnotation = entrypointContainer.getEntrypoint().getClass().getMethod(entryMethod).getAnnotation(top.hendrixshen.magiclib.dependency.annotation.Dependencies.class);
             } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+                MagicLib.getLogger().error(e);
                 return;
             }
             if (dependenciesAnnotation == null) {

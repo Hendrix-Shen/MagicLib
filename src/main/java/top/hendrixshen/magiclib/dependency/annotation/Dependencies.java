@@ -11,11 +11,31 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(RUNTIME)
 public @interface Dependencies {
-
+    /**
+     * Logic and.
+     * <p>
+     * The dependencies located in this list are logical and.
+     *
+     * @return Dependencies list.
+     */
     Dependency[] and() default {};
 
+    /**
+     * Logic or.
+     * <p>
+     * The dependencies located in this list are logical or.
+     *
+     * @return Dependencies list.
+     */
     Dependency[] or() default {};
 
+    /**
+     * Logic not.
+     * <p>
+     * The dependencies located in this list are logical not.
+     *
+     * @return Dependencies list.
+     */
     Dependency[] not() default {};
 
     /**

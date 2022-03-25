@@ -8,7 +8,6 @@ import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 public class I18n implements ILanguageDispatcher {
     protected static final HashMap<String, String> translations = Maps.newHashMap();
     protected static final List<String> fallbackLanguage = Lists.newArrayList(); // Wait for OMMC

@@ -33,5 +33,10 @@ public @interface Dependency {
      */
     String versionPredicate() default "*";
 
+    /**
+     * Mark this dependency as optional
+     *
+     * @return True if this dependency is optional.
+     */
     boolean optional() default false;
 }

@@ -10,7 +10,6 @@ import net.fabricmc.api.Environment;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-@SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigColor extends ConfigColor implements TranslatableConfig {
     private final String guiDisplayName;

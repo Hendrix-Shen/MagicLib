@@ -22,10 +22,6 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
     }
 
     @Override
-    public void onLoad(String mixinPackage) {
-    }
-
-    @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         return Dependencies.checkDependency(targetClassName, mixinClassName, this.depCheckFailureCallback);
     }

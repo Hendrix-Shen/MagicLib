@@ -46,7 +46,7 @@ public class Dependency {
                     String modName = metadata.getName();
                     String modVersion = metadata.getVersion().getFriendlyString();
                     return String.format("Mod %s (%s) detected. Requires [%s], but found %s!", modName, this.modId, this.versionPredicate, modVersion);
-                }).orElse(String.format("Get %s data fail!", this.modId));
+                }).orElse(String.format("Get %s data failed!", this.modId));
             } else {
                 return String.format("Mod %s not found. Requires [%s]!", this.modId, this.versionPredicate);
 
