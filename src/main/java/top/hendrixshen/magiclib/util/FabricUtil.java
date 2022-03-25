@@ -1,9 +1,6 @@
 package top.hendrixshen.magiclib.util;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
@@ -90,21 +87,18 @@ public class FabricUtil {
     }
 
 
-    private static Map<String, Dependencies<Object>> getModInitDependencies(Class<?> clazz, String entryKey, String entryMethod) {
+    @SuppressWarnings("deprecation")
+    private static Map<String, Dependencies<Object>> getModInitDependencies(String entryKey, String entryMethod) {
         Map<String, Dependencies<Object>> ret = new HashMap<>();
-        FabricLoader.getInstance().getEntrypointContainers(entryKey, clazz).forEach(entrypointContainer -> {
-            top.hendrixshen.magiclib.dependency.annotation.Dependencies dependenciesAnnotation;
-            try {
-                dependenciesAnnotation = entrypointContainer.getEntrypoint().getClass().getMethod(entryMethod).getAnnotation(top.hendrixshen.magiclib.dependency.annotation.Dependencies.class);
-            } catch (NoSuchMethodException e) {
-                MagicLibReference.LOGGER.error(e);
-                return;
-            }
-            if (dependenciesAnnotation == null) {
-                return;
-            }
-            ret.put(entrypointContainer.getProvider().getMetadata().getId(), Dependencies.of(dependenciesAnnotation, Object.class));
-        });
+        FabricLoader.getInstance().getAllMods().forEach(modContainer ->
+                ((net.fabricmc.loader.ModContainer) modContainer).getInfo().getEntrypoints(entryKey).forEach(
+                        entrypointMetadata -> {
+                            Dependencies<Object> dependencies = Dependencies.getFabricEntrypointDependencies(entrypointMetadata.getValue(), entryMethod);
+                            if (dependencies != null) {
+                                ret.put(modContainer.getMetadata().getId(), dependencies);
+                            }
+                        }
+                ));
         return ret;
     }
 
@@ -127,11 +121,11 @@ public class FabricUtil {
             }
         };
 
-        getModInitDependencies(ModInitializer.class, "main", "onInitialize").forEach(depCheckCallback);
+        getModInitDependencies("main", "onInitialize").forEach(depCheckCallback);
         if (fabricLoader.getEnvironmentType() == EnvType.CLIENT) {
-            getModInitDependencies(ClientModInitializer.class, "client", "onInitializeClient").forEach(depCheckCallback);
+            getModInitDependencies("client", "onInitializeClient").forEach(depCheckCallback);
         } else {
-            getModInitDependencies(DedicatedServerModInitializer.class, "server", "onInitializeServer").forEach(depCheckCallback);
+            getModInitDependencies("server", "onInitializeServer").forEach(depCheckCallback);
         }
 
         if (result.length() != 0) {

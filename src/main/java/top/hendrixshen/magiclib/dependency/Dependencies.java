@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.dependency;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.service.MixinService;
 import org.spongepowered.asm.util.Annotations;
 import top.hendrixshen.magiclib.MagicLibReference;
@@ -61,8 +62,30 @@ public class Dependencies<T> {
         return new Dependencies<>(dependencies, clazz);
     }
 
-    public static <T> Dependencies<T> of(String mixinClassName, Class<T> clazz) {
+
+    @Nullable
+    public static Dependencies<Object> getFabricEntrypointDependencies(String entrypointClassName, String methodName) {
         @Nullable
+        AnnotationNode dependencyAnnotation = null;
+        try {
+            ClassNode classNode = MixinService.getService().getBytecodeProvider().getClassNode(entrypointClassName);
+            for (MethodNode methodNode : classNode.methods) {
+                if (methodNode.name.equals(methodName) && methodNode.desc.equals("()V")) {
+                    dependencyAnnotation = Annotations.getVisible(methodNode, top.hendrixshen.magiclib.dependency.annotation.Dependencies.class);
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            return null;
+        }
+        if (dependencyAnnotation == null) {
+            return null;
+        }
+        return of(dependencyAnnotation, Object.class);
+    }
+
+    @Nullable
+    public static Dependencies<ClassNode> getMixinClassDependencies(String mixinClassName) {
         AnnotationNode dependencyAnnotation;
         try {
             ClassNode classNode = MixinService.getService().getBytecodeProvider().getClassNode(mixinClassName);
@@ -73,6 +96,11 @@ public class Dependencies<T> {
         if (dependencyAnnotation == null) {
             return null;
         }
+        return of(dependencyAnnotation, ClassNode.class);
+    }
+
+    public static <T> Dependencies<T> of(AnnotationNode dependencyAnnotation, Class<T> clazz) {
+
         List<Dependency> andDependencies = getDependencyList(dependencyAnnotation, "and");
         List<Dependency> orDependencies = getDependencyList(dependencyAnnotation, "or");
         List<Dependency> notDependencies = getDependencyList(dependencyAnnotation, "not");
@@ -114,15 +142,12 @@ public class Dependencies<T> {
     }
 
     public static boolean checkDependency(String targetClassName, String mixinClassName, DepCheckFailureCallback depCheckFailureCallback) {
-        ClassNode targetClassNode;
+        ClassNode targetClassNode = null;
         try {
             targetClassNode = loadClassNode(targetClassName);
-        } catch (IOException | ClassNotFoundException e) {
-            DepCheckException depCheckException = new DepCheckException(e);
-            depCheckFailureCallback.callback(targetClassName, mixinClassName, depCheckException);
-            throw depCheckException;
+        } catch (IOException | ClassNotFoundException ignored) {
         }
-        Dependencies<ClassNode> dependencies = of(mixinClassName, ClassNode.class);
+        Dependencies<ClassNode> dependencies = getMixinClassDependencies(mixinClassName);
         if (dependencies == null) {
             return true;
         }
