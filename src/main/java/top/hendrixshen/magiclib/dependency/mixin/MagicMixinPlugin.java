@@ -1,7 +1,7 @@
 package top.hendrixshen.magiclib.dependency.mixin;
 
 import org.spongepowered.asm.mixin.MixinEnvironment;
-import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.dependency.Dependencies;
 
 import java.util.Optional;
@@ -10,7 +10,7 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
     private DepCheckFailureCallback depCheckFailureCallback =
             (targetClassName, mixinClassName, reason) -> {
                 if (MixinEnvironment.getCurrentEnvironment().getOption(MixinEnvironment.Option.DEBUG_EXPORT)) {
-                    MagicLib.getLogger().warn("{}: Mixin {} can't apply to {} because: {}",
+                    MagicLibReference.LOGGER.warn("{}: \nMixin {} can't apply to {}\nbecause: \n{}",
                             Optional.ofNullable(reason.getCause()).orElse(reason).getClass().getSimpleName(),
                             mixinClassName, targetClassName, reason.getMessage());
                 }

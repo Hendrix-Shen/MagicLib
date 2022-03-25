@@ -8,7 +8,7 @@ import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.config.options.ConfigBase;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
-import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.MagicLibReference;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -75,7 +75,7 @@ public class ConfigHandler implements IConfigHandler {
                 writer.write(JsonUtils.GSON.toJson(root));
                 writer.close();
                 if (file.exists() && file.isFile() && !file.delete()) {
-                    MagicLib.getLogger().warn("Failed to delete file '{}'", file.getAbsolutePath());
+                    MagicLibReference.LOGGER.warn("Failed to delete file '{}'", file.getAbsolutePath());
                 }
 
                 var4 = fileTmp.renameTo(file);
@@ -92,7 +92,7 @@ public class ConfigHandler implements IConfigHandler {
             writer.close();
             return var4;
         } catch (Exception var8) {
-            MagicLib.getLogger().warn("Failed to write JSON data to file '{}'", fileTmp.getAbsolutePath(), var8);
+            MagicLibReference.LOGGER.warn("Failed to write JSON data to file '{}'", fileTmp.getAbsolutePath(), var8);
             return false;
         }
     }

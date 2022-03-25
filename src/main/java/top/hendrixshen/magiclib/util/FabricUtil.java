@@ -10,7 +10,7 @@ import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.VersionParsingException;
 import net.fabricmc.loader.impl.gui.FabricGuiEntry;
 import net.fabricmc.loader.impl.util.version.VersionPredicateParser;
-import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.dependency.DepCheckException;
 import top.hendrixshen.magiclib.dependency.Dependencies;
 
@@ -51,12 +51,12 @@ public class FabricUtil {
                 try {
                     return (boolean) legacyVersionPredicateParser.invoke(null, version, versionPredicate);
                 } catch (InvocationTargetException | IllegalAccessException e) {
-                    MagicLib.getLogger().error("Failed to invoke VersionPredicateParser#matches", e);
+                    MagicLibReference.LOGGER.error("Failed to invoke VersionPredicateParser#matches", e);
                 }
             }
             return VersionPredicateParser.parse(versionPredicate).test(version);
         } catch (VersionParsingException e) {
-            MagicLib.getLogger().error("Failed to parse version or version predicate {} {}: {}", version.getFriendlyString(), versionPredicate, e);
+            MagicLibReference.LOGGER.error("Failed to parse version or version predicate {} {}: {}", version.getFriendlyString(), versionPredicate, e);
             return false;
         }
     }
@@ -97,7 +97,7 @@ public class FabricUtil {
             try {
                 dependenciesAnnotation = entrypointContainer.getEntrypoint().getClass().getMethod(entryMethod).getAnnotation(top.hendrixshen.magiclib.dependency.annotation.Dependencies.class);
             } catch (NoSuchMethodException e) {
-                MagicLib.getLogger().error(e);
+                MagicLibReference.LOGGER.error(e);
                 return;
             }
             if (dependenciesAnnotation == null) {

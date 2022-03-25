@@ -5,7 +5,7 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.service.MixinService;
 import org.spongepowered.asm.util.Annotations;
-import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.dependency.mixin.DepCheckFailureCallback;
 
 import javax.annotation.Nullable;
@@ -47,7 +47,7 @@ public class Dependencies<T> {
                 this.predicate.getClass().getMethod("test", clazz);
             }
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            MagicLib.getLogger().error(e);
+            MagicLibReference.LOGGER.error(e);
         }
     }
 
@@ -131,7 +131,7 @@ public class Dependencies<T> {
             depCheckFailureCallback.callback(targetClassName, mixinClassName, new DepCheckException(result));
             return false;
         }
-        return true;
+        return false;
 
     }
 
