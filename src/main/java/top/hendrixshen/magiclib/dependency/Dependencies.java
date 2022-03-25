@@ -28,7 +28,7 @@ public class Dependencies<T> {
     public final boolean noConflicts;
     public Predicate<?> predicate;
 
-    private Dependencies(List<Dependency> andRequirements, List<Dependency> conflicts, List<Dependency> orRequirements, Predicate<?> predicate) {
+    private Dependencies(List<Dependency> andRequirements, List<Dependency> orRequirements, List<Dependency> conflicts, Predicate<?> predicate) {
         this.andRequirements = andRequirements;
         this.orRequirements = orRequirements;
         this.conflicts = conflicts;
