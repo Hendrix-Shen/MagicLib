@@ -10,17 +10,25 @@ import top.hendrixshen.magiclib.config.Option;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class ConfigGui extends GuiConfigsBase {
     private static String tab;
     private final String identifier;
+    private final Supplier<String> titleSupplier;
+
     private final ConfigManager configManager;
 
     public ConfigGui(String identifier, String defaultTab, ConfigManager configManager, String title) {
-        super(10, 50, identifier, null, title);
+        this(identifier, defaultTab, configManager, () -> title);
+    }
+
+    public ConfigGui(String identifier, String defaultTab, ConfigManager configManager, Supplier<String> titleSupplier) {
+        super(10, 50, identifier, null, titleSupplier.get());
         tab = defaultTab;
         this.identifier = identifier;
         this.configManager = configManager;
+        this.titleSupplier = titleSupplier;
     }
 
     @Override
@@ -32,7 +40,7 @@ public class ConfigGui extends GuiConfigsBase {
     public void initGui() {
         super.initGui();
         this.clearOptions();
-
+        this.setTitle(this.titleSupplier.get());
         int x = 10;
         int y = 26;
 
