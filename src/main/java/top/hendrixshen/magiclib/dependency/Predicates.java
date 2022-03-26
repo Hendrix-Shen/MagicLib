@@ -72,8 +72,9 @@ public class Predicates {
     public static class DevMojangOptionPredicate implements OptionDependencyPredicate {
         @Override
         public boolean test(Option option) {
-            return FabricUtil.isDevelopmentEnvironment();
-        }
+            return FabricUtil.isDevelopmentEnvironment() &&
+                    FabricLoader.getInstance().getMappingResolver()
+                            .mapClassName("intermediary", "net.minecraft.class_310").equals("net.minecraft.client.Minecraft");        }
     }
 
     /**
@@ -87,7 +88,7 @@ public class Predicates {
         public boolean test(ClassNode mixinClass) {
             return FabricUtil.isDevelopmentEnvironment() &&
                     FabricLoader.getInstance().getMappingResolver()
-                            .mapClassName("intermediary", "net.minecraft.class_310").equals("net.minecraft.Minecraft");
+                            .mapClassName("intermediary", "net.minecraft.class_310").equals("net.minecraft.client.Minecraft");
         }
     }
 }
