@@ -13,7 +13,7 @@ import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
 // Fix mojang mappings stackoverflow
-@Dependencies(and = @Dependency(value = "malilib"), predicate = Predicates.DevMixinPredicate.class)
+@Dependencies(and = @Dependency(value = "malilib"), predicate = Predicates.DevMojangMixinPredicate.class)
 @Mixin(value = GuiTextFieldGeneric.class, remap = false)
 public abstract class MixinGuiTextFieldGeneric extends EditBox {
     private boolean setCursorPositionCalled = false;
