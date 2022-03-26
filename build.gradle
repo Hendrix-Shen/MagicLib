@@ -110,6 +110,10 @@ subprojects {
         publications {
             mavenJava(MavenPublication) {
                 from(components.java)
+
+                pom.withXml { rootNode ->
+                    rootNode.asNode().remove(rootNode.asNode().dependencies)
+                }
             }
         }
 
@@ -155,12 +159,6 @@ publishing {
             from(components.java)
 
             pom.withXml { rootNode ->
-                rootNode.asNode().dependencies.dependency.each { dep ->
-                    // Exclude some deps :(
-                    if(dep.artifactId.last().value().last() in ["fabric-api", "modmenu-308702", "malilib-303119"]) {
-                        assert dep.parent().remove(dep)
-                    }
-                }
                 def depsNode = rootNode.asNode().children().get(4)
                 subprojects.each {
                     def depNode = depsNode.appendNode("dependency")
