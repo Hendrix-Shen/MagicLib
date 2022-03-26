@@ -33,7 +33,7 @@ public class Dependencies<T> {
         this.orRequirements = orRequirements;
         this.conflicts = conflicts;
         this.andRequirementsSatisfied = this.andRequirements.isEmpty() || this.andRequirements.stream().allMatch(modPredicate -> modPredicate.satisfied);
-        this.orRequirementsSatisfied = this.orRequirements.isEmpty() || this.andRequirements.stream().allMatch(modPredicate -> modPredicate.satisfied);
+        this.orRequirementsSatisfied = this.orRequirements.isEmpty() || this.orRequirements.stream().anyMatch(modPredicate -> modPredicate.satisfied);
         this.noConflicts = this.conflicts.isEmpty() || this.conflicts.stream().noneMatch(modPredicate -> modPredicate.satisfied);
         this.predicate = predicate;
     }
