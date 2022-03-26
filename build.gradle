@@ -89,6 +89,10 @@ allprojects {
             expand "mod_version": rootProject.version
         }
     }
+
+    tasks.withType(GenerateModuleMetadata) {
+        enabled = false
+    }
 }
 
 subprojects {
