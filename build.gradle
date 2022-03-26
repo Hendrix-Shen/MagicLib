@@ -165,7 +165,7 @@ publishing {
                     depNode.appendNode("groupId", it.group)
                     depNode.appendNode("artifactId", it.name)
                     depNode.appendNode("version", it.version)
-                    depNode.appendNode("scope", "compile")
+                    depNode.appendNode("scope", "provided")
                 }
             }
         }
