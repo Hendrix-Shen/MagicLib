@@ -7,9 +7,6 @@ plugins {
     id "com.modrinth.minotaur" version "1.2.1"
 }
 
-group = "${project.group}.${project.mod_id}" as String
-archivesBaseName = "${project.mod_id}"
-
 def baseVersion = "${project.mod_version}" as String
 def ENV = System.getenv()
 
@@ -28,17 +25,20 @@ dependencies {
         modRuntimeOnly("curse.maven:malilib-303119:${project.malilib_version}")
         modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
         modImplementation("curse.maven:modmenu-308702:${project.modmenu_version}")
-        runtimeOnly fileTree(dir: "magiclib-compat-mc1_18/build/devlibs", include: ["*-dev.jar"])
+        runtimeOnly(fileTree(dir: "magiclib-compat-mc1_18/build/devlibs", include: ["*-dev.jar"]))
     }
 
     subprojects.each {
-        include project("${it.name}:")
+        include(project("${it.name}:"))
     }
 }
 
 allprojects {
     apply plugin: "maven-publish"
     apply plugin: "fabric-loom"
+
+    group = "${project.group}.${project.mod_id}" as String
+    archivesBaseName = "${project.mod_id}"
 
     loom.runConfigs.configureEach {
         property("mixin.debug.export", "true")
@@ -101,6 +101,20 @@ subprojects {
             implementation(rootProject)
         }
     }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from(components.java)
+            }
+        }
+
+        repositories {
+            maven {
+                url "$rootDir/publish"
+            }
+        }
+    }
 }
 
 jar {
@@ -134,23 +148,25 @@ task publishModrinth(type: TaskModrinthUpload) {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId(project.group)
-            artifactId(project.archivesBaseName)
-            version(project.version)
             from(components.java)
-        }
 
-        snapshot(MavenPublication) {
-            groupId(project.group)
-            artifactId(project.archivesBaseName)
-            version(baseVersion + '-SNAPSHOT')
-            from(components.java)
+            pom.withXml { rootNode ->
+                def depsNode = rootNode.asNode().children().get(4)
+                subprojects.each {
+                    def depNode = depsNode.appendNode("dependency")
+                    depNode.appendNode("groupId", it.group)
+                    depNode.appendNode("artifactId", it.name)
+                    depNode.appendNode("version", it.version)
+                    depNode.appendNode("scope", "compile")
+                }
+            }
         }
     }
 
     repositories {
         maven {
-            url "$projectDir/publish"
+            url "$rootDir/publish"
         }
     }
 }
+
