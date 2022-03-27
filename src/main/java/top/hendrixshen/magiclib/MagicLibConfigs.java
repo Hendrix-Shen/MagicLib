@@ -11,6 +11,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
+import top.hendrixshen.magiclib.config.annotation.Numeric;
 import top.hendrixshen.magiclib.dependency.Predicates;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
@@ -26,6 +27,7 @@ public class MagicLibConfigs {
     @Config(category = ConfigCategory.GENERIC)
     public static boolean debug = false;
 
+    @Numeric(maxValue = 500, minValue = 0, useSlider = true)
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static int intConfig = 0;
 
@@ -39,6 +41,7 @@ public class MagicLibConfigs {
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static boolean booleanHotkeyConfig = false;
 
+    @Numeric(maxValue = 0.9, minValue = 0.1)
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static double doubleConfig = 0.1;
 

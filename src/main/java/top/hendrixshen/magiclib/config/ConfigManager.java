@@ -10,6 +10,7 @@ import fi.dy.masa.malilib.hotkeys.IKeybindProvider;
 import fi.dy.masa.malilib.util.Color4f;
 import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
+import top.hendrixshen.magiclib.config.annotation.Numeric;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -176,8 +177,14 @@ public class ConfigManager implements IKeybindProvider {
                         ((TranslatableConfig) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigBoolean) c).getBooleanValue()));
                     } else if (configFieldObj instanceof Integer) {
-                        config = new TranslatableConfigInteger(String.format("%s.config.%s", this.identifier, annotation.category()),
-                                field.getName(), (Integer) configFieldObj);
+                        Numeric numeric = field.getAnnotation(Numeric.class);
+                        if (numeric == null) {
+                            config = new TranslatableConfigInteger(String.format("%s.config.%s", this.identifier, annotation.category()),
+                                    field.getName(), (Integer) configFieldObj);
+                        } else {
+                            config = new TranslatableConfigInteger(String.format("%s.config.%s", this.identifier, annotation.category()),
+                                    field.getName(), (Integer) configFieldObj, (int) numeric.minValue(), (int) numeric.maxValue(), numeric.useSlider());
+                        }
                         option = new Option(annotation, config);
                         config.setValueChangeCallback(c -> {
                             setFieldValue(field, null, ((ConfigInteger) c).getIntegerValue());
@@ -206,8 +213,14 @@ public class ConfigManager implements IKeybindProvider {
                         ((TranslatableConfig) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigColor) c).getColor()));
                     } else if (configFieldObj instanceof Double) {
-                        config = new TranslatableConfigDouble(String.format("%s.config.%s", this.identifier, annotation.category()),
-                                field.getName(), (Double) configFieldObj);
+                        Numeric numeric = field.getAnnotation(Numeric.class);
+                        if (numeric == null) {
+                            config = new TranslatableConfigDouble(String.format("%s.config.%s", this.identifier, annotation.category()),
+                                    field.getName(), (Double) configFieldObj);
+                        } else {
+                            config = new TranslatableConfigDouble(String.format("%s.config.%s", this.identifier, annotation.category()),
+                                    field.getName(), (Double) configFieldObj, numeric.minValue(), numeric.maxValue(), numeric.useSlider());
+                        }
                         option = new Option(annotation, config);
                         config.setValueChangeCallback(c -> {
                             setFieldValue(field, null, ((ConfigDouble) c).getDoubleValue());
