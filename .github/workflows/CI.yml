@@ -3,11 +3,14 @@ on:
   push:
     branches:
       - 'dev/**'
+  release:
+    types:
+      - published
   pull_request:
 
 jobs:
   build:
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' && !startsWith(github.event.ref, 'refs/tags/') }}
     strategy:
       matrix:
         java: [ 17 ]
@@ -16,16 +19,19 @@ jobs:
     steps:
       - name: Checkout the sources
         uses: actions/checkout@v1
+
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
+
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3
@@ -34,8 +40,10 @@ jobs:
           prefix: ${{ github.ref }}
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
       - name: Publish Maven with Gradle
         run: ./gradlew build publish -x test --stacktrace
+
       - name: Upload Maven to GitHub
         uses: s0/git-publish-subdir-action@v2.5.0
         env:
@@ -44,6 +52,7 @@ jobs:
           FOLDER: publish
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           CLEAR_GLOBS_FILE: '.clear-target-files'
+
       - name: Create Github release
         uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
@@ -54,6 +63,122 @@ jobs:
           files: |
             LICENSE
             build/libs/*.jar
+  publish:
+    if: ${{ github.event_name == 'release' }}
+    strategy:
+      matrix:
+        java: [17]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout the sources
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch }}
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: ${{ matrix.java }}
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Generate build number
+        id: buildnumber
+        run: |
+          buildnumber=$(echo ${{ github.ref_name }} | cut -d . -f3)
+          echo "::set-output name=buildnumber::$buildnumber"
+
+      - name: Read Properties curseforge_id
+        id: curseforge_id
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: github_action.properties
+          property: curseforge_id
+
+      - name: Read Properties game_versions
+        id: game_versions
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: github_action.properties
+          property: game_versions
+
+      - name: Read Properties java
+        id: java
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: github_action.properties
+          property: java
+
+      - name: Read Properties loaders
+        id: loaders
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: github_action.properties
+          property: loaders
+
+      - name: Read Properties version_resolver
+        id: version_resolver
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: github_action.properties
+          property: version_resolver
+
+      - name: Read Properties version_type
+        id: version_type
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: github_action.properties
+          property: version_type
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Publish Maven with Gradle
+        run: ./gradlew build publish -x test --stacktrace
+        env:
+          BUILD_NUMBER: ${{ steps.buildnumber.outputs.buildnumber }}
+
+      - name: Upload Maven to GitHub
+        uses: s0/git-publish-subdir-action@v2.5.0
+        env:
+          REPO: git@github.com:Hendrix-Shen/Maven.git
+          BRANCH: master
+          FOLDER: publish
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          CLEAR_GLOBS_FILE: '.clear-target-files'
+
+      - name: Publish realease to curseforge
+        uses: Kir-Antipov/mc-publish@v2.1
+        with:
+          curseforge-id: ${{ steps.curseforge_id.outputs.value }}
+          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+
+          github-tag: ${{ github.ref_name }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          files-primary: build/libs/!(*-@(dev|sources)).jar
+          files-secondary: build/libs/*-@(dev|sources).jar
+
+          name: ${{ github.event.release.name }}
+          version: ""
+          version-type: ${{ steps.version_type.outputs.value }}
+
+          changelog: ${{ github.event.release.body }}
+          loaders: ${{ steps.loaders.outputs.value }}
+          game-versions: ${{ steps.game_versions.outputs.value }}
+          version-resolver: ${{ steps.version_resolver.outputs.value }}
+          java: ${{ steps.java.outputs.value }}
+
+          retry-attempts: 2
+          retry-delay: 10000
 
   pull_request:
     if: ${{ github.event_name == 'pull_request' }}
@@ -65,12 +190,15 @@ jobs:
     steps:
       - name: Checkout the sources
         uses: actions/checkout@v2
+
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
       - name: Build with Gradle
         run: ./gradlew build
