@@ -4,7 +4,7 @@
   "version": "${mod_version}",
   "icon": "assets/magiclib/icon.png",
   "name": "MagicLib",
-  "description": "",
+  "description": "To beat magic with magic :(",
   "authors": [
     {
       "name": "Hendrix-Shen",
