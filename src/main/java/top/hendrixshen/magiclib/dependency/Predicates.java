@@ -74,7 +74,8 @@ public class Predicates {
         public boolean test(Option option) {
             return FabricUtil.isDevelopmentEnvironment() &&
                     FabricLoader.getInstance().getMappingResolver()
-                            .mapClassName("intermediary", "net.minecraft.class_310").equals("net.minecraft.client.Minecraft");        }
+                            .mapClassName("intermediary", "net.minecraft.class_310").equals("net.minecraft.client.Minecraft");
+        }
     }
 
     /**

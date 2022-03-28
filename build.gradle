@@ -2,7 +2,7 @@ import com.modrinth.minotaur.TaskModrinthUpload
 import com.modrinth.minotaur.request.VersionType
 
 plugins {
-    id 'fabric-loom' version '0.11-SNAPSHOT'
+    id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
     id "com.modrinth.minotaur" version "1.2.1"
 }
@@ -33,9 +33,22 @@ dependencies {
     }
 }
 
+var currentProject = project
+
 allprojects {
     apply plugin: "maven-publish"
     apply plugin: "fabric-loom"
+
+    // BUG: remapperIsolation not work with LegacyMixinAp
+    loom {
+        mixin {
+            useLegacyMixinAp = false
+        }
+    }
+
+    remapJar {
+        remapperIsolation = true
+    }
 
     group = "${project.group}.${project.mod_id}" as String
     archivesBaseName = "${project.mod_id}"
@@ -44,8 +57,8 @@ allprojects {
         property("mixin.debug.export", "true")
     }
 
-    version = rootProject.version
-    group = rootProject.group
+    version = currentProject.version
+    group = currentProject.group
 
     repositories {
         maven {
@@ -58,8 +71,8 @@ allprojects {
 
     dependencies {
         mappings(loom.officialMojangMappings())
-        modImplementation("net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}")
-        modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
+        modImplementation("net.fabricmc:fabric-loader:${currentProject.fabric_loader_version}")
+        modRuntimeOnly("curse.maven:lazydfu-433518:${currentProject.lazydfu_version}")
         //modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
     }
 
@@ -82,11 +95,11 @@ allprojects {
     }
 
     processResources {
-        inputs.property "version", rootProject.version
+        inputs.property "version", currentProject.version
 
         filesMatching("fabric.mod.json") {
             include "fabric.mod.json"
-            expand "mod_version": rootProject.version
+            expand "mod_version": currentProject.version
         }
     }
 
@@ -98,11 +111,11 @@ allprojects {
 subprojects {
     if (project.gradle.startParameter.taskNames.size() == 1 && project.gradle.startParameter.taskNames.get(0) == "runClient") {
         dependencies {
-            modImplementation(rootProject)
+            modImplementation(currentProject)
         }
     } else {
         dependencies {
-            implementation(rootProject)
+            implementation(currentProject)
         }
     }
 
