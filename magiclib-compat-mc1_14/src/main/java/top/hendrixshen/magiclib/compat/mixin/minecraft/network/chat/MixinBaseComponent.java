@@ -13,13 +13,13 @@ import top.hendrixshen.magiclib.compat.annotation.Remap;
 @Mixin(BaseComponent.class)
 public abstract class MixinBaseComponent implements MutableComponentCompat {
     @Shadow
+    private Style style;
+
+    @Shadow
     public abstract Component setStyle(Style par1);
 
     @Shadow
     public abstract Style getStyle();
-
-    @Shadow
-    private Style style;
 
     @Remap("method_27693")
     public MutableComponentCompat remap$append(String string) {
@@ -44,6 +44,9 @@ public abstract class MixinBaseComponent implements MutableComponentCompat {
     }
 
     private void magicSetStyle(ChatFormatting chatFormatting) {
+        if (style == null) {
+            style = new Style();
+        }
         if (chatFormatting == ChatFormatting.OBFUSCATED) {
             style.setObfuscated(true);
         } else if (chatFormatting == ChatFormatting.BOLD) {

@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.dependency.mixin;
+package top.hendrixshen.magiclib;
 
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;

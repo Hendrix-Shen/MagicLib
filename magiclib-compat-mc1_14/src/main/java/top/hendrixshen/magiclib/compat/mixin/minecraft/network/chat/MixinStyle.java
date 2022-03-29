@@ -1,6 +1,5 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.network.chat;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;

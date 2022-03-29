@@ -1,10 +1,14 @@
 {
   "required": true,
   "package": "top.hendrixshen.magiclib.compat.mixin",
-  "plugin": "top.hendrixshen.magiclib.dependency.mixin.MagicMixinPlugin",
+  "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "minecraft.client.gui.components.MixinAbstractButton",
+    "minecraft.client.gui.components.MixinAbstractWidget",
+    "minecraft.client.gui.components.MixinButton",
+    "minecraft.client.gui.screens.MixinScreen"
   ],
   "server": [
   ],
