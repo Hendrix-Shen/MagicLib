@@ -1,5 +1,7 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.network.chat;
 
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.compat.annotation.Public;
@@ -30,6 +32,10 @@ public class MixinStyle {
         return ((Style) (Object) this).copy().setObfuscated(boolean_);
     }
 
+//    public Style withClickEvent(@Nullable ClickEvent clickEvent) {
+//        return ((Style) (Object) this).copy().setClickEvent(clickEvent);
+//    }
+//
 //    public Style withHoverEvent(@Nullable HoverEvent hoverEvent) {
 //        return ((Style) (Object) this).copy().setHoverEvent(hoverEvent);
 //    }
