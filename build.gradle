@@ -1,10 +1,6 @@
-import com.modrinth.minotaur.TaskModrinthUpload
-import com.modrinth.minotaur.request.VersionType
-
 plugins {
     id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
-    id "com.modrinth.minotaur" version "1.2.1"
 }
 
 def baseVersion = "${project.mod_version}" as String
@@ -65,7 +61,7 @@ allprojects {
             url 'https://www.cursemaven.com/'
         }
         maven {
-            url = "https://api.modrinth.com/maven"
+            url 'https://api.modrinth.com/maven'
         }
     }
 
@@ -140,30 +136,6 @@ subprojects {
 
 jar {
     from("LICENSE")
-}
-
-task publishModrinth(type: TaskModrinthUpload) {
-    onlyIf {
-        System.getenv("MODRINTH_API_TOKEN")
-    }
-    token = System.getenv("MODRINTH_API_TOKEN")
-    projectId = "${project.modrinth_project_id}"
-    versionNumber = System.getenv("VERSION_NUMBER")
-    changelog = System.getenv("CHANGE_LOG")
-    uploadFile = remapJar
-    switch ("${project.modrinth_release_type}") {
-        case "alpha":
-            versionType = VersionType.ALPHA
-            break
-        case "beta":
-            versionType = VersionType.BETA
-            break
-        case "release":
-            versionType = VersionType.RELEASE
-            break
-    }
-    addGameVersion("${project.minecraft_version}")
-    addLoader('fabric')
 }
 
 publishing {
