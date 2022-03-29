@@ -1,7 +1,5 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.network.chat;
 
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.compat.annotation.Public;

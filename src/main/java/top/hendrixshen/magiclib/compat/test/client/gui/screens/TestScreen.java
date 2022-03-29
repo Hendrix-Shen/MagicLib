@@ -23,12 +23,17 @@ public class TestScreen extends Screen {
                 Minecraft.getInstance().setScreen(null);
             }));
 
-            addRenderableOnly(new Button(10, 30, 80, 15, new TranslatableComponent("test button b")
+            addRenderableWidget(new Button(10, 30, 80, 15,
+                    new TranslatableComponent("test button b").withStyle(ChatFormatting.GREEN), button -> {
+                Minecraft.getInstance().setScreen(null);
+            }));
+
+            addRenderableOnly(new Button(10, 50, 80, 15, new TranslatableComponent("test button c")
                     .withStyle(ChatFormatting.RED)
                     , button -> {
             }));
 
-            addWidget(new Button(10, 60, 80, 15, new TranslatableComponent("test button c"), button -> {
+            addWidget(new Button(10, 70, 80, 15, new TranslatableComponent("test button d"), button -> {
             }));
 
 

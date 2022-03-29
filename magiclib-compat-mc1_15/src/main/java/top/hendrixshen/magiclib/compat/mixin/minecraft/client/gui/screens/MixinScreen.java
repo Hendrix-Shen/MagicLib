@@ -21,13 +21,15 @@ public abstract class MixinScreen {
     @Shadow
     @Final
     protected List<GuiEventListener> children;
+    @Shadow
+    @Final
+    protected List<AbstractWidget> buttons;
 
     @Shadow
     protected abstract AbstractWidget addButton(AbstractWidget abstractWidget);
 
     @Shadow
     protected abstract void init();
-
 
     @Remap("method_37063")
     protected GuiEventListener addRenderableWidget(GuiEventListener guiEventListener) {
@@ -38,7 +40,7 @@ public abstract class MixinScreen {
 
     @Remap("method_37060")
     protected Widget addRenderableOnly(Widget widget) {
-        addButton((AbstractWidget) widget);
+        this.buttons.add((AbstractWidget) widget);
         return widget;
     }
 

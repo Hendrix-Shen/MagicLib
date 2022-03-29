@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "top.hendrixshen.magiclib.compat.mixin",
+  "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "minecraft.client.gui.MixinScreen"
+  ],
+  "server": [
+  ],
+  "mixins": [
+    "minecraft.network.chat.MixinStyle"
+  ]
+}
