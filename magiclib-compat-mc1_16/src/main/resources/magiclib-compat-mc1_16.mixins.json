@@ -10,6 +10,7 @@
   "server": [
   ],
   "mixins": [
-    "minecraft.network.chat.MixinStyle"
+    "minecraft.network.chat.MixinStyle",
+    "minecraft.world.entity.MixinEntity"
   ]
 }

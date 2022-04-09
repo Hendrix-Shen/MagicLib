@@ -43,6 +43,11 @@ public class TestScreen extends Screen {
                 player.sendMessage(new TextComponent("just test entity")
                         .withStyle(Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ENTITY,
                                 new HoverEvent.EntityTooltipInfo(player.getType(), player.getUUID(), player.getName())))), Util.NIL_UUID);
+
+                player.blockPosition();
+                player.getBlockX();
+                player.getBlockY();
+                player.getBlockZ();
             }));
 
             addRenderableOnly(new Button(10, 50, 80, 15, new TranslatableComponent("test button c")
