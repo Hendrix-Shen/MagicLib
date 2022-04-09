@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.config;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigHandler;
@@ -11,9 +12,7 @@ import fi.dy.masa.malilib.util.JsonUtils;
 import top.hendrixshen.magiclib.MagicLibReference;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -60,46 +59,52 @@ public class ConfigHandler implements IConfigHandler {
         fi.dy.masa.malilib.config.ConfigManager.getInstance().registerConfigHandler(configHandler.modId, configHandler);
     }
 
-    // from 1.18 malilib
+    // From Malilib for MC 1.18.x.
     public static boolean writeJsonToFile(JsonObject root, File file) {
         File fileTmp = new File(file.getParentFile(), file.getName() + ".tmp");
+
         if (fileTmp.exists()) {
             fileTmp = new File(file.getParentFile(), UUID.randomUUID() + ".tmp");
         }
 
         try {
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileTmp), StandardCharsets.UTF_8);
+            writer.write(JsonUtils.GSON.toJson(root));
+            writer.close();
 
-            boolean var4;
-            try {
-                writer.write(JsonUtils.GSON.toJson(root));
-                writer.close();
-                if (file.exists() && file.isFile() && !file.delete()) {
-                    MagicLibReference.LOGGER.warn("Failed to delete file '{}'", file.getAbsolutePath());
-                }
-
-                var4 = fileTmp.renameTo(file);
-            } catch (Throwable var7) {
-                try {
-                    writer.close();
-                } catch (Throwable var6) {
-                    var7.addSuppressed(var6);
-                }
-
-                throw var7;
+            if (file.exists() && file.isFile() && !file.delete()) {
+                MagicLibReference.LOGGER.warn("Failed to delete file '{}'", file.getAbsolutePath());
             }
 
-            writer.close();
-            return var4;
-        } catch (Exception var8) {
-            MagicLibReference.LOGGER.warn("Failed to write JSON data to file '{}'", fileTmp.getAbsolutePath(), var8);
-            return false;
+            return fileTmp.renameTo(file);
+        } catch (IOException e) {
+            MagicLibReference.LOGGER.warn("Failed to write JSON data to file '{}'", fileTmp.getAbsolutePath(), e);
         }
+        return false;
+    }
+
+    // Modified from Malilib.
+    public JsonElement parseJsonFile(File file) {
+        if (file != null && file.exists() && file.isFile() && file.canRead()) {
+            String fileName = file.getAbsolutePath();
+
+            try {
+                InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+                JsonParser parser = new JsonParser();
+                JsonElement element = parser.parse(inputStreamReader);
+                inputStreamReader.close();
+                return element;
+            } catch (Exception e) {
+                MagicLibReference.LOGGER.error("Failed to parse the JSON file '{}'", fileName, e);
+            }
+        }
+
+        return null;
     }
 
     public void loadFromFile() {
 
-        JsonElement jsonElement = JsonUtils.parseJsonFile(this.configPath.toFile());
+        JsonElement jsonElement = this.parseJsonFile(this.configPath.toFile());
 
         if (jsonElement != null && jsonElement.isJsonObject()) {
 
