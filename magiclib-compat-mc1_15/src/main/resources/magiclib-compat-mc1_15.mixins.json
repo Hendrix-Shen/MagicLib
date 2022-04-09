@@ -13,8 +13,11 @@
   "server": [
   ],
   "mixins": [
+    "minecraft.MixinUtil",
     "minecraft.network.chat.MixinBaseComponent",
+    "minecraft.network.chat.MixinHoverEvent",
     "minecraft.network.chat.MixinStyle",
-    "minecraft.network.chat.MixinTranslatableComponent"
+    "minecraft.network.chat.MixinTranslatableComponent",
+    "minecraft.world.entity.MixinEntity"
   ]
 }

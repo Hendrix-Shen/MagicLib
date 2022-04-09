@@ -5,13 +5,12 @@ import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.annotation.Public;
 import top.hendrixshen.magiclib.compat.annotation.Remap;
 
 import javax.annotation.Nullable;
 
-@SuppressWarnings({"ConstantConditions, unused", "EqualsBetweenInconvertibleTypes"})
+@SuppressWarnings({"ConstantConditions, unused"})
 @Mixin(Style.class)
 public abstract class MixinStyle {
 
@@ -52,9 +51,6 @@ public abstract class MixinStyle {
             return this.copy().setHoverEvent(hoverEvent);
         }
     };
-
-    @Shadow
-    public abstract Style copy();
 
     @Remap("method_30938")
     public Style withUnderlined(@Nullable Boolean boolean_) {
