@@ -1,19 +1,60 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.network.chat;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.annotation.Public;
 import top.hendrixshen.magiclib.compat.annotation.Remap;
 
 import javax.annotation.Nullable;
 
-@SuppressWarnings("ConstantConditions, unused")
+@SuppressWarnings({"ConstantConditions, unused", "EqualsBetweenInconvertibleTypes"})
 @Mixin(Style.class)
-public class MixinStyle {
+public abstract class MixinStyle {
 
     @Public
     @Remap("field_24360")
-    private static final Style EMPTY = new Style();
+    private static final Style EMPTY = new Style() {
+
+        @Override
+        public Style setColor(ChatFormatting chatFormatting) {
+            return this.copy().setColor(chatFormatting);
+        }
+
+        public Style setBold(Boolean boolean_) {
+            return this.copy().setBold(boolean_);
+        }
+
+        public Style setItalic(Boolean boolean_) {
+            return this.copy().setItalic(boolean_);
+        }
+
+        public Style setStrikethrough(Boolean boolean_) {
+            return this.copy().setStrikethrough(boolean_);
+        }
+
+        public Style setUnderlined(Boolean boolean_) {
+            return this.copy().setUnderlined(boolean_);
+        }
+
+        public Style setObfuscated(Boolean boolean_) {
+            return this.copy().setObfuscated(boolean_);
+        }
+
+        public Style setClickEvent(ClickEvent clickEvent) {
+            return this.copy().setClickEvent(clickEvent);
+        }
+
+        public Style setHoverEvent(HoverEvent hoverEvent) {
+            return this.copy().setHoverEvent(hoverEvent);
+        }
+    };
+
+    @Shadow
+    public abstract Style copy();
 
     @Remap("method_30938")
     public Style withUnderlined(@Nullable Boolean boolean_) {
@@ -30,7 +71,4 @@ public class MixinStyle {
         return ((Style) (Object) this).copy().setObfuscated(boolean_);
     }
 
-//    public Style withHoverEvent(@Nullable HoverEvent hoverEvent) {
-//        return ((Style) (Object) this).copy().setHoverEvent(hoverEvent);
-//    }
 }
