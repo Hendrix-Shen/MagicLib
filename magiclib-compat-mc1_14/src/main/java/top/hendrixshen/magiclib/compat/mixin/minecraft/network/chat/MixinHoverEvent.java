@@ -17,12 +17,13 @@ import top.hendrixshen.magiclib.compat.annotation.ThisInitMethod;
 @Mixin(HoverEvent.class)
 public class MixinHoverEvent {
     private static HoverEvent.Action getLegacyAction(HoverEventCompat.Action action) {
-        if (action.action.equals(HoverEventCompat.Action_SHOW_TEXT)) {
-            return HoverEvent.Action.SHOW_TEXT;
-        } else if (action.action.equals(HoverEventCompat.Action_SHOW_ITEM)) {
-            return HoverEvent.Action.SHOW_ITEM;
-        } else if (action.action.equals(HoverEventCompat.Action_SHOW_ENTITY)) {
-            return HoverEvent.Action.SHOW_ENTITY;
+        switch (action.action) {
+            case HoverEventCompat.Action_SHOW_TEXT:
+                return HoverEvent.Action.SHOW_TEXT;
+            case HoverEventCompat.Action_SHOW_ITEM:
+                return HoverEvent.Action.SHOW_ITEM;
+            case HoverEventCompat.Action_SHOW_ENTITY:
+                return HoverEvent.Action.SHOW_ENTITY;
         }
         throw new RuntimeException("wtf");
     }
@@ -57,7 +58,7 @@ public class MixinHoverEvent {
     }
 
     @ThisInitMethod
-    public void magicThisInit(HoverEvent.Action action, Component component) {
+    public void magicThisInit(HoverEvent.Action ignoredAction, Component ignoredComponent) {
     }
 
 }
