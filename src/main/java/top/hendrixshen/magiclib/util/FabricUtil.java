@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.CodeSource;
+import java.security.SecureClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -73,6 +74,24 @@ public class FabricUtil {
 
 
             } else {
+
+                knotClassLoader = Class.forName("net.fabricmc.loader.launch.knot.KnotClassLoader");
+                defineClassFwdMethod = SecureClassLoader.class.getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class, CodeSource.class);
+                defineClassFwdMethod.setAccessible(true);
+                getResourceMethod = knotClassLoader.getMethod("getResource", String.class);
+                getResourceMethod.setAccessible(true);
+
+                knotClassDelegate = Class.forName("net.fabricmc.loader.launch.knot.KnotClassDelegate");
+                getMetadataMethod = knotClassDelegate.getDeclaredMethod("getMetadata", String.class, URL.class);
+                getMetadataMethod.setAccessible(true);
+
+                metadata = Class.forName("net.fabricmc.loader.launch.knot.KnotClassDelegate$Metadata");
+                delegateField = knotClassLoader.getDeclaredField("delegate");
+                delegateField.setAccessible(true);
+                codeSourceField = metadata.getDeclaredField("codeSource");
+                codeSourceField.setAccessible(true);
+
+                knotClassDelegateObj = delegateField.get(knotClassLoaderObj);
 //                knotClassLoader = Class.forName("net.fabricmc.loader.launch.knot.KnotClassLoader");
 //                knotClassDelegate = Class.forName("net.fabricmc.loader.launch.knot.KnotClassDelegate");
 //                knotClassLoaderInterface = Class.forName("net.fabricmc.loader.impl.launch.knot.KnotClassLoaderInterface");
@@ -80,6 +99,7 @@ public class FabricUtil {
 
 
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException | NoSuchMethodException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
 
@@ -222,8 +242,8 @@ public class FabricUtil {
             metaDataObj = getMetadataMethod.invoke(knotClassDelegateObj, name, getResourceMethod.invoke(knotClassLoaderObj, LoaderUtil.getClassFileName(name)));
             defineClassFwdMethod.invoke(knotClassLoaderObj, classNode.name.replace("/", "."), classNodeBytes, 0, classNodeBytes.length, codeSourceField.get(metaDataObj));
         } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
-        int a = 1;
     }
 }

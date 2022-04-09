@@ -221,9 +221,7 @@ public class MixinUtil {
 
 
     }
-
-    public static void applyRemap(ClassNode classNode) {
-
+    public static void remapInterface(ClassNode classNode) {
         // remap interfaces
         for (String interfaceName : classNode.interfaces) {
             ClassNode interfaceClassNode;
@@ -245,6 +243,8 @@ public class MixinUtil {
                 }
             }
         }
+    }
+    public static void applyRemap(ClassNode classNode) {
 
         // remap interfaces name
         for (int i = 0; i < classNode.interfaces.size(); ++i) {
