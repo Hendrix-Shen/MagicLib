@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.dependency;
 
+import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -9,7 +10,6 @@ import org.spongepowered.asm.util.Annotations;
 import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.dependency.mixin.DepCheckFailureCallback;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

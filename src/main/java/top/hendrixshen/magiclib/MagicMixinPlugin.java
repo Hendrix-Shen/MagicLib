@@ -12,7 +12,6 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
 
     private static boolean compatVersionChecked = false;
 
-
     @Override
     public void onLoad(String mixinPackage) {
         if (!compatVersionChecked) {

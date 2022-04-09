@@ -4,11 +4,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.compat.annotation.Public;
 import top.hendrixshen.magiclib.compat.annotation.Remap;
-
-import javax.annotation.Nullable;
 
 @SuppressWarnings({"ConstantConditions, unused"})
 @Mixin(Style.class)
