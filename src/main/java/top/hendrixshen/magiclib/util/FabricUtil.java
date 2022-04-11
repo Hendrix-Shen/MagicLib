@@ -6,35 +6,22 @@ import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.VersionParsingException;
 import net.fabricmc.loader.impl.gui.FabricGuiEntry;
-import net.fabricmc.loader.impl.util.LoaderUtil;
 import net.fabricmc.loader.impl.util.version.VersionPredicateParser;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.tree.ClassNode;
 import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.dependency.DepCheckException;
 import top.hendrixshen.magiclib.dependency.Dependencies;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.SecureClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public class FabricUtil {
-    private static final Object knotClassLoaderObj;
     // Fabric Loader 0.11 and below support
     private static Method legacyVersionPredicateParser;
     private static Method legacyDisplayCriticalError;
-    private static Method getMetadataMethod;
-    private static Method getResourceMethod;
-    private static Method defineClassFwdMethod;
-    private static Object knotClassDelegateObj;
-    private static Field codeSourceField;
 
 
     static {
@@ -43,66 +30,6 @@ public class FabricUtil {
             legacyDisplayCriticalError = Class.forName("net.fabricmc.loader.gui.FabricGuiEntry").getMethod("displayCriticalError", Throwable.class, boolean.class);
         } catch (ClassNotFoundException | NoSuchMethodException ignored) {
         }
-        knotClassLoaderObj = Thread.currentThread().getContextClassLoader();
-
-
-        try {
-            Class<?> knotClassLoader;
-            Class<?> knotClassDelegate;
-            Class<?> metadata;
-
-            Field delegateField;
-
-            if (legacyVersionPredicateParser == null) {
-                knotClassLoader = Class.forName("net.fabricmc.loader.impl.launch.knot.KnotClassLoader");
-                defineClassFwdMethod = knotClassLoader.getMethod("defineClassFwd", String.class, byte[].class, int.class, int.class, CodeSource.class);
-                defineClassFwdMethod.setAccessible(true);
-                getResourceMethod = knotClassLoader.getMethod("getResource", String.class);
-                getResourceMethod.setAccessible(true);
-
-                knotClassDelegate = Class.forName("net.fabricmc.loader.impl.launch.knot.KnotClassDelegate");
-                getMetadataMethod = knotClassDelegate.getDeclaredMethod("getMetadata", String.class, URL.class);
-                getMetadataMethod.setAccessible(true);
-
-                metadata = Class.forName("net.fabricmc.loader.impl.launch.knot.KnotClassDelegate$Metadata");
-                delegateField = knotClassLoader.getDeclaredField("delegate");
-                delegateField.setAccessible(true);
-                codeSourceField = metadata.getDeclaredField("codeSource");
-                codeSourceField.setAccessible(true);
-
-                knotClassDelegateObj = delegateField.get(knotClassLoaderObj);
-
-
-            } else {
-
-                knotClassLoader = Class.forName("net.fabricmc.loader.launch.knot.KnotClassLoader");
-                defineClassFwdMethod = SecureClassLoader.class.getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class, CodeSource.class);
-                defineClassFwdMethod.setAccessible(true);
-                getResourceMethod = knotClassLoader.getMethod("getResource", String.class);
-                getResourceMethod.setAccessible(true);
-
-                knotClassDelegate = Class.forName("net.fabricmc.loader.launch.knot.KnotClassDelegate");
-                getMetadataMethod = knotClassDelegate.getDeclaredMethod("getMetadata", String.class, URL.class);
-                getMetadataMethod.setAccessible(true);
-
-                metadata = Class.forName("net.fabricmc.loader.launch.knot.KnotClassDelegate$Metadata");
-                delegateField = knotClassLoader.getDeclaredField("delegate");
-                delegateField.setAccessible(true);
-                codeSourceField = metadata.getDeclaredField("codeSource");
-                codeSourceField.setAccessible(true);
-
-                knotClassDelegateObj = delegateField.get(knotClassLoaderObj);
-//                knotClassLoader = Class.forName("net.fabricmc.loader.launch.knot.KnotClassLoader");
-//                knotClassDelegate = Class.forName("net.fabricmc.loader.launch.knot.KnotClassDelegate");
-//                knotClassLoaderInterface = Class.forName("net.fabricmc.loader.impl.launch.knot.KnotClassLoaderInterface");
-            }
-
-
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException | NoSuchMethodException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-
     }
 
     /**
@@ -233,17 +160,4 @@ public class FabricUtil {
     }
 
 
-    public static void loadClass(String name, ClassNode classNode) {
-        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-        classNode.accept(cw);
-        byte[] classNodeBytes = cw.toByteArray();
-        Object metaDataObj;
-        try {
-            metaDataObj = getMetadataMethod.invoke(knotClassDelegateObj, name, getResourceMethod.invoke(knotClassLoaderObj, LoaderUtil.getClassFileName(name)));
-            defineClassFwdMethod.invoke(knotClassLoaderObj, classNode.name.replace("/", "."), classNodeBytes, 0, classNodeBytes.length, codeSourceField.get(metaDataObj));
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
 }

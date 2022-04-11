@@ -213,7 +213,7 @@ public class MixinUtil {
                 if (!classMap.containsKey(oldName)) {
                     classMap.put(oldName, Annotations.getValue(classRemapAnnotation, "value"));
                     applyRemap(innerClassNode);
-                    FabricUtil.loadClass(oldName, innerClassNode);
+                    MagicStreamHandler.addClass(innerClassNode);
                 }
             }
             // TODO add inner class to classNode
@@ -221,6 +221,7 @@ public class MixinUtil {
 
 
     }
+
     public static void remapInterface(ClassNode classNode) {
         // remap interfaces
         for (String interfaceName : classNode.interfaces) {
@@ -239,11 +240,12 @@ public class MixinUtil {
                 if (!classMap.containsKey(oldName)) {
                     classMap.put(oldName, Annotations.getValue(classRemapAnnotation, "value"));
                     applyRemap(interfaceClassNode);
-                    FabricUtil.loadClass(oldName, interfaceClassNode);
+                    MagicStreamHandler.addClass(interfaceClassNode);
                 }
             }
         }
     }
+
     public static void applyRemap(ClassNode classNode) {
 
         // remap interfaces name

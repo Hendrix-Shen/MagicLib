@@ -6,8 +6,12 @@ import top.hendrixshen.magiclib.compat.MagicExtension;
 import top.hendrixshen.magiclib.dependency.Dependencies;
 import top.hendrixshen.magiclib.dependency.mixin.DepCheckFailureCallback;
 import top.hendrixshen.magiclib.util.FabricUtil;
+import top.hendrixshen.magiclib.util.MagicStreamHandler;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.Optional;
 
 public class MagicMixinPlugin extends EmptyMixinPlugin {
@@ -51,6 +55,28 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
                 Extensions extensions = (Extensions) extensionsField.get(transformer);
                 extensions.add(new MagicExtension());
             } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+
+            Object urlLoader = Thread.currentThread().getContextClassLoader();
+            Class<?> knotClassLoader;
+            try {
+                knotClassLoader = Class.forName("net.fabricmc.loader.impl.launch.knot.KnotClassLoader");
+
+            } catch (ClassNotFoundException e) {
+                try {
+                    knotClassLoader = Class.forName("net.fabricmc.loader.launch.knot.KnotClassLoader");
+                } catch (ClassNotFoundException e1) {
+                    throw new RuntimeException(e1);
+                }
+            }
+
+            try {
+                Method method = knotClassLoader.getDeclaredMethod("addURL", URL.class);
+                method.setAccessible(true);
+                method.invoke(urlLoader, MagicStreamHandler.getMemoryClassLoaderUrl());
+            } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         }
