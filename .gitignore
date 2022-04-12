@@ -27,3 +27,5 @@ bin/
 # fabric
 
 run/
+
+publish/

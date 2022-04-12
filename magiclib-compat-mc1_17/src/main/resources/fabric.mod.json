@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "magiclib-compat-mc1_17",
+  "id": "${mod_id}-compat-mc1_17",
   "version": "${mod_version}",
-  "icon": "assets/magiclib-compat-mc1_17/icon.png",
-  "name": "MagicLib Compat",
-  "description": "MagicLib compat for Minecraft 1.17.x",
+  "icon": "assets/${mod_id}-compat-mc1_17/icon.png",
+  "name": "${mod_name} Compat",
+  "description": "${mod_name} compat for Minecraft 1.17.x",
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -22,14 +22,14 @@
   "contributors": [
   ],
   "contact": {
-    "homepage": "https://github.com/Hendrix-Shen",
-    "issues": "https://github.com/Hendrix-Shen/MagicLib/issues",
-    "sources": "https://github.com/Hendrix-Shen/MagicLib"
+    "homepage": "${mod_homepage}",
+    "issues": "${mod_sources}/issues",
+    "sources": "${mod_sources}"
   },
-  "license": "GPL-v3",
+  "license": "${mod_license}",
   "environment": "*",
   "mixins": [
-    "magiclib-compat-mc1_17.mixins.json"
+    "${mod_id}-compat-mc1_17.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.9.0",
@@ -38,13 +38,13 @@
   },
   "custom": {
     "modmenu:api": true,
-    "modmenu:parent": "magiclib",
+    "modmenu:parent": "${mod_id}",
     "modmenu:clientsideOnly": true,
     "modmenu": {
       "badges": [
         "library"
       ],
-      "parent": "magiclib"
+      "parent": "${mod_id}"
     }
   }
 }

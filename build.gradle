@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'java-library'
     id 'maven-publish'
 }
 
@@ -9,45 +9,31 @@ def ENV = System.getenv()
 if (ENV.BUILD_NUMBER) {
     version = baseVersion + '.' + ENV.BUILD_NUMBER
 } else {
-    version = baseVersion + '.local'
-}
-
-dependencies {
-    minecraft("com.mojang:minecraft:${project.minecraft_version}")
-    modCompileOnly("curse.maven:malilib-303119:${project.malilib_version}")
-
-    if (project.gradle.startParameter.projectDir != null &&
-            !project.gradle.startParameter.projectDir.getName().startsWith("magiclib-compat")) {
-        modRuntimeOnly("curse.maven:malilib-303119:${project.malilib_version}")
-        modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-        modImplementation("curse.maven:modmenu-308702:${project.modmenu_version}")
-        runtimeOnly(fileTree(dir: "magiclib-compat-mc1_18/build/devlibs", include: ["*-dev.jar"]))
-    }
-
-    subprojects.each {
-        include(project("${it.name}:"))
-    }
+    version = baseVersion + '.114514'
 }
 
 var currentProject = project
 
 allprojects {
     apply plugin: "maven-publish"
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = "UTF-8"
+        it.sourceCompatibility = JavaVersion.VERSION_1_8
+        it.targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    tasks.withType(GenerateModuleMetadata) {
+        enabled = false
+    }
+
+    java {
+        withSourcesJar()
+    }
+}
+
+subprojects {
     apply plugin: "fabric-loom"
-
-    // BUG: remapperIsolation not work with LegacyMixinAp
-    loom {
-        mixin {
-            useLegacyMixinAp = false
-        }
-    }
-
-    remapJar {
-        remapperIsolation = true
-    }
-
-    group = "${project.group}.${project.mod_id}" as String
-    archivesBaseName = "${project.mod_id}"
 
     loom.runConfigs.configureEach {
         property("mixin.debug.export", "true")
@@ -63,70 +49,77 @@ allprojects {
         maven {
             url 'https://api.modrinth.com/maven'
         }
+        mavenCentral()
     }
 
     dependencies {
+        minecraft("com.mojang:minecraft:${project.minecraft_version}")
         mappings(loom.officialMojangMappings())
-        modImplementation("net.fabricmc:fabric-loader:${currentProject.fabric_loader_version}")
+
+        modApi("curse.maven:malilib-303119:${project.malilib_version}")
+        modApi("curse.maven:modmenu-308702:${project.modmenu_version}")
+
+        modApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
+        modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.inGameAccountSwitcher_version}")
+
+        modApi("net.fabricmc:fabric-loader:${currentProject.fabric_loader_version}")
+
+        if (project.name != (String) "${currentProject.mod_id}-core") {
+            if (project.gradle.startParameter.taskNames.size() == 1 &&
+                    project.gradle.startParameter.taskNames.get(0) == "runClient") {
+                modImplementation(project(path: ":${currentProject.mod_id}-core")) {
+                    transitive = false
+                }
+            } else {
+                implementation(project(path: ":${currentProject.mod_id}-core")) {
+                    transitive = false
+                }
+            }
+        } else {
+            runtimeOnly(fileTree([dir    : "../${currentProject.mod_id}-compat-mc1_18/build/devlibs",
+                                  include: ["${currentProject.mod_id}-compat-mc1_18-${project.version}-dev.jar"]]))
+        }
+        runtimeOnly(currentProject) {
+            transitive = false
+        }
         modRuntimeOnly("curse.maven:lazydfu-433518:${currentProject.lazydfu_version}")
+
         //modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
     }
+
+    processResources {
+        inputs.property("version", currentProject.version)
+        filesMatching("fabric.mod.json") {
+            include("fabric.mod.json")
+            expand(["mod_version" : currentProject.version,
+                    "mod_id"      : currentProject.mod_id,
+                    "mod_name"    : currentProject.mod_name,
+                    "mod_homepage": currentProject.mod_homepage,
+                    "mod_sources" : currentProject.mod_sources,
+                    "mod_license" : currentProject.mod_license
+            ])
+        }
+    }
+
 
     runClient {
         defaultCharacterEncoding = "UTF-8"
     }
 
+
     runServer {
         defaultCharacterEncoding = "UTF-8"
-    }
-
-    java {
-        withSourcesJar()
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        it.options.encoding = "UTF-8"
-        it.sourceCompatibility = JavaVersion.VERSION_1_8
-        it.targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    processResources {
-        inputs.property "version", currentProject.version
-
-        filesMatching("fabric.mod.json") {
-            include "fabric.mod.json"
-            expand "mod_version": currentProject.version
-        }
-    }
-
-    tasks.withType(GenerateModuleMetadata) {
-        enabled = false
-    }
-}
-
-subprojects {
-    if (project.gradle.startParameter.taskNames.size() == 1 && project.gradle.startParameter.taskNames.get(0) == "runClient") {
-        dependencies {
-            modImplementation(currentProject)
-        }
-    } else {
-        dependencies {
-            implementation(currentProject)
-        }
     }
 
     publishing {
         publications {
             mavenJava(MavenPublication) {
                 from(components.java)
-
-                pom.withXml { rootNode ->
-                    rootNode.asNode().remove(rootNode.asNode().dependencies)
-                }
             }
         }
 
         repositories {
+            mavenLocal()
             maven {
                 url "$rootDir/publish"
             }
@@ -134,31 +127,61 @@ subprojects {
     }
 }
 
+import groovy.json.JsonBuilder
+
+processResources {
+    inputs.property "version", currentProject.version
+    if (project.gradle.startParameter.taskNames.size() == 1 &&
+            project.gradle.startParameter.taskNames.get(0) != "runClient") {
+        var jars = []
+        subprojects.each {
+            jars.add(["file": "META-INF/jars/${it.name}-${it.version}.jar"])
+        }
+        filesMatching(("fabric.mod.json"), {
+            include("fabric.mod.json")
+            expand(["mod_version" : currentProject.version,
+                    "sub_jars"    : new JsonBuilder(jars).toPrettyString(),
+                    "mod_id"      : currentProject.mod_id,
+                    "mod_name"    : currentProject.mod_name,
+                    "mod_homepage": currentProject.mod_homepage,
+                    "mod_sources" : currentProject.mod_sources,
+                    "mod_license" : currentProject.mod_license
+            ])
+        })
+    }
+}
+
 jar {
+    dependsOn(subprojects.collect {
+        it.tasks.remapJar
+    })
+
+    doFirst {
+        copy {
+            from {
+                subprojects.collect {
+                    it.remapJar.outputs.files
+                }
+            }
+            into("build/tmp/submods/META-INF/jars")
+        }
+    }
+
     from("LICENSE")
+    from("build/tmp/submods")
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from(components.java)
-
-            pom.withXml { rootNode ->
-                def depsNode = rootNode.asNode().children().get(4)
-                subprojects.each {
-                    def depNode = depsNode.appendNode("dependency")
-                    depNode.appendNode("groupId", it.group)
-                    depNode.appendNode("artifactId", it.name)
-                    depNode.appendNode("version", it.version)
-                    depNode.appendNode("scope", "provided")
-                }
-            }
+            from components.java
         }
     }
 
     repositories {
+        mavenLocal()
         maven {
-            url "$rootDir/publish"
+            url "${rootDir}/publish"
         }
     }
 }

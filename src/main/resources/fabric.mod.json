@@ -29,19 +29,10 @@
   "license": "GPL-v3",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "top.hendrixshen.magiclib.MagicLib"
-    ],
-    "client": [
-      "top.hendrixshen.magiclib.MagicLib"
-    ],
     "modmenu": [
       "top.hendrixshen.magiclib.compat.modmenu.ModMenuApiImpl"
     ]
   },
-  "mixins": [
-    "magiclib.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=0.9.0",
     "minecraft": "*"
@@ -53,5 +44,6 @@
         "library"
       ]
     }
-  }
+  },
+  "jars": ${sub_jars}
 }

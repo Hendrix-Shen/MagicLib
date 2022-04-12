@@ -24,7 +24,8 @@ public class Option {
         this.modDependencies = Dependencies.of(annotation.dependencies(), Option.class);
         try {
             this.predicate = annotation.predicate().getDeclaredConstructor().newInstance();
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

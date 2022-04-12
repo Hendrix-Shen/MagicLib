@@ -47,7 +47,8 @@ public class Dependencies<T> {
             if (!(this.predicate instanceof top.hendrixshen.magiclib.dependency.annotation.Dependencies.DefaultPredicate)) {
                 this.predicate.getClass().getMethod("test", clazz);
             }
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
             MagicLibReference.LOGGER.error(e);
         }
     }
@@ -114,7 +115,8 @@ public class Dependencies<T> {
                 predicate = (Predicate<?>) Class.forName(predicateType.getClassName()).getDeclaredConstructor().newInstance();
                 // Ensure that the input type is correct.
                 predicate.getClass().getMethod("test", clazz);
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                     NoSuchMethodException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }

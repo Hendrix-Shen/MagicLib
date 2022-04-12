@@ -1,9 +1,0 @@
-dependencies {
-    minecraft("com.mojang:minecraft:${project.minecraft_version}")
-
-    modImplementation("curse.maven:malilib-303119:${project.malilib_version}")
-    modImplementation("curse.maven:modmenu-308702:${project.modmenu_version}")
-
-    modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.inGameAccountSwitcher_version}")
-}
