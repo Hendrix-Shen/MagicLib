@@ -131,7 +131,7 @@ import groovy.json.JsonBuilder
 
 processResources {
     inputs.property "version", currentProject.version
-    if (project.gradle.startParameter.taskNames.size() == 1 &&
+    if (project.gradle.startParameter.taskNames.size() >= 1 &&
             project.gradle.startParameter.taskNames.get(0) != "runClient") {
         var jars = []
         subprojects.each {
