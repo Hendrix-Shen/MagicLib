@@ -84,7 +84,8 @@ public class ConfigHandler implements IConfigHandler {
     }
 
     // Modified from Malilib.
-    public JsonElement parseJsonFile(File file) {
+    @Nullable
+    public static JsonElement parseJsonFile(File file) {
         if (file != null && file.exists() && file.isFile() && file.canRead()) {
             String fileName = file.getAbsolutePath();
 
@@ -104,7 +105,7 @@ public class ConfigHandler implements IConfigHandler {
 
     public void loadFromFile() {
 
-        JsonElement jsonElement = this.parseJsonFile(this.configPath.toFile());
+        JsonElement jsonElement = parseJsonFile(this.configPath.toFile());
 
         if (jsonElement != null && jsonElement.isJsonObject()) {
 

@@ -84,7 +84,7 @@ subprojects {
         }
         modRuntimeOnly("curse.maven:lazydfu-433518:${currentProject.lazydfu_version}")
 
-        //modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
+        modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
     }
 
     processResources {
