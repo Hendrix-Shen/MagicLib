@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.compat.modmenu;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import top.hendrixshen.magiclib.MagicLibConfigGui;
+import top.hendrixshen.magiclib.MagicLibReference;
 
 public class ModMenuApiImpl implements ModMenuApi, ModMenuApiCompat {
     @Override
@@ -16,6 +17,6 @@ public class ModMenuApiImpl implements ModMenuApi, ModMenuApiCompat {
 
     @Override
     public String getModId() {
-        return "magiclib";
+        return MagicLibReference.getModId();
     }
 }

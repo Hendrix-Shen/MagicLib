@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MagicLibReference {
-    private static final String MOD_ID = "magiclib-core";
+    private static final String MOD_ID = "magiclib";
     private static final String MOD_NAME = FabricLoader.getInstance().getModContainer(getModId())
             .orElseThrow(RuntimeException::new).getMetadata().getName();
     private static final String MOD_VERSION = FabricLoader.getInstance().getModContainer(getModId())
