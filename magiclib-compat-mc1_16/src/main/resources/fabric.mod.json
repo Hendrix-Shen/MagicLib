@@ -28,6 +28,11 @@
   },
   "license": "${mod_license}",
   "environment": "*",
+  "entrypoints": {
+    "client": [
+      "top.hendrixshen.magiclib.compat.MagiclibCompat"
+    ]
+  },
   "mixins": [
     "${mod_id}-compat-mc1_16.mixins.json"
   ],
@@ -39,7 +44,6 @@
   "custom": {
     "modmenu:api": true,
     "modmenu:parent": "${mod_id}",
-    "modmenu:clientsideOnly": true,
     "modmenu": {
       "badges": [
         "library"

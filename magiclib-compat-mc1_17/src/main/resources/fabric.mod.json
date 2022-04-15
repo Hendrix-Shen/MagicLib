@@ -39,7 +39,6 @@
   "custom": {
     "modmenu:api": true,
     "modmenu:parent": "${mod_id}",
-    "modmenu:clientsideOnly": true,
     "modmenu": {
       "badges": [
         "library"
