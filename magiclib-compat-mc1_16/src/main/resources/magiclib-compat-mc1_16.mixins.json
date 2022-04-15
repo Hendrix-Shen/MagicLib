@@ -11,6 +11,7 @@
   ],
   "mixins": [
     "minecraft.network.chat.MixinStyle",
-    "minecraft.world.entity.MixinEntity"
+    "minecraft.world.entity.MixinEntity",
+    "minecraft.world.level.MixinLevel"
   ]
 }

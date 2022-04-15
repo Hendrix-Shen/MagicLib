@@ -18,6 +18,7 @@
     "minecraft.network.chat.MixinHoverEvent",
     "minecraft.network.chat.MixinStyle",
     "minecraft.network.chat.MixinTranslatableComponent",
-    "minecraft.world.entity.MixinEntity"
+    "minecraft.world.entity.MixinEntity",
+    "minecraft.world.level.MixinLevel"
   ]
 }

@@ -9,5 +9,6 @@
   "server": [
   ],
   "mixins": [
+    "minecraft.world.level.MixinLevel"
   ]
 }
