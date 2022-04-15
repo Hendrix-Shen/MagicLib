@@ -9,6 +9,7 @@
   "server": [
   ],
   "mixins": [
+    "minecraft.world.entity.MixinEntity",
     "minecraft.world.level.MixinLevel"
   ]
 }

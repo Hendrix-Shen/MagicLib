@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.compat.mixin.minecraft.world.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.annotation.Remap;
@@ -17,6 +18,9 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract BlockPos getCommandSenderBlockPosition();
+
+    @Shadow
+    public Level level;
 
     @Remap("method_9203")
     public void sendMessage(Component component, UUID uuid) {
@@ -41,5 +45,10 @@ public abstract class MixinEntity {
     @Remap("method_31479")
     public int getBlockZ() {
         return this.blockPosition().getZ();
+    }
+
+    @Remap("method_37908")
+    public Level getLevel() {
+        return this.level;
     }
 }
