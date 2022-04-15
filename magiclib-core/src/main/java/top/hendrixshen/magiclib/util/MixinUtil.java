@@ -161,6 +161,7 @@ public class MixinUtil {
     }
 
     public static void applyPublic(ClassNode classNode) {
+
         for (FieldNode fieldNode : classNode.fields) {
             AnnotationNode fieldPublicAnnotation = Annotations.getVisible(fieldNode, Public.class);
             if (fieldPublicAnnotation != null) {
@@ -201,21 +202,27 @@ public class MixinUtil {
             }
             innerClassNode.innerClasses.clear();
 
-            AnnotationNode classRemapAnnotation = Annotations.getVisible(innerClassNode, Remap.class);
-            if (classRemapAnnotation != null) {
-                String oldName = innerClassNode.name;
-                // Remap first time
-                if (!classMap.containsKey(oldName)) {
-                    classMap.put(oldName, Annotations.getValue(classRemapAnnotation, "value"));
-                    applyRemap(innerClassNode);
-                    MagicStreamHandler.addClass(innerClassNode);
-                }
-            }
+            remapAndLoadClass(innerClassNode);
             // TODO add inner class to classNode
         }
     }
 
-    public static void remapInterface(ClassNode classNode) {
+    public static void remapAndLoadClass(ClassNode classNode) {
+        AnnotationNode classRemapAnnotation = Annotations.getVisible(classNode, Remap.class);
+        if (classRemapAnnotation != null) {
+            String oldName = classNode.name;
+
+            // remap first time
+            if (!classMap.containsKey(oldName)) {
+                classMap.put(oldName, Annotations.getValue(classRemapAnnotation, "value"));
+                applyRemap(classNode);
+                MagicStreamHandler.addClass(classNode);
+            }
+        }
+    }
+
+
+    public static void remapInterfaces(ClassNode classNode) {
         // remap interfaces
         for (String interfaceName : classNode.interfaces) {
             ClassNode interfaceClassNode;
@@ -224,18 +231,7 @@ public class MixinUtil {
             } catch (ClassNotFoundException | IOException e) {
                 throw new RuntimeException(e);
             }
-
-            AnnotationNode classRemapAnnotation = Annotations.getVisible(interfaceClassNode, Remap.class);
-            if (classRemapAnnotation != null) {
-                String oldName = interfaceClassNode.name;
-
-                // Remap first time
-                if (!classMap.containsKey(oldName)) {
-                    classMap.put(oldName, Annotations.getValue(classRemapAnnotation, "value"));
-                    applyRemap(interfaceClassNode);
-                    MagicStreamHandler.addClass(interfaceClassNode);
-                }
-            }
+            remapAndLoadClass(interfaceClassNode);
         }
     }
 

@@ -28,6 +28,11 @@
   },
   "license": "${mod_license}",
   "environment": "*",
+  "entrypoints": {
+    "client": [
+      "top.hendrixshen.magiclib.compat.MagiclibCompat"
+    ]
+  },
   "mixins": [
     "${mod_id}-compat-mc1_14.mixins.json"
   ],

@@ -1,17 +1,14 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.network.chat;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponentCompat;
-import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.annotation.Remap;
 
 @SuppressWarnings("unused, NullableProblems")
 @Mixin(BaseComponent.class)
-public abstract class MixinBaseComponent implements MutableComponentCompat {
+public abstract class MixinBaseComponent implements MutableComponentCompat, FormattedTextCompat {
     @Shadow
     private Style style;
 

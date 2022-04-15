@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "minecraft.client.gui.MixinFont",
     "minecraft.client.gui.components.MixinAbstractButton",
     "minecraft.client.gui.components.MixinAbstractWidget",
     "minecraft.client.gui.components.MixinButton",

@@ -13,13 +13,13 @@ import java.util.UUID;
 @Mixin(Entity.class)
 public abstract class MixinEntity {
     @Shadow
+    public Level level;
+
+    @Shadow
     public abstract void sendMessage(Component component);
 
     @Shadow
     public abstract BlockPos getCommandSenderBlockPosition();
-
-    @Shadow
-    public Level level;
 
     @Remap("method_9203")
     public void sendMessage(Component component, UUID uuid) {

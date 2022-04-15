@@ -18,7 +18,7 @@ public class MagicExtension implements IExtension {
     public void preApply(ITargetClassContext context) {
         for (IMixinInfo iMixinInfo : MixinUtil.getMixins(context)) {
             ClassNode mixinClassNode = iMixinInfo.getClassNode(ClassReader.SKIP_CODE);
-            MixinUtil.remapInterface(mixinClassNode);
+            MixinUtil.remapInterfaces(mixinClassNode);
             MixinUtil.applyInnerClass(context.getClassNode(), mixinClassNode);
         }
     }
