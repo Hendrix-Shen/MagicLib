@@ -1,10 +1,10 @@
 package top.hendrixshen.magiclib.compat.modmenu;
 
-import io.github.prospector.modmenu.api.ConfigScreenFactory;
-import io.github.prospector.modmenu.api.ModMenuApi;
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import com.terraformersmc.modmenu.api.ModMenuApi;
 import top.hendrixshen.magiclib.MagicLibConfigGui;
 
-public class ModMenuApiImpl implements ModMenuApi {
+public class ModMenuApiImpl implements ModMenuApi, ModMenuApiCompat {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return (screen) -> {
@@ -12,5 +12,10 @@ public class ModMenuApiImpl implements ModMenuApi {
             gui.setParent(screen);
             return gui;
         };
+    }
+
+    @Override
+    public String getModId() {
+        return "magiclib";
     }
 }
