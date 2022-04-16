@@ -14,6 +14,7 @@ import top.hendrixshen.magiclib.MagicLibReference;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -22,7 +23,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class ConfigHandler implements IConfigHandler {
-
     public final Path configPath;
     public final ConfigManager configManager;
     public final int configVersion;
@@ -34,7 +34,6 @@ public class ConfigHandler implements IConfigHandler {
     public final Consumer<ConfigHandler> postSerializeCallback;
 
     public JsonObject jsonObject;
-
 
     public ConfigHandler(String modId, ConfigManager configManager, int configVersion,
                          @Nullable Consumer<ConfigHandler> preDeserializeCallback,
@@ -68,7 +67,7 @@ public class ConfigHandler implements IConfigHandler {
         }
 
         try {
-            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileTmp), StandardCharsets.UTF_8);
+            OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(fileTmp.toPath()), StandardCharsets.UTF_8);
             writer.write(JsonUtils.GSON.toJson(root));
             writer.close();
 
@@ -84,13 +83,14 @@ public class ConfigHandler implements IConfigHandler {
     }
 
     // Modified from Malilib.
+    @SuppressWarnings("deprecation")
     @Nullable
     public static JsonElement parseJsonFile(File file) {
         if (file != null && file.exists() && file.isFile() && file.canRead()) {
             String fileName = file.getAbsolutePath();
 
             try {
-                InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+                InputStreamReader inputStreamReader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);
                 JsonParser parser = new JsonParser();
                 JsonElement element = parser.parse(inputStreamReader);
                 inputStreamReader.close();
