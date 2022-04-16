@@ -38,6 +38,7 @@ jobs:
         with:
           token: ${{ secrets.github_token }}
           prefix: ${{ github.ref }}
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -92,51 +93,10 @@ jobs:
 
       - name: Generate build number
         id: buildnumber
-        run: |
-          buildnumber=$(echo ${{ github.ref_name }} | cut -d . -f3)
-          echo "::set-output name=buildnumber::$buildnumber"
-
-      - name: Read Properties curseforge_id
-        id: curseforge_id
-        uses: christian-draeger/read-properties@1.0.1
+        uses: einaregilsson/build-number@v3
         with:
-          path: github_action.properties
-          property: curseforge_id
-
-      - name: Read Properties game_versions
-        id: game_versions
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: github_action.properties
-          property: game_versions
-
-      - name: Read Properties java
-        id: java
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: github_action.properties
-          property: java
-
-      - name: Read Properties loaders
-        id: loaders
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: github_action.properties
-          property: loaders
-
-      - name: Read Properties version_resolver
-        id: version_resolver
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: github_action.properties
-          property: version_resolver
-
-      - name: Read Properties version_type
-        id: version_type
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: github_action.properties
-          property: version_type
+          token: ${{ secrets.github_token }}
+          prefix: ${{ github.ref }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -155,27 +115,42 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           CLEAR_GLOBS_FILE: '.clear-target-files'
 
-      - name: Publish realease to curseforge
+      - name: Publish release to curseforge
         uses: Kir-Antipov/mc-publish@v2.1
         with:
           curseforge-id: ${{ steps.curseforge_id.outputs.value }}
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
 
-          github-tag: ${{ github.ref_name }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
           files-primary: build/libs/!(*-@(dev|sources)).jar
           files-secondary: build/libs/*-@(dev|sources).jar
 
-          name: ${{ github.event.release.name }}
-          version: ""
-          version-type: ${{ steps.version_type.outputs.value }}
+          name: ''
+          version: ${{ steps.mod_version.outputs.value }}
+          version-type: 'release'
 
           changelog: ${{ github.event.release.body }}
-          loaders: ${{ steps.loaders.outputs.value }}
-          game-versions: ${{ steps.game_versions.outputs.value }}
-          version-resolver: ${{ steps.version_resolver.outputs.value }}
-          java: ${{ steps.java.outputs.value }}
+          loaders:
+            fabric
+          game-versions: |
+            1.14.4
+            1.15.2
+            1.16.5
+            1.17.1
+            1.18.2
+            1.19
+          version-resolver: latest
+          java: |
+            8
+            9
+            10
+            11
+            12
+            13
+            14
+            15
+            16
+            17
+            18
 
           retry-attempts: 2
           retry-delay: 10000
