@@ -76,5 +76,4 @@ public abstract class MixinBaseComponent implements MutableComponentCompat {
         }
         return this;
     }
-
 }

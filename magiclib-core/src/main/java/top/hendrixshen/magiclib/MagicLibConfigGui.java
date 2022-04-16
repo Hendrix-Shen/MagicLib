@@ -10,7 +10,6 @@ public class MagicLibConfigGui extends ConfigGui {
         super(identifier, defaultTab, configManager, "Magiclib Test");
     }
 
-
     public static MagicLibConfigGui getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new MagicLibConfigGui(MagicLibReference.getModId(), MagicLibConfigs.ConfigCategory.GENERIC, ConfigManager.get(MagicLibReference.getModId()));

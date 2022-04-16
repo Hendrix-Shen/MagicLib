@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class TestScreen extends Screen {
-
     public TestScreen() {
         super(new TextComponent("Test Button Screen"));
     }
@@ -62,7 +61,5 @@ public class TestScreen extends Screen {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-
-
     }
 }

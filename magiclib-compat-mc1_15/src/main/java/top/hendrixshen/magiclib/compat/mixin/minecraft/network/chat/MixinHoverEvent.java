@@ -60,5 +60,4 @@ public class MixinHoverEvent {
     @ThisInitMethod
     public void magicThisInit(HoverEvent.Action ignoredAction, Component ignoredComponent) {
     }
-
 }

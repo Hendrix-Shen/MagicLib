@@ -5,7 +5,6 @@ import net.minecraft.client.gui.screens.Screen;
 import java.util.function.Function;
 
 public interface ModMenuApi extends io.github.prospector.modmenu.api.ModMenuApi {
-
     ConfigScreenFactory<?> getModConfigScreenFactory();
 
     @Override

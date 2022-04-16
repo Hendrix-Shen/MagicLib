@@ -12,11 +12,9 @@ import top.hendrixshen.magiclib.compat.annotation.Remap;
 @SuppressWarnings({"ConstantConditions, unused"})
 @Mixin(Style.class)
 public abstract class MixinStyle {
-
     @Public
     @Remap("field_24360")
     private static final Style EMPTY = new Style() {
-
         @Override
         public Style setColor(ChatFormatting chatFormatting) {
             return this.copy().setColor(chatFormatting);
@@ -65,5 +63,4 @@ public abstract class MixinStyle {
     public Style withObfuscated(@Nullable Boolean boolean_) {
         return ((Style) (Object) this).copy().setObfuscated(boolean_);
     }
-
 }

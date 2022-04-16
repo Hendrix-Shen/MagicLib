@@ -9,8 +9,6 @@ import org.spongepowered.asm.mixin.transformer.ext.ITargetClassContext;
 import top.hendrixshen.magiclib.util.MixinUtil;
 
 public class MagicExtension implements IExtension {
-
-
     @Override
     public boolean checkActive(MixinEnvironment environment) {
         return true;
@@ -36,6 +34,5 @@ public class MagicExtension implements IExtension {
 
     @Override
     public void export(MixinEnvironment env, String name, boolean force, ClassNode classNode) {
-
     }
 }

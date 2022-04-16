@@ -9,15 +9,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.compat.annotation.Public;
 import top.hendrixshen.magiclib.compat.annotation.Remap;
 
-
 @SuppressWarnings({"ConstantConditions, unused"})
 @Mixin(Style.class)
 public abstract class MixinStyle {
-
     @Public
     @Remap("field_24360")
     private static final Style EMPTY = new Style() {
-
         @Override
         public Style setColor(ChatFormatting chatFormatting) {
             return this.copy().setColor(chatFormatting);

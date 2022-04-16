@@ -9,7 +9,6 @@ import top.hendrixshen.magiclib.compat.annotation.ThisInitMethod;
 @SuppressWarnings("unused")
 @Mixin(AbstractWidget.class)
 public class MixinAbstractWidget {
-
     @InitMethod
     public void magicInit(int i, int j, int k, int l, Component component) {
         magicThisInit(i, j, k, l, component.getColoredString());

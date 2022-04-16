@@ -9,7 +9,6 @@ import top.hendrixshen.magiclib.compat.world.level.LevelCompatApi;
 
 @Mixin(Level.class)
 public abstract class MixinLevel implements LevelCompatApi {
-
     @Shadow
     public abstract ResourceKey<Level> dimension();
 

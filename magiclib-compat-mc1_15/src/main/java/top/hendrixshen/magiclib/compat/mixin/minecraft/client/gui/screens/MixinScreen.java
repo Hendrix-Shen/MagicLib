@@ -17,7 +17,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Mixin(Screen.class)
 public abstract class MixinScreen {
-
     @Shadow
     @Final
     protected List<GuiEventListener> children;

@@ -6,7 +6,6 @@ import top.hendrixshen.magiclib.compat.annotation.Remap;
 @SuppressWarnings("unused, NullableProblems")
 @Remap("net/minecraft/class_5250")
 public interface MutableComponentCompat extends Component {
-
     @Remap("method_27693")
     MutableComponentCompat remap$append(String string);
 

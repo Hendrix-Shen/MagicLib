@@ -9,7 +9,6 @@ import top.hendrixshen.magiclib.compat.annotation.ThisInitMethod;
 @SuppressWarnings("unused")
 @Mixin(Button.class)
 public class MixinButton {
-
     @InitMethod
     public void magicInit(int i, int j, int k, int l, Component component, Button.OnPress onPress) {
         magicThisInit(i, j, k, l, component.getColoredString(), onPress);

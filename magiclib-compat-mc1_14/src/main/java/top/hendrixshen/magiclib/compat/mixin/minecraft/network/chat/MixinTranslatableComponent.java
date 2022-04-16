@@ -18,5 +18,4 @@ public abstract class MixinTranslatableComponent extends BaseComponent implement
     @ThisInitMethod
     public void magicThisInit(String string, Object... objects) {
     }
-
 }

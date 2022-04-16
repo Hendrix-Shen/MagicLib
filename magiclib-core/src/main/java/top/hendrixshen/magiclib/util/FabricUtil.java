@@ -23,7 +23,6 @@ public class FabricUtil {
     private static Method legacyVersionPredicateParser;
     private static Method legacyDisplayCriticalError;
 
-
     static {
         try {
             legacyVersionPredicateParser = Class.forName("net.fabricmc.loader.util.version.VersionPredicateParser").getMethod("matches", Version.class, String.class);
@@ -83,7 +82,6 @@ public class FabricUtil {
         }
         return false;
     }
-
 
     @SuppressWarnings("deprecation")
     private static Map<String, Dependencies<Object>> getModInitDependencies(String entryKey, String entryMethod) {
@@ -158,6 +156,4 @@ public class FabricUtil {
     public static boolean isDevelopmentEnvironment() {
         return FabricLoader.getInstance().isDevelopmentEnvironment();
     }
-
-
 }

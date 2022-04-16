@@ -20,7 +20,6 @@ import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 import java.util.ArrayList;
 
 public class MagicLibConfigs {
-
     @Hotkey(hotkey = "M,A,G")
     @Config(category = ConfigCategory.GENERIC)
     public static ConfigHotkey openConfigGui;
@@ -58,7 +57,6 @@ public class MagicLibConfigs {
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class,
             dependencies = @Dependencies(and = @Dependency(value = "sodium", versionPredicate = ">=0.1")))
     public static boolean sodiumTest = false;
-
 
     @Hotkey(hotkey = "M,A,B")
     @Config(category = ConfigCategory.TEST)

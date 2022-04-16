@@ -10,7 +10,6 @@ import top.hendrixshen.magiclib.compat.annotation.Remap;
 
 @Mixin(Style.class)
 public abstract class MixinStyle {
-
     @Mutable
     @Final
     @Shadow
@@ -20,7 +19,6 @@ public abstract class MixinStyle {
     @Final
     @Shadow
     private Boolean obfuscated;
-
 
     @SuppressWarnings("ConstantConditions")
     @Remap("method_36140")

@@ -28,16 +28,13 @@ public class MixinUtil {
                     .getDeclaredField("state");
             mixinInfoStateField.setAccessible(true);
 
-
             mixinInfoInfoField = Class.forName("org.spongepowered.asm.mixin.transformer.MixinInfo")
                     .getDeclaredField("info");
             mixinInfoInfoField.setAccessible(true);
 
-
             mixinInfoStateClassNodeField = Class.forName("org.spongepowered.asm.mixin.transformer.MixinInfo$State")
                     .getDeclaredField("classNode");
             mixinInfoStateClassNodeField.setAccessible(true);
-
 
             mixinsField = Class.forName("org.spongepowered.asm.mixin.transformer.TargetClassContext")
                     .getDeclaredField("mixins");
@@ -51,7 +48,6 @@ public class MixinUtil {
 
     }
 
-
     @SuppressWarnings("unchecked")
     public static SortedSet<IMixinInfo> getMixins(ITargetClassContext iTargetClassContext) {
         try {
@@ -60,7 +56,6 @@ public class MixinUtil {
             throw new RuntimeException(e);
         }
     }
-
 
     public static ClassInfo getClassInfo(IMixinInfo iMixinInfo) {
         try {
@@ -98,7 +93,7 @@ public class MixinUtil {
             str = str.replace(String.format("L%s;", minecraftTypeStr),
                     String.format("L%s;", classMap.getOrDefault(minecraftTypeStr, minecraftTypeStr)));
         }
-        // remap str without L%s;
+        // Remap str without L%s;
         return classMap.getOrDefault(str, str);
     }
 
@@ -108,12 +103,11 @@ public class MixinUtil {
                         methodNode.desc.equals(desc));
     }
 
-
     public static void applyInit(ClassNode classNode) {
         Set<MethodNode> thisInitMethodSet = new HashSet<>();
         Set<MethodNode> superInitMethodSet = new HashSet<>();
 
-        // get thisInitMethodSet and superInitMethodSet
+        // Get thisInitMethodSet and superInitMethodSet.
         for (MethodNode methodNode : classNode.methods) {
             AnnotationNode thisInitMethodAnnotation = Annotations.getVisible(methodNode, ThisInitMethod.class);
             AnnotationNode superInitMethodAnnotation = Annotations.getVisible(methodNode, SuperInitMethod.class);
@@ -131,10 +125,9 @@ public class MixinUtil {
         classNode.methods.removeAll(thisInitMethodSet);
         classNode.methods.removeAll(superInitMethodSet);
 
-
         for (MethodNode methodNode : classNode.methods) {
             AnnotationNode initMethodAnnotation = Annotations.getVisible(methodNode, InitMethod.class);
-            // remap this and super
+            // Remap this and super
             if (initMethodAnnotation != null) {
                 methodNode.name = "<init>";
                 boolean initInvoke = false;
@@ -157,7 +150,7 @@ public class MixinUtil {
                         }
                     }
                 }
-                // add default constructor
+                // Add default constructor
                 if (!initInvoke) {
                     methodNode.instructions.insert(new MethodInsnNode(Opcodes.INVOKESPECIAL, classNode.superName, "<init>", "()V"));
                     methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD, 0));
@@ -168,7 +161,6 @@ public class MixinUtil {
     }
 
     public static void applyPublic(ClassNode classNode) {
-
         for (FieldNode fieldNode : classNode.fields) {
             AnnotationNode fieldPublicAnnotation = Annotations.getVisible(fieldNode, Public.class);
             if (fieldPublicAnnotation != null) {
@@ -188,8 +180,10 @@ public class MixinUtil {
         if (innerClassAnnotation == null) {
             return;
         }
+
         ArrayList<String> innerClassAnnotations = new ArrayList<>();
         Object classInnerAnnotationValue = Annotations.getValue(innerClassAnnotation, "value");
+
         if (classInnerAnnotationValue instanceof Type) {
             innerClassAnnotations.add(((Type) classInnerAnnotationValue).getClassName());
         } else {
@@ -197,6 +191,7 @@ public class MixinUtil {
                 innerClassAnnotations.add(((Type) t).getClassName());
             }
         }
+
         for (String innerClassName : innerClassAnnotations) {
             ClassNode innerClassNode;
             try {
@@ -209,7 +204,7 @@ public class MixinUtil {
             AnnotationNode classRemapAnnotation = Annotations.getVisible(innerClassNode, Remap.class);
             if (classRemapAnnotation != null) {
                 String oldName = innerClassNode.name;
-                // remap first time
+                // Remap first time
                 if (!classMap.containsKey(oldName)) {
                     classMap.put(oldName, Annotations.getValue(classRemapAnnotation, "value"));
                     applyRemap(innerClassNode);
@@ -218,8 +213,6 @@ public class MixinUtil {
             }
             // TODO add inner class to classNode
         }
-
-
     }
 
     public static void remapInterface(ClassNode classNode) {
@@ -236,7 +229,7 @@ public class MixinUtil {
             if (classRemapAnnotation != null) {
                 String oldName = interfaceClassNode.name;
 
-                // remap first time
+                // Remap first time
                 if (!classMap.containsKey(oldName)) {
                     classMap.put(oldName, Annotations.getValue(classRemapAnnotation, "value"));
                     applyRemap(interfaceClassNode);
@@ -247,8 +240,7 @@ public class MixinUtil {
     }
 
     public static void applyRemap(ClassNode classNode) {
-
-        // remap interfaces name
+        // Remap interfaces name
         for (int i = 0; i < classNode.interfaces.size(); ++i) {
             String classIntermediaryName = classMap.getOrDefault(classNode.interfaces.get(i), null);
             if (classIntermediaryName != null) {
@@ -259,8 +251,7 @@ public class MixinUtil {
         classNode.signature = remap(classNode.signature);
         classNode.name = remap(classNode.name);
 
-
-        // remap field
+        // Remap field
         Map<String, FieldNode> remappedFieldsMap = new HashMap<>();
         for (FieldNode fieldNode : classNode.fields) {
             AnnotationNode fieldRemapAnnotation = Annotations.getVisible(fieldNode, Remap.class);
@@ -279,7 +270,7 @@ public class MixinUtil {
 
         Map<String, MethodNode> remappedMethodsMap = new HashMap<>();
 
-        // remap method name
+        // Remap method name
         for (MethodNode methodNode : classNode.methods) {
             AnnotationNode remapAnnotation = Annotations.getVisible(methodNode, Remap.class);
             if (remapAnnotation != null) {
@@ -290,7 +281,7 @@ public class MixinUtil {
             methodNode.desc = remap(methodNode.desc);
         }
 
-        // remap method instructions
+        // Remap method instructions
         for (MethodNode methodNode : classNode.methods) {
             for (AbstractInsnNode abstractInsnNode : methodNode.instructions) {
                 if (abstractInsnNode instanceof FieldInsnNode) {
@@ -302,6 +293,7 @@ public class MixinUtil {
                     fieldInsnNode.desc = remap(fieldInsnNode.desc);
                     fieldInsnNode.owner = remap(fieldInsnNode.owner);
                 }
+
                 if (abstractInsnNode instanceof MethodInsnNode) {
                     MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
                     if (Objects.equals(methodInsnNode.owner, classNode.name)) {
@@ -313,6 +305,7 @@ public class MixinUtil {
                     methodInsnNode.desc = remap(methodInsnNode.desc);
                     methodInsnNode.owner = remap(methodInsnNode.owner);
                 }
+
                 if (abstractInsnNode instanceof TypeInsnNode) {
                     TypeInsnNode typeInsnNode = (TypeInsnNode) abstractInsnNode;
                     typeInsnNode.desc = remap(typeInsnNode.desc);
@@ -320,7 +313,7 @@ public class MixinUtil {
             }
         }
 
-        // remap local var
+        // Remap local var
         for (MethodNode methodNode : classNode.methods) {
             if (methodNode.localVariables != null) {
                 for (LocalVariableNode localVariableNode : methodNode.localVariables) {

@@ -17,7 +17,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Mixin(Screen.class)
 public abstract class MixinScreen {
-
     @Shadow
     @Final
     protected List<GuiEventListener> children;
@@ -36,7 +35,6 @@ public abstract class MixinScreen {
         addButton((AbstractWidget) guiEventListener);
         return guiEventListener;
     }
-
 
     @Remap("method_37060")
     protected Widget addRenderableOnly(Widget widget) {

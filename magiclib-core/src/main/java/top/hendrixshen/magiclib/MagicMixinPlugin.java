@@ -15,8 +15,6 @@ import java.net.URL;
 import java.util.Optional;
 
 public class MagicMixinPlugin extends EmptyMixinPlugin {
-
-
     private static boolean compatVersionChecked = false;
 
     private DepCheckFailureCallback depCheckFailureCallback =
@@ -27,7 +25,6 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
                             mixinClassName, targetClassName, reason.getMessage());
                 }
             };
-
 
     public void setDepCheckFailureCallback(DepCheckFailureCallback depCheckFailureCallback) {
         this.depCheckFailureCallback = depCheckFailureCallback;
@@ -81,5 +78,4 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
             }
         }
     }
-
 }

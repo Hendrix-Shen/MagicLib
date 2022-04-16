@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity {
-
     @Shadow
     public abstract void sendMessage(Component component);
 

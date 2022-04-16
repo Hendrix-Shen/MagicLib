@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MagicStreamHandler extends URLStreamHandler {
-
     private static final URLStreamHandler handler = new MagicStreamHandler();
     private static final Map<URL, byte[]> contents = new ConcurrentHashMap<>();
 
@@ -42,14 +41,12 @@ public class MagicStreamHandler extends URLStreamHandler {
         }
     }
 
-
     @Override
     protected URLConnection openConnection(URL u) throws IOException {
         if (!u.getProtocol().equals(MAGIC_PROTOCOL)) {
             throw new IOException("Cannot handle protocol: " + u.getProtocol());
         }
         return new URLConnection(u) {
-
             private byte[] data = null;
 
             @Override
@@ -85,6 +82,5 @@ public class MagicStreamHandler extends URLStreamHandler {
                     throw new IOException("In-memory data cannot be found for: " + u.getPath());
             }
         };
-
     }
 }

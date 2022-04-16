@@ -9,7 +9,6 @@ import top.hendrixshen.magiclib.compat.annotation.Remap;
 
 @Mixin(SimpleContainer.class)
 public abstract class MixinSimpleContainer {
-
     @Shadow
     public abstract ItemStack addItem(ItemStack itemStack);
 
