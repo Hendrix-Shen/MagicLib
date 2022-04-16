@@ -21,6 +21,7 @@
     "minecraft.network.chat.MixinTranslatableComponent",
     "minecraft.world.MixinSimpleContainer",
     "minecraft.world.entity.MixinEntity",
+    "minecraft.world.item.MixinItemStack",
     "minecraft.world.level.MixinLevel"
   ]
 }
