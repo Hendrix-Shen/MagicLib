@@ -5,11 +5,14 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "accessor.AccessorMatrix4f",
+    "com.mojang.math.MixinMatrix4f",
     "minecraft.client.gui.MixinFont",
     "minecraft.client.gui.components.MixinAbstractButton",
     "minecraft.client.gui.components.MixinAbstractWidget",
     "minecraft.client.gui.components.MixinButton",
-    "minecraft.client.gui.screens.MixinScreen"
+    "minecraft.client.gui.screens.MixinScreen",
+    "minecraft.client.renderer.entity.MixinEntityRenderDispatcher"
   ],
   "server": [
   ],
@@ -19,6 +22,7 @@
     "minecraft.network.chat.MixinHoverEvent",
     "minecraft.network.chat.MixinStyle",
     "minecraft.network.chat.MixinTranslatableComponent",
+    "minecraft.util.MixinMth",
     "minecraft.world.MixinSimpleContainer",
     "minecraft.world.entity.MixinEntity",
     "minecraft.world.item.MixinItemStack",

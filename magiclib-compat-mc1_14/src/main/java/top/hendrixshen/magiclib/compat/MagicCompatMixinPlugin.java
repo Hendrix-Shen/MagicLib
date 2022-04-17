@@ -11,7 +11,11 @@ public class MagicCompatMixinPlugin extends MagicMixinPlugin {
     public void onLoad(String mixinPackage) {
         try {
             MixinUtil.remapAndLoadClass(MixinService.getService().getBytecodeProvider()
-                    .getClassNode("net.minecraft.client.renderer.MultiBufferSourceCompat"));
+                    .getClassNode("net.minecraft.client.renderer.MultiBufferSourceCompat"), true);
+            MixinUtil.remapAndLoadClass(MixinService.getService().getBytecodeProvider()
+                    .getClassNode("com.mojang.math.Matrix3fCompat"), true);
+            MixinUtil.remapAndLoadClass(MixinService.getService().getBytecodeProvider()
+                    .getClassNode("com.mojang.blaze3d.vertex.PoseStackCompat"), true);
         } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e);
         }

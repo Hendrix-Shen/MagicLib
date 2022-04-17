@@ -49,6 +49,11 @@
         "library"
       ],
       "parent": "${mod_id}"
+    },
+    "loom:injected_interfaces": {
+      "com/mojang/math/Matrix4f": [
+        "top/hendrixshen/magiclib/compat/com/mojang/math/Matrix4fCompatApi"
+      ]
     }
   }
 }
