@@ -2,14 +2,14 @@ package top.hendrixshen.magiclib.util;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
+import java.nio.file.Files;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,7 +30,18 @@ public class MagicStreamHandler extends URLStreamHandler {
     public static void addClass(ClassNode classNode) {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         classNode.accept(cw);
-        addFile(String.format("/%s.class", classNode.name.replace(".", "/")), cw.toByteArray());
+        addFile(String.format("/%s.class", classNode.name), cw.toByteArray());
+        if (MixinEnvironment.getCurrentEnvironment().getOption(MixinEnvironment.Option.DEBUG_EXPORT)) {
+            File f = new File(".mixin.out/" + classNode.name.replace("/", ".") + ".remap.class");
+            try {
+                OutputStream fOut = Files.newOutputStream(f.toPath());
+                fOut.write(cw.toByteArray());
+                fOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public static URL getMemoryClassLoaderUrl() {

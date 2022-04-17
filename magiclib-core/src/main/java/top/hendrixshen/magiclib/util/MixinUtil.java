@@ -76,7 +76,10 @@ public class MixinUtil {
     public static String getMinecraftTypeStr(String str, int startIdx) {
         int lIndex = str.indexOf("Lnet/minecraft/", startIdx);
         if (lIndex == -1) {
-            return null;
+            lIndex = str.indexOf("Lcom/mojang/", startIdx);
+            if (lIndex == -1) {
+                return null;
+            }
         }
         int rIndex = str.indexOf(";", lIndex);
         assert rIndex != -1;
@@ -202,12 +205,30 @@ public class MixinUtil {
             }
             innerClassNode.innerClasses.clear();
 
-            remapAndLoadClass(innerClassNode);
+            remapAndLoadClass(innerClassNode, true);
             // TODO add inner class to classNode
         }
     }
 
-    public static void remapAndLoadClass(ClassNode classNode) {
+    public static void remapAndLoadClass(ClassNode classNode, boolean remapInnerClasses) {
+        if (remapInnerClasses) {
+            for (InnerClassNode innerClassNode : classNode.innerClasses) {
+                try {
+                    ClassNode i = (MixinService.getService().getBytecodeProvider()
+                            .getClassNode(innerClassNode.name));
+                    remapAndLoadClass(i, false);
+                } catch (ClassNotFoundException | IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        if (classNode.innerClasses != null) {
+            for (InnerClassNode innerClassNode : classNode.innerClasses) {
+                innerClassNode.name = remap(innerClassNode.name);
+                innerClassNode.outerName = remap(innerClassNode.outerName);
+            }
+        }
         AnnotationNode classRemapAnnotation = Annotations.getVisible(classNode, Remap.class);
         if (classRemapAnnotation != null) {
             String oldName = classNode.name;
@@ -219,6 +240,7 @@ public class MixinUtil {
                 MagicStreamHandler.addClass(classNode);
             }
         }
+
     }
 
 
@@ -231,8 +253,15 @@ public class MixinUtil {
             } catch (ClassNotFoundException | IOException e) {
                 throw new RuntimeException(e);
             }
-            remapAndLoadClass(interfaceClassNode);
+            remapAndLoadClass(interfaceClassNode, true);
         }
+    }
+
+    private static MethodNode copyMethodNode(MethodNode methodNode) {
+        MethodNode ret = new MethodNode(methodNode.access, methodNode.name, methodNode.desc,
+                methodNode.signature, methodNode.exceptions.toArray(new String[]{}));
+        methodNode.accept(ret);
+        return ret;
     }
 
     public static void applyRemap(ClassNode classNode) {
@@ -257,6 +286,7 @@ public class MixinUtil {
                 fieldNode.name = intermediaryName;
             }
             fieldNode.desc = remap(fieldNode.desc);
+            fieldNode.signature = remap(fieldNode.signature);
         }
         // 移除已有的同名的 field
         classNode.fields.removeIf(fieldNode ->
@@ -266,19 +296,29 @@ public class MixinUtil {
 
         Map<String, MethodNode> remappedMethodsMap = new HashMap<>();
 
+        Set<MethodNode> dupMethodNodes = new HashSet<>();
+        
         // Remap method name
         for (MethodNode methodNode : classNode.methods) {
             AnnotationNode remapAnnotation = Annotations.getVisible(methodNode, Remap.class);
             if (remapAnnotation != null) {
+                boolean dup = Annotations.getValue(remapAnnotation, "dup", Remap.class);
+                String newName = Annotations.getValue(remapAnnotation, "value");
+                if (dup) {
+                    MethodNode dupMethodNode = copyMethodNode(methodNode);
+                    dupMethodNode.visibleAnnotations.removeIf(annotationNode -> annotationNode.desc.equals(Type.getDescriptor(Remap.class)));
+                    dupMethodNodes.add(dupMethodNode);
+                }
                 remappedMethodsMap.put(methodNode.name + methodNode.desc, methodNode);
-                methodNode.name = Annotations.getValue(remapAnnotation, "value");
+                methodNode.name = newName;
                 methodNode.visibleAnnotations.removeIf(annotationNode -> annotationNode.desc.equals(Type.getDescriptor(Remap.class)));
             }
-            methodNode.desc = remap(methodNode.desc);
         }
+        classNode.methods.addAll(dupMethodNodes);
 
-        // Remap method instructions
+        // Remap method desc and instructions
         for (MethodNode methodNode : classNode.methods) {
+            methodNode.desc = remap(methodNode.desc);
             for (AbstractInsnNode abstractInsnNode : methodNode.instructions) {
                 if (abstractInsnNode instanceof FieldInsnNode) {
                     FieldInsnNode fieldInsnNode = (FieldInsnNode) abstractInsnNode;
@@ -306,6 +346,17 @@ public class MixinUtil {
                     TypeInsnNode typeInsnNode = (TypeInsnNode) abstractInsnNode;
                     typeInsnNode.desc = remap(typeInsnNode.desc);
                 }
+                if (abstractInsnNode instanceof FrameNode) {
+                    FrameNode frameNode = (FrameNode) abstractInsnNode;
+                    if (frameNode.local != null) {
+                        for (int i = 0; i < frameNode.local.size(); ++i) {
+                            Object obj = frameNode.local.get(i);
+                            if (obj instanceof String) {
+                                frameNode.local.set(i, remap((String) obj));
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -314,6 +365,7 @@ public class MixinUtil {
             if (methodNode.localVariables != null) {
                 for (LocalVariableNode localVariableNode : methodNode.localVariables) {
                     localVariableNode.desc = remap(localVariableNode.desc);
+                    localVariableNode.signature = remap(localVariableNode.signature);
                 }
             }
         }

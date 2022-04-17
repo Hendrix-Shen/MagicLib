@@ -17,4 +17,5 @@ public @interface Remap {
      * Obfuscation name.
      */
     String value();
+    boolean dup() default false;
 }
