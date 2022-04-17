@@ -8,9 +8,10 @@
 [![Pull Requests](https://img.shields.io/github/issues-pr/Hendrix-Shen/MagicLib?style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/pulls)
 [![Public Beta](https://img.shields.io/github/workflow/status/Hendrix-Shen/MagicLib/CI?label=Last%20building&style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/actions/workflows/CI.yml)
 [![Stable Release](https://img.shields.io/github/v/release/Hendrix-Shen/MagicLib?label=Stable%20Release&style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/releases)
-[![Development Release](https://img.shields.io/github/v/release/Hendrix-Shen/MagicLib?include_prereleases&label=Development%20Release&style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/releases)
+[![Development Release Downloads](https://img.shields.io/github/v/release/Hendrix-Shen/MagicLib?include_prereleases&label=Development%20Release&style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/releases)
 [![Github Release Downloads](https://img.shields.io/github/downloads/Hendrix-Shen/MagicLib/total?label=Github%20Release%20Downloads&style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/releases)
-[![CurseForge Downloads](http://cf.way2muchnoise.eu/576459.svg?badge_style=flat)](https://www.curseforge.com/minecraft/mc-mods/tweakmyclient)
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/mv1zH6ln?label=Modrinth%20Downloads&logo=Modrinth%20Downloads&style=flat-square)](https://modrinth.com/mod/magiclib)
+[![CurseForge Downloads](http://cf.way2muchnoise.eu/576459.svg?badge_style=flat)](https://www.curseforge.com/minecraft/mc-mods/magiclib)
 
 [English](./README.md)
 
