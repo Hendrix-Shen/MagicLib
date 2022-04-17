@@ -12,7 +12,10 @@ import fi.dy.masa.malilib.util.JsonUtils;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLibReference;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;

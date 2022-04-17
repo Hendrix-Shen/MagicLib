@@ -43,15 +43,6 @@ public class Matrix3fCompat {
         this.m12 = 2.0F * (n - p);
     }
 
-    @Remap(value = "method_23963", dup = true)
-    public static Matrix3fCompat createScaleMatrixCompat(float f, float g, float h) {
-        Matrix3fCompat matrix3f = new Matrix3fCompat();
-        matrix3f.m00 = f;
-        matrix3f.m11 = g;
-        matrix3f.m22 = h;
-        return matrix3f;
-    }
-
     public Matrix3fCompat(Matrix3fCompat matrix3f) {
         this.m00 = matrix3f.m00;
         this.m01 = matrix3f.m01;
@@ -62,6 +53,15 @@ public class Matrix3fCompat {
         this.m20 = matrix3f.m20;
         this.m21 = matrix3f.m21;
         this.m22 = matrix3f.m22;
+    }
+
+    @Remap(value = "method_23963", dup = true)
+    public static Matrix3fCompat createScaleMatrixCompat(float f, float g, float h) {
+        Matrix3fCompat matrix3f = new Matrix3fCompat();
+        matrix3f.m00 = f;
+        matrix3f.m11 = g;
+        matrix3f.m22 = h;
+        return matrix3f;
     }
 
     @Remap(value = "method_22856", dup = true)

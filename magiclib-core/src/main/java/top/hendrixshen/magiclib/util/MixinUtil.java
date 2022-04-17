@@ -297,7 +297,7 @@ public class MixinUtil {
         Map<String, MethodNode> remappedMethodsMap = new HashMap<>();
 
         Set<MethodNode> dupMethodNodes = new HashSet<>();
-        
+
         // Remap method name
         for (MethodNode methodNode : classNode.methods) {
             AnnotationNode remapAnnotation = Annotations.getVisible(methodNode, Remap.class);
