@@ -218,7 +218,9 @@ public class MixinUtil {
                             .getClassNode(innerClassNode.name));
                     remapAndLoadClass(i, false);
                 } catch (ClassNotFoundException | IOException e) {
-                    throw new RuntimeException(e);
+                    //throw new RuntimeException(e);
+                    // net/fabricmc/fabric/impl/transfer/item/SpecialLogicInventory have inner class org/jetbrains/annotations/ApiStatus$Internal
+                    // but can not found it...
                 }
             }
         }
