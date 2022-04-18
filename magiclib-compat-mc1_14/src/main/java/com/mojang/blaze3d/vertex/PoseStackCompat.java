@@ -5,7 +5,7 @@ import com.mojang.math.Matrix3fCompat;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import top.hendrixshen.magiclib.compat.annotation.Remap;
-import top.hendrixshen.magiclib.compat.com.mojang.math.Matrix4fCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.math.Matrix4fCompatApi;
 import top.hendrixshen.magiclib.compat.util.MthCompatApi;
 
 import java.util.Deque;

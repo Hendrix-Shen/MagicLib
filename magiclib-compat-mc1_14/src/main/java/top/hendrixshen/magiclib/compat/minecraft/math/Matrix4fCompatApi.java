@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.compat.com.mojang.math;
+package top.hendrixshen.magiclib.compat.minecraft.math;
 
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;

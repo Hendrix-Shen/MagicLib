@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.compat.world.level;
+package top.hendrixshen.magiclib.compat.minecraft.world.level;
 
 import net.minecraft.resources.ResourceLocation;
 

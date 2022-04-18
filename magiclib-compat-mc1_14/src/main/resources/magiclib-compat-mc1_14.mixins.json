@@ -6,7 +6,7 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "accessor.AccessorMatrix4f",
-    "com.mojang.math.MixinMatrix4f",
+    "minecraft.math.MixinMatrix4f",
     "minecraft.client.gui.MixinFont",
     "minecraft.client.gui.components.MixinAbstractButton",
     "minecraft.client.gui.components.MixinAbstractWidget",

@@ -54,7 +54,7 @@
     },
     "loom:injected_interfaces": {
       "net/minecraft/world/level/Level": [
-        "top/hendrixshen/magiclib/compat/world/level/LevelCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/world/level/LevelCompatApi"
       ]
     }
   }

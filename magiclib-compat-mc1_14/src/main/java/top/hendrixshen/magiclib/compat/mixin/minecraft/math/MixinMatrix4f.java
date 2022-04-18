@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.compat.mixin.com.mojang.math;
+package top.hendrixshen.magiclib.compat.mixin.minecraft.math;
 
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.annotation.Public;
 import top.hendrixshen.magiclib.compat.annotation.Remap;
-import top.hendrixshen.magiclib.compat.com.mojang.math.Matrix4fCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.math.Matrix4fCompatApi;
 import top.hendrixshen.magiclib.compat.mixin.accessor.AccessorMatrix4f;
 
 @Mixin(Matrix4f.class)

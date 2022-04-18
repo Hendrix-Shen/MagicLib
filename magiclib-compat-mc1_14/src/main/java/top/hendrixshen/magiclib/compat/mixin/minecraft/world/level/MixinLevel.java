@@ -7,7 +7,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import top.hendrixshen.magiclib.compat.world.level.LevelCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.world.level.LevelCompatApi;
 
 @Mixin(Level.class)
 public class MixinLevel implements LevelCompatApi {
