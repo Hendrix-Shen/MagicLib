@@ -1,21 +1,21 @@
 plugins {
-    id 'java-library'
-    id 'maven-publish'
+    id("java-library")
+    id("maven-publish")
 }
 
 def baseVersion = "${project.mod_version}" as String
 def ENV = System.getenv()
 
 if (ENV.BUILD_NUMBER) {
-    version = baseVersion + '.' + ENV.BUILD_NUMBER
+    version = baseVersion + "." + ENV.BUILD_NUMBER
 } else {
-    version = baseVersion + '.114514'
+    version = baseVersion + ".114514"
 }
 
 var currentProject = project
 
 allprojects {
-    apply plugin: "maven-publish"
+    apply(plugin: "maven-publish")
 
     tasks.withType(JavaCompile).configureEach {
         it.options.encoding = "UTF-8"
@@ -33,7 +33,7 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: "fabric-loom"
+    apply(plugin: "fabric-loom")
 
     loom.runConfigs.configureEach {
         property("mixin.debug.export", "true")
@@ -44,10 +44,10 @@ subprojects {
 
     repositories {
         maven {
-            url 'https://www.cursemaven.com/'
+            url("https://www.cursemaven.com")
         }
         maven {
-            url 'https://api.modrinth.com/maven'
+            url("https://api.modrinth.com/maven")
         }
         mavenCentral()
     }
@@ -111,6 +111,10 @@ subprojects {
         defaultCharacterEncoding = "UTF-8"
     }
 
+    java {
+        withSourcesJar()
+    }
+
     publishing {
         publications {
             mavenJava(MavenPublication) {
@@ -121,7 +125,7 @@ subprojects {
         repositories {
             mavenLocal()
             maven {
-                url "$rootDir/publish"
+                url("$rootDir/publish")
             }
         }
     }
@@ -174,14 +178,15 @@ jar {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
+            from(components.java)
+            artifactId(project.mod_id)
         }
     }
 
     repositories {
         mavenLocal()
         maven {
-            url "${rootDir}/publish"
+            url("${rootDir}/publish")
         }
     }
 }
