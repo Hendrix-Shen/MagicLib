@@ -16,7 +16,7 @@ public class PoseStackCompat {
 
     {
         Matrix4f matrix4f = new Matrix4f();
-        ((Matrix4fCompatApi) matrix4f).setIdentityCompat();
+        matrix4f.setIdentityCompat();
         Matrix3fCompat matrix3f = new Matrix3fCompat();
         matrix3f.setIdentityCompat();
         poseStack.add(new Pose(matrix4f, matrix3f));
@@ -25,13 +25,13 @@ public class PoseStackCompat {
     @Remap(value = "method_22904", dup = true)
     public void translateCompat(double d, double e, double f) {
         Pose pose = this.poseStack.getLast();
-        ((Matrix4fCompatApi) pose.pose).multiplyWithTranslationCompat((float) d, (float) e, (float) f);
+        pose.pose.multiplyWithTranslationCompat((float) d, (float) e, (float) f);
     }
 
     @Remap(value = "method_22905", dup = true)
     public void scaleCompat(float f, float g, float h) {
         Pose pose = this.poseStack.getLast();
-        ((Matrix4fCompatApi) pose.pose).multiplyCompat(Matrix4fCompatApi.createScaleMatrixCompat(f, g, h));
+        pose.pose.multiplyCompat(Matrix4fCompatApi.createScaleMatrixCompat(f, g, h));
         if (f == g && g == h) {
             if (f > 0.0F) {
                 return;
@@ -49,14 +49,14 @@ public class PoseStackCompat {
     @Remap(value = "method_22907", dup = true)
     public void mulPoseCompat(Quaternion quaternion) {
         Pose pose = this.poseStack.getLast();
-        ((Matrix4fCompatApi) pose.pose).multiplyCompat(quaternion);
+        pose.pose.multiplyCompat(quaternion);
         pose.normal.mulCompat(quaternion);
     }
 
     @Remap(value = "method_22903", dup = true)
     public void pushPoseCompat() {
         Pose pose = this.poseStack.getLast();
-        this.poseStack.addLast(new Pose(((Matrix4fCompatApi) pose.pose).copyCompat(), pose.normal.copyCompat()));
+        this.poseStack.addLast(new Pose(pose.pose.copyCompat(), pose.normal.copyCompat()));
     }
 
     @Remap(value = "method_22909", dup = true)
@@ -78,13 +78,13 @@ public class PoseStackCompat {
     @Remap(value = "method_34426", dup = true)
     public void setIdentityCompat() {
         Pose pose = this.poseStack.getLast();
-        ((Matrix4fCompatApi) pose.pose).setIdentityCompat();
+        pose.pose.setIdentityCompat();
         pose.normal.setIdentityCompat();
     }
 
     @Remap(value = "method_34425", dup = true)
     public void mulPoseMatrixCompat(Matrix4f matrix4f) {
-        ((Matrix4fCompatApi) this.poseStack.getLast().pose).multiplyCompat(matrix4f);
+        this.poseStack.getLast().pose.multiplyCompat(matrix4f);
     }
 
     @Remap("net/minecraft/class_4587$class_4665")

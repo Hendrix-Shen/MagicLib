@@ -15,18 +15,25 @@ public interface Matrix4fCompatApi {
     }
 
     @Remap(value = "method_22668", dup = true)
-    void setIdentityCompat();
+    default void setIdentityCompat() {
+    }
 
     @Remap(value = "method_31544", dup = true)
-    void multiplyWithTranslationCompat(float f, float g, float h);
+    default void multiplyWithTranslationCompat(float f, float g, float h) {
+
+    }
 
     @Remap(value = "method_22672", dup = true)
-    void multiplyCompat(Matrix4f matrix4f);
+    default void multiplyCompat(Matrix4f matrix4f) {
+    }
 
     @Remap(value = "method_22670", dup = true)
-    void multiplyCompat(Quaternion quaternion);
+    default void multiplyCompat(Quaternion quaternion) {
+    }
 
     @Remap(value = "method_22673", dup = true)
-    Matrix4f copyCompat();
+    default Matrix4f copyCompat() {
+        return null;
+    }
 
 }
