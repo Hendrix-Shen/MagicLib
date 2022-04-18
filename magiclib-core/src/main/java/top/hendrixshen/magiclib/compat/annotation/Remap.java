@@ -15,8 +15,15 @@ import java.lang.annotation.Target;
 public @interface Remap {
     /**
      * Obfuscation name.
+     *
+     * @return Obfuscated name.
      */
     String value();
 
+    /**
+     * Keep unmapped methods to ensure compatibility.
+     *
+     * @return True if unmapped methods are kept.
+     */
     boolean dup() default false;
 }
