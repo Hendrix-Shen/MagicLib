@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "accessor.AccessorMatrix4f",
+    "minecraft.client.MixinCamera",
     "minecraft.client.gui.MixinFont",
     "minecraft.client.gui.components.MixinAbstractButton",
     "minecraft.client.gui.components.MixinAbstractWidget",
