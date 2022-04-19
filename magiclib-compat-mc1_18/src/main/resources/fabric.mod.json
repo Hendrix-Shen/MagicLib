@@ -33,7 +33,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.9.0",
-    "minecraft": "1.18.x",
+    "minecraft": "1.18.2",
     "malilib": "*"
   },
   "custom": {
