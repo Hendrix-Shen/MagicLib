@@ -138,8 +138,8 @@ public class ConfigHandler implements IConfigHandler {
             ConfigUtils.writeConfigBase(this.jsonObject, category, configs);
         }
 
-        if (this.preDeserializeCallback != null) {
-            this.preDeserializeCallback.accept(this);
+        if (this.postSerializeCallback != null) {
+            this.postSerializeCallback.accept(this);
         }
         this.jsonObject.add("configVersion", new JsonPrimitive(this.configVersion));
         writeJsonToFile(this.jsonObject, this.configPath.toFile());
