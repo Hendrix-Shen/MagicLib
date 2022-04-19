@@ -6,13 +6,13 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "accessor.AccessorMatrix4f",
-    "minecraft.math.MixinMatrix4f",
     "minecraft.client.gui.MixinFont",
     "minecraft.client.gui.components.MixinAbstractButton",
     "minecraft.client.gui.components.MixinAbstractWidget",
     "minecraft.client.gui.components.MixinButton",
     "minecraft.client.gui.screens.MixinScreen",
-    "minecraft.client.renderer.entity.MixinEntityRenderDispatcher"
+    "minecraft.client.renderer.entity.MixinEntityRenderDispatcher",
+    "minecraft.math.MixinMatrix4f"
   ],
   "server": [
   ],
@@ -25,6 +25,7 @@
     "minecraft.util.MixinMth",
     "minecraft.world.MixinSimpleContainer",
     "minecraft.world.entity.MixinEntity",
+    "minecraft.world.entity.MixinPlayer",
     "minecraft.world.item.MixinItemStack",
     "minecraft.world.level.MixinLevel"
   ]
