@@ -14,21 +14,18 @@ import java.util.UUID;
 public abstract class MixinEntity {
     @Shadow
     public Level level;
+    @Shadow
+    public float yRot;
+    @Shadow
+    public float xRot;
+    @Shadow
+    public boolean onGround;
 
     @Shadow
     public abstract void sendMessage(Component component);
 
     @Shadow
     public abstract BlockPos getCommandSenderBlockPosition();
-
-    @Shadow
-    public float yRot;
-
-    @Shadow
-    public float xRot;
-
-    @Shadow
-    public boolean onGround;
 
     @Remap("method_9203")
     public void sendMessage(Component component, UUID uuid) {
@@ -80,13 +77,13 @@ public abstract class MixinEntity {
         this.xRot = f;
     }
 
-    @Remap("method_24830")
-    public void setOnGround(boolean bl) {
-        this.onGround = bl;
-    }
-
     @Remap("method_24828")
     public boolean isOnGround() {
         return this.onGround;
+    }
+
+    @Remap("method_24830")
+    public void setOnGround(boolean bl) {
+        this.onGround = bl;
     }
 }
