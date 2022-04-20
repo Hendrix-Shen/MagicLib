@@ -23,6 +23,7 @@
     "minecraft.world.entity.MixinEntity",
     "minecraft.world.entity.MixinPlayer",
     "minecraft.world.item.MixinItemStack",
-    "minecraft.world.level.MixinLevel"
+    "minecraft.world.level.MixinLevel",
+    "minecraft.world.level.block.state.MixinBlockState"
   ]
 }
