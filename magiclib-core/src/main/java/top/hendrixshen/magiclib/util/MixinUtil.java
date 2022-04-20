@@ -14,12 +14,14 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MixinUtil {
     private static final Field mixinInfoStateField;
     private static final Field mixinInfoInfoField;
     private static final Field mixinInfoStateClassNodeField;
     private static final Field mixinsField;
+    private static final ConcurrentLinkedQueue<ClassNode> magicClassesQueue = new ConcurrentLinkedQueue<>();
     public static Map<String, String> classMap = new ConcurrentHashMap<>();
 
     static {
@@ -163,6 +165,37 @@ public class MixinUtil {
         }
     }
 
+//    public static void applyInnerClass(ClassNode classNode, ClassNode mixinClassNode) {
+//        AnnotationNode innerClassAnnotation = Annotations.getVisible(mixinClassNode, InnerClass.class);
+//        if (innerClassAnnotation == null) {
+//            return;
+//        }
+//
+//        ArrayList<String> innerClassAnnotations = new ArrayList<>();
+//        Object classInnerAnnotationValue = Annotations.getValue(innerClassAnnotation, "value");
+//
+//        if (classInnerAnnotationValue instanceof Type) {
+//            innerClassAnnotations.add(((Type) classInnerAnnotationValue).getClassName());
+//        } else {
+//            for (Object t : (ArrayList<?>) classInnerAnnotationValue) {
+//                innerClassAnnotations.add(((Type) t).getClassName());
+//            }
+//        }
+//
+//        for (String innerClassName : innerClassAnnotations) {
+//            ClassNode innerClassNode;
+//            try {
+//                innerClassNode = MixinService.getService().getBytecodeProvider().getClassNode(innerClassName);
+//            } catch (ClassNotFoundException | IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//            innerClassNode.innerClasses.clear();
+//
+//            remapAndLoadClass(innerClassNode, true);
+//            // TODO add inner class to classNode
+//        }
+//    }
+
     public static void applyPublic(ClassNode classNode) {
 
         for (FieldNode fieldNode : classNode.fields) {
@@ -179,83 +212,49 @@ public class MixinUtil {
         }
     }
 
-    public static void applyInnerClass(ClassNode classNode, ClassNode mixinClassNode) {
-        AnnotationNode innerClassAnnotation = Annotations.getVisible(mixinClassNode, InnerClass.class);
-        if (innerClassAnnotation == null) {
-            return;
-        }
-
-        ArrayList<String> innerClassAnnotations = new ArrayList<>();
-        Object classInnerAnnotationValue = Annotations.getValue(innerClassAnnotation, "value");
-
-        if (classInnerAnnotationValue instanceof Type) {
-            innerClassAnnotations.add(((Type) classInnerAnnotationValue).getClassName());
-        } else {
-            for (Object t : (ArrayList<?>) classInnerAnnotationValue) {
-                innerClassAnnotations.add(((Type) t).getClassName());
-            }
-        }
-
-        for (String innerClassName : innerClassAnnotations) {
-            ClassNode innerClassNode;
-            try {
-                innerClassNode = MixinService.getService().getBytecodeProvider().getClassNode(innerClassName);
-            } catch (ClassNotFoundException | IOException e) {
-                throw new RuntimeException(e);
-            }
-            innerClassNode.innerClasses.clear();
-
-            remapAndLoadClass(innerClassNode, true);
-            // TODO add inner class to classNode
-        }
+    public static void addMagicClass(String className) throws IOException, ClassNotFoundException {
+        ClassNode classNode = MixinService.getService().getBytecodeProvider()
+                .getClassNode(className);
+        magicClassesQueue.add(classNode);
     }
 
-    public static void remapAndLoadClass(ClassNode classNode, boolean remapInnerClasses) {
-        if (remapInnerClasses) {
+    public static void commitMagicClass() {
+        for (ClassNode classNode : magicClassesQueue) {
+            if (classNode.innerClasses == null) {
+                continue;
+            }
             for (InnerClassNode innerClassNode : classNode.innerClasses) {
                 try {
                     ClassNode i = (MixinService.getService().getBytecodeProvider()
                             .getClassNode(innerClassNode.name));
-                    remapAndLoadClass(i, false);
+                    remapAndLoadClass(i);
                 } catch (ClassNotFoundException | IOException e) {
-                    //throw new RuntimeException(e);
-                    // net/fabricmc/fabric/impl/transfer/item/SpecialLogicInventory have inner class org/jetbrains/annotations/ApiStatus$Internal
-                    // but can not found it...
+                    throw new RuntimeException(e);
                 }
             }
+            remapAndLoadClass(classNode);
         }
+        magicClassesQueue.clear();
+    }
 
+    public static void remapAndLoadClass(ClassNode classNode) {
+        // TODO: add innerclass to target class
+        AnnotationNode classRemapAnnotation = Annotations.getVisible(classNode, Remap.class);
+        if (classRemapAnnotation == null) {
+            return;
+        }
+        String oldName = classNode.name;
+        // remap first time
+        if (!classMap.containsKey(oldName)) {
+            classMap.put(oldName, Annotations.getValue(classRemapAnnotation, "value"));
+            applyRemap(classNode);
+            MagicStreamHandler.addClass(classNode);
+        }
         if (classNode.innerClasses != null) {
             for (InnerClassNode innerClassNode : classNode.innerClasses) {
                 innerClassNode.name = remap(innerClassNode.name);
                 innerClassNode.outerName = remap(innerClassNode.outerName);
             }
-        }
-        AnnotationNode classRemapAnnotation = Annotations.getVisible(classNode, Remap.class);
-        if (classRemapAnnotation != null) {
-            String oldName = classNode.name;
-
-            // remap first time
-            if (!classMap.containsKey(oldName)) {
-                classMap.put(oldName, Annotations.getValue(classRemapAnnotation, "value"));
-                applyRemap(classNode);
-                MagicStreamHandler.addClass(classNode);
-            }
-        }
-
-    }
-
-
-    public static void remapInterfaces(ClassNode classNode) {
-        // remap interfaces
-        for (String interfaceName : classNode.interfaces) {
-            ClassNode interfaceClassNode;
-            try {
-                interfaceClassNode = MixinService.getService().getBytecodeProvider().getClassNode(interfaceName);
-            } catch (ClassNotFoundException | IOException e) {
-                throw new RuntimeException(e);
-            }
-            remapAndLoadClass(interfaceClassNode, true);
         }
     }
 
@@ -334,6 +333,7 @@ public class MixinUtil {
 
                 if (abstractInsnNode instanceof MethodInsnNode) {
                     MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
+                    methodInsnNode.owner = remap(methodInsnNode.owner);
                     if (Objects.equals(methodInsnNode.owner, classNode.name)) {
                         MethodNode remappedMethodNode = remappedMethodsMap.getOrDefault(methodInsnNode.name + methodInsnNode.desc, null);
                         if (remappedMethodNode != null) {
@@ -341,7 +341,6 @@ public class MixinUtil {
                         }
                     }
                     methodInsnNode.desc = remap(methodInsnNode.desc);
-                    methodInsnNode.owner = remap(methodInsnNode.owner);
                 }
 
                 if (abstractInsnNode instanceof TypeInsnNode) {

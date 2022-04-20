@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.compat.minecraft.math;
 
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector4f;
 import top.hendrixshen.magiclib.compat.annotation.Remap;
 
 public interface Matrix4fCompatApi {
@@ -36,4 +37,7 @@ public interface Matrix4fCompatApi {
         return null;
     }
 
+    default void multiplyVector4f(Vector4f vector4f) {
+        // vector4f.transform(matrix4f);
+    }
 }

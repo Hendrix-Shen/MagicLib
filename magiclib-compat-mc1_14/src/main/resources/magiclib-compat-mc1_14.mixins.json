@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "accessor.AccessorMatrix4f",
+    "minecraft.blaze3d.vertex.MixinBufferBuilder",
     "minecraft.client.MixinCamera",
     "minecraft.client.gui.MixinFont",
     "minecraft.client.gui.components.MixinAbstractButton",

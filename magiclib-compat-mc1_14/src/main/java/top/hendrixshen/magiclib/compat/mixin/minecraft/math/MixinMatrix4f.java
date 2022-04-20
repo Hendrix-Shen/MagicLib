@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.compat.mixin.minecraft.math;
 
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -11,7 +12,7 @@ import top.hendrixshen.magiclib.compat.minecraft.math.Matrix4fCompatApi;
 import top.hendrixshen.magiclib.compat.mixin.accessor.AccessorMatrix4f;
 
 @Mixin(Matrix4f.class)
-public class MixinMatrix4f implements Matrix4fCompatApi {
+public abstract class MixinMatrix4f implements Matrix4fCompatApi {
     @Shadow
     @Final
     private float[] values;
@@ -104,5 +105,18 @@ public class MixinMatrix4f implements Matrix4fCompatApi {
             }
         }
         return ret;
+    }
+
+    @Override
+    public void multiplyVector4f(Vector4f vector4f) {
+        float vx = vector4f.x();
+        float vy = vector4f.y();
+        float vz = vector4f.z();
+        float vw = vector4f.w();
+        float x = values[0] * vx + values[4] * vy + values[8] * vz + values[12] * vw;
+        float y = values[1] * vx + values[5] * vy + values[9] * vz + values[13] * vw;
+        float z = values[2] * vx + values[6] * vy + values[10] * vz + values[14] * vw;
+        float w = values[3] * vx + values[7] * vy + values[11] * vz + values[15] * vw;
+        vector4f.set(x, y, z, w);
     }
 }

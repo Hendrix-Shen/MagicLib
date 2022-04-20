@@ -3,10 +3,12 @@ package net.minecraft.network.chat;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.compat.annotation.InnerClass;
 import top.hendrixshen.magiclib.compat.annotation.Remap;
 
 import java.util.UUID;
 
+@InnerClass(HoverEvent.class)
 public class HoverEventCompat {
     public static final String Action_SHOW_TEXT = "SHOW_TEXT";
     public static final String Action_SHOW_ITEM = "SHOW_ITEM";

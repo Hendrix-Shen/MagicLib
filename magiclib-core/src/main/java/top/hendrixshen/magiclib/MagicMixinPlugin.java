@@ -7,6 +7,7 @@ import top.hendrixshen.magiclib.dependency.Dependencies;
 import top.hendrixshen.magiclib.dependency.mixin.DepCheckFailureCallback;
 import top.hendrixshen.magiclib.util.FabricUtil;
 import top.hendrixshen.magiclib.util.MagicStreamHandler;
+import top.hendrixshen.magiclib.util.MixinUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -77,5 +78,6 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
                 throw new RuntimeException(e);
             }
         }
+        MixinUtil.commitMagicClass();
     }
 }

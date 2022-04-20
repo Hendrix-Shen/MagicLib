@@ -14,9 +14,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface InnerClass {
     /**
-     * List of classes to be injected.
+     * Outter class
      *
-     * @return Class list.
+     * @return Class.
      */
-    Class<?>[] value();
+    Class<?> value();
 }

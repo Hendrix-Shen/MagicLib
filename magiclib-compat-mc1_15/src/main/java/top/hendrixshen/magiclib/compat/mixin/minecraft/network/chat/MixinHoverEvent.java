@@ -10,10 +10,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.compat.annotation.InitMethod;
-import top.hendrixshen.magiclib.compat.annotation.InnerClass;
 import top.hendrixshen.magiclib.compat.annotation.ThisInitMethod;
 
-@InnerClass({HoverEventCompat.Action.class, HoverEventCompat.ItemStackInfo.class, HoverEventCompat.EntityTooltipInfo.class})
 @Mixin(HoverEvent.class)
 public class MixinHoverEvent {
     private static HoverEvent.Action getLegacyAction(HoverEventCompat.Action action) {
