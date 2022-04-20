@@ -24,6 +24,12 @@ public abstract class MixinEntity {
     @Shadow
     public float yRot;
 
+    @Shadow
+    public float xRot;
+
+    @Shadow
+    public boolean onGround;
+
     @Remap("method_9203")
     public void sendMessage(Component component, UUID uuid) {
         this.sendMessage(component);
@@ -62,5 +68,25 @@ public abstract class MixinEntity {
     @Remap("method_36456")
     public void setYRot(float f) {
         this.yRot = f;
+    }
+
+    @Remap("method_36455")
+    public float getXRot() {
+        return this.xRot;
+    }
+
+    @Remap("method_36457")
+    public void setXRot(float f) {
+        this.xRot = f;
+    }
+
+    @Remap("method_24830")
+    public void setOnGround(boolean bl) {
+        this.onGround = bl;
+    }
+
+    @Remap("method_24828")
+    public boolean isOnGround() {
+        return this.onGround;
     }
 }
