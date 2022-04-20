@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.hendrixshen.magiclib.dependency.Predicates;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
@@ -34,5 +35,10 @@ public abstract class MixinGuiTextFieldGeneric extends EditBox {
     @Inject(method = "setCursorPosition", at = @At(value = "RETURN"))
     private void postSetCursorPosition(int pos, CallbackInfo ci) {
         setCursorPositionCalled = false;
+    }
+
+    @Inject(method = "getCursorPosition", at = @At(value = "HEAD"), cancellable = true)
+    private void preGetCursorPosition(CallbackInfoReturnable<Integer> cir) {
+        cir.setReturnValue(super.getCursorPosition());
     }
 }
