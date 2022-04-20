@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "minecraft.blaze3d.systems.MixinRenderSystem",
+    "minecraft.blaze3d.vertex.MixinBufferBuilder",
     "minecraft.client.gui.MixinScreen",
     "minecraft.client.renderer.MixinGameRenderer"
   ],
