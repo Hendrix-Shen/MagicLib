@@ -14,6 +14,7 @@ public class MagicCompatMixinPlugin extends MagicMixinPlugin {
             MixinUtil.addMagicClass("com.mojang.blaze3d.vertex.VertexFormatCompat");
             MixinUtil.addMagicClass("com.mojang.math.Matrix3fCompat");
             MixinUtil.addMagicClass("net.minecraft.client.renderer.MultiBufferSourceCompat");
+            MixinUtil.addMagicClass("net.minecraft.client.renderer.ShaderInstanceCompat");
             MixinUtil.addMagicClass("net.minecraft.network.chat.FormattedTextCompat");
             MixinUtil.addMagicClass("net.minecraft.network.chat.HoverEventCompat");
             MixinUtil.addMagicClass("net.minecraft.network.chat.MutableComponentCompat");

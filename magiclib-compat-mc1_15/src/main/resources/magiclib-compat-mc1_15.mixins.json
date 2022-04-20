@@ -11,7 +11,8 @@
     "minecraft.client.gui.components.MixinAbstractButton",
     "minecraft.client.gui.components.MixinAbstractWidget",
     "minecraft.client.gui.components.MixinButton",
-    "minecraft.client.gui.screens.MixinScreen"
+    "minecraft.client.gui.screens.MixinScreen",
+    "minecraft.client.renderer.MixinGameRenderer"
   ],
   "server": [
   ],

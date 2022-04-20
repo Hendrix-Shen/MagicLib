@@ -1,12 +1,13 @@
 {
   "required": true,
   "package": "top.hendrixshen.magiclib.compat.mixin",
-  "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
+  "plugin": "top.hendrixshen.magiclib.compat.MagicCompatMixinPlugin",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "client": [
     "minecraft.blaze3d.systems.MixinRenderSystem",
-    "minecraft.client.gui.MixinScreen"
+    "minecraft.client.gui.MixinScreen",
+    "minecraft.client.renderer.MixinGameRenderer"
   ],
   "server": [
   ],
