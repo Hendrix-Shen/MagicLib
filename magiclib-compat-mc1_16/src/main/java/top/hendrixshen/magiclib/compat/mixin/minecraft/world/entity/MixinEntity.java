@@ -15,6 +15,9 @@ public class MixinEntity {
     @Shadow
     public Level level;
 
+    @Shadow
+    public float yRot;
+
     @Remap("method_31477")
     public int getBlockX() {
         return this.blockPosition.getX();
@@ -33,5 +36,15 @@ public class MixinEntity {
     @Remap("method_37908")
     public Level getLevel() {
         return this.level;
+    }
+
+    @Remap("method_36454")
+    public float getYRot() {
+        return this.yRot;
+    }
+
+    @Remap("method_36456")
+    public void setYRot(float f) {
+        this.yRot = f;
     }
 }

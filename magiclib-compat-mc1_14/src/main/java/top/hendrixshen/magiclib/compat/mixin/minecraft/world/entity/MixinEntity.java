@@ -21,6 +21,9 @@ public abstract class MixinEntity {
     @Shadow
     public abstract BlockPos getCommandSenderBlockPosition();
 
+    @Shadow
+    public float yRot;
+
     @Remap("method_9203")
     public void sendMessage(Component component, UUID uuid) {
         this.sendMessage(component);
@@ -49,5 +52,15 @@ public abstract class MixinEntity {
     @Remap("method_37908")
     public Level getLevel() {
         return this.level;
+    }
+
+    @Remap("method_36454")
+    public float getYRot() {
+        return this.yRot;
+    }
+
+    @Remap("method_36456")
+    public void setYRot(float f) {
+        this.yRot = f;
     }
 }
