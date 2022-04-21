@@ -38,8 +38,8 @@ public abstract class MixinFont {
         GlStateManager.pushMatrix();
         GlStateManager.multMatrix(matrix4f);
         GlStateManager.disableLighting();
-        GlStateManager.depthMask(false);
         if (seeThrough) {
+            GlStateManager.depthMask(false);
             GlStateManager.disableDepthTest();
         }
 
@@ -68,6 +68,7 @@ public abstract class MixinFont {
             ret = this.draw(component.getColoredString(), x, y, color);
         }
         if (seeThrough) {
+            GlStateManager.depthMask(true);
             GlStateManager.enableDepthTest();
         }
         GlStateManager.enableLighting();
