@@ -247,6 +247,8 @@ public class MixinUtil {
         // remap first time
         if (!classMap.containsKey(oldName)) {
             classMap.put(oldName, Annotations.getValue(classRemapAnnotation, "value"));
+            classNode.name = remap(classNode.name);
+            classNode.visibleAnnotations.removeIf(annotationNode -> annotationNode.desc.equals(Type.getDescriptor(Remap.class)));
             applyRemap(classNode);
             MagicStreamHandler.addClass(classNode);
         }
@@ -275,7 +277,6 @@ public class MixinUtil {
         }
 
         classNode.signature = remap(classNode.signature);
-        classNode.name = remap(classNode.name);
 
         // Remap field
         Map<String, FieldNode> remappedFieldsMap = new HashMap<>();
@@ -285,6 +286,7 @@ public class MixinUtil {
                 String intermediaryName = Annotations.getValue(fieldRemapAnnotation, "value");
                 remappedFieldsMap.put(fieldNode.name, fieldNode);
                 fieldNode.name = intermediaryName;
+                fieldNode.visibleAnnotations.removeIf(annotationNode -> annotationNode.desc.equals(Type.getDescriptor(Remap.class)));
             }
             fieldNode.desc = remap(fieldNode.desc);
             fieldNode.signature = remap(fieldNode.signature);
