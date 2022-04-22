@@ -1,193 +1,54 @@
 plugins {
-    id("java-library")
     id("maven-publish")
+    id("fabric-loom").version("0.12-SNAPSHOT").apply(false)
+    // https://github.com/Juuxel/LoomQuiltflower
+    id("io.github.juuxel.loom-quiltflower").version("1.7.0").apply(false)
+    // https://github.com/ReplayMod/preprocessor
+    // https://github.com/Fallen-Breath/preprocessor
+    id("com.replaymod.preprocess").version("b7207cffa9")
+    id("org.ajoberstar.grgit").version("4.1.0")
 }
 
-def baseVersion = "${project.mod_version}" as String
-def ENV = System.getenv()
+preprocess {
+    def mc114 = createNode("1.14.4", 1_14_04, "mojang")
+    def mc115 = createNode("1.15.2", 1_15_02, "mojang")
+    def mc116 = createNode("1.16.5", 1_16_05, "mojang")
+    def mc117 = createNode("1.17.1", 1_17_01, "mojang")
+    def mc118 = createNode("1.18.2", 1_18_02, "mojang") // root
+    def mcSnapshot = createNode("snapshot", 1_19_00, "mojang")
 
-if (ENV.BUILD_NUMBER) {
-    version = baseVersion + "." + ENV.BUILD_NUMBER
-} else {
-    version = baseVersion + ".114514"
-}
-
-var currentProject = project
-
-allprojects {
-    apply(plugin: "maven-publish")
-
-    tasks.withType(JavaCompile).configureEach {
-        it.options.encoding = "UTF-8"
-        it.sourceCompatibility = JavaVersion.VERSION_1_8
-        it.targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    tasks.withType(GenerateModuleMetadata) {
-        enabled = false
-    }
-
-    java {
-        withSourcesJar()
-    }
+    mc114.link(mc115, null)
+    mc115.link(mc116, null)
+    mc116.link(mc117, null)
+    mc117.link(mc118, null)
+    mc118.link(mcSnapshot, null)
 }
 
 subprojects {
-    apply(plugin: "fabric-loom")
-
-    loom.runConfigs.configureEach {
-        property("mixin.debug.export", "true")
-    }
-
-    version = currentProject.version
-    group = currentProject.group
-
-    repositories {
-        maven {
-            url("https://www.cursemaven.com")
-        }
-        maven {
-            url("https://api.modrinth.com/maven")
-        }
-        mavenCentral()
-    }
-
-    dependencies {
-        minecraft("com.mojang:minecraft:${project.minecraft_version}")
-        mappings(loom.officialMojangMappings())
-
-        modApi("curse.maven:malilib-303119:${project.malilib_version}")
-        modApi("curse.maven:modmenu-308702:${project.modmenu_version}")
-
-        modApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-        modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.inGameAccountSwitcher_version}")
-
-        modApi("net.fabricmc:fabric-loader:${currentProject.fabric_loader_version}")
-
-        if (project.name != (String) "${currentProject.mod_id}-core") {
-            if (project.gradle.startParameter.taskNames.size() == 1 &&
-                    project.gradle.startParameter.taskNames.get(0) == "runClient") {
-                modImplementation(project(path: ":${currentProject.mod_id}-core")) {
-                    transitive = false
-                }
-            } else {
-                implementation(project(path: ":${currentProject.mod_id}-core")) {
-                    transitive = false
+    if (project.name ==  "fabricWrapper") {
+        apply plugin: "fabric-loom"
+        archivesBaseName = project.archives_base_name
+        version = project.version
+        dependencies {
+            minecraft("com.mojang:minecraft:${project.minecraft_version}")
+            mappings(loom.officialMojangMappings())
+            parent.subprojects.collect {
+                if (it.name != "fabricWrapper") {
+                    include(it)
                 }
             }
-        } else {
-            runtimeOnly(fileTree([dir    : "../${currentProject.mod_id}-compat-mc1_18/build/devlibs",
-                                  include: ["${currentProject.mod_id}-compat-mc1_18-${project.version}-dev.jar"]]))
         }
-        runtimeOnly(currentProject) {
-            transitive = false
-        }
-        modRuntimeOnly("curse.maven:lazydfu-433518:${currentProject.lazydfu_version}")
-
-        //modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
-    }
-
-    processResources {
-        inputs.property("version", currentProject.version)
-        filesMatching("fabric.mod.json") {
-            include("fabric.mod.json")
-            expand(["mod_version" : currentProject.version,
-                    "mod_id"      : currentProject.mod_id,
-                    "mod_name"    : currentProject.mod_name,
-                    "mod_homepage": currentProject.mod_homepage,
-                    "mod_sources" : currentProject.mod_sources,
-                    "mod_license" : currentProject.mod_license
-            ])
-        }
-    }
-
-
-    runClient {
-        defaultCharacterEncoding = "UTF-8"
-    }
-
-
-    runServer {
-        defaultCharacterEncoding = "UTF-8"
-    }
-
-    java {
-        withSourcesJar()
-    }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from(components.java)
-            }
-        }
-
-        repositories {
-            mavenLocal()
-            maven {
-                url("$rootDir/publish")
+        processResources {
+            inputs.property("version", version)
+            filesMatching("fabric.mod.json") {
+                expand(["mod_version" : project.version,
+                        "mod_id"      : project.mod_id,
+                        "mod_name"    : project.mod_name,
+                        "mod_homepage": project.mod_homepage,
+                        "mod_sources" : project.mod_sources,
+                        "mod_license" : project.mod_license,
+                ])
             }
         }
     }
 }
-
-import groovy.json.JsonBuilder
-
-processResources {
-    inputs.property "version", currentProject.version
-    if (project.gradle.startParameter.taskNames.size() >= 1 &&
-            project.gradle.startParameter.taskNames.get(0) != "runClient") {
-        var jars = []
-        subprojects.each {
-            jars.add(["file": "META-INF/jars/${it.name}-${it.version}.jar"])
-        }
-        filesMatching(("fabric.mod.json"), {
-            include("fabric.mod.json")
-            expand(["mod_version" : currentProject.version,
-                    "sub_jars"    : new JsonBuilder(jars).toPrettyString(),
-                    "mod_id"      : currentProject.mod_id,
-                    "mod_name"    : currentProject.mod_name,
-                    "mod_homepage": currentProject.mod_homepage,
-                    "mod_sources" : currentProject.mod_sources,
-                    "mod_license" : currentProject.mod_license
-            ])
-        })
-    }
-}
-
-jar {
-    dependsOn(subprojects.collect {
-        it.tasks.remapJar
-    })
-
-    doFirst {
-        copy {
-            from {
-                subprojects.collect {
-                    it.remapJar.outputs.files
-                }
-            }
-            into("build/tmp/submods/META-INF/jars")
-        }
-    }
-
-    from("LICENSE")
-    from("build/tmp/submods")
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from(components.java)
-            artifactId(project.mod_id)
-        }
-    }
-
-    repositories {
-        mavenLocal()
-        maven {
-            url("${rootDir}/publish")
-        }
-    }
-}
-

@@ -1,0 +1,115 @@
+apply(plugin: "maven-publish")
+apply(plugin: "fabric-loom")
+apply(plugin: "io.github.juuxel.loom-quiltflower")
+apply(plugin: "com.replaymod.preprocess")
+
+int mcVersion = 1
+
+preprocess {
+    mcVersion = vars.get()["MC"]
+    tabIndentation = false
+}
+
+repositories {
+    maven {
+        url 'https://www.cursemaven.com/'
+    }
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
+    mavenCentral()
+}
+
+
+dependencies {
+    minecraft("com.mojang:minecraft:${project.minecraft_version}")
+    mappings(loom.officialMojangMappings())
+
+    modApi("curse.maven:malilib-303119:${project.malilib_version}")
+    modApi("curse.maven:modmenu-308702:${project.modmenu_version}")
+
+    modApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
+    modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.inGameAccountSwitcher_version}")
+
+    modApi("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
+
+
+    modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
+
+    modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
+}
+
+
+loom {
+    runConfigs.all {
+        // to make sure it generates all "Minecraft Client (:subproject_name)" applications
+        ideConfigGenerated = true
+        property("mixin.debug.export", "true")
+        runDir "../../run"
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+def baseVersion = "${project.mod_version}" as String
+def ENV = System.getenv()
+
+if (ENV.BUILD_NUMBER) {
+    version = baseVersion + "." + ENV.BUILD_NUMBER
+} else {
+    version = baseVersion + ".114514"
+}
+
+
+archivesBaseName = project.archives_base_name + "-" + project.minecraft_version
+group = project.maven_group
+
+processResources {
+    inputs.property("version", version)
+    filesMatching("fabric.mod.json") {
+        expand(["mod_version"         : project.version,
+                "mod_id"              : project.mod_id,
+                "mod_name"            : project.mod_name,
+                "mod_homepage"        : project.mod_homepage,
+                "mod_sources"         : project.mod_sources,
+                "mod_license"         : project.mod_license,
+                "minecraft_dependency": project.minecraft_dependency,
+        ])
+    }
+}
+
+// ensure that the encoding is set to UTF-8, no matter what the system default is
+// this fixes some edge cases with special characters not displaying correctly
+// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+java {
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    withSourcesJar()
+}
+
+jar {
+    from("../../LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from(components.java)
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        maven {
+            url("$rootDir/publish")
+        }
+    }
+}
