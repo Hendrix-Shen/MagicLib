@@ -5,14 +5,15 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "minecraft.client.gui.screen.MixinScreen",
-    "minecraft.client.gui.MixinFont"
+    "minecraft.client.gui.MixinFont",
+    "minecraft.client.gui.screen.MixinScreen"
   ],
   "server": [
   ],
   "mixins": [
     "minecraft.network.chat.MixinBaseComponent",
     "minecraft.network.chat.MixinStyle",
+    "minecraft.world.MixinSimpleContainer",
     "minecraft.world.entity.MixinEntity",
     "minecraft.world.entity.player.MixinPlayer",
     "minecraft.world.item.MixinItemStack",

@@ -61,6 +61,9 @@
       "net/minecraft/network/chat/Style": [
         "top/hendrixshen/magiclib/compat/minecraft/network/chat/StyleCompatApi"
       ],
+      "net/minecraft/world/SimpleContainer": [
+        "top/hendrixshen/magiclib/compat/minecraft/world/SimpleContainerCompatApi"
+      ],
       "net/minecraft/world/entity/Entity": [
         "top/hendrixshen/magiclib/compat/minecraft/world/entity/EntityCompatApi"
       ],
