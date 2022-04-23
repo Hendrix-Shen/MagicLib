@@ -5,7 +5,8 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "minecraft.client.gui.screen.MixinScreen"
+    "minecraft.client.gui.screen.MixinScreen",
+    "minecraft.client.gui.MixinFont"
   ],
   "server": [
   ],

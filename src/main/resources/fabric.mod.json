@@ -49,6 +49,9 @@
   },
   "custom": {
     "loom:injected_interfaces": {
+      "net/minecraft/client/gui/Font": [
+        "top/hendrixshen/magiclib/compat/minecraft/client/gui/FontCompatApi"
+      ],
       "net/minecraft/client/gui/screens/Screen": [
         "top/hendrixshen/magiclib/compat/minecraft/client/gui/screens/ScreenCompatApi"
       ],
