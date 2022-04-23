@@ -13,6 +13,7 @@
     "minecraft.network.chat.MixinBaseComponent",
     "minecraft.network.chat.MixinStyle",
     "minecraft.world.entity.MixinEntity",
+    "minecraft.world.entity.player.MixinPlayer",
     "minecraft.world.item.MixinItemStack",
     "minecraft.world.level.MixinLevel"
   ]
