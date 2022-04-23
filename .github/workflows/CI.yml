@@ -43,6 +43,9 @@ jobs:
         run: chmod +x gradlew
 
       - name: Publish Maven with Gradle
+        run: ./gradlew preprocessResources --stacktrace
+
+      - name: Publish Maven with Gradle
         run: ./gradlew build publish -x test --stacktrace
 
       - name: Upload Maven to GitHub

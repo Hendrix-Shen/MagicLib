@@ -61,6 +61,9 @@
       "net/minecraft/world/entity/Entity": [
         "top/hendrixshen/magiclib/compat/minecraft/world/entity/EntityCompatApi"
       ],
+      "net/minecraft/world/item/ItemStack": [
+        "top/hendrixshen/magiclib/compat/minecraft/world/item/ItemStackCompatApi"
+      ],
       "net/minecraft/world/level/Level": [
         "top/hendrixshen/magiclib/compat/minecraft/world/level/LevelCompatApi"
       ]

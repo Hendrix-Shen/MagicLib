@@ -1,6 +1,6 @@
 apply(plugin: "maven-publish")
 apply(plugin: "fabric-loom")
-apply(plugin: "io.github.juuxel.loom-quiltflower")
+// apply(plugin: "io.github.juuxel.loom-quiltflower")
 apply(plugin: "com.replaymod.preprocess")
 
 int mcVersion = 1
@@ -102,6 +102,8 @@ jar {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            artifactId = "${project.mod_id}"
+            version = "${project.minecraft_version}-${project.version}"
             from(components.java)
         }
     }

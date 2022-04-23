@@ -4,6 +4,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public interface LevelCompatApi {
     default ResourceLocation getDimensionLocation() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

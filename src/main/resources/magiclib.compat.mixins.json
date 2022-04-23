@@ -12,6 +12,8 @@
   "mixins": [
     "minecraft.network.chat.MixinBaseComponent",
     "minecraft.network.chat.MixinStyle",
-    "minecraft.world.entity.MixinEntity"
+    "minecraft.world.entity.MixinEntity",
+    "minecraft.world.item.MixinItemStack",
+    "minecraft.world.level.MixinLevel"
   ]
 }
