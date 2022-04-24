@@ -1,10 +1,7 @@
 package top.hendrixshen.magiclib.compat.minecraft.network.chat;
 
 import net.minecraft.network.chat.Style;
-
-//#if MC <= 11605
-//$$ import org.jetbrains.annotations.Nullable;
-//#endif
+import org.jetbrains.annotations.Nullable;
 
 public interface StyleCompatApi {
     static Style empty() {
@@ -15,20 +12,31 @@ public interface StyleCompatApi {
         //#endif
     }
 
+    default Style withStrikethroughCompat(@Nullable Boolean strikethrough) {
+        throw new UnsupportedOperationException();
+    }
+
+    default Style withObfuscatedCompat(@Nullable Boolean obfuscated) {
+        throw new UnsupportedOperationException();
+    }
+
+    default Style withUnderlinedCompat(@Nullable Boolean underlined) {
+        throw new UnsupportedOperationException();
+    }
 
     //#if MC <= 11605
     //$$ default Style withStrikethrough(@Nullable Boolean strikethrough) {
-    //$$     throw new UnsupportedOperationException();
+    //$$     return this.withStrikethroughCompat(strikethrough);
     //$$ }
 
     //$$ default Style withObfuscated(@Nullable Boolean obfuscated) {
-    //$$     throw new UnsupportedOperationException();
+    //$$     return this.withObfuscatedCompat(obfuscated);
     //$$ }
     //#endif
 
     //#if MC <= 11502
     //$$ default Style withUnderlined(@Nullable Boolean underlined) {
-    //$$     throw new UnsupportedOperationException();
+    //$$     return this.withUnderlinedCompat(underlined);
     //$$ }
     //#endif
 }

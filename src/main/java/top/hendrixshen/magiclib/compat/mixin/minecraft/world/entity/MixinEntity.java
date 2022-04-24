@@ -1,105 +1,125 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.world.entity;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.minecraft.world.entity.EntityCompatApi;
 
-//#if MC <= 11701
-//$$ import org.spongepowered.asm.mixin.Shadow;
-//$$ import net.minecraft.world.level.Level;
-//#endif
-//#if MC <= 11605
-//$$ import net.minecraft.core.BlockPos;
-//#endif
-//#if MC <= 11502
-//$$ import net.minecraft.network.chat.Component;
-//$$ import java.util.UUID;
-//#endif
+import java.util.UUID;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity implements EntityCompatApi {
-    //#if MC <= 11701
+
+    //#if MC > 11701
+    @Shadow
+    public abstract Level getLevel();
+    //#else
     //$$ @Shadow
     //$$ public Level level;
-    //$$ public Level getLevel() {
-    //$$     return this.level;
-    //$$ }
     //#endif
 
+    @Override
+    public Level getLevelCompat() {
+        //#if MC > 11701
+        return this.getLevel();
+        //#else
+        //$$ return this.level;
+        //#endif
+    }
+
     //#if MC <= 11605
-    //#if MC > 11502
-    //$$ @Shadow
-    //$$ public abstract BlockPos blockPosition();
-    //#endif
     //$$ @Shadow
     //$$ public float yRot;
     //$$ @Shadow
     //$$ public float xRot;
 
     //$$ @Override
-    //$$ public int getBlockX() {
-    //$$     return this.blockPosition().getX();
-    //$$ }
-
-    //$$ @Override
-    //$$ public int getBlockY() {
-    //$$     return this.blockPosition().getY();
-    //$$ }
-
-    //$$ @Override
-    //$$ public int getBlockZ() {
-    //$$     return this.blockPosition().getZ();
-    //$$ }
-
-    //$$ @Override
-    //$$ public float getYRot() {
+    //$$ public float getYRotCompat() {
     //$$     return this.yRot;
     //$$ }
 
     //$$ @Override
-    //$$ public void setYRot(float f) {
-    //$$     this.yRot = f;
+    //$$ public void setYRotCompat(float yRot) {
+    //$$     this.yRot = yRot;
     //$$ }
 
     //$$ @Override
-    //$$ public float getXRot() {
+    //$$ public float getXRotCompat() {
     //$$     return this.xRot;
     //$$ }
 
     //$$ @Override
-    //$$ public void setXRot(float f) {
-    //$$     this.xRot = f;
+    //$$ public void setXRotCompat(float xRot) {
+    //$$     this.xRot = xRot;
     //$$ }
     //#endif
 
-    //#if MC <= 11502
-    //$$ @Shadow
-    //$$ public abstract void sendMessage(Component component);
+
+    //#if MC >11502
+    @Shadow
+    public abstract BlockPos blockPosition();
+
+    @Shadow
+    public abstract boolean isOnGround();
+
+    @Shadow
+    public abstract void setOnGround(boolean onGround);
+
+    @Shadow
+    public abstract void sendMessage(Component component, UUID uUID);
+
+
+    //#else
+
     //$$ @Shadow
     //$$ public abstract BlockPos getCommandSenderBlockPosition();
+
+    //$$ @Shadow
+    //$$ public abstract void sendMessage(Component component);
+
     //$$ @Shadow
     //$$ public boolean onGround;
 
-    //$$ @Override
-    //$$ public boolean isOnGround() {
-    //$$     return this.onGround;
-    //$$ }
-
-    //$$ @Override
-    //$$ public BlockPos blockPosition() {
-    //$$     return this.getCommandSenderBlockPosition();
-    //$$ }
-
-    //$$ @Override
-    //$$ public void sendMessage(Component component, UUID uuid) {
-    //$$     this.sendMessage(component);
-    //$$ }
-
-    //$$ @Override
-    //$$ public void setOnGround(boolean bl) {
-    //$$     this.onGround = bl;
-    //$$ }
     //#endif
 
+    @Override
+    public BlockPos blockPositionCompat() {
+        //#if MC > 11502
+        return this.blockPosition();
+        //#else
+        //$$ return this.getCommandSenderBlockPosition();
+        //#endif
+    }
+
+
+    @Override
+    public boolean isOnGroundCompat() {
+        //#if MC > 11502
+        return this.isOnGround();
+        //#else
+        //$$ return this.onGround;
+        //#endif
+    }
+
+    @Override
+    public void setOnGroundCompat(boolean onGround) {
+        //#if MC > 11502
+        this.setOnGround(onGround);
+        //#else
+        //$$ this.onGround = onGround;
+        //#endif
+    }
+
+    @Override
+    public void sendMessageCompat(Component component, UUID uuid) {
+        //#if MC > 11502
+        this.sendMessage(component, uuid);
+        //#else
+        //$$ this.sendMessage(component);
+        //#endif
+    }
 
 }

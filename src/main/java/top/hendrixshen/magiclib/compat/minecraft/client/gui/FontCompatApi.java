@@ -19,10 +19,13 @@ public interface FontCompatApi {
     //$$ }
     //#endif
 
+    // TODO add compat
+
     default int drawInBatch(String text, float x, float y, int color, boolean shadow, Matrix4f matrix4f,
                             boolean seeThrough, int backgroundColor, int light) {
         throw new UnsupportedOperationException();
     }
+
     default int drawInBatch(Component component, float x, float y, int color, boolean shadow, Matrix4f matrix4f,
                             boolean seeThrough, int backgroundColor, int light) {
         throw new UnsupportedOperationException();

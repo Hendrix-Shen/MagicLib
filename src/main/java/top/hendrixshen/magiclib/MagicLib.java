@@ -3,7 +3,6 @@ package top.hendrixshen.magiclib;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
-import top.hendrixshen.magiclib.compat.test.TestCompat;
 import top.hendrixshen.magiclib.config.ConfigHandler;
 import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
@@ -14,7 +13,6 @@ public class MagicLib implements ModInitializer, ClientModInitializer, Dedicated
 
     @Override
     public void onInitialize() {
-        TestCompat.test();
         MagicLibReference.LOGGER.info("[{}]: Mod initialized - Version: {}", MagicLibReference.getModName(),
                 MagicLibReference.getModVersion());
     }

@@ -20,6 +20,12 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    testmod {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
+}
 
 dependencies {
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
@@ -37,17 +43,55 @@ dependencies {
     modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
 
     modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
+
+    testmodImplementation(sourceSets.main.output)
 }
 
 
 loom {
+
+    runs {
+        testmodClient {
+            client()
+            name = "Testmod Client"
+            source sourceSets.testmod
+        }
+        testmodServer {
+            server()
+            name = "Testmod Server"
+            source sourceSets.testmod
+        }
+
+        autoTestServer {
+            inherit testmodServer
+
+            name "Auto Test Server"
+
+            vmArg "-Dmagiclib.autoTest"
+        }
+
+        gametest {
+            inherit testmodServer
+
+            name "Game Test"
+
+            // Enable the gametest runner
+            vmArg "-Dmagiclib.gametest"
+            vmArg "-Dmagiclib.gametest.report-file=${project.buildDir}/junit.xml"
+            runDir "build/gametest"
+        }
+    }
+
     runConfigs.all {
         // to make sure it generates all "Minecraft Client (:subproject_name)" applications
-        ideConfigGenerated = true
+        // ideConfigGenerated = true
         property("mixin.debug.export", "true")
         runDir "../../run"
     }
 }
+
+// test.dependsOn runGametest
+
 
 remapJar {
     remapperIsolation = true

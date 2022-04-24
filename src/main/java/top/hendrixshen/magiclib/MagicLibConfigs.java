@@ -8,7 +8,6 @@ import fi.dy.masa.malilib.util.Color4f;
 import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
-import top.hendrixshen.magiclib.compat.test.client.gui.screens.TestScreen;
 import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
@@ -58,18 +57,10 @@ public class MagicLibConfigs {
             dependencies = @Dependencies(and = @Dependency(value = "sodium", versionPredicate = ">=0.1")))
     public static boolean sodiumTest = false;
 
-    @Hotkey(hotkey = "M,A,B")
-    @Config(category = ConfigCategory.TEST)
-    public static ConfigHotkey openButtonTestScreen;
 
     public static void init(ConfigManager cm) {
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
             Minecraft.getInstance().setScreen(MagicLibConfigGui.getInstance());
-            return true;
-        });
-
-        openButtonTestScreen.getKeybind().setCallback((keyAction, iKeybind) -> {
-            Minecraft.getInstance().setScreen(new TestScreen());
             return true;
         });
 

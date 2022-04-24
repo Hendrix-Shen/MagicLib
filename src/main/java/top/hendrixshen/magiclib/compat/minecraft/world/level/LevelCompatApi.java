@@ -7,9 +7,13 @@ public interface LevelCompatApi {
         throw new UnsupportedOperationException();
     }
 
+    default int getMinBuildHeightCompat() {
+        throw new UnsupportedOperationException();
+    }
+
     //#if MC <= 11650
     //$$ default int getMinBuildHeight() {
-    //$$     return 0;
+    //$$     return this.getMinBuildHeightCompat();
     //$$ }
     //#endif
 }

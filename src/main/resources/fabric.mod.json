@@ -49,35 +49,35 @@
   },
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/client/gui/Font": [
+      "net/minecraft/class_327": [
         "top/hendrixshen/magiclib/compat/minecraft/client/gui/FontCompatApi"
       ],
-      "net/minecraft/client/gui/screens/Screen": [
+      "net/minecraft/class_437": [
         "top/hendrixshen/magiclib/compat/minecraft/client/gui/screens/ScreenCompatApi"
       ],
-      "net/minecraft/network/chat/Component": [
-        "top/hendrixshen/magiclib/compat/minecraft/network/chat/ComponentCompatApi"
-      ],
-      "net/minecraft/network/chat/Style": [
-        "top/hendrixshen/magiclib/compat/minecraft/network/chat/StyleCompatApi"
-      ],
-      "net/minecraft/world/SimpleContainer": [
+      "net/minecraft/class_1277": [
         "top/hendrixshen/magiclib/compat/minecraft/world/SimpleContainerCompatApi"
       ],
-      "net/minecraft/world/entity/Entity": [
+      "net/minecraft/class_1297": [
         "top/hendrixshen/magiclib/compat/minecraft/world/entity/EntityCompatApi"
       ],
-      "net/minecraft/world/entity/player/Player": [
+      "net/minecraft/class_1657": [
         "top/hendrixshen/magiclib/compat/minecraft/world/entity/player/PlayerCompatApi"
       ],
-      "net/minecraft/world/item/ItemStack": [
+      "net/minecraft/class_1799": [
         "top/hendrixshen/magiclib/compat/minecraft/world/item/ItemStackCompatApi"
       ],
-      "net/minecraft/world/level/block/entity/BlockEntity": [
-        "top/hendrixshen/magiclib/compat/minecraft/world/level/block/entity/BlockEntityCompatApi"
-      ],
-      "net/minecraft/world/level/Level": [
+      "net/minecraft/class_1937": [
         "top/hendrixshen/magiclib/compat/minecraft/world/level/LevelCompatApi"
+      ],
+      "net/minecraft/class_2561": [
+        "top/hendrixshen/magiclib/compat/minecraft/network/chat/ComponentCompatApi"
+      ],
+      "net/minecraft/class_2583": [
+        "top/hendrixshen/magiclib/compat/minecraft/network/chat/StyleCompatApi"
+      ],
+      "net/minecraft/class_2586": [
+        "top/hendrixshen/magiclib/compat/minecraft/world/level/block/entity/BlockEntityCompatApi"
       ]
     }
   }

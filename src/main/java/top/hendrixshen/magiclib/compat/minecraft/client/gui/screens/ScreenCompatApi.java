@@ -1,24 +1,35 @@
 package top.hendrixshen.magiclib.compat.minecraft.client.gui.screens;
 
-//#if MC <= 11605
-//$$ import net.minecraft.client.gui.components.Widget;
-//$$ import net.minecraft.client.gui.components.events.GuiEventListener;
-//#endif
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 
 public interface ScreenCompatApi {
+
+    default GuiEventListener addRenderableWidgetCompat(GuiEventListener guiEventListener) {
+        throw new UnsupportedOperationException();
+    }
+
+    default Widget addRenderableOnlyCompat(Widget widget) {
+        throw new UnsupportedOperationException();
+    }
+
+    default GuiEventListener addWidgetCompat(GuiEventListener guiEventListener) {
+        throw new UnsupportedOperationException();
+    }
+
     //#if MC <= 11605
     //$$ default GuiEventListener addRenderableWidget(GuiEventListener guiEventListener) {
-    //$$     throw new UnsupportedOperationException();
+    //$$     return this.addRenderableWidgetCompat(guiEventListener);
     //$$ }
 
     //$$ default Widget addRenderableOnly(Widget widget) {
-    //$$     throw new UnsupportedOperationException();
+    //$$    return this.addRenderableOnlyCompat(widget);
     //$$ }
     //#endif
 
     //#if MC <= 11502
     //$$ default GuiEventListener addWidget(GuiEventListener guiEventListener) {
-    //$$     throw new UnsupportedOperationException();
+    //$$     return this.addWidgetCompat(guiEventListener);
     //$$ }
     //#endif
 }

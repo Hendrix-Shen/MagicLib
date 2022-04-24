@@ -1,13 +1,16 @@
 package top.hendrixshen.magiclib.compat.minecraft.world.entity.player;
 
-//#if MC <= 11605
-//$$ import net.minecraft.world.entity.player.Inventory;
-//#endif
+import net.minecraft.world.entity.player.Inventory;
 
 public interface PlayerCompatApi {
+
+    default Inventory getInventoryCompat() {
+        throw new UnsupportedOperationException();
+    }
+
     //#if MC <= 11605
     //$$ default Inventory getInventory() {
-    //$$     throw new UnsupportedOperationException();
+    //$$     return this.getInventoryCompat();
     //$$ }
     //#endif
 }

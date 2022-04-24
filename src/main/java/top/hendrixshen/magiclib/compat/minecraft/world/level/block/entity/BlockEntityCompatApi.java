@@ -1,13 +1,16 @@
 package top.hendrixshen.magiclib.compat.minecraft.world.level.block.entity;
 
-//#if MC <= 11605
-//$$ import net.minecraft.nbt.CompoundTag;
-//#endif
+import net.minecraft.nbt.CompoundTag;
 
 public interface BlockEntityCompatApi {
-    //#if MC <= 11605
+
+    default void loadCompat(CompoundTag compoundTag) {
+        throw new UnsupportedOperationException();
+    }
+
+    //#if MC <= 11605 && MC > 11502
     //$$ default void load(CompoundTag compoundTag) {
-    //$$     throw new UnsupportedOperationException();
+    //$$     this.loadCompat(compoundTag);
     //$$ }
     //#endif
 }

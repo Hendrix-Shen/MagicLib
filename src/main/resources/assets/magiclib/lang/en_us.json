@@ -19,8 +19,6 @@
   "magiclib.config.test.colorConfig.comment": "colorConfig comment",
   "magiclib.config.test.stringListConfig.name": "stringListConfig",
   "magiclib.config.test.stringListConfig.comment": "stringListConfig comment",
-  "magiclib.config.test.openButtonTestScreen.name": "openButtonTestScreen",
-  "magiclib.config.test.openButtonTestScreen.comment": "openButtonTestScreen comment",
   "magiclib.config.test.optionListConfig.name": "optionListConfig",
   "magiclib.config.test.optionListConfig.comment": "optionListConfig comment",
   "magiclib.config.test.sodiumTest.name": "sodiumTest",

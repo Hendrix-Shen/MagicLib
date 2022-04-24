@@ -7,4 +7,11 @@ public interface SimpleContainerCompatApi {
     default void fromTagCompat(ListTag listTag) {
         throw new UnsupportedOperationException();
     }
+    //#if MC < 11502
+    // fuck remap
+    // it will be remapped to intermediary name....
+    ////$$ void fromTagCompat(ListTag listTag) {
+    ////$$     this.fromTagCompat(listTag);
+    ////$$ }
+    //#endif
 }

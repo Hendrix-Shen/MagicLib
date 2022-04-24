@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceKey;
 //$$ import net.minecraft.world.level.dimension.Dimension;
 //$$ import net.minecraft.world.level.dimension.DimensionType;
 //#endif
-
 @Mixin(Level.class)
 public abstract class MixinLevel implements LevelCompatApi {
 
@@ -33,7 +32,16 @@ public abstract class MixinLevel implements LevelCompatApi {
         //#else
         //$$ return DimensionType.getName(this.dimension.getType());
         //#endif
+    }
 
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public int getMinBuildHeightCompat() {
+        //#if MC > 11605
+        return ((Level) (Object) this).getMinBuildHeightCompat();
+        //#else
+        //$$ return 0;
+        //#endif
     }
 
 }
