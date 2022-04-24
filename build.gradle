@@ -24,11 +24,21 @@ preprocess {
     mc118.link(mcSnapshot, null)
 }
 
+
+def baseVersion = "${project.mod_version}" as String
+def ENV = System.getenv()
+
+if (ENV.BUILD_NUMBER) {
+    version = baseVersion + "." + ENV.BUILD_NUMBER
+} else {
+    version = baseVersion + ".114514"
+}
+
 subprojects {
     if (project.name ==  "fabricWrapper") {
         apply plugin: "fabric-loom"
         archivesBaseName = project.archives_base_name
-        version = project.version
+        version = project.parent.version
         dependencies {
             minecraft("com.mojang:minecraft:${project.minecraft_version}")
             mappings(loom.officialMojangMappings())

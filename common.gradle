@@ -50,6 +50,11 @@ dependencies {
 
 loom {
 
+    mixin {
+        // 如果使用 Legacy Mixin Ap，有时候 Mixin class remap 会有问题，该 remap 的不 remap
+        useLegacyMixinAp = false
+    }
+
     runs {
         testmodClient {
             client()
@@ -100,14 +105,7 @@ remapJar {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-def baseVersion = "${project.mod_version}" as String
-def ENV = System.getenv()
-
-if (ENV.BUILD_NUMBER) {
-    version = baseVersion + "." + ENV.BUILD_NUMBER
-} else {
-    version = baseVersion + ".114514"
-}
+version = project.parent.version
 
 
 archivesBaseName = project.archives_base_name + "-" + project.minecraft_version
