@@ -5,7 +5,18 @@
   "name": "${mod_name} wrapper",
   "description": "${mod_name} wrapper",
   "authors": [
-    "plusls"
+    {
+      "name": "Hendrix-Shen",
+      "contact": {
+        "homepage": "https://github.com/Hendrix-Shen"
+      }
+    },
+    {
+      "name": "plusls",
+      "contact": {
+        "homepage": "https://github.com/plusls"
+      }
+    }
   ],
   "contact": {
     "homepage": "${mod_homepage}",
