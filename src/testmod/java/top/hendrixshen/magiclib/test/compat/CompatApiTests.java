@@ -10,6 +10,7 @@ import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.test.compat.minecraft.TestUtil;
 import top.hendrixshen.magiclib.test.compat.minecraft.blaze3d.vertex.TestBufferBuilder;
 import top.hendrixshen.magiclib.test.compat.minecraft.blaze3d.vertex.TestVertexFormat;
+import top.hendrixshen.magiclib.test.compat.minecraft.client.TestCamera;
 import top.hendrixshen.magiclib.test.compat.minecraft.client.gui.TestScreen;
 import top.hendrixshen.magiclib.test.compat.minecraft.math.TestMatrix4f;
 import top.hendrixshen.magiclib.test.compat.minecraft.math.TestQuaternion;
@@ -57,6 +58,7 @@ public class CompatApiTests implements ModInitializer, ClientModInitializer, Ded
     @Override
     public void onInitializeClient() {
         TestBufferBuilder.test();
+        TestCamera.test();
         TestMatrix4f.test();
         TestQuaternion.test();
         TestScreen.test();
