@@ -66,7 +66,7 @@ jobs:
           title: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
           files: |
             LICENSE
-            build/libs/*.jar
+            fabricWrapper/build/libs/*.jar
   publish:
     if: ${{ github.event_name == 'release' }}
     strategy:
@@ -124,8 +124,8 @@ jobs:
           curseforge-id: ${{ steps.curseforge_id.outputs.value }}
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
 
-          files-primary: build/libs/!(*-@(dev|sources)).jar
-          files-secondary: build/libs/*-@(dev|sources).jar
+          files-primary: fabricWrapper/build/libs/!(*-@(dev|sources)).jar
+          files-secondary: fabricWrapper/build/libs/*-@(dev|sources).jar
 
           name: ''
           version: ${{ steps.mod_version.outputs.value }}
