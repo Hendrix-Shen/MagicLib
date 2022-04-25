@@ -52,6 +52,7 @@ loom {
 
     mixin {
         // 如果使用 Legacy Mixin Ap，有时候 Mixin class remap 会有问题，该 remap 的不 remap
+        // 但是不是用 Legacy Mixin Ap 会导致 Accessor 被 Mixin，从而导致其在开发环境烂掉
         useLegacyMixinAp = false
     }
 

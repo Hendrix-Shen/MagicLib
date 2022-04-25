@@ -9,6 +9,7 @@
     "minecraft.client.MixinCamera",
     "minecraft.client.gui.MixinFont",
     "minecraft.client.gui.screen.MixinScreen",
+    "minecraft.client.renderer.entity.MixinEntityRenderDispatcher",
     "minecraft.math.AccessorMatrix4f",
     "minecraft.math.MixinMatrix4f",
     "minecraft.math.MixinQuaternion",

@@ -58,6 +58,9 @@
       "net/minecraft/class_437": [
         "top/hendrixshen/magiclib/compat/minecraft/client/gui/screens/ScreenCompatApi"
       ],
+      "net/minecraft/class_898": [
+        "top/hendrixshen/magiclib/compat/minecraft/client/renderer/entity/EntityRenderDispatcherCompatApi"
+      ],
       "net/minecraft/class_1158": [
         "top/hendrixshen/magiclib/compat/minecraft/math/QuaternionCompatApi"
       ],
