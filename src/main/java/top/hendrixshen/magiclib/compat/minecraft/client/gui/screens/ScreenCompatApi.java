@@ -1,8 +1,11 @@
 package top.hendrixshen.magiclib.compat.minecraft.client.gui.screens;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 
+@Environment(EnvType.CLIENT)
 public interface ScreenCompatApi {
 
     default GuiEventListener addRenderableWidgetCompat(GuiEventListener guiEventListener) {

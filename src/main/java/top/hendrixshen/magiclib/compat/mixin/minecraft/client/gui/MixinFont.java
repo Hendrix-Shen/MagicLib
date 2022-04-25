@@ -3,6 +3,8 @@ package top.hendrixshen.magiclib.compat.mixin.minecraft.client.gui;
 
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
@@ -27,6 +29,7 @@ import top.hendrixshen.magiclib.compat.minecraft.client.gui.FontCompatApi;
 //$$ import org.lwjgl.opengl.GL11;
 //#endif
 
+@Environment(EnvType.CLIENT)
 @Mixin(Font.class)
 public abstract class MixinFont implements FontCompatApi {
     //#if MC <= 11502

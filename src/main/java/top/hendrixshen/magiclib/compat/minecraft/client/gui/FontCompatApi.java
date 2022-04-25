@@ -6,8 +6,11 @@ package top.hendrixshen.magiclib.compat.minecraft.client.gui;
 
 
 import com.mojang.math.Matrix4f;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 
+@Environment(EnvType.CLIENT)
 public interface FontCompatApi {
     //#if MC <= 11502
     //$$ default int width(Component component) {

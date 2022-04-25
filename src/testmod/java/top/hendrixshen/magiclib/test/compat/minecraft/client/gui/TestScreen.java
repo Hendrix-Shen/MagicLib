@@ -1,5 +1,7 @@
 package top.hendrixshen.magiclib.test.compat.minecraft.client.gui;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.Items;
 import top.hendrixshen.magiclib.compat.minecraft.UtilCompatApi;
 import top.hendrixshen.magiclib.compat.minecraft.network.chat.StyleCompatApi;
 
+@Environment(EnvType.CLIENT)
 public class TestScreen extends Screen {
 
     public TestScreen() {

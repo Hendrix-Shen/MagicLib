@@ -5,8 +5,13 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "minecraft.blaze3d.vertex.MixinBufferBuilder",
     "minecraft.client.gui.MixinFont",
-    "minecraft.client.gui.screen.MixinScreen"
+    "minecraft.client.gui.screen.MixinScreen",
+    "minecraft.math.AccessorMatrix4f",
+    "minecraft.math.MixinMatrix4f",
+    "minecraft.math.MixinQuaternion",
+    "minecraft.math.MixinVector4f"
   ],
   "server": [
   ],

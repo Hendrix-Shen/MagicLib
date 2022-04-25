@@ -8,8 +8,12 @@ import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.test.compat.minecraft.TestUtil;
+import top.hendrixshen.magiclib.test.compat.minecraft.blaze3d.vertex.TestBufferBuilder;
 import top.hendrixshen.magiclib.test.compat.minecraft.blaze3d.vertex.TestVertexFormat;
 import top.hendrixshen.magiclib.test.compat.minecraft.client.gui.TestScreen;
+import top.hendrixshen.magiclib.test.compat.minecraft.math.TestMatrix4f;
+import top.hendrixshen.magiclib.test.compat.minecraft.math.TestQuaternion;
+import top.hendrixshen.magiclib.test.compat.minecraft.math.TestVector4f;
 import top.hendrixshen.magiclib.test.compat.minecraft.network.chat.TestComponent;
 import top.hendrixshen.magiclib.test.compat.minecraft.network.chat.TestStyle;
 import top.hendrixshen.magiclib.test.compat.minecraft.world.TestSimpleContainer;
@@ -52,8 +56,12 @@ public class CompatApiTests implements ModInitializer, ClientModInitializer, Ded
 
     @Override
     public void onInitializeClient() {
+        TestBufferBuilder.test();
+        TestMatrix4f.test();
+        TestQuaternion.test();
         TestScreen.test();
         TestStyle.test(true);
+        TestVector4f.test();
         TestVertexFormat.test();
     }
 

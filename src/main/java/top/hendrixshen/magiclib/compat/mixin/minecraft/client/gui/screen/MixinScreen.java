@@ -1,5 +1,7 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.client.gui.screen;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -13,6 +15,7 @@ import top.hendrixshen.magiclib.compat.minecraft.client.gui.screens.ScreenCompat
 //$$ import java.util.List;
 //#endif
 
+@Environment(EnvType.CLIENT)
 @Mixin(Screen.class)
 public abstract class MixinScreen implements ScreenCompatApi {
 

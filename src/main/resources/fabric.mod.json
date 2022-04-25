@@ -49,17 +49,29 @@
   },
   "custom": {
     "loom:injected_interfaces": {
+      "net/minecraft/class_287": [
+        "top/hendrixshen/magiclib/compat/minecraft/blaze3d/vertex/BufferBuilderCompatApi"
+      ],
       "net/minecraft/class_327": [
         "top/hendrixshen/magiclib/compat/minecraft/client/gui/FontCompatApi"
       ],
       "net/minecraft/class_437": [
         "top/hendrixshen/magiclib/compat/minecraft/client/gui/screens/ScreenCompatApi"
       ],
+      "net/minecraft/class_1158": [
+        "top/hendrixshen/magiclib/compat/minecraft/math/QuaternionCompatApi"
+      ],
+      "net/minecraft/class_1159": [
+        "top/hendrixshen/magiclib/compat/minecraft/math/Matrix4fCompatApi"
+      ],
       "net/minecraft/class_1277": [
         "top/hendrixshen/magiclib/compat/minecraft/world/SimpleContainerCompatApi"
       ],
       "net/minecraft/class_1297": [
         "top/hendrixshen/magiclib/compat/minecraft/world/entity/EntityCompatApi"
+      ],
+      "net/minecraft/class_1162": [
+        "top/hendrixshen/magiclib/compat/minecraft/math/Vector4fCompatApi"
       ],
       "net/minecraft/class_1657": [
         "top/hendrixshen/magiclib/compat/minecraft/world/entity/player/PlayerCompatApi"
