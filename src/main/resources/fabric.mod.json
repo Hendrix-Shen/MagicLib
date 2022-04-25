@@ -48,6 +48,12 @@
     "minecraft": "${minecraft_dependency}"
   },
   "custom": {
+    "modmenu:api": true,
+    "modmenu": {
+      "badges": [
+        "library"
+      ]
+    },
     "loom:injected_interfaces": {
       "net/minecraft/class_287": [
         "top/hendrixshen/magiclib/compat/minecraft/blaze3d/vertex/BufferBuilderCompatApi"
