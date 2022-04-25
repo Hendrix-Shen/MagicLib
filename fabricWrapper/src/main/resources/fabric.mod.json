@@ -28,6 +28,7 @@
   "environment": "*",
   "custom": {
     "modmenu:api": true,
+    "modmenu:parent": "${mod_id}",
     "modmenu": {
       "badges": [
         "library"
