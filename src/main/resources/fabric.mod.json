@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
+  "id": "${mod_id}-${minecraft_version_id}",
   "version": "${mod_version}",
   "icon": "assets/${mod_id}/icon.png",
-  "name": "${mod_name}",
-  "description": "${mod_name}",
+  "name": "${mod_name} for ${minecraft_version}",
+  "description": "${mod_name} for ${minecraft_version}",
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -44,15 +44,16 @@
     "${mod_id}.compat.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.9.0",
     "minecraft": "${minecraft_dependency}"
   },
   "custom": {
     "modmenu:api": true,
+    "modmenu:parent": "${mod_id}",
     "modmenu": {
       "badges": [
         "library"
-      ]
+      ],
+      "parent": "${mod_id}"
     },
     "loom:injected_interfaces": {
       "net/minecraft/class_287": [

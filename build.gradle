@@ -2,7 +2,7 @@ plugins {
     id("maven-publish")
     id("fabric-loom").version("0.12-SNAPSHOT").apply(false)
     // https://github.com/Juuxel/LoomQuiltflower
-    // id("io.github.juuxel.loom-quiltflower").version("1.7.0").apply(false)
+    id("io.github.juuxel.loom-quiltflower").version("1.7.0").apply(false)
     // https://github.com/ReplayMod/preprocessor
     // https://github.com/Fallen-Breath/preprocessor
     id("com.replaymod.preprocess").version("b7207cffa9")
@@ -32,33 +32,4 @@ if (ENV.BUILD_NUMBER) {
     version = baseVersion + "." + ENV.BUILD_NUMBER
 } else {
     version = baseVersion + ".114514"
-}
-
-subprojects {
-    if (project.name ==  "fabricWrapper") {
-        apply plugin: "fabric-loom"
-        archivesBaseName = project.archives_base_name
-        version = project.parent.version
-        dependencies {
-            minecraft("com.mojang:minecraft:${project.minecraft_version}")
-            mappings(loom.officialMojangMappings())
-            parent.subprojects.collect {
-                if (it.name != "fabricWrapper") {
-                    include(it)
-                }
-            }
-        }
-        processResources {
-            inputs.property("version", version)
-            filesMatching("fabric.mod.json") {
-                expand(["mod_version" : project.version,
-                        "mod_id"      : project.mod_id,
-                        "mod_name"    : project.mod_name,
-                        "mod_homepage": project.mod_homepage,
-                        "mod_sources" : project.mod_sources,
-                        "mod_license" : project.mod_license,
-                ])
-            }
-        }
-    }
 }

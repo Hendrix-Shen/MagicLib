@@ -6,9 +6,24 @@ import org.apache.logging.log4j.Logger;
 
 public class MagicLibReference {
     private static final String MOD_ID = "magiclib";
-    private static final String MOD_NAME = FabricLoader.getInstance().getModContainer(getModId())
+
+    //#if MC > 11802
+    //$$ private static final String CURRENT_MOD_ID = MOD_ID + "-snapshot";
+    //#elseif MC > 11701
+    public static final String CURRENT_MOD_ID = MOD_ID + "-1_18_2";
+    //#elseif MC > 11605
+    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_17_1";
+    //#elseif MC > 11502
+    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_16_5";
+    //#elseif MC > 11404
+    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_15_2";
+    //#else
+    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_14_4";
+    //#endif
+
+    private static final String MOD_NAME = FabricLoader.getInstance().getModContainer(CURRENT_MOD_ID)
             .orElseThrow(RuntimeException::new).getMetadata().getName();
-    private static final String MOD_VERSION = FabricLoader.getInstance().getModContainer(getModId())
+    private static final String MOD_VERSION = FabricLoader.getInstance().getModContainer(CURRENT_MOD_ID)
             .orElseThrow(RuntimeException::new).getMetadata().getVersion().getFriendlyString();
 
     public static Logger LOGGER = LogManager.getLogger(MOD_ID);
