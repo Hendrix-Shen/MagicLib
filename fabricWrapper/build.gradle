@@ -17,6 +17,8 @@ def fabric_subprojects = project.parent.subprojects.findAll({
 
 
 jar {
+    // disable cache
+    outputs.upToDateWhen { false }
     dependsOn(fabric_subprojects.collect {
         it.tasks.remapJar
     })
