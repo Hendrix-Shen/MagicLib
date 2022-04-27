@@ -46,6 +46,8 @@ dependencies {
     modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
 
     testmodImplementation(sourceSets.main.output)
+
+    runtimeOnly(project(path: ":fabricWrapper"))
 }
 
 
@@ -153,17 +155,6 @@ publishing {
             artifactId = "${project.mod_id}-${project.name.replace(".", "_")}"
             version = "${project.version}"
             from(components.java)
-            pom.withXml {
-                rootNode ->
-                    {
-                        def depNode = new Node(null, "dependency")
-                        depNode.appendNode("groupId", project.group)
-                        depNode.appendNode("artifactId", project.mod_id)
-                        depNode.appendNode("version", project.version)
-                        depNode.appendNode("scope", "compile")
-                        rootNode.asNode().dependencies[0].children().add(depNode)
-                    }
-            }
         }
     }
 
