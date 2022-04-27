@@ -60,7 +60,9 @@ public class MagicLibConfigs {
 
     public static void init(ConfigManager cm) {
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
-            Minecraft.getInstance().setScreen(MagicLibConfigGui.getInstance());
+            MagicLibConfigGui screen = MagicLibConfigGui.getInstance();
+            screen.setParentGui(Minecraft.getInstance().screen);
+            Minecraft.getInstance().setScreen(screen);
             return true;
         });
 
