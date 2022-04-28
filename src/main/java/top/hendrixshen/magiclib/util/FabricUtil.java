@@ -24,10 +24,7 @@ public class FabricUtil {
     private static Method fabricLegacyVersionPredicateParser;
     private static Method fabricLegacyDisplayCriticalError;
 
-    private static Method fabricVersionPredicateParser;
     private static Method fabricDisplayCriticalError;
-
-    private static Method quiltVersionPredicateParser;
 
     private static Method quiltDisplayCriticalError;
 
@@ -40,13 +37,11 @@ public class FabricUtil {
         }
 
         try {
-            fabricVersionPredicateParser = Class.forName("net.fabricmc.loader.impl.util.version.VersionPredicateParser").getMethod("parse", String.class);
             fabricDisplayCriticalError = Class.forName("net.fabricmc.loader.impl.gui.FabricGuiEntry").getMethod("displayCriticalError", Throwable.class, boolean.class);
         } catch (ClassNotFoundException | NoSuchMethodException ignored) {
         }
 
         try {
-            quiltVersionPredicateParser = Class.forName("org.quiltmc.loader.impl.util.version.VersionPredicateParser").getMethod("parse", String.class);
             quiltDisplayCriticalError = Class.forName("org.quiltmc.loader.impl.gui.QuiltGuiEntry").getMethod("displayError",
                     String.class, Throwable.class, boolean.class, boolean.class);
         } catch (ClassNotFoundException | NoSuchMethodException ignored) {
@@ -70,22 +65,9 @@ public class FabricUtil {
                     MagicLibReference.LOGGER.error("Failed to invoke fabricLegacyVersionPredicateParser#matches", e);
                     throw new RuntimeException(e);
                 }
-            } else if (fabricVersionPredicateParser != null) {
-                try {
-                    return ((VersionPredicate) fabricVersionPredicateParser.invoke(null, versionPredicate)).test(version);
-                } catch (InvocationTargetException | IllegalAccessException e) {
-                    MagicLibReference.LOGGER.error("Failed to invoke fabricVersionPredicateParser#parse", e);
-                    throw new RuntimeException(e);
-                }
             } else {
-                try {
-                    return ((VersionPredicate) quiltVersionPredicateParser.invoke(null, versionPredicate)).test(version);
-                } catch (InvocationTargetException | IllegalAccessException e) {
-                    MagicLibReference.LOGGER.error("Failed to invoke quiltVersionPredicateParser#parse", e);
-                    throw new RuntimeException(e);
-                }
+                return VersionPredicate.parse(versionPredicate).test(version);
             }
-
         } catch (Throwable e) {
             MagicLibReference.LOGGER.error("Failed to parse version or version predicate {} {}: {}", version.getFriendlyString(), versionPredicate, e);
             return false;
