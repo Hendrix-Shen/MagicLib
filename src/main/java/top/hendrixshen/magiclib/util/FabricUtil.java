@@ -1,5 +1,8 @@
 package top.hendrixshen.magiclib.util;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -11,11 +14,11 @@ import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.dependency.DepCheckException;
 import top.hendrixshen.magiclib.dependency.Dependencies;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.net.URL;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 public class FabricUtil {
@@ -83,18 +86,72 @@ public class FabricUtil {
         return false;
     }
 
-    @SuppressWarnings("deprecation")
+    public static class ModMetaData {
+        public static HashMap<String, ModMetaData> data = new HashMap<>();
+
+        public String id;
+
+        public JsonObject json;
+
+        public HashMap<String, HashSet<String>> entrypoints;
+
+        private ModMetaData(String id, JsonObject json) {
+            this.id = id;
+            this.json = json;
+            this.entrypoints = new HashMap<>();
+
+            JsonObject entrypointsJsonObject = json.getAsJsonObject("entrypoints");
+            if (entrypointsJsonObject != null) {
+                for (Map.Entry<String, JsonElement> entrypointEntry : entrypointsJsonObject.entrySet()) {
+                    JsonArray entrypointArray = entrypointEntry.getValue().getAsJsonArray();
+                    for (int i = 0; i < entrypointArray.size(); ++i) {
+                        String entrypoint = entrypointArray.get(i).getAsString();
+                        HashSet<String> entrypointSet = entrypoints.computeIfAbsent(
+                                entrypointEntry.getKey(), key -> new HashSet<>());
+                        entrypointSet.add(entrypoint);
+                    }
+                }
+            }
+
+        }
+
+        static {
+            try {
+                for (URL url : getResources("fabric.mod.json")) {
+                    JsonObject jsonObject = MiscUtil.readJson(url);
+                    String id = jsonObject.get("id").getAsString();
+                    data.put(id, new ModMetaData(id, jsonObject));
+                }
+            } catch (IOException | UnsupportedOperationException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public static Set<URL> getResources(String name) throws IOException {
+        ClassLoader urlLoader = Thread.currentThread().getContextClassLoader();
+        HashSet<URL> hashSet = new HashSet<>();
+        Enumeration<URL> urlEnumeration = urlLoader.getResources(name);
+        while (urlEnumeration.hasMoreElements()) {
+            hashSet.add(urlEnumeration.nextElement());
+        }
+        return hashSet;
+    }
+
+
     private static Map<String, Dependencies<Object>> getModInitDependencies(String entryKey, String entryMethod) {
+
         Map<String, Dependencies<Object>> ret = new HashMap<>();
-        FabricLoader.getInstance().getAllMods().forEach(modContainer ->
-                ((net.fabricmc.loader.ModContainer) modContainer).getInfo().getEntrypoints(entryKey).forEach(
-                        entrypointMetadata -> {
-                            Dependencies<Object> dependencies = Dependencies.getFabricEntrypointDependencies(entrypointMetadata.getValue(), entryMethod);
-                            if (dependencies != null) {
-                                ret.put(modContainer.getMetadata().getId(), dependencies);
-                            }
-                        }
-                ));
+        for (ModMetaData modMetaData : ModMetaData.data.values()) {
+
+            for (String entrypointValue : modMetaData.entrypoints.getOrDefault(entryKey, new HashSet<>())) {
+                Dependencies<Object> dependencies = Dependencies.getFabricEntrypointDependencies(entrypointValue, entryMethod);
+                if (dependencies != null) {
+                    ret.put(modMetaData.id, dependencies);
+                }
+            }
+        }
         return ret;
     }
 
