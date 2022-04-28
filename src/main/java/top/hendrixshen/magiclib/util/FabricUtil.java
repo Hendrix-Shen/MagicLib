@@ -129,8 +129,8 @@ public class FabricUtil {
 
         public HashMap<String, HashSet<String>> entrypoints;
 
-        private ModMetaData(String id, JsonObject json) {
-            this.id = id;
+        private ModMetaData(JsonObject json) {
+            this.id = json.get("id").getAsString();
             this.json = json;
             this.entrypoints = new HashMap<>();
 
@@ -150,15 +150,21 @@ public class FabricUtil {
         }
 
         static {
+            URL logUrl = null;
             try {
                 for (URL url : getResources("fabric.mod.json")) {
+                    logUrl = url;
                     JsonObject jsonObject = MiscUtil.readJson(url);
-                    String id = jsonObject.get("id").getAsString();
-                    data.put(id, new ModMetaData(id, jsonObject));
+                    try {
+                        ModMetaData modMetaData = new ModMetaData(jsonObject);
+                        data.put(modMetaData.id, modMetaData);
+                    } catch (Throwable e) {
+                        MagicLibReference.LOGGER.debug("Exception when parse {}.", url);
+                    }
                 }
-            } catch (IOException | UnsupportedOperationException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
+            } catch (IOException e) {
+                MagicLibReference.LOGGER.error("Exception when parse {}.", logUrl);
+                FabricUtil.displayCriticalError(e);
             }
         }
     }
@@ -226,6 +232,7 @@ public class FabricUtil {
      * @param exception Thrown exceptions.
      */
     public static void displayCriticalError(Throwable exception) {
+        exception.printStackTrace();
         String nm = System.getProperty("java.awt.headless");
         if (Boolean.parseBoolean(nm)) {
             System.setProperty("java.awt.headless", "");
@@ -244,7 +251,7 @@ public class FabricUtil {
             }
         } else {
             try {
-                quiltDisplayCriticalError.invoke(null, "Magiclib Error", exception, true, true);
+                quiltDisplayCriticalError.invoke(null, "Error", exception, true, true);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
