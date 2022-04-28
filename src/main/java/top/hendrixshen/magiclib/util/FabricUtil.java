@@ -7,9 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
-import net.fabricmc.loader.api.VersionParsingException;
-import net.fabricmc.loader.impl.gui.FabricGuiEntry;
-import net.fabricmc.loader.impl.util.version.VersionPredicateParser;
+import net.fabricmc.loader.api.metadata.version.VersionPredicate;
 import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.dependency.DepCheckException;
 import top.hendrixshen.magiclib.dependency.Dependencies;
@@ -23,13 +21,34 @@ import java.util.function.BiConsumer;
 
 public class FabricUtil {
     // Fabric Loader 0.11 and below support
-    private static Method legacyVersionPredicateParser;
-    private static Method legacyDisplayCriticalError;
+    private static Method fabricLegacyVersionPredicateParser;
+    private static Method fabricLegacyDisplayCriticalError;
+
+    private static Method fabricVersionPredicateParser;
+    private static Method fabricDisplayCriticalError;
+
+    private static Method quiltVersionPredicateParser;
+
+    private static Method quiltDisplayCriticalError;
+
 
     static {
         try {
-            legacyVersionPredicateParser = Class.forName("net.fabricmc.loader.util.version.VersionPredicateParser").getMethod("matches", Version.class, String.class);
-            legacyDisplayCriticalError = Class.forName("net.fabricmc.loader.gui.FabricGuiEntry").getMethod("displayCriticalError", Throwable.class, boolean.class);
+            fabricLegacyVersionPredicateParser = Class.forName("net.fabricmc.loader.util.version.VersionPredicateParser").getMethod("matches", Version.class, String.class);
+            fabricLegacyDisplayCriticalError = Class.forName("net.fabricmc.loader.gui.FabricGuiEntry").getMethod("displayCriticalError", Throwable.class, boolean.class);
+        } catch (ClassNotFoundException | NoSuchMethodException ignored) {
+        }
+
+        try {
+            fabricVersionPredicateParser = Class.forName("net.fabricmc.loader.impl.util.version.VersionPredicateParser").getMethod("parse", String.class);
+            fabricDisplayCriticalError = Class.forName("net.fabricmc.loader.impl.gui.FabricGuiEntry").getMethod("displayCriticalError", Throwable.class, boolean.class);
+        } catch (ClassNotFoundException | NoSuchMethodException ignored) {
+        }
+
+        try {
+            quiltVersionPredicateParser = Class.forName("org.quiltmc.loader.impl.util.version.VersionPredicateParser").getMethod("parse", String.class);
+            quiltDisplayCriticalError = Class.forName("org.quiltmc.loader.impl.gui.QuiltGuiEntry").getMethod("displayError",
+                    String.class, Throwable.class, boolean.class, boolean.class);
         } catch (ClassNotFoundException | NoSuchMethodException ignored) {
         }
     }
@@ -44,15 +63,30 @@ public class FabricUtil {
      */
     public static boolean isModLoaded(Version version, String versionPredicate) {
         try {
-            if (legacyVersionPredicateParser != null) {
+            if (fabricLegacyVersionPredicateParser != null) {
                 try {
-                    return (boolean) legacyVersionPredicateParser.invoke(null, version, versionPredicate);
+                    return (boolean) fabricLegacyVersionPredicateParser.invoke(null, version, versionPredicate);
                 } catch (InvocationTargetException | IllegalAccessException e) {
-                    MagicLibReference.LOGGER.error("Failed to invoke VersionPredicateParser#matches", e);
+                    MagicLibReference.LOGGER.error("Failed to invoke fabricLegacyVersionPredicateParser#matches", e);
+                    throw new RuntimeException(e);
+                }
+            } else if (fabricVersionPredicateParser != null) {
+                try {
+                    return ((VersionPredicate) fabricVersionPredicateParser.invoke(null, versionPredicate)).test(version);
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    MagicLibReference.LOGGER.error("Failed to invoke fabricVersionPredicateParser#parse", e);
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    return ((VersionPredicate) quiltVersionPredicateParser.invoke(null, versionPredicate)).test(version);
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    MagicLibReference.LOGGER.error("Failed to invoke quiltVersionPredicateParser#parse", e);
+                    throw new RuntimeException(e);
                 }
             }
-            return VersionPredicateParser.parse(versionPredicate).test(version);
-        } catch (VersionParsingException e) {
+
+        } catch (Throwable e) {
             MagicLibReference.LOGGER.error("Failed to parse version or version predicate {} {}: {}", version.getFriendlyString(), versionPredicate, e);
             return false;
         }
@@ -196,14 +230,24 @@ public class FabricUtil {
         if (Boolean.parseBoolean(nm)) {
             System.setProperty("java.awt.headless", "");
         }
-        if (legacyDisplayCriticalError != null) {
+        if (fabricLegacyDisplayCriticalError != null) {
             try {
-                legacyDisplayCriticalError.invoke(null, exception, true);
+                fabricLegacyDisplayCriticalError.invoke(null, exception, true);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (fabricDisplayCriticalError != null) {
+            try {
+                fabricDisplayCriticalError.invoke(null, exception, true);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            FabricGuiEntry.displayCriticalError(exception, true);
+            try {
+                quiltDisplayCriticalError.invoke(null, "Magiclib Error", exception, true, true);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
