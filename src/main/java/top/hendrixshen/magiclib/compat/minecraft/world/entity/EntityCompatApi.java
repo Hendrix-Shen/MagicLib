@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 
-import java.util.UUID;
-
 public interface EntityCompatApi {
 
     default Level getLevelCompat() {
@@ -52,9 +50,15 @@ public interface EntityCompatApi {
         throw new UnsupportedOperationException();
     }
 
-    default void sendMessageCompat(Component component, UUID uuid) {
+    default void sendSystemMessageCompat(Component component) {
         throw new UnsupportedOperationException();
     }
+
+    //#if MC < 11900
+    default void sendSystemMessage(Component component) {
+        this.sendSystemMessageCompat(component);
+    }
+    //#endif
 
     //#if MC <= 11701
     // fuck remap
@@ -101,10 +105,6 @@ public interface EntityCompatApi {
 
     //$$ default boolean isOnGround() {
     //$$     return this.isOnGroundCompat();
-    //$$ }
-
-    //$$ default void sendMessage(Component component, UUID uuid) {
-    //$$     this.sendMessageCompat(component, uuid);
     //$$ }
 
     //$$ default void setOnGround(boolean onGround) {

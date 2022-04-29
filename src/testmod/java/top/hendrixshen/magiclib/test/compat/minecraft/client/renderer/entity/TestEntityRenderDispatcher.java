@@ -11,7 +11,9 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 @Environment(EnvType.CLIENT)
 public class TestEntityRenderDispatcher {
     public static void test() {
-        //#if MC > 11404
+        //#if MC > 11802
+        //$$ EntityRenderDispatcher entityRenderDispatcher = new EntityRenderDispatcher(null, null, null, null, null, null, null);
+        //#elseif MC > 11404
         EntityRenderDispatcher entityRenderDispatcher = new EntityRenderDispatcher(null, null, null, null, null);
         //#else
         //$$ EntityRenderDispatcher entityRenderDispatcher = new EntityRenderDispatcher(null, null, null);

@@ -4,7 +4,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleResource;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -22,6 +21,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+//#if MC < 11900
+import net.minecraft.server.packs.resources.SimpleResource;
+//#endif
+
 //#if MC <= 11404
 //$$ import net.minecraft.server.packs.Pack;
 //#endif
@@ -33,12 +36,12 @@ public class MagicLanguageResourceManager implements ResourceManager {
 
     private static final Pattern languageResourcePattern = Pattern.compile("^assets/([\\w-]*)/lang/([\\w-]*)\\.json$");
 
-    private void addResources(Set<Resource> resources) {
-        for (Resource resource : resources) {
-            ResourceLocation location = resource.getLocation();
+    private void addResources(Map<ResourceLocation, Resource> resources) {
+        for (Map.Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
+            ResourceLocation location = entry.getKey();
             namespaces.add(location.getNamespace());
             Set<Resource> resourceList = this.resources.computeIfAbsent(location, resourceLocation -> new HashSet<>());
-            resourceList.add(resource);
+            resourceList.add(entry.getValue());
         }
     }
 
@@ -58,10 +61,10 @@ public class MagicLanguageResourceManager implements ResourceManager {
 
     }
 
-    private static Set<Resource> getJarResources(URL resourceUrl) throws IOException {
+    private static Map<ResourceLocation, Resource> getJarResources(URL resourceUrl) throws IOException {
         JarURLConnection conn = (JarURLConnection) resourceUrl.openConnection();
         JarFile jar = conn.getJarFile();
-        Set<Resource> ret = new HashSet<>();
+        Map<ResourceLocation, Resource> ret = new HashMap<>();
 
         for (JarEntry entry : Collections.list(jar.entries())) {
             String entryName = entry.getName();
@@ -72,16 +75,21 @@ public class MagicLanguageResourceManager implements ResourceManager {
                 if (!entry.isDirectory()) {
                     InputStream input = jar.getInputStream(entry);
                     String languagePath = String.format("lang/%s.json", code);
-                    Resource resource = new SimpleResource(namespace, new ResourceLocation(namespace, languagePath), input, null);
-                    ret.add(resource);
+                    ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
+                    //#if MC > 11802
+                    //$$ Resource resource = new Resource(namespace, () -> input);
+                    //#else
+                    Resource resource = new SimpleResource(namespace, resourceLocation, input, null);
+                    //#endif
+                    ret.put(resourceLocation, resource);
                 }
             }
         }
         return ret;
     }
 
-    private static Set<Resource> getFileResources(URL resourceUrl) throws IOException {
-        Set<Resource> ret = new HashSet<>();
+    private static Map<ResourceLocation, Resource> getFileResources(URL resourceUrl) throws IOException {
+        Map<ResourceLocation, Resource> ret = new HashMap<>();
         try {
             Path assetsPath = Paths.get(resourceUrl.toURI());
             Files.walkFileTree(assetsPath, new FileVisitor<Path>() {
@@ -99,9 +107,13 @@ public class MagicLanguageResourceManager implements ResourceManager {
                         String code = matcher.group(2);
                         InputStream input = Files.newInputStream(file);
                         String languagePath = String.format("lang/%s.json", code);
-                        Resource resource = new SimpleResource(namespace, new ResourceLocation(namespace, languagePath),
-                                input, null);
-                        ret.add(resource);
+                        ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
+                        //#if MC > 11802
+                        //$$ Resource resource = new Resource(namespace, () -> input);
+                        //#else
+                        Resource resource = new SimpleResource(namespace, resourceLocation, input, null);
+                        //#endif
+                        ret.put(resourceLocation, resource);
                     }
                     return FileVisitResult.CONTINUE;
                 }
@@ -129,19 +141,27 @@ public class MagicLanguageResourceManager implements ResourceManager {
     }
 
     @Override
-    public boolean hasResource(@NotNull ResourceLocation resourceLocation) {
-        return false;
-    }
-
-    @Override
     public List<Resource> getResources(@NotNull ResourceLocation resourceLocation) {
         return new ArrayList<>(resources.getOrDefault(resourceLocation, new HashSet<>()));
     }
 
+    //#if MC > 11802
+    //$$ @Override
+    //$$ public Map<ResourceLocation, Resource> listResources(@NotNull String string, @NotNull Predicate<ResourceLocation> predicate) {
+    //$$     return null;
+    //$$ }
+
+    //$$ @Override
+    //$$ public Map<ResourceLocation, List<Resource>> listResourceStacks(@NotNull String string, @NotNull Predicate<ResourceLocation> predicate) {
+    //$$     return null;
+    //$$ }
+    //#else
     @Override
     public Collection<ResourceLocation> listResources(@NotNull String string, @NotNull Predicate<String> predicate) {
         return null;
     }
+    //#endif
+
 
     //#if MC > 11502
     @Override
@@ -155,8 +175,20 @@ public class MagicLanguageResourceManager implements ResourceManager {
     //$$ public void add(Pack pack) {}
     //#endif
 
+    //#if MC > 11802
+    //$$ @Override
+    //$$ public Optional<Resource> getResource(ResourceLocation resourceLocation) {
+    //$$     return Optional.empty();
+    //$$ }
+    //#else
     @Override
     public Resource getResource(@NotNull ResourceLocation resourceLocation) {
         return null;
     }
+
+    @Override
+    public boolean hasResource(@NotNull ResourceLocation resourceLocation) {
+        return false;
+    }
+    //#endif
 }

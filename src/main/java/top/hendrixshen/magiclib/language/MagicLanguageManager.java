@@ -80,7 +80,7 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
                         MagicLibReference.LOGGER.warn("Failed to load translations from {} ({})", resource, e);
                     }
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 MagicLibReference.LOGGER.warn("Failed to load translations from {}:{} ({})", namespace, languagePath, e);
             }
         }

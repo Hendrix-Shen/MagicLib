@@ -1,10 +1,9 @@
 package top.hendrixshen.magiclib.test.compat.minecraft.world.entity;
 
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import top.hendrixshen.magiclib.compat.minecraft.UtilCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 
 public class TestEntity {
     public static void test() {
@@ -30,8 +29,8 @@ public class TestEntity {
         entity.isOnGround();
         entity.setOnGroundCompat(true);
         entity.setOnGround(true);
-        entity.sendMessageCompat(new TextComponent("test"), UtilCompatApi.NIL_UUID);
-        entity.sendMessage(new TextComponent("test"), UtilCompatApi.NIL_UUID);
+        entity.sendSystemMessageCompat(ComponentCompatApi.literal("test"));
+        entity.sendSystemMessage(ComponentCompatApi.literal("test"));
 
     }
 }

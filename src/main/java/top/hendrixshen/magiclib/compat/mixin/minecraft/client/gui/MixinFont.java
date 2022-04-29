@@ -7,10 +7,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.minecraft.client.gui.FontCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 
 //#if MC > 11404
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -114,8 +114,8 @@ public abstract class MixinFont implements FontCompatApi {
     @Override
     public int drawInBatch(String text, float x, float y, int color, boolean shadow, Matrix4f matrix4f,
                            boolean seeThrough, int backgroundColor, int light) {
-
-        return this.drawInBatch(new TextComponent(text), x, y, color, shadow, matrix4f, seeThrough, backgroundColor, light);
+        return this.drawInBatch(ComponentCompatApi.literal(text), x, y, color, shadow,
+                matrix4f, seeThrough, backgroundColor, light);
     }
 
 }

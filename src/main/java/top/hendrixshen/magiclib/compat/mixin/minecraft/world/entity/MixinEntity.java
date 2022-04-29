@@ -6,12 +6,34 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import top.hendrixshen.magiclib.compat.minecraft.UtilCompatApi;
 import top.hendrixshen.magiclib.compat.minecraft.world.entity.EntityCompatApi;
 
 import java.util.UUID;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity implements EntityCompatApi {
+
+    //#if MC > 11802
+    //$$ @Shadow
+    //$$ public abstract void sendSystemMessage(Component component);
+    //#elseif MC > 11502
+    @Shadow
+    public abstract void sendMessage(Component component, UUID uuid);
+    //#else
+    //$$ @Shadow
+    //$$ public abstract void sendMessage(Component component);
+    //#endif
+    @Override
+    public void sendSystemMessageCompat(Component component) {
+        //#if MC > 11802
+        //$$ this.sendSystemMessage(component);
+        //#elseif MC > 11502
+        this.sendMessage(component, UtilCompatApi.NIL_UUID);
+        //#else
+        //$$ this.sendMessage(component);
+        //#endif
+    }
 
     //#if MC > 11701
     @Shadow
@@ -96,17 +118,11 @@ public abstract class MixinEntity implements EntityCompatApi {
     @Shadow
     public abstract void setOnGround(boolean onGround);
 
-    @Shadow
-    public abstract void sendMessage(Component component, UUID uUID);
-
 
     //#else
 
     //$$ @Shadow
     //$$ public abstract BlockPos getCommandSenderBlockPosition();
-
-    //$$ @Shadow
-    //$$ public abstract void sendMessage(Component component);
 
     //$$ @Shadow
     //$$ public boolean onGround;
@@ -138,15 +154,6 @@ public abstract class MixinEntity implements EntityCompatApi {
         this.setOnGround(onGround);
         //#else
         //$$ this.onGround = onGround;
-        //#endif
-    }
-
-    @Override
-    public void sendMessageCompat(Component component, UUID uuid) {
-        //#if MC > 11502
-        this.sendMessage(component, uuid);
-        //#else
-        //$$ this.sendMessage(component);
         //#endif
     }
 
