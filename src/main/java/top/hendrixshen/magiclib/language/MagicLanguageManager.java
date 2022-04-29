@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.language;
 import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.IllegalFormatException;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MagicLanguageManager implements ResourceManagerReloadListener {
@@ -56,7 +58,15 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
 
     private void initLanguage(String code, ConcurrentHashMap<String, String> language) {
         String languagePath = String.format("lang/%s.json", code);
-        for (String namespace : resourceManager.getNamespaces()) {
+        Set<String> nameSpaces;
+
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+            // 1.15 的 server 缺少 ResourceMager.getNamespaces
+            nameSpaces = ((MagicLanguageResourceManager) resourceManager).getNamespaces();
+        } else {
+            nameSpaces = resourceManager.getNamespaces();
+        }
+        for (String namespace : nameSpaces) {
             ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
             try {
                 for (Resource resource : resourceManager.getResources(resourceLocation)) {
