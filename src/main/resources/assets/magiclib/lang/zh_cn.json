@@ -3,6 +3,8 @@
   "magiclib.gui.button.tab.test": "测试",
   "magiclib.config.generic.debug.name": "调试模式",
   "magiclib.config.generic.debug.comment": "开启后会输出调试的日志",
+  "magiclib.config.generic.fallbackLanguageList.name": "候选语言列表",
+  "magiclib.config.generic.fallbackLanguageList.comment": "候选语言不只是 en_us，可以设置自己的候选语言列表（比如在设置文言的时候，可以在 §6候选语言列表§r 中加入 zh_cn，从而在找不到语言资源的情况下使用中文文本）",
   "magiclib.config.generic.openConfigGui.name": "打开配置界面",
   "magiclib.config.generic.openConfigGui.comment": "一个用来打开本页面的快捷键"
 }

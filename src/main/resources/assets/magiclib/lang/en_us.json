@@ -3,6 +3,8 @@
   "magiclib.gui.button.tab.test": "Test",
   "magiclib.config.generic.debug.name": "debug",
   "magiclib.config.generic.debug.comment": "Display debug message",
+  "magiclib.config.generic.fallbackLanguageList.name": "fallbackLanguageList",
+  "magiclib.config.generic.fallbackLanguageList.comment": "Fallback language list.",
   "magiclib.config.generic.openConfigGui.name": "openConfigGui",
   "magiclib.config.generic.openConfigGui.comment": "A hotkey to open the in-game Config GUI",
   "magiclib.config.test.intConfig.name": "intConfig",
