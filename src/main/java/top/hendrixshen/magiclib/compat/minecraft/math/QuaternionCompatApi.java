@@ -7,11 +7,7 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 public interface QuaternionCompatApi {
 
-    //#if MC > 11404
-    Quaternion ONE = Quaternion.ONE;
-    //#else
-    //$$ Quaternion ONE = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
-    //#endif
+    Quaternion ONE = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
 
     default void mulCompat(float f) {
         throw new UnsupportedOperationException();
