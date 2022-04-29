@@ -11,6 +11,8 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 @Environment(EnvType.CLIENT)
 public class TestEntityRenderDispatcher {
     public static void test() {
+        //# TODO
+        //#if MC > 11605
         //#if MC > 11802
         //$$ EntityRenderDispatcher entityRenderDispatcher = new EntityRenderDispatcher(null, null, null, null, null, null, null);
         //#elseif MC > 11404
@@ -24,5 +26,6 @@ public class TestEntityRenderDispatcher {
         entityRenderDispatcher.distanceToSqr(entity);
         entityRenderDispatcher.cameraOrientationCompat();
         entityRenderDispatcher.cameraOrientation();
+        //#endif
     }
 }

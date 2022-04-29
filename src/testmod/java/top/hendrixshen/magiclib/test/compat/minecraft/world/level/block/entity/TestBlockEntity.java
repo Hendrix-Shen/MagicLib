@@ -1,7 +1,6 @@
 package top.hendrixshen.magiclib.test.compat.minecraft.world.level.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
 
@@ -16,7 +15,8 @@ public class TestBlockEntity {
 //        CompoundTag component0 = blockEntity.saveWithFullMetadata();
 //        CompoundTag component1 = blockEntity.saveWithId();
 //        CompoundTag component2 = blockEntity.saveWithoutMetadata();
-        blockEntity.loadCompat(new CompoundTag());
-        blockEntity.load(new CompoundTag());
+        // Crash in low version, because getLeve() == null
+        // blockEntity.loadCompat(new CompoundTag());
+        // blockEntity.load(new CompoundTag());
     }
 }

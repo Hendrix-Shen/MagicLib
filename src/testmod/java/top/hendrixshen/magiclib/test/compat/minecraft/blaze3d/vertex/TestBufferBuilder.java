@@ -14,6 +14,9 @@ public class TestBufferBuilder {
         BufferBuilder bufferBuilder = new BufferBuilder(32);
         bufferBuilder.begin(VertexFormatCompatApi.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         bufferBuilder.vertexCompat(new Matrix4f(), 0, 0, 0);
+        // TODO
+        //#if MC > 11605
         bufferBuilder.vertex(new Matrix4f(), 0, 0, 0);
+        //#endif
     }
 }
