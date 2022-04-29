@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import top.hendrixshen.magiclib.MagicLibReference;
+import top.hendrixshen.magiclib.language.I18n;
 import top.hendrixshen.magiclib.test.compat.minecraft.TestUtil;
 import top.hendrixshen.magiclib.test.compat.minecraft.blaze3d.vertex.TestBufferBuilder;
 import top.hendrixshen.magiclib.test.compat.minecraft.blaze3d.vertex.TestVertexFormat;
@@ -54,6 +55,8 @@ public class CompatApiTests implements ModInitializer, ClientModInitializer, Ded
         TestSimpleContainer.test();
         TestStyle.test(false);
         TestUtil.test();
+        MagicLibReference.LOGGER.info("test i18n: {}", I18n.get("magiclib.gui.button.tab.test"));
+        MagicLibReference.LOGGER.info("test i18n cn: {}", I18n.getByCode("zh_cn", "magiclib.gui.button.tab.test"));
     }
 
     @Override

@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
-import fi.dy.masa.malilib.util.StringUtils;
 import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.config.Option;
+import top.hendrixshen.magiclib.language.I18n;
 
 import java.util.List;
 import java.util.Objects;
@@ -53,7 +53,7 @@ public class ConfigGui extends GuiConfigsBase {
     }
 
     private int createNavigationButton(int x, int y, String category) {
-        ButtonGeneric button = new ButtonGeneric(x, y, -1, 20, StringUtils.translate(String.format("%s.gui.button.tab.%s", this.identifier, category)));
+        ButtonGeneric button = new ButtonGeneric(x, y, -1, 20, I18n.get(String.format("%s.gui.button.tab.%s", this.identifier, category)));
         button.setEnabled(!Objects.equals(category, tab) && this.configManager.getOptionsByCategory(category).stream().anyMatch(Option::isEnabled));
         this.addButton(button, (b, mouseButton) -> {
             tab = category;

@@ -8,6 +8,7 @@ import fi.dy.masa.malilib.util.StringUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.language.I18n;
 
 import java.util.function.Consumer;
 
@@ -35,7 +36,7 @@ public class TranslatableConfigOptionList extends ConfigOptionList implements Tr
 
     @Override
     public String getConfigGuiDisplayName() {
-        return StringUtils.translate(this.guiDisplayName);
+        return I18n.get(this.guiDisplayName);
     }
 
     @Override

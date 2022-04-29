@@ -15,6 +15,7 @@ import top.hendrixshen.magiclib.config.annotation.Numeric;
 import top.hendrixshen.magiclib.dependency.Predicates;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.language.MagicLanguageManager;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,9 @@ public class MagicLibConfigs {
 
     @Config(category = ConfigCategory.GENERIC)
     public static boolean debug = false;
+
+    @Config(category = ConfigCategory.GENERIC)
+    public static ArrayList<String> fallbackLanguageList = Lists.newArrayList(MagicLanguageManager.DEFAULT_CODE);
 
     @Numeric(maxValue = 500, minValue = 0, useSlider = true)
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)

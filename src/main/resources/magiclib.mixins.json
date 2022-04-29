@@ -5,12 +5,10 @@
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "client.MixinLanguageManager",
+    "client.language.MixinLanguageManager",
+    "client.language.MixinMinecraft",
     "client.malilib.MixinConfigBooleanHotkeyed",
     "client.malilib.MixinGuiTextFieldGeneric",
     "client.malilib.MixinWidgetConfigOption"
-  ],
-  "server": [
-    "server.MixinDedicatedServer"
   ]
 }

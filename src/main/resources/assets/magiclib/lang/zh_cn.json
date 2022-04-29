@@ -1,0 +1,8 @@
+{
+  "magiclib.gui.button.tab.generic": "通用",
+  "magiclib.gui.button.tab.test": "测试",
+  "magiclib.config.generic.debug.name": "调试模式",
+  "magiclib.config.generic.debug.comment": "开启后会输出调试的日志",
+  "magiclib.config.generic.openConfigGui.name": "打开配置界面",
+  "magiclib.config.generic.openConfigGui.comment": "一个用来打开本页面的快捷键"
+}
