@@ -2,7 +2,6 @@ package top.hendrixshen.magiclib.config;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigHandler;
@@ -11,6 +10,7 @@ import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLibReference;
+import top.hendrixshen.magiclib.util.MiscUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,12 +32,21 @@ public class ConfigHandler implements IConfigHandler {
     public final String modId;
 
     @Nullable
-    public final Consumer<ConfigHandler> preDeserializeCallback;
+    public Consumer<ConfigHandler> preDeserializeCallback;
     @Nullable
-    public final Consumer<ConfigHandler> postSerializeCallback;
+    public Consumer<ConfigHandler> postDeserializeCallback;
+    @Nullable
+    public Consumer<ConfigHandler> preSerializeCallback;
+    @Nullable
+    public Consumer<ConfigHandler> postSerializeCallback;
 
     public JsonObject jsonObject;
 
+    public ConfigHandler(String modId, ConfigManager configManager, int configVersion) {
+        this(modId, Paths.get(String.format("%s.json", modId)), configManager, configVersion);
+    }
+
+    @Deprecated
     public ConfigHandler(String modId, ConfigManager configManager, int configVersion,
                          @Nullable Consumer<ConfigHandler> preDeserializeCallback,
                          @Nullable Consumer<ConfigHandler> postSerializeCallback) {
@@ -45,6 +54,7 @@ public class ConfigHandler implements IConfigHandler {
                 preDeserializeCallback, postSerializeCallback);
     }
 
+    @Deprecated
     public ConfigHandler(String modId, Path configPath, ConfigManager configManager, int configVersion,
                          @Nullable Consumer<ConfigHandler> preDeserializeCallback,
                          @Nullable Consumer<ConfigHandler> postSerializeCallback) {
@@ -52,6 +62,14 @@ public class ConfigHandler implements IConfigHandler {
         this.configManager = configManager;
         this.preDeserializeCallback = preDeserializeCallback;
         this.postSerializeCallback = postSerializeCallback;
+        this.configVersion = configVersion;
+        this.jsonObject = new JsonObject();
+        this.modId = modId;
+    }
+
+    public ConfigHandler(String modId, Path configPath, ConfigManager configManager, int configVersion) {
+        this.configPath = FileUtils.getConfigDirectory().toPath().resolve(configPath);
+        this.configManager = configManager;
         this.configVersion = configVersion;
         this.jsonObject = new JsonObject();
         this.modId = modId;
@@ -86,7 +104,6 @@ public class ConfigHandler implements IConfigHandler {
     }
 
     // Modified from Malilib.
-    @SuppressWarnings("deprecation")
     @Nullable
     public static JsonElement parseJsonFile(File file) {
         if (file != null && file.exists() && file.isFile() && file.canRead()) {
@@ -94,8 +111,7 @@ public class ConfigHandler implements IConfigHandler {
 
             try {
                 InputStreamReader inputStreamReader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);
-                JsonParser parser = new JsonParser();
-                JsonElement element = parser.parse(inputStreamReader);
+                JsonElement element = MiscUtil.GSON.fromJson(inputStreamReader, JsonElement.class);
                 inputStreamReader.close();
                 return element;
             } catch (Exception e) {
@@ -126,9 +142,16 @@ public class ConfigHandler implements IConfigHandler {
                 ConfigUtils.readConfigBase(this.jsonObject, category, configs);
             }
         }
+        if (this.postDeserializeCallback != null) {
+            this.postDeserializeCallback.accept(this);
+        }
     }
 
     public void saveToFile() {
+
+        if (this.preSerializeCallback != null) {
+            this.preSerializeCallback.accept(this);
+        }
 
         for (String category : this.configManager.getCategories()) {
 

@@ -8,6 +8,7 @@ import fi.dy.masa.malilib.util.Color4f;
 import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
+import top.hendrixshen.magiclib.config.ConfigHandler;
 import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
@@ -78,9 +79,13 @@ public class MagicLibConfigs {
             }
             MagicLibConfigGui.getInstance().reDraw();
         });
+    }
+
+    public static void postDeserialize(ConfigHandler configHandler) {
         if (debug) {
             Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("DEBUG"));
         }
+        MagicLanguageManager.INSTANCE.initClient();
     }
 
     public static class ConfigCategory {

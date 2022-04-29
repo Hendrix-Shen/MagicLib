@@ -22,7 +22,9 @@ public class MagicLib implements ModInitializer, ClientModInitializer, Dedicated
     public void onInitializeClient() {
         ConfigManager cm = ConfigManager.get(MagicLibReference.getModId());
         cm.parseConfigClass(MagicLibConfigs.class);
-        ConfigHandler.register(new ConfigHandler(MagicLibReference.getModId(), cm, CONFIG_VERSION, null, null));
+        ConfigHandler configHandler = new ConfigHandler(MagicLibReference.getModId(), cm, CONFIG_VERSION);
+        configHandler.postDeserializeCallback = MagicLibConfigs::postDeserialize;
+        ConfigHandler.register(configHandler);
         MagicLibConfigs.init(cm);
     }
 

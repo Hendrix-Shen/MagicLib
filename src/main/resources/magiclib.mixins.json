@@ -6,7 +6,6 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "client.language.MixinLanguageManager",
-    "client.language.MixinMinecraft",
     "client.malilib.MixinConfigBooleanHotkeyed",
     "client.malilib.MixinGuiTextFieldGeneric",
     "client.malilib.MixinWidgetConfigOption"
