@@ -23,6 +23,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+//#if MC <= 11502
+//$$ import java.io.FileNotFoundException;
+//#endif
+
 public class MagicLanguageManager implements ResourceManagerReloadListener {
 
     public static final String DEFAULT_CODE = "en_us";
@@ -78,7 +82,8 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
                             if (inputStream != null) {
                                 inputStream.close();
                             }
-                            throw e;
+                            MagicLibReference.LOGGER.warn("Failed to parse translations from {} ({})", resource, e);
+                            continue;
                         }
                         // from minecraft code
                         if (inputStream != null) {
@@ -88,6 +93,10 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
                         MagicLibReference.LOGGER.warn("Failed to load translations from {} ({})", resource, e);
                     }
                 }
+                //#if MC <= 11502
+                //$$ } catch (FileNotFoundException ignored) {
+                // 1.14 and 1.15 throw this exception, i don't know why...
+                //#endif
             } catch (Exception e) {
                 MagicLibReference.LOGGER.warn("Failed to load translations from {}:{} ({})", namespace, languagePath, e);
             }
@@ -98,12 +107,12 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
         defaultLanguage.clear();
         language.clear();
         ArrayList<String> codes = new ArrayList<>(fallbackLanguageList);
-        ConcurrentHashMap<String, String> currentLanguage = new ConcurrentHashMap<>();
         if (codes.size() >= 1 && !codes.get(0).equals(currentCode)) {
             codes.add(0, currentCode);
         }
         for (int i = codes.size() - 1; i >= 0; --i) {
             String code = codes.get(i);
+            ConcurrentHashMap<String, String> currentLanguage = new ConcurrentHashMap<>();
             initLanguage(code, currentLanguage);
             language.put(code, currentLanguage);
             defaultLanguage.putAll(currentLanguage);

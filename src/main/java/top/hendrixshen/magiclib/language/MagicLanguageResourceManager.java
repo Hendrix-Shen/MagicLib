@@ -7,7 +7,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -20,10 +19,6 @@ import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-
-//#if MC < 11900
-import net.minecraft.server.packs.resources.SimpleResource;
-//#endif
 
 //#if MC <= 11404
 //$$ import net.minecraft.server.packs.Pack;
@@ -63,14 +58,15 @@ public class MagicLanguageResourceManager implements ResourceManager {
                 String namespace = matcher.group(1);
                 String code = matcher.group(2);
                 if (!entry.isDirectory()) {
-                    InputStream input = jar.getInputStream(entry);
                     String languagePath = String.format("lang/%s.json", code);
                     ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
-                    //#if MC > 11802
-                    //$$ Resource resource = new Resource(namespace, () -> input);
-                    //#else
-                    Resource resource = new SimpleResource(namespace, resourceLocation, input, null);
-                    //#endif
+                    Resource resource = new MagicLanguageResource(namespace, resourceLocation, () -> {
+                        try {
+                            return jar.getInputStream(entry);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                     ret.put(resourceLocation, resource);
                 }
             }
@@ -95,14 +91,17 @@ public class MagicLanguageResourceManager implements ResourceManager {
                     if (matcher.find()) {
                         String namespace = matcher.group(1);
                         String code = matcher.group(2);
-                        InputStream input = Files.newInputStream(file);
                         String languagePath = String.format("lang/%s.json", code);
                         ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
-                        //#if MC > 11802
-                        //$$ Resource resource = new Resource(namespace, () -> input);
-                        //#else
-                        Resource resource = new SimpleResource(namespace, resourceLocation, input, null);
-                        //#endif
+
+                        Resource resource = new MagicLanguageResource(namespace, resourceLocation, () -> {
+                            try {
+                                return Files.newInputStream(file);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
                         ret.put(resourceLocation, resource);
                     }
                     return FileVisitResult.CONTINUE;
