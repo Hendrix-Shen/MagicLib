@@ -10,7 +10,7 @@ import top.hendrixshen.magiclib.language.MagicLanguageManager;
 
 @Mixin(Minecraft.class)
 public class MixinMinecraft {
-    @Inject(method = "<init>", at=@At(value = "RETURN"))
+    @Inject(method = "<init>", at = @At(value = "RETURN"))
     public void postClientInit(GameConfig gameConfig, CallbackInfo ci) {
         MagicLanguageManager.INSTANCE.initClient();
     }

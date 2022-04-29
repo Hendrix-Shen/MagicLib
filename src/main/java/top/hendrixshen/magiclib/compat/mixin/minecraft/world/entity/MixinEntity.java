@@ -20,6 +20,7 @@ public abstract class MixinEntity implements EntityCompatApi {
     //#elseif MC > 11502
     @Shadow
     public abstract void sendMessage(Component component, UUID uuid);
+
     //#else
     //$$ @Shadow
     //$$ public abstract void sendMessage(Component component);

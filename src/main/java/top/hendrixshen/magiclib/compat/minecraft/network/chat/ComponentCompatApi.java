@@ -12,15 +12,6 @@ import net.minecraft.network.chat.MutableComponent;
 public interface ComponentCompatApi {
 
     //#if MC > 11502
-    default MutableComponent
-    //#else
-    //$$ default BaseComponent
-    //#endif
-    withStyleCompat(Style style) {
-        throw new UnsupportedOperationException();
-    }
-
-    //#if MC > 11502
     static MutableComponent
     //#else
     //$$ static BaseComponent
@@ -31,6 +22,15 @@ public interface ComponentCompatApi {
         //#else
         return new TextComponent(string);
         //#endif
+    }
+
+    //#if MC > 11502
+    default MutableComponent
+    //#else
+    //$$ default BaseComponent
+    //#endif
+    withStyleCompat(Style style) {
+        throw new UnsupportedOperationException();
     }
 
     //#if MC <= 11502

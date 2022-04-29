@@ -31,19 +31,9 @@ import net.minecraft.server.packs.resources.SimpleResource;
 
 public class MagicLanguageResourceManager implements ResourceManager {
 
+    private static final Pattern languageResourcePattern = Pattern.compile("^assets/([\\w-]*)/lang/([\\w-]*)\\.json$");
     private final Set<String> namespaces = new HashSet<>();
     private final HashMap<ResourceLocation, Set<Resource>> resources = new HashMap<>();
-
-    private static final Pattern languageResourcePattern = Pattern.compile("^assets/([\\w-]*)/lang/([\\w-]*)\\.json$");
-
-    private void addResources(Map<ResourceLocation, Resource> resources) {
-        for (Map.Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
-            ResourceLocation location = entry.getKey();
-            namespaces.add(location.getNamespace());
-            Set<Resource> resourceList = this.resources.computeIfAbsent(location, resourceLocation -> new HashSet<>());
-            resourceList.add(entry.getValue());
-        }
-    }
 
     public MagicLanguageResourceManager() {
 
@@ -134,6 +124,14 @@ public class MagicLanguageResourceManager implements ResourceManager {
         return ret;
     }
 
+    private void addResources(Map<ResourceLocation, Resource> resources) {
+        for (Map.Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
+            ResourceLocation location = entry.getKey();
+            namespaces.add(location.getNamespace());
+            Set<Resource> resourceList = this.resources.computeIfAbsent(location, resourceLocation -> new HashSet<>());
+            resourceList.add(entry.getValue());
+        }
+    }
 
     @Override
     public Set<String> getNamespaces() {

@@ -102,55 +102,6 @@ public class FabricUtil {
         return false;
     }
 
-    public static class ModMetaData {
-        public static HashMap<String, ModMetaData> data = new HashMap<>();
-
-        public String id;
-
-        public JsonObject json;
-
-        public HashMap<String, HashSet<String>> entrypoints;
-
-        private ModMetaData(JsonObject json) {
-            this.id = json.get("id").getAsString();
-            this.json = json;
-            this.entrypoints = new HashMap<>();
-
-            JsonObject entrypointsJsonObject = json.getAsJsonObject("entrypoints");
-            if (entrypointsJsonObject != null) {
-                for (Map.Entry<String, JsonElement> entrypointEntry : entrypointsJsonObject.entrySet()) {
-                    JsonArray entrypointArray = entrypointEntry.getValue().getAsJsonArray();
-                    for (int i = 0; i < entrypointArray.size(); ++i) {
-                        String entrypoint = entrypointArray.get(i).getAsString();
-                        HashSet<String> entrypointSet = entrypoints.computeIfAbsent(
-                                entrypointEntry.getKey(), key -> new HashSet<>());
-                        entrypointSet.add(entrypoint);
-                    }
-                }
-            }
-
-        }
-
-        static {
-            URL logUrl = null;
-            try {
-                for (URL url : getResources("fabric.mod.json")) {
-                    logUrl = url;
-                    JsonObject jsonObject = MiscUtil.readJson(url);
-                    try {
-                        ModMetaData modMetaData = new ModMetaData(jsonObject);
-                        data.put(modMetaData.id, modMetaData);
-                    } catch (Throwable e) {
-                        MagicLibReference.LOGGER.debug("Exception when parse {}.", url);
-                    }
-                }
-            } catch (IOException e) {
-                MagicLibReference.LOGGER.error("Exception when parse {}.", logUrl);
-                FabricUtil.displayCriticalError(e);
-            }
-        }
-    }
-
     public static Set<URL> getResources(String name) throws IOException {
         ClassLoader urlLoader = Thread.currentThread().getContextClassLoader();
         HashSet<URL> hashSet = new HashSet<>();
@@ -160,7 +111,6 @@ public class FabricUtil {
         }
         return hashSet;
     }
-
 
     private static Map<String, Dependencies<Object>> getModInitDependencies(String entryKey, String entryMethod) {
 
@@ -245,5 +195,52 @@ public class FabricUtil {
      */
     public static boolean isDevelopmentEnvironment() {
         return FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+
+    public static class ModMetaData {
+        public static HashMap<String, ModMetaData> data = new HashMap<>();
+
+        static {
+            URL logUrl = null;
+            try {
+                for (URL url : getResources("fabric.mod.json")) {
+                    logUrl = url;
+                    JsonObject jsonObject = MiscUtil.readJson(url);
+                    try {
+                        ModMetaData modMetaData = new ModMetaData(jsonObject);
+                        data.put(modMetaData.id, modMetaData);
+                    } catch (Throwable e) {
+                        MagicLibReference.LOGGER.debug("Exception when parse {}.", url);
+                    }
+                }
+            } catch (IOException e) {
+                MagicLibReference.LOGGER.error("Exception when parse {}.", logUrl);
+                FabricUtil.displayCriticalError(e);
+            }
+        }
+
+        public String id;
+        public JsonObject json;
+        public HashMap<String, HashSet<String>> entrypoints;
+
+        private ModMetaData(JsonObject json) {
+            this.id = json.get("id").getAsString();
+            this.json = json;
+            this.entrypoints = new HashMap<>();
+
+            JsonObject entrypointsJsonObject = json.getAsJsonObject("entrypoints");
+            if (entrypointsJsonObject != null) {
+                for (Map.Entry<String, JsonElement> entrypointEntry : entrypointsJsonObject.entrySet()) {
+                    JsonArray entrypointArray = entrypointEntry.getValue().getAsJsonArray();
+                    for (int i = 0; i < entrypointArray.size(); ++i) {
+                        String entrypoint = entrypointArray.get(i).getAsString();
+                        HashSet<String> entrypointSet = entrypoints.computeIfAbsent(
+                                entrypointEntry.getKey(), key -> new HashSet<>());
+                        entrypointSet.add(entrypoint);
+                    }
+                }
+            }
+
+        }
     }
 }

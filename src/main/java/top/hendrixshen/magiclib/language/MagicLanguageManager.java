@@ -24,12 +24,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MagicLanguageManager implements ResourceManagerReloadListener {
 
     public static final String DEFAULT_CODE = "en_us";
-
-    private String currentCode = DEFAULT_CODE;
+    public static final MagicLanguageManager INSTANCE = new MagicLanguageManager();
     public ConcurrentHashMap<String, String> defaultLanguage = new ConcurrentHashMap<>();
     public ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language = new ConcurrentHashMap<>();
 
     ArrayList<String> fallbackLanguageList = Lists.newArrayList(DEFAULT_CODE);
+    private String currentCode = DEFAULT_CODE;
     @NotNull
     private ResourceManager resourceManager;
 
@@ -44,8 +44,6 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
             reload();
         }
     }
-
-    public static final MagicLanguageManager INSTANCE = new MagicLanguageManager();
 
     @Environment(EnvType.CLIENT)
     public void initClient() {
