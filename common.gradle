@@ -110,7 +110,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 
-archivesBaseName = project.archives_base_name + "-" + project.name
+archivesBaseName = project.archives_base_name + "-" + project.minecraft_version
 version = project.parent.version
 group = project.maven_group
 
@@ -123,7 +123,7 @@ processResources {
                 "mod_sources"         : project.mod_sources,
                 "mod_license"         : project.mod_license,
                 "minecraft_dependency": project.minecraft_dependency,
-                "minecraft_version_id": project.name.replace(".", "_"),
+                "minecraft_version_id": project.minecraft_version.replace(".", "_"),
                 "minecraft_version"   : project.minecraft_version
         ])
     }
@@ -152,8 +152,8 @@ import groovy.util.Node
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = "${project.mod_id}-${project.name.replace(".", "_")}"
-            version = "${project.version}"
+            artifactId = "${project.mod_id}-${project.minecraft_version.replace(".", "_")}"
+            version = project.version
             from(components.java)
         }
     }
