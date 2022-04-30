@@ -15,6 +15,7 @@ import top.hendrixshen.magiclib.MagicLibConfigs;
 import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.util.MiscUtil;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -23,9 +24,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-//#if MC <= 11502
-//$$ import java.io.FileNotFoundException;
-//#endif
 
 public class MagicLanguageManager implements ResourceManagerReloadListener {
 
@@ -93,10 +91,10 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
                         MagicLibReference.LOGGER.warn("Failed to load translations from {} ({})", resource, e);
                     }
                 }
-                //#if MC <= 11502
-                //$$ } catch (FileNotFoundException ignored) {
-                // 1.14 and 1.15 throw this exception, i don't know why...
-                //#endif
+            //#if MC <= 11802
+            } catch (FileNotFoundException ignored) {
+            // ignore..
+            //#endif
             } catch (Exception e) {
                 MagicLibReference.LOGGER.warn("Failed to load translations from {}:{} ({})", namespace, languagePath, e);
             }
