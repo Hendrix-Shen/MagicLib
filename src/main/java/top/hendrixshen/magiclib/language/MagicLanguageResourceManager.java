@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 
 public class MagicLanguageResourceManager implements ResourceManager {
 
-    private static final Pattern languageResourcePattern = Pattern.compile("^assets/([\\w-]*)/lang/([\\w-]*)\\.json$");
+    private static final Pattern languageResourcePattern = Pattern.compile("^assets/([\\w-]*)/lang/([a-z\\d-_]*)\\.json$");
     private final Set<String> namespaces = new HashSet<>();
     private final HashMap<ResourceLocation, Set<Resource>> resources = new HashMap<>();
 
@@ -85,7 +85,7 @@ public class MagicLanguageResourceManager implements ResourceManager {
                 }
 
                 @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
                     String fileName = "assets/" + assetsPath.relativize(file).toString().replace("\\", "/");
                     Matcher matcher = languageResourcePattern.matcher(fileName);
                     if (matcher.find()) {
