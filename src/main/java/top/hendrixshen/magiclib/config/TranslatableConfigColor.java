@@ -12,19 +12,24 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigColor extends ConfigColor implements TranslatableConfig {
-    private final String guiDisplayName;
+    private final String magicPrefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
 
     public TranslatableConfigColor(String prefix, String name, String defaultValue) {
         super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        this.magicPrefix = prefix;
+    }
+
+    @Override
+    public String getComment() {
+        return I18n.get(String.format("%s.%s.comment", magicPrefix, getName()));
     }
 
     @Override
     public String getConfigGuiDisplayName() {
-        return I18n.get(this.guiDisplayName);
+        return I18n.get(String.format("%s.%s.name", magicPrefix, getName()));
     }
 
     @Override

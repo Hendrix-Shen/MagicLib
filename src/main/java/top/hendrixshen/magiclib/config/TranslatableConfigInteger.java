@@ -12,29 +12,34 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigInteger extends ConfigInteger implements TranslatableConfig {
-    private final String guiDisplayName;
+    private final String magicPrefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
 
     public TranslatableConfigInteger(String prefix, String name, int defaultValue) {
         super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        this.magicPrefix = prefix;
     }
 
     public TranslatableConfigInteger(String prefix, String name, int defaultValue, int minValue, int maxValue) {
         super(name, defaultValue, minValue, maxValue, String.format("%s.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        this.magicPrefix = prefix;
     }
 
     public TranslatableConfigInteger(String prefix, String name, int defaultValue, int minValue, int maxValue, boolean useSlider) {
         super(name, defaultValue, minValue, maxValue, useSlider, String.format("%s.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        this.magicPrefix = prefix;
+    }
+
+    @Override
+    public String getComment() {
+        return I18n.get(String.format("%s.%s.comment", magicPrefix, getName()));
     }
 
     @Override
     public String getConfigGuiDisplayName() {
-        return I18n.get(this.guiDisplayName);
+        return I18n.get(String.format("%s.%s.name", magicPrefix, getName()));
     }
 
     @Override

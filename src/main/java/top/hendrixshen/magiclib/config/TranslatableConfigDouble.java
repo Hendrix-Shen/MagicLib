@@ -13,24 +13,24 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigDouble extends ConfigDouble implements TranslatableConfig {
-    private final String guiDisplayName;
+    private final String magicPrefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
 
     public TranslatableConfigDouble(String prefix, String name, double defaultValue) {
         super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        this.magicPrefix = prefix;
     }
 
     public TranslatableConfigDouble(String prefix, String name, double defaultValue, double minValue, double maxValue) {
         super(name, defaultValue, minValue, maxValue, String.format("%s.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        this.magicPrefix = prefix;
     }
 
     public TranslatableConfigDouble(String prefix, String name, double defaultValue, double minValue, double maxValue, boolean useSlider) {
         super(name, defaultValue, minValue, maxValue, useSlider, String.format("%s.%s.comment", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        this.magicPrefix = prefix;
     }
 
     @Override
@@ -43,8 +43,13 @@ public class TranslatableConfigDouble extends ConfigDouble implements Translatab
     }
 
     @Override
+    public String getComment() {
+        return I18n.get(String.format("%s.%s.comment", magicPrefix, getName()));
+    }
+
+    @Override
     public String getConfigGuiDisplayName() {
-        return I18n.get(this.guiDisplayName);
+        return I18n.get(String.format("%s.%s.name", magicPrefix, getName()));
     }
 
     @Override

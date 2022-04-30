@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigHotkey extends ConfigHotkey implements TranslatableConfig {
-    private final String guiDisplayName;
+    private final String magicPrefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
@@ -22,13 +22,13 @@ public class TranslatableConfigHotkey extends ConfigHotkey implements Translatab
     public TranslatableConfigHotkey(String prefix, String name, String defaultStorageString) {
         super(name, defaultStorageString, String.format("%s.%s.comment", prefix, name),
                 String.format("%s.%s.pretty_name", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        this.magicPrefix = prefix;
     }
 
     public TranslatableConfigHotkey(String prefix, String name, String defaultStorageString, KeybindSettings settings) {
         super(name, defaultStorageString, settings, String.format("%s.%s.comment", prefix, name),
                 String.format("%s.%s.pretty_name", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        this.magicPrefix = prefix;
     }
 
 
@@ -42,8 +42,13 @@ public class TranslatableConfigHotkey extends ConfigHotkey implements Translatab
     }
 
     @Override
+    public String getComment() {
+        return I18n.get(String.format("%s.%s.comment", magicPrefix, getName()));
+    }
+
+    @Override
     public String getConfigGuiDisplayName() {
-        return I18n.get(this.guiDisplayName);
+        return I18n.get(String.format("%s.%s.name", magicPrefix, getName()));
     }
 
     @Override

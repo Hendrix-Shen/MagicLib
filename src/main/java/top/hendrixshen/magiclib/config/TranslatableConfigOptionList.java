@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigOptionList extends ConfigOptionList implements TranslatableConfig {
-    private final String guiDisplayName;
+    private final String magicPrefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
@@ -22,7 +22,7 @@ public class TranslatableConfigOptionList extends ConfigOptionList implements Tr
     public TranslatableConfigOptionList(String prefix, String name, IConfigOptionListEntry defaultValue) {
         super(name, defaultValue, String.format("%s.%s.comment", prefix, name),
                 String.format("%s.%s.pretty_name", prefix, name));
-        this.guiDisplayName = String.format("%s.%s.name", prefix, name);
+        this.magicPrefix = prefix;
     }
 
     @Override
@@ -35,8 +35,13 @@ public class TranslatableConfigOptionList extends ConfigOptionList implements Tr
     }
 
     @Override
+    public String getComment() {
+        return I18n.get(String.format("%s.%s.comment", magicPrefix, getName()));
+    }
+
+    @Override
     public String getConfigGuiDisplayName() {
-        return I18n.get(this.guiDisplayName);
+        return I18n.get(String.format("%s.%s.name", magicPrefix, getName()));
     }
 
     @Override
