@@ -86,6 +86,9 @@
       "net/minecraft/class_1657": [
         "top/hendrixshen/magiclib/compat/minecraft/world/entity/player/PlayerCompatApi"
       ],
+      "net/minecraft/class_1735": [
+        "top/hendrixshen/magiclib/compat/minecraft/world/inventory/SlotCompatApi"
+      ],
       "net/minecraft/class_1799": [
         "top/hendrixshen/magiclib/compat/minecraft/world/item/ItemStackCompatApi"
       ],

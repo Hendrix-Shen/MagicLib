@@ -23,6 +23,7 @@
     "minecraft.world.MixinSimpleContainer",
     "minecraft.world.entity.MixinEntity",
     "minecraft.world.entity.player.MixinPlayer",
+    "minecraft.world.inventory.MixinSlot",
     "minecraft.world.item.MixinItemStack",
     "minecraft.world.level.MixinLevel",
     "minecraft.world.level.block.entity.MixinBlockEntity"

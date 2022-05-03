@@ -22,6 +22,7 @@ import top.hendrixshen.magiclib.test.compat.minecraft.network.chat.TestStyle;
 import top.hendrixshen.magiclib.test.compat.minecraft.world.TestSimpleContainer;
 import top.hendrixshen.magiclib.test.compat.minecraft.world.entity.TestEntity;
 import top.hendrixshen.magiclib.test.compat.minecraft.world.entity.player.TestPlayer;
+import top.hendrixshen.magiclib.test.compat.minecraft.world.inventory.TestSlot;
 import top.hendrixshen.magiclib.test.compat.minecraft.world.item.TestItemStack;
 import top.hendrixshen.magiclib.test.compat.minecraft.world.level.TestLevel;
 import top.hendrixshen.magiclib.test.compat.minecraft.world.level.block.entity.TestBlockEntity;
@@ -53,6 +54,7 @@ public class CompatApiTests implements ModInitializer, ClientModInitializer, Ded
         TestEntity.test();
         TestItemStack.test();
         TestSimpleContainer.test();
+        TestSlot.test();
         TestStyle.test(false);
         TestUtil.test();
         MagicLibReference.LOGGER.info("test i18n: {}", I18n.get("magiclib.gui.button.tab.test"));
