@@ -59,6 +59,9 @@
       "net/minecraft/class_287": [
         "top/hendrixshen/magiclib/compat/minecraft/blaze3d/vertex/BufferBuilderCompatApi"
       ],
+      "net/minecraft/class_310": [
+        "top/hendrixshen/magiclib/compat/minecraft/client/MinecraftCompatApi"
+      ],
       "net/minecraft/class_327": [
         "top/hendrixshen/magiclib/compat/minecraft/client/gui/FontCompatApi"
       ],

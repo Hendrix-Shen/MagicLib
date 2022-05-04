@@ -19,6 +19,7 @@
   "server": [
   ],
   "mixins": [
+    "minecraft.client.MixinMinecraft",
     "minecraft.network.chat.MixinBaseComponent",
     "minecraft.network.chat.MixinStyle",
     "minecraft.world.MixinSimpleContainer",
