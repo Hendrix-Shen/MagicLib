@@ -13,6 +13,7 @@
     "minecraft.math.AccessorMatrix4f",
     "minecraft.math.MixinMatrix4f",
     "minecraft.math.MixinQuaternion",
+    "minecraft.math.MixinVector3f",
     "minecraft.math.MixinVector4f"
   ],
   "server": [

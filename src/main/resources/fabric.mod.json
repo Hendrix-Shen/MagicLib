@@ -74,14 +74,17 @@
       "net/minecraft/class_1159": [
         "top/hendrixshen/magiclib/compat/minecraft/math/Matrix4fCompatApi"
       ],
+      "net/minecraft/class_1160": [
+        "top/hendrixshen/magiclib/compat/minecraft/math/Vector3fCompatApi"
+      ],
+      "net/minecraft/class_1162": [
+        "top/hendrixshen/magiclib/compat/minecraft/math/Vector4fCompatApi"
+      ],
       "net/minecraft/class_1277": [
         "top/hendrixshen/magiclib/compat/minecraft/world/SimpleContainerCompatApi"
       ],
       "net/minecraft/class_1297": [
         "top/hendrixshen/magiclib/compat/minecraft/world/entity/EntityCompatApi"
-      ],
-      "net/minecraft/class_1162": [
-        "top/hendrixshen/magiclib/compat/minecraft/math/Vector4fCompatApi"
       ],
       "net/minecraft/class_1657": [
         "top/hendrixshen/magiclib/compat/minecraft/world/entity/player/PlayerCompatApi"

@@ -16,6 +16,7 @@ import top.hendrixshen.magiclib.test.compat.minecraft.client.gui.TestScreen;
 import top.hendrixshen.magiclib.test.compat.minecraft.client.renderer.entity.TestEntityRenderDispatcher;
 import top.hendrixshen.magiclib.test.compat.minecraft.math.TestMatrix4f;
 import top.hendrixshen.magiclib.test.compat.minecraft.math.TestQuaternion;
+import top.hendrixshen.magiclib.test.compat.minecraft.math.TestVector3f;
 import top.hendrixshen.magiclib.test.compat.minecraft.math.TestVector4f;
 import top.hendrixshen.magiclib.test.compat.minecraft.network.chat.TestComponent;
 import top.hendrixshen.magiclib.test.compat.minecraft.network.chat.TestStyle;
@@ -75,6 +76,7 @@ public class CompatApiTests implements ModInitializer, ClientModInitializer, Ded
         TestQuaternion.test();
         TestScreen.test();
         TestStyle.test(true);
+        TestVector3f.test();
         TestVector4f.test();
         TestVertexFormat.test();
     }
