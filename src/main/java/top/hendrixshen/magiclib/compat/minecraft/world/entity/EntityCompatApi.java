@@ -10,6 +10,18 @@ public interface EntityCompatApi {
         throw new UnsupportedOperationException();
     }
 
+    default double getXCompat() {
+        throw new UnsupportedOperationException();
+    }
+
+    default double getYCompat() {
+        throw new UnsupportedOperationException();
+    }
+
+    default double getZCompat() {
+        throw new UnsupportedOperationException();
+    }
+
     default int getBlockXCompat() {
         return this.blockPositionCompat().getX();
     }
@@ -109,6 +121,20 @@ public interface EntityCompatApi {
 
     //$$ default void setOnGround(boolean onGround) {
     //$$     this.setOnGroundCompat(onGround);
+    //$$ }
+    //#endif
+
+    //#if MC <= 11404
+    //$$ default double getX() {
+    //$$     return this.getXCompat();
+    //$$ }
+
+    //$$ default double getY() {
+    //$$     return this.getYCompat();
+    //$$ }
+
+    //$$ default double getZ() {
+    //$$     return this.getZCompat();
     //$$ }
     //#endif
 

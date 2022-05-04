@@ -11,8 +11,57 @@ import top.hendrixshen.magiclib.compat.minecraft.world.entity.EntityCompatApi;
 
 import java.util.UUID;
 
+//#if MC <= 11404
+//$$ import net.minecraft.world.phys.Vec3;
+//#endif
+
 @Mixin(Entity.class)
 public abstract class MixinEntity implements EntityCompatApi {
+
+    //#if MC > 11404
+    @Shadow
+    public abstract double getX();
+
+    @Shadow
+    public abstract double getY();
+
+    @Shadow
+    public abstract double getZ();
+
+    //#else
+    //$$ @Shadow
+    //$$ public double x;
+    //$$ @Shadow
+    //$$ public double y;
+    //$$ @Shadow
+    //$$ public double z;
+    //#endif
+    @Override
+    public double getXCompat() {
+        //#if MC > 11404
+        return this.getX();
+        //#else
+        //$$ return this.x;
+        //#endif
+    }
+
+    @Override
+    public double getYCompat() {
+        //#if MC > 11404
+        return this.getY();
+        //#else
+        //$$ return this.y;
+        //#endif
+    }
+
+    @Override
+    public double getZCompat() {
+        //#if MC > 11404
+        return this.getZ();
+        //#else
+        //$$ return this.z;
+        //#endif
+    }
 
     //#if MC > 11802
     //$$ @Shadow

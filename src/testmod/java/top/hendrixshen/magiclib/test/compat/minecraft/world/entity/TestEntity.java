@@ -31,6 +31,11 @@ public class TestEntity {
         entity.setOnGround(true);
         entity.sendSystemMessageCompat(ComponentCompatApi.literal("test"));
         entity.sendSystemMessage(ComponentCompatApi.literal("test"));
-
+        entity.getXCompat();
+        entity.getX();
+        entity.getYCompat();
+        entity.getY();
+        entity.getZCompat();
+        entity.getZ();
     }
 }
