@@ -104,6 +104,9 @@
       "net/minecraft/class_2586": [
         "top/hendrixshen/magiclib/compat/minecraft/world/level/block/entity/BlockEntityCompatApi"
       ],
+      "net/minecraft/class_2680": [
+        "top/hendrixshen/magiclib/compat/minecraft/world/level/block/state/BlockStateCompatApi"
+      ],
       "net/minecraft/class_4184": [
         "top/hendrixshen/magiclib/compat/minecraft/client/CameraCompatApi"
       ]

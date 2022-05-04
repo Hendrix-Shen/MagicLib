@@ -26,6 +26,7 @@ import top.hendrixshen.magiclib.test.compat.minecraft.world.inventory.TestSlot;
 import top.hendrixshen.magiclib.test.compat.minecraft.world.item.TestItemStack;
 import top.hendrixshen.magiclib.test.compat.minecraft.world.level.TestLevel;
 import top.hendrixshen.magiclib.test.compat.minecraft.world.level.block.entity.TestBlockEntity;
+import top.hendrixshen.magiclib.test.compat.minecraft.world.level.block.state.TestBlockState;
 
 public class CompatApiTests implements ModInitializer, ClientModInitializer, DedicatedServerModInitializer {
     private int ticks = 0;
@@ -50,6 +51,7 @@ public class CompatApiTests implements ModInitializer, ClientModInitializer, Ded
             });
         }
         TestBlockEntity.test();
+        TestBlockState.test();
         TestComponent.test();
         TestEntity.test();
         TestItemStack.test();

@@ -16,6 +16,11 @@ public class MiscUtil {
 
     public static Gson GSON = new Gson();
 
+    @SuppressWarnings("unchecked")
+    public static <T> T cast(Object obj) {
+        return (T) obj;
+    }
+
     public static JsonObject readJson(URL url) throws IOException {
         InputStream inputStream = url.openStream();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
