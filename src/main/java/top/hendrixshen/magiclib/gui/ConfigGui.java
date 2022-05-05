@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 public class ConfigGui extends GuiConfigsBase {
-    private static String tab;
+    private String tab;
     private final String identifier;
     private final Supplier<String> titleSupplier;
 
