@@ -63,7 +63,7 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
         Set<String> nameSpaces;
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
-            // 1.15 的 server 缺少 ResourceMager.getNamespaces
+            // 1.15 的 server 缺少 ResourceManager.getNamespaces
             nameSpaces = ((MagicLanguageResourceManager) resourceManager).getNamespaces();
         } else {
             nameSpaces = resourceManager.getNamespaces();
@@ -105,9 +105,14 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
         defaultLanguage.clear();
         language.clear();
         ArrayList<String> codes = new ArrayList<>(fallbackLanguageList);
-        if (codes.size() >= 1 && !codes.get(0).equals(currentCode)) {
+        if (!codes.contains(currentCode)) {
             codes.add(0, currentCode);
         }
+
+        if (!codes.contains(DEFAULT_CODE)) {
+            codes.add(0, DEFAULT_CODE);
+        }
+
         for (int i = codes.size() - 1; i >= 0; --i) {
             String code = codes.get(i);
             ConcurrentHashMap<String, String> currentLanguage = new ConcurrentHashMap<>();
