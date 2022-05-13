@@ -62,6 +62,9 @@ public class MagicLibConfigs {
             dependencies = @Dependencies(and = @Dependency(value = "sodium", versionPredicate = ">=0.1")))
     public static boolean sodiumTest = false;
 
+    private static ArrayList<String> fallbackLanguageListOld = new ArrayList<>();
+
+    private static boolean first = true;
 
     public static void init(ConfigManager cm) {
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
@@ -82,10 +85,22 @@ public class MagicLibConfigs {
     }
 
     public static void postDeserialize(ConfigHandler configHandler) {
+        Minecraft mc = Minecraft.getInstance();
         if (debug) {
             Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("DEBUG"));
         }
-        MagicLanguageManager.INSTANCE.initClient();
+        if (first) {
+            fallbackLanguageListOld.addAll(fallbackLanguageList);
+            first = false;
+            MagicLanguageManager.INSTANCE.initClient();
+        }
+
+        if (!fallbackLanguageListOld.equals(fallbackLanguageList)) {
+            fallbackLanguageListOld.clear();
+            fallbackLanguageListOld.addAll(fallbackLanguageList);
+            MagicLanguageManager.INSTANCE.initClient();
+            mc.getLanguageManager().onResourceManagerReload(mc.getResourceManager());
+        }
     }
 
     public static class ConfigCategory {
