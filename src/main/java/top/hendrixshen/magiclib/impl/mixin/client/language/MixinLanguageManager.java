@@ -49,22 +49,23 @@ public class MixinLanguageManager {
 
         ArrayList<String> codes = new ArrayList<>(MagicLibConfigs.fallbackLanguageList);
 
-        if (!codes.contains(currentCode)) {
-            codes.add(0, currentCode);
-        }
+        codes.remove(currentCode);
+        codes.add(0, currentCode);
 
         if (!codes.contains(MagicLanguageManager.DEFAULT_CODE)) {
             codes.add(MagicLanguageManager.DEFAULT_CODE);
         }
 
-        LanguageInfo defaultLanguageInfo = this.languages.getOrDefault("en_us", DEFAULT_LANGUAGE);
         Collections.reverse(codes);
         languageInfoList.clear();
         for (String code : codes) {
             LanguageInfo languageInfo = this.languages.getOrDefault(code, null);
             if (languageInfo != null) {
-                languageInfoList.add(this.languages.getOrDefault(code, defaultLanguageInfo));
+                languageInfoList.add(languageInfo);
             }
+        }
+        if (languageInfoList.isEmpty()) {
+            languageInfoList.add(DEFAULT_LANGUAGE);
         }
 
         return languageInfoList;
@@ -75,9 +76,8 @@ public class MixinLanguageManager {
     //$$         ordinal = 0))
     //$$ private List<String> addFallbackLanguage(List<String> languageCodeList) {
     //$$     ArrayList<String> codes = new ArrayList<>(MagicLibConfigs.fallbackLanguageList);
-    //$$     if (!codes.contains(currentCode)) {
-    //$$         codes.add(0, currentCode);
-    //$$     }
+    //$$     codes.remove(currentCode);
+    //$$     codes.add(0, currentCode);
     //$$     if (!codes.contains(MagicLanguageManager.DEFAULT_CODE)) {
     //$$         codes.add(MagicLanguageManager.DEFAULT_CODE);
     //$$     }

@@ -106,9 +106,8 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
         language.clear();
         ArrayList<String> codes = new ArrayList<>(fallbackLanguageList);
 
-        if (!codes.contains(currentCode)) {
-            codes.add(0, currentCode);
-        }
+        codes.remove(currentCode);
+        codes.add(0, currentCode);
 
         if (!codes.contains(DEFAULT_CODE)) {
             codes.add(DEFAULT_CODE);
