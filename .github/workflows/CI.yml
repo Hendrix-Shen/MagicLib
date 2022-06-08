@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event_name == 'push' && !startsWith(github.event.ref, 'refs/tags/') }}
+    if: ${{ github.event_name == 'push' && !startsWith(github.event.ref, 'refs/tags/') && contains(github.event.head_commit.message, '[build skip]') == false }}
     strategy:
       matrix:
         java: [ 17 ]
@@ -58,21 +58,24 @@ jobs:
           CLEAR_GLOBS_FILE: '.clear-target-files'
 
       - name: Create Github release
-        uses: marvinpinto/action-automatic-releases@v1.2.1
+        if: contains(github.event.head_commit.message, '[publish skip]') == false && contains(github.event.ref, 'refs/heads/exp') == false
+        uses: softprops/action-gh-release@v1
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
           prerelease: true
-          title: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
           files: |
             LICENSE
             fabricWrapper/build/libs/*.jar
+          name: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
+          tag_name: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
+          target_commitish: ${{ github.event.ref }}
+          generate_release_notes: true
+
   publish:
     if: ${{ github.event_name == 'release' }}
     strategy:
       matrix:
-        java: [17]
-        os: [ubuntu-latest]
+        java: [ 17 ]
+        os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
 
     steps:
