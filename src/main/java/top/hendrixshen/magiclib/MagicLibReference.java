@@ -8,7 +8,7 @@ public class MagicLibReference {
     private static final String MOD_ID = "magiclib";
 
     //#if MC > 11802
-    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-22w19a";
+    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_19";
     //#elseif MC > 11701
     public static final String CURRENT_MOD_ID = MOD_ID + "-1_18_2";
     //#elseif MC > 11605

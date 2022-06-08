@@ -12,13 +12,13 @@ preprocess {
 
 repositories {
     maven {
-        url 'https://www.cursemaven.com/'
+        url("https://www.cursemaven.com")
     }
     maven {
-        url = "https://api.modrinth.com/maven"
+        url("https://api.modrinth.com/maven")
     }
     maven {
-        url 'https://maven.hendrixshen.top'
+        url("https://maven.hendrixshen.top")
     }
     mavenCentral()
     mavenLocal()
@@ -39,20 +39,18 @@ dependencies {
     modApi("curse.maven:modmenu-308702:${project.modmenu_version}")
 
     modApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.inGameAccountSwitcher_version}")
-
+    if (mcVersion < 11900) {
+        modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.inGameAccountSwitcher_version}")
+    }
     modApi("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
 
-
     modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
-
     modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
 
     testmodImplementation(sourceSets.main.output)
 
     runtimeOnly(project(path: ":fabricWrapper"))
 }
-
 
 loom {
 
@@ -76,15 +74,12 @@ loom {
 
         autoTestServer {
             inherit testmodServer
-
             name "Auto Test Server"
-
             vmArg "-D${project.mod_id}.autoTest"
         }
 
         gametest {
             inherit testmodServer
-
             name "Game Test"
 
             // Enable the gametest runner
@@ -104,14 +99,12 @@ loom {
 
 // test.dependsOn runGametest
 
-
 remapJar {
     remapperIsolation = true
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
-
 
 archivesBaseName = project.archives_base_name + "-" + project.minecraft_version
 version = project.parent.version
@@ -132,17 +125,11 @@ processResources {
     }
 }
 
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
 java {
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
     withSourcesJar()
 }
 
