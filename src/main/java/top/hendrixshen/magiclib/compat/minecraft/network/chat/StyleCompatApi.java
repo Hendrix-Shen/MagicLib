@@ -28,7 +28,7 @@ public interface StyleCompatApi {
     //$$ default Style withStrikethrough(@Nullable Boolean strikethrough) {
     //$$     return this.withStrikethroughCompat(strikethrough);
     //$$ }
-
+    //$$
     //$$ default Style withObfuscated(@Nullable Boolean obfuscated) {
     //$$     return this.withObfuscatedCompat(obfuscated);
     //$$ }

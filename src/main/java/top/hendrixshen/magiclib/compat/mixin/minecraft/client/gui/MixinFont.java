@@ -76,16 +76,16 @@ public abstract class MixinFont implements FontCompatApi {
         //$$     GlStateManager.depthMask(false);
         //$$     GlStateManager.disableDepthTest();
         //$$ }
-
+        //$$
         //$$ GlStateManager.enableBlend();
         //$$ GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         //$$ GlStateManager.disableTexture();
-
+        //$$
         //$$ float a = (float) (backgroundColor >> 24 & 255) / 255.0F;
         //$$ float r = (float) (backgroundColor >> 16 & 255) / 255.0F;
         //$$ float g = (float) (backgroundColor >> 8 & 255) / 255.0F;
         //$$ float b = (float) (backgroundColor & 255) / 255.0F;
-
+        //$$
         //$$ BufferBuilder bufferBuilder = tesselator.getBuilder();
         //$$ bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
         //$$ bufferBuilder.vertex(x - 1, y - 1, 0).color(r, g, b, a).endVertex();

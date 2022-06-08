@@ -8,9 +8,9 @@ public interface BlockStateCompatApi {
     }
 
     //#if MC <= 11502
-    default boolean is(Block block) {
-        return this.isCompat(block);
-    }
+    //$$ default boolean is(Block block) {
+    //$$     return this.isCompat(block);
+    //$$ }
     //#endif
 
 }

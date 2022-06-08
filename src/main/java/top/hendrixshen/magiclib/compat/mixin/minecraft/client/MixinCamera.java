@@ -23,7 +23,7 @@ public abstract class MixinCamera implements CameraCompatApi {
     //#else
     //$$ @Shadow
     //$$ private float yRot;
-
+    //$$
     //$$ @Shadow
     //$$ private float xRot;
     //#endif

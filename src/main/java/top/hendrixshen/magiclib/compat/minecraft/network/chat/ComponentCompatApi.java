@@ -1,7 +1,7 @@
 package top.hendrixshen.magiclib.compat.minecraft.network.chat;
 
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
 
 //#if MC > 11502
 import net.minecraft.network.chat.MutableComponent;
@@ -18,9 +18,9 @@ public interface ComponentCompatApi {
     //#endif
     literal(String string) {
         //#if MC > 11802
-        //$$ return MutableComponent.create(new LiteralContents(string));
+        return MutableComponent.create(new LiteralContents(string));
         //#else
-        return new TextComponent(string);
+        //$$ return new TextComponent(string);
         //#endif
     }
 

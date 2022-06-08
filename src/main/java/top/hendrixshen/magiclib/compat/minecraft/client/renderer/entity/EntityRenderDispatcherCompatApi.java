@@ -19,7 +19,7 @@ public interface EntityRenderDispatcherCompatApi {
     //$$ default double distanceToSqr(Entity entity) {
     //$$     return this.distanceToSqrCompat(entity);
     //$$ }
-
+    //$$
     //$$ default Quaternion cameraOrientation() {
     //$$     return this.cameraOrientationCompat();
     //$$ }

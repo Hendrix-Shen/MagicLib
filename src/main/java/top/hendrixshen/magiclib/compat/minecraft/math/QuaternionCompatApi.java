@@ -25,11 +25,11 @@ public interface QuaternionCompatApi {
     //$$ default void mul(float f) {
     //$$      this.mulCompat(f);
     //$$ }
-
+    //$$
     //$$ default void normalize() {
     //$$     this.normalizeCompat();
     //$$ }
-
+    //$$
     //$$ default Quaternion copy() {
     //$$     return this.copyCompat();
     //$$ }

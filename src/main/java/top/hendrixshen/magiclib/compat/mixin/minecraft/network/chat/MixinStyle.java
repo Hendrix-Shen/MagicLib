@@ -27,7 +27,7 @@ public abstract class MixinStyle implements StyleCompatApi {
     //$$ @Final
     //$$ @Shadow
     //$$ private Boolean strikethrough;
-
+    //$$
     //$$ @Mutable
     //$$ @Final
     //$$ @Shadow

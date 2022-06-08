@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 
 //#if MC < 11900
-import net.minecraft.network.chat.BaseComponent;
+//$$ import net.minecraft.network.chat.BaseComponent;
 //#endif
 
 //#if MC > 11502
@@ -16,9 +16,9 @@ import net.minecraft.network.chat.MutableComponent;
 //#endif
 
 //#if MC > 11802
-//$$ @Mixin(MutableComponent.class)
+@Mixin(MutableComponent.class)
 //#else
-@Mixin(BaseComponent.class)
+//$$ @Mixin(BaseComponent.class)
 //#endif
 public abstract class MixinBaseComponent implements ComponentCompatApi {
 

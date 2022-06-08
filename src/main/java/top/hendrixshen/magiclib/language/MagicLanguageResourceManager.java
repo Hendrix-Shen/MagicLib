@@ -138,25 +138,25 @@ public class MagicLanguageResourceManager implements ResourceManager {
     }
 
     @Override
-    public List<Resource> getResources(@NotNull ResourceLocation resourceLocation) {
+    public List<Resource> getResourceStack(@NotNull ResourceLocation resourceLocation) {
         return new ArrayList<>(resources.getOrDefault(resourceLocation, new HashSet<>()));
     }
 
     //#if MC > 11802
-    //$$ @Override
-    //$$ public Map<ResourceLocation, Resource> listResources(@NotNull String string, @NotNull Predicate<ResourceLocation> predicate) {
-    //$$     return null;
-    //$$ }
-
-    //$$ @Override
-    //$$ public Map<ResourceLocation, List<Resource>> listResourceStacks(@NotNull String string, @NotNull Predicate<ResourceLocation> predicate) {
-    //$$     return null;
-    //$$ }
-    //#else
     @Override
-    public Collection<ResourceLocation> listResources(@NotNull String string, @NotNull Predicate<String> predicate) {
+    public Map<ResourceLocation, Resource> listResources(@NotNull String string, @NotNull Predicate<ResourceLocation> predicate) {
         return null;
     }
+
+    @Override
+    public Map<ResourceLocation, List<Resource>> listResourceStacks(@NotNull String string, @NotNull Predicate<ResourceLocation> predicate) {
+        return null;
+    }
+    //#else
+    //$$ @Override
+    //$$ public Collection<ResourceLocation> listResources(@NotNull String string, @NotNull Predicate<String> predicate) {
+    //$$     return null;
+    //$$ }
     //#endif
 
 
@@ -173,19 +173,19 @@ public class MagicLanguageResourceManager implements ResourceManager {
     //#endif
 
     //#if MC > 11802
-    //$$ @Override
-    //$$ public Optional<Resource> getResource(ResourceLocation resourceLocation) {
-    //$$     return Optional.empty();
-    //$$ }
+    @Override
+    public Optional<Resource> getResource(ResourceLocation resourceLocation) {
+        return Optional.empty();
+    }
     //#else
-    @Override
-    public Resource getResource(@NotNull ResourceLocation resourceLocation) {
-        return null;
-    }
-
-    @Override
-    public boolean hasResource(@NotNull ResourceLocation resourceLocation) {
-        return false;
-    }
+    //$$ @Override
+    //$$ public Resource getResource(@NotNull ResourceLocation resourceLocation) {
+    //$$     return null;
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ public boolean hasResource(@NotNull ResourceLocation resourceLocation) {
+    //$$     return false;
+    //$$ }
     //#endif
 }

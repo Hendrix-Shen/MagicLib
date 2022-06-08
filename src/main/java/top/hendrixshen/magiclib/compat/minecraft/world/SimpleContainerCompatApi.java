@@ -8,10 +8,10 @@ public interface SimpleContainerCompatApi {
         throw new UnsupportedOperationException();
     }
     //#if MC < 11502
-    // fuck remap
-    // it will be remapped to intermediary name....
-    ////$$ void fromTagCompat(ListTag listTag) {
-    ////$$     this.fromTagCompat(listTag);
-    ////$$ }
+    //$$ // fuck remap
+    //$$ // it will be remapped to intermediary name....
+    //$$ ////$$ void fromTagCompat(ListTag listTag) {
+    //$$ ////$$     this.fromTagCompat(listTag);
+    //$$ ////$$ }
     //#endif
 }

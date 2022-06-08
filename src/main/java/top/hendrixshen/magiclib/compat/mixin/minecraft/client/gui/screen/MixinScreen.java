@@ -30,8 +30,8 @@ public abstract class MixinScreen implements ScreenCompatApi {
     //$$ @Shadow
     //$$ @Final
     //$$ protected List<AbstractWidget> buttons;
-
-
+    //$$
+    //$$
     //$$ @Shadow
     //$$ protected abstract AbstractWidget addButton(AbstractWidget abstractWidget);
     //#endif

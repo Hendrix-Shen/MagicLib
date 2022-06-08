@@ -64,12 +64,12 @@ public abstract class MixinEntity implements EntityCompatApi {
     }
 
     //#if MC > 11802
-    //$$ @Shadow
-    //$$ public abstract void sendSystemMessage(Component component);
-    //#elseif MC > 11502
     @Shadow
-    public abstract void sendMessage(Component component, UUID uuid);
-
+    public abstract void sendSystemMessage(Component component);
+    //#elseif MC > 11502
+    //$$ @Shadow
+    //$$ public abstract void sendMessage(Component component, UUID uuid);
+    //$$
     //#else
     //$$ @Shadow
     //$$ public abstract void sendMessage(Component component);
@@ -77,9 +77,9 @@ public abstract class MixinEntity implements EntityCompatApi {
     @Override
     public void sendSystemMessageCompat(Component component) {
         //#if MC > 11802
-        //$$ this.sendSystemMessage(component);
+        this.sendSystemMessage(component);
         //#elseif MC > 11502
-        this.sendMessage(component, UtilCompatApi.NIL_UUID);
+        //$$ this.sendMessage(component, UtilCompatApi.NIL_UUID);
         //#else
         //$$ this.sendMessage(component);
         //#endif
@@ -170,13 +170,13 @@ public abstract class MixinEntity implements EntityCompatApi {
 
 
     //#else
-
+    //$$
     //$$ @Shadow
     //$$ public abstract BlockPos getCommandSenderBlockPosition();
-
+    //$$
     //$$ @Shadow
     //$$ public boolean onGround;
-
+    //$$
     //#endif
 
     @Override

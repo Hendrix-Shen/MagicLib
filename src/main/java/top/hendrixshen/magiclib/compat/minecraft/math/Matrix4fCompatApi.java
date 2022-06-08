@@ -50,15 +50,15 @@ public interface Matrix4fCompatApi {
     //$$ default void setIdentity() {
     //$$     this.setIdentityCompat();
     //$$ }
-
+    //$$
     //$$ default void multiply(Matrix4f matrix4f) {
     //$$     this.multiplyCompat(matrix4f);
     //$$ }
-
+    //$$
     //$$ default void multiply(Quaternion quaternion) {
     //$$     this.multiplyCompat(quaternion);
     //$$ }
-
+    //$$
     //$$ default Matrix4f copy() {
     //$$     return this.copyCompat();
     //$$ }

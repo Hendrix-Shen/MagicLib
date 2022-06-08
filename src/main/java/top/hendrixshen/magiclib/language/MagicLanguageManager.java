@@ -71,9 +71,9 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
         for (String namespace : nameSpaces) {
             ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
             try {
-                for (Resource resource : resourceManager.getResources(resourceLocation)) {
+                for (Resource resource : resourceManager.getResourceStack(resourceLocation)) {
                     try {
-                        InputStream inputStream = resource.getInputStream();
+                        InputStream inputStream = resource.open();
                         try {
                             MiscUtil.loadStringMapFromJson(inputStream, language::put);
                         } catch (Throwable e) {
@@ -92,8 +92,8 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
                     }
                 }
             //#if MC <= 11802
-            } catch (FileNotFoundException ignored) {
-            // ignore..
+            //$$ } catch (FileNotFoundException ignored) {
+            //$$ // ignore..
             //#endif
             } catch (Exception e) {
                 MagicLibReference.LOGGER.warn("Failed to load translations from {}:{} ({})", namespace, languagePath, e);

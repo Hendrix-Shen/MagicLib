@@ -20,16 +20,16 @@ public abstract class MixinBlockEntity implements BlockEntityCompatApi {
     @Shadow
     public abstract void load(CompoundTag compoundTag);
     //#else
-
+    //$$
     //$$ @Shadow
     //$$ public abstract void load(BlockState blockState, CompoundTag compoundTag);
-
+    //$$
     //$$ @Shadow
     //$$ public abstract Level getLevel();
-
+    //$$
     //$$ @Shadow
     //$$ public abstract BlockPos getBlockPos();
-
+    //$$
     //#endif
 
     @Override

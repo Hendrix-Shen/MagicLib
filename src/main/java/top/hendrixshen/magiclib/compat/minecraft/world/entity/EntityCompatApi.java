@@ -67,44 +67,44 @@ public interface EntityCompatApi {
     }
 
     //#if MC < 11900
-    default void sendSystemMessage(Component component) {
-        this.sendSystemMessageCompat(component);
-    }
+    //$$ default void sendSystemMessage(Component component) {
+    //$$     this.sendSystemMessageCompat(component);
+    //$$ }
     //#endif
 
     //#if MC <= 11701
-    // fuck remap
-    // It will cause remap fail...
-    ////$$ default Level getLevel() {
-    ////$$     return this.getLevelCompat();
-    ////$$ }
+    //$$ // fuck remap
+    //$$ // It will cause remap fail...
+    //$$ ////$$ default Level getLevel() {
+    //$$ ////$$     return this.getLevelCompat();
+    //$$ ////$$ }
     //#endif
 
     //#if MC <= 11605
     //$$ default int getBlockX() {
     //$$     return this.getBlockXCompat();
     //$$ }
-
+    //$$
     //$$ default int getBlockY() {
     //$$     return this.getBlockYCompat();
     //$$ }
-
+    //$$
     //$$ default int getBlockZ() {
     //$$     return this.getBlockZCompat();
     //$$ }
-
+    //$$
     //$$ default float getYRot() {
     //$$     return this.getYRotCompat();
     //$$ }
-
+    //$$
     //$$ default void setYRot(float yRot) {
     //$$     this.setYRotCompat(yRot);
     //$$ }
-
+    //$$
     //$$ default float getXRot() {
     //$$     return this.getXRotCompat();
     //$$ }
-
+    //$$
     //$$ default void setXRot(float xRot) {
     //$$     this.setXRotCompat(xRot);
     //$$ }
@@ -114,11 +114,11 @@ public interface EntityCompatApi {
     //$$ default BlockPos blockPosition() {
     //$$     return this.blockPositionCompat();
     //$$ }
-
+    //$$
     //$$ default boolean isOnGround() {
     //$$     return this.isOnGroundCompat();
     //$$ }
-
+    //$$
     //$$ default void setOnGround(boolean onGround) {
     //$$     this.setOnGroundCompat(onGround);
     //$$ }
@@ -128,11 +128,11 @@ public interface EntityCompatApi {
     //$$ default double getX() {
     //$$     return this.getXCompat();
     //$$ }
-
+    //$$
     //$$ default double getY() {
     //$$     return this.getYCompat();
     //$$ }
-
+    //$$
     //$$ default double getZ() {
     //$$     return this.getZCompat();
     //$$ }

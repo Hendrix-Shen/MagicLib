@@ -30,19 +30,19 @@ public abstract class MixinQuaternion implements QuaternionCompatApi {
     //$$ @Final
     //$$ @Shadow
     //$$ private float[] values;
-
+    //$$
     //$$ @Shadow
     //$$ public abstract float i();
-
+    //$$
     //$$ @Shadow
     //$$ public abstract float j();
-
+    //$$
     //$$ @Shadow
     //$$ public abstract float k();
-
+    //$$
     //$$ @Shadow
     //$$ public abstract float r();
-
+    //$$
     //#endif
 
 

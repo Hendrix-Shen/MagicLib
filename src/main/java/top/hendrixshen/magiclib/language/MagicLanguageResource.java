@@ -11,9 +11,9 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 //#if MC > 11802
-//$$ public class MagicLanguageResource extends Resource {
+public class MagicLanguageResource extends Resource {
 //#else
-public class MagicLanguageResource implements Resource {
+//$$ public class MagicLanguageResource implements Resource {
     //#endif
     private final String sourceName;
     private final ResourceLocation location;
@@ -21,7 +21,7 @@ public class MagicLanguageResource implements Resource {
 
     public MagicLanguageResource(String string, ResourceLocation resourceLocation, Supplier<InputStream> inputStreamSupplier) {
         //#if MC > 11802
-        //$$ super(string, inputStreamSupplier::get);
+        super(string, inputStreamSupplier::get);
         //#endif
         this.sourceName = string;
         this.location = resourceLocation;
@@ -29,38 +29,38 @@ public class MagicLanguageResource implements Resource {
     }
 
     //#if MC <= 11802
-    @Override
+    //$$ @Override
     //#endif
     public ResourceLocation getLocation() {
         return location;
     }
 
     @Override
-    public InputStream getInputStream() {
+    public InputStream open() {
         return inputStreamSupplier.get();
     }
 
     //#if MC <= 11802
     //#if MC > 11605
-    @Override
-    public boolean hasMetadata() {
-        return false;
-    }
+    //$$ @Override
+    //$$ public boolean hasMetadata() {
+    //$$     return false;
+    //$$ }
+    //#endif
+    //$$
+    //$$ @Nullable
+    //$$ @Override
+    //$$ public <T> T getMetadata(@NotNull MetadataSectionSerializer<T> metadataSectionSerializer) {
+    //$$     return null;
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ public void close() {
+    //$$ }
     //#endif
 
-    @Nullable
     @Override
-    public <T> T getMetadata(@NotNull MetadataSectionSerializer<T> metadataSectionSerializer) {
-        return null;
-    }
-
-    @Override
-    public void close() {
-    }
-    //#endif
-
-    @Override
-    public String getSourceName() {
+    public String sourcePackId() {
         return sourceName;
     }
 

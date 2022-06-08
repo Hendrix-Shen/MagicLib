@@ -22,7 +22,7 @@ public abstract class MixinSimpleContainer implements SimpleContainerCompatApi {
     //#else
     //$$ @Shadow
     //$$ public abstract ItemStack addItem(ItemStack itemStack);
-
+    //$$
     //#endif
 
     @Override

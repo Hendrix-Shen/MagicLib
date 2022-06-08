@@ -24,7 +24,7 @@ public interface ScreenCompatApi {
     //$$ default GuiEventListener addRenderableWidget(GuiEventListener guiEventListener) {
     //$$     return this.addRenderableWidgetCompat(guiEventListener);
     //$$ }
-
+    //$$
     //$$ default Widget addRenderableOnly(Widget widget) {
     //$$    return this.addRenderableOnlyCompat(widget);
     //$$ }
