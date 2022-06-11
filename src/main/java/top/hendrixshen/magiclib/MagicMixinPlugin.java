@@ -58,17 +58,23 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
 
 
             Object urlLoader = Thread.currentThread().getContextClassLoader();
-            Class<?> knotClassLoader;
-            try {
-                knotClassLoader = Class.forName("net.fabricmc.loader.impl.launch.knot.KnotClassLoader");
-
-            } catch (ClassNotFoundException e) {
+            Class<?> knotClassLoader = null;
+            String[] knotClassLoaderNames = {
+                    "org.quiltmc.loader.impl.launch.knot.KnotClassLoader",
+                    "net.fabricmc.loader.impl.launch.knot.KnotClassLoader",
+                    "net.fabricmc.loader.launch.knot.KnotClassLoader"};
+            for (String knotClassLoaderName : knotClassLoaderNames) {
                 try {
-                    knotClassLoader = Class.forName("net.fabricmc.loader.launch.knot.KnotClassLoader");
-                } catch (ClassNotFoundException e1) {
-                    throw new RuntimeException(e1);
+                    knotClassLoader = Class.forName(knotClassLoaderName);
+                } catch (ClassNotFoundException e) {
+                    continue;
                 }
+                break;
             }
+            if (knotClassLoader == null) {
+                throw new RuntimeException("Can't found KnotClassLoader");
+            }
+
 
             try {
                 Method method;
