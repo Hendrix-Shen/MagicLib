@@ -65,7 +65,7 @@ jobs:
           files: |
             LICENSE
             fabricWrapper/build/libs/*.jar
-            fabricWrapper/tmp/submods/*.jar
+            fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
           name: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
           tag_name: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
           target_commitish: ${{ github.event.ref }}
@@ -138,7 +138,7 @@ jobs:
           files: |
             LICENSE
             fabricWrapper/build/libs/*.jar
-            fabricWrapper/tmp/submods/META-INF/jars/*.jar
+            fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
 
       - name: Upload assets to GitHub Action
         uses: actions/upload-artifact@v2
@@ -147,7 +147,7 @@ jobs:
           path: |
             LICENSE
             fabricWrapper/build/libs/*.jar
-            fabricWrapper/tmp/submods/META-INF/jars/*.jar
+            fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
 
       - name: Publish release to CurseForge & Modrinth
         uses: Kir-Antipov/mc-publish@v2.1
@@ -159,7 +159,7 @@ jobs:
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
 
           files-primary: fabricWrapper/build/libs/!(*-@(dev|sources)).jar
-          files-secondary: fabricWrapper/tmp/submods/META-INF/jars/!(*-@(dev|sources)).jar
+          files-secondary: fabricWrapper/build/tmp/submods/META-INF/jars/!(*-@(dev|sources)).jar
 
           name: ''
           version: ${{ steps.mod_version.outputs.value }}
