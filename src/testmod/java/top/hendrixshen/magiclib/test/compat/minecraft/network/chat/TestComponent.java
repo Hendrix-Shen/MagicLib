@@ -9,5 +9,9 @@ public class TestComponent {
         Component textComponent = ComponentCompatApi.literal("test")
                 .withStyleCompat(StyleCompatApi.empty())
                 .withStyle(StyleCompatApi.empty());
+
+        Component translatable = ComponentCompatApi.translatable("test", 0)
+                .withStyleCompat(StyleCompatApi.empty())
+                .withStyle(StyleCompatApi.empty());
     }
 }

@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.compat.minecraft.network.chat;
 
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 
 //#if MC > 11502
 import net.minecraft.network.chat.MutableComponent;
@@ -22,6 +23,20 @@ public interface ComponentCompatApi {
         //$$ return new TextComponent(string);
         //#endif
     }
+
+    //#if MC > 11502
+    static MutableComponent
+    //#else
+    //$$ static BaseComponent
+    //#endif
+    translatable(String string, Object... objects) {
+        //#if MC > 11802
+        return MutableComponent.create(new TranslatableContents(string, objects));
+        //#else
+        //$$ return new TranslatableComponent(string, objects);
+        //#endif
+    }
+
 
     //#if MC > 11502
     default MutableComponent
