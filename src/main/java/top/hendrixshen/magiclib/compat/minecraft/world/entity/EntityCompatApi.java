@@ -5,7 +5,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 
 public interface EntityCompatApi {
-
     default Level getLevelCompat() {
         throw new UnsupportedOperationException();
     }
@@ -137,5 +136,4 @@ public interface EntityCompatApi {
     //$$     return this.getZCompat();
     //$$ }
     //#endif
-
 }

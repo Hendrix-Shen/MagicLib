@@ -24,9 +24,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class MagicLanguageManager implements ResourceManagerReloadListener {
-
     public static final String DEFAULT_CODE = "en_us";
     public static final MagicLanguageManager INSTANCE = new MagicLanguageManager();
     public ConcurrentHashMap<String, String> defaultLanguage = new ConcurrentHashMap<>();
@@ -56,7 +54,6 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
         ((ReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(INSTANCE);
         this.reload();
     }
-
 
     private void initLanguage(String code, ConcurrentHashMap<String, String> language) {
         String languagePath = String.format("lang/%s.json", code);
@@ -121,7 +118,6 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
             defaultLanguage.putAll(currentLanguage);
         }
     }
-
 
     @Override
     public void onResourceManagerReload(@NotNull ResourceManager resourceManager) {

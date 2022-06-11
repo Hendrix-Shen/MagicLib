@@ -20,5 +20,4 @@ public interface Vector3fCompatApi {
     //$$     return this.rotationDegreesCompat(degrees);
     //$$ }
     //#endif
-
 }

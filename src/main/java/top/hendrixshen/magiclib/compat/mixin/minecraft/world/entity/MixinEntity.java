@@ -17,7 +17,6 @@ import java.util.UUID;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity implements EntityCompatApi {
-
     //#if MC > 11404
     @Shadow
     public abstract double getX();
@@ -27,7 +26,6 @@ public abstract class MixinEntity implements EntityCompatApi {
 
     @Shadow
     public abstract double getZ();
-
     //#else
     //$$ @Shadow
     //$$ public double x;
@@ -167,8 +165,6 @@ public abstract class MixinEntity implements EntityCompatApi {
 
     @Shadow
     public abstract void setOnGround(boolean onGround);
-
-
     //#else
     //$$
     //$$ @Shadow
@@ -206,5 +202,4 @@ public abstract class MixinEntity implements EntityCompatApi {
         //$$ this.onGround = onGround;
         //#endif
     }
-
 }

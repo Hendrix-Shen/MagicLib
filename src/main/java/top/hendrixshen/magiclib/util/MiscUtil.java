@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class MiscUtil {
-
     public static Gson GSON = new Gson();
 
     @SuppressWarnings("unchecked")

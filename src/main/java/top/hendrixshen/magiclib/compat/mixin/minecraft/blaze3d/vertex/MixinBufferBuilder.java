@@ -16,7 +16,6 @@ import top.hendrixshen.magiclib.compat.minecraft.blaze3d.vertex.BufferBuilderCom
 @Mixin(BufferBuilder.class)
 public abstract class MixinBufferBuilder implements BufferBuilderCompatApi {
 
-
     //#if MC <= 11404
     //$$ @Shadow
     //$$ public abstract BufferBuilder vertex(double x, double y, double z);

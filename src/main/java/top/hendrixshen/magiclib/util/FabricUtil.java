@@ -23,11 +23,8 @@ public class FabricUtil {
     // Fabric Loader 0.11 and below support
     private static Method fabricLegacyVersionPredicateParser;
     private static Method fabricLegacyDisplayCriticalError;
-
     private static Method fabricDisplayCriticalError;
-
     private static Method quiltDisplayCriticalError;
-
 
     static {
         try {
@@ -113,10 +110,8 @@ public class FabricUtil {
     }
 
     private static Map<String, Dependencies<Object>> getModInitDependencies(String entryKey, String entryMethod) {
-
         Map<String, Dependencies<Object>> ret = new HashMap<>();
         for (ModMetaData modMetaData : ModMetaData.data.values()) {
-
             for (String entrypointValue : modMetaData.entrypoints.getOrDefault(entryKey, new HashSet<>())) {
                 Dependencies<Object> dependencies = Dependencies.getFabricEntrypointDependencies(entrypointValue, entryMethod);
                 if (dependencies != null) {
@@ -240,7 +235,6 @@ public class FabricUtil {
                     }
                 }
             }
-
         }
     }
 }

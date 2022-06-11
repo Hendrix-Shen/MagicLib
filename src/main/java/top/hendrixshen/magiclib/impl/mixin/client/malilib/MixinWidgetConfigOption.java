@@ -33,11 +33,9 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
-
 @Dependencies(and = @Dependency(value = "malilib", versionPredicate = "<0.11.4"))
 @Mixin(value = WidgetConfigOption.class, remap = false)
 public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
-
     @Mutable
     @Final
     @Shadow

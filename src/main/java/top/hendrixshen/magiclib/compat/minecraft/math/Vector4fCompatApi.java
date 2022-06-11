@@ -6,7 +6,6 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public interface Vector4fCompatApi {
-
     default void transformCompat(Matrix4f matrix4f) {
         throw new UnsupportedOperationException();
     }
@@ -16,5 +15,4 @@ public interface Vector4fCompatApi {
     //$$     this.transformCompat(matrix4f);
     //$$ }
     //#endif
-
 }

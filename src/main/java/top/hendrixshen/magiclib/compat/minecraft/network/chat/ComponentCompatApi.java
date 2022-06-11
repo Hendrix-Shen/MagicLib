@@ -10,7 +10,6 @@ import net.minecraft.network.chat.MutableComponent;
 //#endif
 
 public interface ComponentCompatApi {
-
     //#if MC > 11502
     static MutableComponent
     //#else

@@ -21,8 +21,6 @@ import net.minecraft.network.chat.MutableComponent;
 //$$ @Mixin(BaseComponent.class)
 //#endif
 public abstract class MixinBaseComponent implements ComponentCompatApi {
-
-
     //#if MC <= 11502
     //$$ @Shadow
     //$$ public abstract Component setStyle(Style style);
@@ -41,6 +39,4 @@ public abstract class MixinBaseComponent implements ComponentCompatApi {
         //$$ return (BaseComponent) setStyle(style);
         //#endif
     }
-
-
 }

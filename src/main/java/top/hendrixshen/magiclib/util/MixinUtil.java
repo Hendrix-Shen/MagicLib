@@ -41,13 +41,9 @@ public class MixinUtil {
             mixinsField = Class.forName("org.spongepowered.asm.mixin.transformer.TargetClassContext")
                     .getDeclaredField("mixins");
             mixinsField.setAccessible(true);
-
-
         } catch (NoSuchFieldException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     @SuppressWarnings("unchecked")
@@ -197,7 +193,6 @@ public class MixinUtil {
 //    }
 
     public static void applyPublic(ClassNode classNode) {
-
         for (FieldNode fieldNode : classNode.fields) {
             AnnotationNode fieldPublicAnnotation = Annotations.getVisible(fieldNode, Public.class);
             if (fieldPublicAnnotation != null) {

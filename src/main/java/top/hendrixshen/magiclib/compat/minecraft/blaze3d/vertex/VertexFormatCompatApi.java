@@ -7,7 +7,6 @@ import net.fabricmc.api.Environment;
 //#if MC <= 11605
 //$$ import org.lwjgl.opengl.GL11;
 //#endif
-
 @Environment(EnvType.CLIENT)
 public interface VertexFormatCompatApi {
     class Mode {

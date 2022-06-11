@@ -11,10 +11,8 @@ import top.hendrixshen.magiclib.compat.minecraft.network.chat.StyleCompatApi;
 //$$ import org.spongepowered.asm.mixin.Mutable;
 //#endif
 
-
 @Mixin(Style.class)
 public abstract class MixinStyle implements StyleCompatApi {
-
     //#if MC > 11605
     @Shadow
     public abstract Style withStrikethrough(@Nullable Boolean strikethrough);
@@ -79,9 +77,7 @@ public abstract class MixinStyle implements StyleCompatApi {
         //#else
         //$$     return this.copy().setObfuscated(obfuscated);
         //#endif
-
     }
-
 
     @Override
     public Style withUnderlinedCompat(@Nullable Boolean underlined) {

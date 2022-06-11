@@ -18,7 +18,6 @@ import top.hendrixshen.magiclib.compat.minecraft.client.gui.screens.ScreenCompat
 @Environment(EnvType.CLIENT)
 @Mixin(Screen.class)
 public abstract class MixinScreen implements ScreenCompatApi {
-
     //#if MC > 11605
     @Shadow // I don't know how to suppress warning...
     protected abstract GuiEventListener addRenderableWidget(GuiEventListener guiEventListener);

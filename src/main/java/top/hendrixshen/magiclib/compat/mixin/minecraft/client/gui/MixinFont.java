@@ -1,6 +1,5 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.client.gui;
 
-
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
 import net.fabricmc.api.EnvType;
@@ -24,8 +23,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 @Environment(EnvType.CLIENT)
 @Mixin(Font.class)
 public abstract class MixinFont implements FontCompatApi {
-
-
     //#if MC <= 11502
     //$$ @Shadow
     //$$ public abstract int width(String string);
@@ -54,7 +51,6 @@ public abstract class MixinFont implements FontCompatApi {
     @Shadow
     public abstract int drawInBatch(Component component, float f, float g, int i, boolean bl, Matrix4f matrix4f, MultiBufferSource multiBufferSource, boolean bl2, int j, int k);
     //#endif
-
 
     @Override
     public int drawInBatch(Component component, float x, float y, int color, boolean shadow, Matrix4f matrix4f,
@@ -117,5 +113,4 @@ public abstract class MixinFont implements FontCompatApi {
         return this.drawInBatch(ComponentCompatApi.literal(text), x, y, color, shadow,
                 matrix4f, seeThrough, backgroundColor, light);
     }
-
 }

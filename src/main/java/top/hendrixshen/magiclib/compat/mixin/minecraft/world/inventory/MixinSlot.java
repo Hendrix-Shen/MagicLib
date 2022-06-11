@@ -11,7 +11,6 @@ import top.hendrixshen.magiclib.compat.minecraft.world.inventory.SlotCompatApi;
 
 @Mixin(Slot.class)
 public abstract class MixinSlot implements SlotCompatApi {
-
     //#if MC > 11605
     @Shadow
     public abstract int getContainerSlot();

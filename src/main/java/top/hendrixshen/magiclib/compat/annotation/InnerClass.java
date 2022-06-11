@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface InnerClass {
     /**
-     * Outter class
+     * Outer class
      *
      * @return Class.
      */

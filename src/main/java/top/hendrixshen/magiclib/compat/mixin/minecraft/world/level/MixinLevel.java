@@ -15,7 +15,6 @@ import net.minecraft.resources.ResourceKey;
 //#endif
 @Mixin(Level.class)
 public abstract class MixinLevel implements LevelCompatApi {
-
     //#if MC > 11502
     @Shadow
     public abstract ResourceKey<Level> dimension();
@@ -43,6 +42,5 @@ public abstract class MixinLevel implements LevelCompatApi {
         //$$ return 0;
         //#endif
     }
-
 }
 

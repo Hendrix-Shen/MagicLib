@@ -1,12 +1,9 @@
 package top.hendrixshen.magiclib.compat.minecraft.world.item;
 
-
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public interface ItemStackCompatApi {
-
-
     static boolean isSameItemSameTags(ItemStack itemStack, ItemStack itemStack2) {
         //#if MC > 11605
         return ItemStack.isSameItemSameTags(itemStack, itemStack2);

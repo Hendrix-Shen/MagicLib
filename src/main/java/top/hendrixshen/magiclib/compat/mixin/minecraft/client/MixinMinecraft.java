@@ -21,7 +21,6 @@ public abstract class MixinMinecraft implements MinecraftCompatApi {
     //$$ public Window window;
     //#endif
 
-
     @Override
     public Window getWindowCompat() {
         //#if MC > 11404

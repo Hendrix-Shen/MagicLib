@@ -10,15 +10,11 @@ import top.hendrixshen.magiclib.compat.minecraft.world.SimpleContainerCompatApi;
 //$$ import net.minecraft.world.item.ItemStack;
 //#endif
 
-
 @Mixin(SimpleContainer.class)
 public abstract class MixinSimpleContainer implements SimpleContainerCompatApi {
-
-
     //#if MC > 11502
     @Shadow
     public abstract void fromTag(ListTag listTag);
-
     //#else
     //$$ @Shadow
     //$$ public abstract ItemStack addItem(ItemStack itemStack);

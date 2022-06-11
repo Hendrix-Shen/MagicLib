@@ -16,7 +16,6 @@ import top.hendrixshen.magiclib.compat.minecraft.client.renderer.entity.EntityRe
 @Environment(EnvType.CLIENT)
 @Mixin(EntityRenderDispatcher.class)
 public abstract class MixinEntityRenderDispatcher implements EntityRenderDispatcherCompatApi {
-
     //#if MC > 11404
     @Shadow
     public abstract Quaternion cameraOrientation();
@@ -28,7 +27,6 @@ public abstract class MixinEntityRenderDispatcher implements EntityRenderDispatc
     //$$ @Shadow
     //$$ public Camera camera;
     //#endif
-
 
     @Override
     public double distanceToSqrCompat(Entity entity) {

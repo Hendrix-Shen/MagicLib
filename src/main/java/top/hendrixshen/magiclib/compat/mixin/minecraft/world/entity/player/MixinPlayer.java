@@ -10,10 +10,8 @@ import top.hendrixshen.magiclib.compat.minecraft.world.entity.player.PlayerCompa
 //$$ import org.spongepowered.asm.mixin.Final;
 //#endif
 
-
 @Mixin(Player.class)
 public abstract class MixinPlayer implements PlayerCompatApi {
-
     //#if MC > 11605
     @Shadow
     public abstract Inventory getInventory();

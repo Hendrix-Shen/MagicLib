@@ -21,8 +21,6 @@ import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 @Dependencies(and = @Dependency(value = "malilib", versionPredicate = "<0.11.4"))
 @Mixin(value = ConfigBooleanHotkeyed.class, remap = false)
 public abstract class MixinConfigBooleanHotkeyed extends ConfigBoolean implements IHotkeyTogglable {
-
-
     @Final
     @Shadow
     protected IKeybind keybind;

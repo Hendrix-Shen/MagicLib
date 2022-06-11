@@ -15,7 +15,6 @@ import top.hendrixshen.magiclib.compat.minecraft.math.Matrix4fCompatApi;
 @Environment(EnvType.CLIENT)
 @Mixin(Matrix4f.class)
 public abstract class MixinMatrix4f implements Matrix4fCompatApi {
-
     //#if MC > 11605
     @Shadow
     public abstract void multiplyWithTranslation(float f, float g, float h);
@@ -33,13 +32,11 @@ public abstract class MixinMatrix4f implements Matrix4fCompatApi {
 
     @Shadow
     public abstract Matrix4f copy();
-
     //#else
     //$$ @Shadow
     //$$ @Final
     //$$ private float[] values;
     //#endif
-
 
     @Override
     public void setIdentityCompat() {

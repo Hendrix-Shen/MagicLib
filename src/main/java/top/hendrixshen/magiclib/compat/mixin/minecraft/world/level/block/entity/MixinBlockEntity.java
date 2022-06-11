@@ -15,7 +15,6 @@ import top.hendrixshen.magiclib.compat.minecraft.world.level.block.entity.BlockE
 
 @Mixin(BlockEntity.class)
 public abstract class MixinBlockEntity implements BlockEntityCompatApi {
-
     //#if MC > 11605 || MC <= 11502
     @Shadow
     public abstract void load(CompoundTag compoundTag);

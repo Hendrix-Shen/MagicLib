@@ -8,7 +8,6 @@ import top.hendrixshen.magiclib.compat.minecraft.world.item.ItemStackCompatApi;
 
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack implements ItemStackCompatApi {
-
     //#if MC > 11605
     @Shadow
     public abstract boolean is(Item item);

@@ -16,7 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MagicStreamHandler extends URLStreamHandler {
     private static final URLStreamHandler handler = new MagicStreamHandler();
     private static final Map<URL, byte[]> contents = new ConcurrentHashMap<>();
-
     private static final String MAGIC_PROTOCOL = "magic";
 
     public static void addFile(String fileName, byte[] data) {

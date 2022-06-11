@@ -6,7 +6,6 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public interface CameraCompatApi {
-
     default Quaternion rotationCompat() {
         throw new UnsupportedOperationException();
     }

@@ -15,7 +15,6 @@ import top.hendrixshen.magiclib.compat.minecraft.math.QuaternionCompatApi;
 @Environment(EnvType.CLIENT)
 @Mixin(Quaternion.class)
 public abstract class MixinQuaternion implements QuaternionCompatApi {
-
     //#if MC > 11404
     @Shadow
     public abstract void mul(float f);
@@ -44,7 +43,6 @@ public abstract class MixinQuaternion implements QuaternionCompatApi {
     //$$ public abstract float r();
     //$$
     //#endif
-
 
     @Override
     public void mulCompat(float f) {

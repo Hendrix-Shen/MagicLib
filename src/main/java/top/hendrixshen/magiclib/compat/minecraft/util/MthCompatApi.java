@@ -15,5 +15,4 @@ public interface MthCompatApi {
         //$$ return g;
         //#endif
     }
-
 }

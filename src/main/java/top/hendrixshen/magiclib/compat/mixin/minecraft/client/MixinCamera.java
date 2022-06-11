@@ -15,8 +15,6 @@ import top.hendrixshen.magiclib.compat.minecraft.client.CameraCompatApi;
 @Environment(EnvType.CLIENT)
 @Mixin(Camera.class)
 public abstract class MixinCamera implements CameraCompatApi {
-
-
     //#if MC > 11404
     @Shadow
     public abstract Quaternion rotation();

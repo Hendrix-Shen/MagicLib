@@ -7,7 +7,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 
 @Environment(EnvType.CLIENT)
 public interface ScreenCompatApi {
-
     default GuiEventListener addRenderableWidgetCompat(GuiEventListener guiEventListener) {
         throw new UnsupportedOperationException();
     }

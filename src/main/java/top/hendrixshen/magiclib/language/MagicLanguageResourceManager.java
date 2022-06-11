@@ -25,7 +25,6 @@ import java.util.stream.Stream;
 //#endif
 
 public class MagicLanguageResourceManager implements ResourceManager {
-
     private static final Pattern languageResourcePattern = Pattern.compile("^assets/([\\w-]*)/lang/([a-z\\d-_]*)\\.json$");
     private final Set<String> namespaces = new HashSet<>();
     private final HashMap<ResourceLocation, Set<Resource>> resources = new HashMap<>();
@@ -158,7 +157,6 @@ public class MagicLanguageResourceManager implements ResourceManager {
     //$$     return null;
     //$$ }
     //#endif
-
 
     //#if MC > 11502
     @Override

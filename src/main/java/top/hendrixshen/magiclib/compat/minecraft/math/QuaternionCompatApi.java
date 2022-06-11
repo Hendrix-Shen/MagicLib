@@ -6,7 +6,6 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public interface QuaternionCompatApi {
-
     Quaternion ONE = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
 
     default void mulCompat(float f) {

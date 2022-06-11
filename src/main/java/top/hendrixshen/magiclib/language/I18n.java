@@ -1,10 +1,8 @@
 package top.hendrixshen.magiclib.language;
 
 public class I18n {
-
     private I18n() {
     }
-
 
     public static String get(String key, Object... objects) {
         return MagicLanguageManager.INSTANCE.get(key, objects);

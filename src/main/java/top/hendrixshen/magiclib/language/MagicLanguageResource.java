@@ -64,7 +64,6 @@ public class MagicLanguageResource extends Resource {
         return sourceName;
     }
 
-
     @Override
     public boolean equals(Object object) {
         if (this == object) {

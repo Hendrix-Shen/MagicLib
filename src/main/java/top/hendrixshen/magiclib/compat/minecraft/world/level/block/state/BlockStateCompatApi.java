@@ -12,5 +12,4 @@ public interface BlockStateCompatApi {
     //$$     return this.isCompat(block);
     //$$ }
     //#endif
-
 }
