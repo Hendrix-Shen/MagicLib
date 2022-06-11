@@ -42,7 +42,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Publish Maven with Gradle
+      - name: Preprocess sources
         run: ./gradlew preprocessResources --stacktrace
 
       - name: Publish Maven with Gradle
@@ -65,6 +65,7 @@ jobs:
           files: |
             LICENSE
             fabricWrapper/build/libs/*.jar
+            fabricWrapper/tmp/submods/*.jar
           name: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
           tag_name: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
           target_commitish: ${{ github.event.ref }}
@@ -99,13 +100,22 @@ jobs:
 
       - name: Generate build number
         id: buildnumber
-        uses: einaregilsson/build-number@v3
+        run: |
+          buildnumber=$(echo ${{ github.ref_name }} | cut -d . -f3)
+          echo "::set-output name=buildnumber::$buildnumber"
+
+      - name: Read Properties mod_version
+        id: mod_version
+        uses: christian-draeger/read-properties@1.0.1
         with:
-          token: ${{ secrets.github_token }}
-          prefix: ${{ github.ref }}
+          path: gradle.properties
+          property: mod_version
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Preprocess sources
+        run: ./gradlew preprocessResources --stacktrace
 
       - name: Publish Maven with Gradle
         run: ./gradlew build publish -x test --stacktrace
@@ -121,14 +131,35 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           CLEAR_GLOBS_FILE: '.clear-target-files'
 
-      - name: Publish release to curseforge
+      - name: Upload assets Github Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.ref }}
+          files: |
+            LICENSE
+            fabricWrapper/build/libs/*.jar
+            fabricWrapper/tmp/submods/META-INF/jars/*.jar
+
+      - name: Upload assets to GitHub Action
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.mod_name.outputs.value }} ${{ steps.mod_version.outputs.value }}.${{ steps.buildnumber.outputs.buildnumber }}
+          path: |
+            LICENSE
+            fabricWrapper/build/libs/*.jar
+            fabricWrapper/tmp/submods/META-INF/jars/*.jar
+
+      - name: Publish release to CurseForge & Modrinth
         uses: Kir-Antipov/mc-publish@v2.1
         with:
-          curseforge-id: ${{ steps.curseforge_id.outputs.value }}
+          modrinth-id: mv1zH6ln
+          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
+
+          curseforge-id: 576459
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
 
           files-primary: fabricWrapper/build/libs/!(*-@(dev|sources)).jar
-          files-secondary: fabricWrapper/build/libs/*-@(dev|sources).jar
+          files-secondary: fabricWrapper/tmp/submods/META-INF/jars/!(*-@(dev|sources)).jar
 
           name: ''
           version: ${{ steps.mod_version.outputs.value }}
