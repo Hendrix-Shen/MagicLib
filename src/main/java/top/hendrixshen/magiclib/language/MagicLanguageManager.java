@@ -133,6 +133,20 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
         }
     }
 
+    public String get(String key) {
+        return defaultLanguage.getOrDefault(key, key);
+    }
+
+    public String getByCode(String code, String key) {
+        ConcurrentHashMap<String, String> currentLanguage = language.getOrDefault(code, null);
+        if (currentLanguage == null) {
+            currentLanguage = new ConcurrentHashMap<>();
+            initLanguage(code, currentLanguage);
+            language.put(code, currentLanguage);
+        }
+        return currentLanguage.getOrDefault(key, key);
+    }
+
     public String getByCode(String code, String key, Object... objects) {
         ConcurrentHashMap<String, String> currentLanguage = language.getOrDefault(code, null);
         if (currentLanguage == null) {
