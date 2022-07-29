@@ -1,5 +1,9 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.network.chat;
 
+//#if MC > 11502 && MC <= 11605
+//$$ import net.fabricmc.api.EnvType;
+//$$ import net.fabricmc.api.Environment;
+//#endif
 import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,6 +41,9 @@ public abstract class MixinStyle implements StyleCompatApi {
 
     //#if MC > 11502
     @Shadow
+    //#if MC > 11502 && MC <= 11605
+    //$$ @Environment(EnvType.CLIENT)
+    //#endif
     public abstract Style withUnderlined(@Nullable Boolean underlined);
     //#endif
 
@@ -80,6 +87,9 @@ public abstract class MixinStyle implements StyleCompatApi {
     }
 
     @Override
+    //#if MC > 11502 && MC <= 11605
+    //$$ @Environment(EnvType.CLIENT)
+    //#endif
     public Style withUnderlinedCompat(@Nullable Boolean underlined) {
         //#if MC > 11502
         return this.withUnderlined(underlined);

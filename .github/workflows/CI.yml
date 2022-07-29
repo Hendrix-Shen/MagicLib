@@ -162,19 +162,20 @@ jobs:
           files-secondary: fabricWrapper/build/tmp/submods/META-INF/jars/!(*-@(dev|sources)).jar
 
           name: ''
-          version: ${{ steps.mod_version.outputs.value }}
+          version: ${{ steps.mod_version.outputs.value }}.${{ steps.buildnumber.outputs.buildnumber }}
           version-type: 'release'
 
           changelog: ${{ github.event.release.body }}
-          loaders:
+          loaders: |
             fabric
+            quilt
           game-versions: |
             1.14.4
             1.15.2
             1.16.5
             1.17.1
             1.18.2
-            1.19
+            1.19.1
           version-resolver: latest
           java: |
             8

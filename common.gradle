@@ -34,18 +34,20 @@ sourceSets {
 dependencies {
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
     mappings(loom.officialMojangMappings())
+    modApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
+    modApi("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
 
     modApi("curse.maven:malilib-303119:${project.malilib_version}")
     modApi("curse.maven:modmenu-308702:${project.modmenu_version}")
 
-    modApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    if (mcVersion < 11900) {
-        modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.inGameAccountSwitcher_version}")
+    if (mcVersion <= 11502) {
+        modRuntimeOnly("curse.maven:auto-config-updated-api-373261:${project.auto_config_updated_api_version}")
+        modRuntimeOnly("curse.maven:cloth-config-348521:${project.cloth_config_version}")
     }
-    modApi("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
-
+    modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.inGameAccountSwitcher_version}")
     modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
-    modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
+    modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric_version}")
+    modRuntimeOnly("curse.maven:smooth-boot-415758:${project.smoothboot_version}")
 
     testmodImplementation(sourceSets.main.output)
 
@@ -53,7 +55,6 @@ dependencies {
 }
 
 loom {
-
     mixin {
         // 如果使用 Legacy Mixin Ap，有时候 Mixin class remap 会有问题，该 remap 的不 remap
         // 但是不是用 Legacy Mixin Ap 会导致 Accessor 被 Mixin，从而导致其在开发环境烂掉
@@ -85,7 +86,7 @@ loom {
             // Enable the gametest runner
             vmArg "-D${project.mod_id}.gametest"
             vmArg "-D${project.mod_id}.gametest.report-file=${project.buildDir}/junit.xml"
-            runDir "build/gametest"
+            runDir "run/gametest"
         }
     }
 
@@ -94,6 +95,50 @@ loom {
         // ideConfigGenerated = true
         property("mixin.debug.export", "true")
         runDir "../../run"
+    }
+
+    runConfigs.client {
+        programArgs([
+                "--width",
+                "1920",
+                "--height",
+                "1080",
+        ])
+        runDir("run/client")
+    }
+
+    runConfigs.server {
+        runDir("run/server")
+    }
+
+    runClient {
+        defaultCharacterEncoding("UTF-8")
+        if (!new File("${projectDir}/run/client/options.txt").exists()) {
+            new File("${projectDir}/run/client").mkdirs()
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("${projectDir}/run/client/options.txt"))
+            bufferedWriter.write("autoJump:false\n")
+            bufferedWriter.write("enableVsync:false\n")
+            bufferedWriter.write("forceUnicodeFont:true\n")
+            bufferedWriter.write("fov:1.0\n")
+            bufferedWriter.write("gamma:16.0\n")
+            bufferedWriter.write("guiScale:2\n")
+            bufferedWriter.write("lang:zh_CN\n")
+            bufferedWriter.write("maxFps:260\n")
+            bufferedWriter.write("renderDistance:10\n")
+            bufferedWriter.write("soundCategory_master:0.0")
+            bufferedWriter.close()
+        }
+    }
+
+    runServer {
+        defaultCharacterEncoding("UTF-8")
+        // Auto agree EULA
+        if (!new File("${projectDir}/run/server/eula.txt").exists()) {
+            new File("${projectDir}/run/server").mkdirs()
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("${projectDir}/run/server/eula.txt"))
+            bufferedWriter.write("eula=true")
+            bufferedWriter.close()
+        }
     }
 }
 

@@ -1,21 +1,22 @@
 pluginManagement {
     repositories {
         maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
+            name("Fabric")
+            url("https://maven.fabricmc.net/")
         }
         maven {
-            name = 'Jitpack'
-            url = "https://jitpack.io"
+            name("Jitpack")
+            url("https://jitpack.io")
         }
         maven {
-            name = 'Cotton'
-            url = 'https://server.bbkr.space/artifactory/libs-release/'
+            name("Cotton")
+            url("https://server.bbkr.space/artifactory/libs-release/")
         }
         mavenCentral()
         mavenLocal()
         gradlePluginPortal()
     }
+
     resolutionStrategy {
         eachPlugin {
             switch (requested.id.id) {
@@ -33,7 +34,7 @@ def versions = Arrays.asList(
         "1.16.5",
         "1.17.1",
         "1.18.2",
-        "1.19",
+        "1.19.1",
 )
 for (String version : versions) {
     include(":$version")
