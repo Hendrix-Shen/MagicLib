@@ -53,7 +53,7 @@ We have added a complete dependency checking system to verify dependency availab
 
 ### Support
 
-Current main development for Minecraft version: 1.19.1
+Current main development for Minecraft version: 1.19.2
 
 And use `preprocess` to be compatible with all versions.
 
