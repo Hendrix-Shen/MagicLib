@@ -37,6 +37,7 @@ dependencies {
     modApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
     modApi("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
 
+    modApi("curse.maven:carpet-349239:${project.carpet_version}")
     modApi("curse.maven:malilib-303119:${project.malilib_version}")
     modApi("curse.maven:modmenu-308702:${project.modmenu_version}")
 
