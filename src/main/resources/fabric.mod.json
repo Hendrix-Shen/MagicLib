@@ -4,7 +4,7 @@
   "version": "${mod_version}",
   "icon": "assets/${mod_id}/icon.png",
   "name": "${mod_name} for ${minecraft_version}",
-  "description": "${mod_name} for ${minecraft_version}",
+  "description": "To beat magic with magic :(",
   "authors": [
     {
       "name": "Hendrix-Shen",

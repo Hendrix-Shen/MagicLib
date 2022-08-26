@@ -29,23 +29,47 @@ jobs:
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
-          path: ~/.gradle/caches
+          path: |
+            ~/.gradle/caches
+            ./.gradle/loom-caches
+            ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
 
-      - name: Generate build number
-        id: buildnumber
-        uses: einaregilsson/build-number@v3
+      - name: Get short commit sha
+        id: get_short_sha
+        run: |
+          short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
+          echo "::set-output name=short_sha::$short_sha"
+
+      - name: Read Properties mod_name
+        id: mod_name
+        uses: christian-draeger/read-properties@1.0.1
         with:
-          token: ${{ secrets.github_token }}
-          prefix: ${{ github.ref }}
+          path: gradle.properties
+          property: mod_name
+
+      - name: Read Properties mod_version
+        id: mod_version
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: gradle.properties
+          property: mod_version
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Preprocess sources
+        env:
+          COMMIT_SHA: ${{ steps.get_short_sha.outputs.short_sha }}
+          BUILD_TYPE: "BETA"
+          BUILD_NUMBER: ${{ github.run_number}}
         run: ./gradlew preprocessResources --stacktrace
 
       - name: Publish Maven with Gradle
+        env:
+          COMMIT_SHA: ${{ steps.get_short_sha.outputs.short_sha }}
+          BUILD_TYPE: "BETA"
+          BUILD_NUMBER: ${{ github.run_number}}
         run: ./gradlew build publish -x test --stacktrace
 
       - name: Upload Maven to GitHub
@@ -57,6 +81,15 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           CLEAR_GLOBS_FILE: '.clear-target-files'
 
+      - name: Upload assets to GitHub Action
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.mod_name.outputs.value }} ${{ steps.mod_version.outputs.value }}.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}
+          path: |
+            LICENSE
+            fabricWrapper/build/libs/*.jar
+            fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
+
       - name: Create Github release
         if: contains(github.event.head_commit.message, '[publish skip]') == false && contains(github.event.ref, 'refs/heads/exp') == false
         uses: softprops/action-gh-release@v1
@@ -66,7 +99,7 @@ jobs:
             LICENSE
             fabricWrapper/build/libs/*.jar
             fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
-          name: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
+          name: "[CI#${{ github.run_number}}]${{ steps.mod_name.outputs.value }} ${{ steps.mod_version.outputs.value }}.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}"
           tag_name: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
           target_commitish: ${{ github.event.ref }}
           generate_release_notes: true
@@ -94,15 +127,25 @@ jobs:
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
+          path: |
+            ~/.gradle/caches
+            ./.gradle/loom-caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('*.gradle', 'gradle.properties', '**/*.accesswidener') }}
+          restore-keys: ${{ runner.os }}-gradle-
 
-      - name: Generate build number
-        id: buildnumber
+      - name: Get short commit sha
+        id: get_short_sha
         run: |
-          buildnumber=$(echo ${{ github.ref_name }} | cut -d . -f3)
-          echo "::set-output name=buildnumber::$buildnumber"
+          short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
+          echo "::set-output name=short_sha::$short_sha"
+
+      - name: Read Properties mod_name
+        id: mod_name
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: gradle.properties
+          property: mod_name
 
       - name: Read Properties mod_version
         id: mod_version
@@ -115,12 +158,18 @@ jobs:
         run: chmod +x gradlew
 
       - name: Preprocess sources
+        env:
+          COMMIT_SHA: ${{ steps.get_short_sha.outputs.short_sha }}
+          BUILD_TYPE: "RELEASE"
+          BUILD_NUMBER: ${{ github.run_number}}
         run: ./gradlew preprocessResources --stacktrace
 
       - name: Publish Maven with Gradle
-        run: ./gradlew build publish -x test --stacktrace
         env:
-          BUILD_NUMBER: ${{ steps.buildnumber.outputs.buildnumber }}
+          COMMIT_SHA: ${{ steps.get_short_sha.outputs.short_sha }}
+          BUILD_TYPE: "RELEASE"
+          BUILD_NUMBER: ${{ github.run_number}}
+        run: ./gradlew build publish -x test --stacktrace
 
       - name: Upload Maven to GitHub
         uses: s0/git-publish-subdir-action@v2.5.0
@@ -131,20 +180,20 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           CLEAR_GLOBS_FILE: '.clear-target-files'
 
+      - name: Upload assets to GitHub Action
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.mod_name.outputs.value }} ${{ steps.mod_version.outputs.value }}.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}
+          path: |
+            LICENSE
+            fabricWrapper/build/libs/*.jar
+            fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
+
       - name: Upload assets Github Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.event.ref }}
           files: |
-            LICENSE
-            fabricWrapper/build/libs/*.jar
-            fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
-
-      - name: Upload assets to GitHub Action
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ steps.mod_name.outputs.value }} ${{ steps.mod_version.outputs.value }}.${{ steps.buildnumber.outputs.buildnumber }}
-          path: |
             LICENSE
             fabricWrapper/build/libs/*.jar
             fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
@@ -162,7 +211,7 @@ jobs:
           files-secondary: fabricWrapper/build/tmp/submods/META-INF/jars/!(*-@(dev|sources)).jar
 
           name: ''
-          version: ${{ steps.mod_version.outputs.value }}.${{ steps.buildnumber.outputs.buildnumber }}
+          version: ${{ steps.mod_version.outputs.value }}.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}
           version-type: 'release'
 
           changelog: ${{ github.event.release.body }}
@@ -175,7 +224,7 @@ jobs:
             1.16.5
             1.17.1
             1.18.2
-            1.19.1
+            1.19.2
           version-resolver: latest
           java: |
             8

@@ -1,4 +1,5 @@
 {
+  "magiclib.gui.title": "MagicLib 测试 - 版本: %s (%s)",
   "magiclib.gui.button.tab.generic": "通用",
   "magiclib.gui.button.tab.test": "测试",
   "magiclib.config.generic.debug.name": "调试模式",
@@ -6,5 +7,18 @@
   "magiclib.config.generic.fallbackLanguageList.name": "候选语言列表",
   "magiclib.config.generic.fallbackLanguageList.comment": "候选语言不只是 en_us，可以设置自己的候选语言列表（比如在设置文言的时候，可以在 §6候选语言列表§r 中加入 zh_cn，从而在找不到语言资源的情况下使用中文文本）",
   "magiclib.config.generic.openConfigGui.name": "打开配置界面",
-  "magiclib.config.generic.openConfigGui.comment": "一个用来打开本页面的快捷键"
+  "magiclib.config.generic.openConfigGui.comment": "一个用来打开本页面的快捷键",
+
+  "magiclib.misc.versionType.Development": "开发版",
+  "magiclib.misc.versionType.Public Beta": "公共测试版",
+  "magiclib.misc.versionType.Public Release": "公共发行版",
+  "magiclib.misc.versionType.Unknown": "未知版本",
+
+  "modmenu.descriptionTranslation.magiclib": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_14_4": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_15_2": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_16_5": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_17_1": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_18_2": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_19_2": "要用魔法打败魔法 :( "
 }

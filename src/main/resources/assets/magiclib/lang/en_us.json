@@ -1,4 +1,5 @@
 {
+  "magiclib.gui.title": "MagicLib Test - Version: %s (%s)",
   "magiclib.gui.button.tab.generic": "Generic",
   "magiclib.gui.button.tab.test": "Test",
   "magiclib.config.generic.debug.name": "debug",
@@ -24,5 +25,10 @@
   "magiclib.config.test.optionListConfig.name": "optionListConfig",
   "magiclib.config.test.optionListConfig.comment": "optionListConfig comment",
   "magiclib.config.test.sodiumTest.name": "sodiumTest",
-  "magiclib.config.test.sodiumTest.comment": "sodiumTest comment"
+  "magiclib.config.test.sodiumTest.comment": "sodiumTest comment",
+
+  "magiclib.misc.versionType.Development": "Development",
+  "magiclib.misc.versionType.Public Beta": "Public Beta",
+  "magiclib.misc.versionType.Public Release": "Public Release",
+  "magiclib.misc.versionType.Unknown": "Unknown"
 }

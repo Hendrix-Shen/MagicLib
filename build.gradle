@@ -24,11 +24,23 @@ preprocess {
     mc118.link(mc119, null)
 }
 
-
-def baseVersion = "${project.mod_version}" as String
 def ENV = System.getenv()
+String realVersion = "${project.mod_version}"
 
-version = baseVersion + "." + (ENV.BUILD_NUMBER ? ENV.BUILD_NUMBER : Integer.MAX_VALUE)
+realVersion += "." + (ENV.BUILD_NUMBER ? "${ENV.BUILD_NUMBER}" : Integer.MAX_VALUE)
+realVersion += ENV.COMMIT_SHA ? "+${ENV.COMMIT_SHA}" : ""
+switch (ENV.BUILD_TYPE) {
+    case "RELEASE":
+        realVersion += "-stable"
+        break
+    case "BETA":
+        realVersion += "-beta"
+        break
+    default:
+        realVersion += "-dev"
+}
+
+version = realVersion
 
 task cleanPreprocessSources {
     doFirst {
