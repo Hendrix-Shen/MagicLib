@@ -100,7 +100,7 @@ jobs:
             fabricWrapper/build/libs/*.jar
             fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
           name: "[CI#${{ github.run_number}}]${{ steps.mod_name.outputs.value }} ${{ steps.mod_version.outputs.value }}.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}"
-          tag_name: "${{ github.ref_name }}.${{ steps.buildnumber.outputs.build_number }}"
+          tag_name: "${{ github.ref_name }}.${{ github.run_number }}"
           target_commitish: ${{ github.event.ref }}
           generate_release_notes: true
 
