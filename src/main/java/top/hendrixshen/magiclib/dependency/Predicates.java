@@ -6,6 +6,8 @@ import top.hendrixshen.magiclib.MagicLibConfigs;
 import top.hendrixshen.magiclib.config.Option;
 import top.hendrixshen.magiclib.dependency.annotation.MixinDependencyPredicate;
 import top.hendrixshen.magiclib.dependency.annotation.OptionDependencyPredicate;
+import top.hendrixshen.magiclib.dependency.annotation.RuleDependencyPredicate;
+import top.hendrixshen.magiclib.api.rule.RuleOption;
 import top.hendrixshen.magiclib.util.FabricUtil;
 
 /**
@@ -22,6 +24,18 @@ public class Predicates {
     public static class TrueOptionPredicate implements OptionDependencyPredicate {
         @Override
         public boolean test(Option option) {
+            return true;
+        }
+    }
+
+    /**
+     * Predicate that implements {@link RuleDependencyPredicate} for rule predicate checking.
+     * <p>
+     * Default value for config predicate check, this predicate always returns true.
+     */
+    public static class TrueRulePredicate implements RuleDependencyPredicate {
+        @Override
+        public boolean test(RuleOption ruleOption) {
             return true;
         }
     }
@@ -51,6 +65,18 @@ public class Predicates {
     }
 
     /**
+     * Predicate that implements {@link RuleDependencyPredicate} for config predicate checking.
+     * <p>
+     * This predicate returns true only when Fabric is enabled in the development environment.
+     */
+    public static class DevRulePredicate implements RuleDependencyPredicate {
+        @Override
+        public boolean test(RuleOption rule) {
+            return FabricUtil.isDevelopmentEnvironment();
+        }
+    }
+
+    /**
      * Predicate that implements {@link MixinDependencyPredicate} for config predicate checking.
      * <p>
      * This predicate returns true only when Fabric is enabled in the development environment.
@@ -63,7 +89,6 @@ public class Predicates {
         }
     }
 
-
     /**
      * Predicate that implements {@link OptionDependencyPredicate} for config predicate checking.
      * <p>
@@ -72,6 +97,20 @@ public class Predicates {
     public static class DevMojangOptionPredicate implements OptionDependencyPredicate {
         @Override
         public boolean test(Option option) {
+            return FabricUtil.isDevelopmentEnvironment() &&
+                    FabricLoader.getInstance().getMappingResolver()
+                            .mapClassName("intermediary", "net.minecraft.class_310").equals("net.minecraft.client.Minecraft");
+        }
+    }
+
+    /**
+     * Predicate that implements {@link OptionDependencyPredicate} for config predicate checking.
+     * <p>
+     * This predicate returns true only when Fabric is enabled in the development environment and use mojang's mapping.
+     */
+    public static class DevMojangRulePredicate implements RuleDependencyPredicate {
+        @Override
+        public boolean test(RuleOption ruleOption) {
             return FabricUtil.isDevelopmentEnvironment() &&
                     FabricLoader.getInstance().getMappingResolver()
                             .mapClassName("intermediary", "net.minecraft.class_310").equals("net.minecraft.client.Minecraft");

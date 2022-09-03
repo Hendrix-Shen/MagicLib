@@ -4,7 +4,6 @@ import top.hendrixshen.magiclib.MagicLibConfigGui;
 import top.hendrixshen.magiclib.MagicLibReference;
 
 public class ModMenuApiImpl implements ModMenuCompatApi {
-
     @Override
     public ConfigScreenFactoryCompat<?> getConfigScreenFactoryCompat() {
         return (screen) -> {
@@ -16,7 +15,6 @@ public class ModMenuApiImpl implements ModMenuCompatApi {
 
     @Override
     public String getModIdCompat() {
-        return MagicLibReference.CURRENT_MOD_ID;
+        return MagicLibReference.getCurrentModId();
     }
-
 }

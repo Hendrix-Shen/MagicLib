@@ -30,5 +30,55 @@
   "magiclib.misc.versionType.Development": "Development",
   "magiclib.misc.versionType.Public Beta": "Public Beta",
   "magiclib.misc.versionType.Public Release": "Public Release",
-  "magiclib.misc.versionType.Unknown": "Unknown"
+  "magiclib.misc.versionType.Unknown": "Unknown",
+
+  "magiclib.category.generic": "Generic",
+  "magiclib.category.example": "Example",
+
+  "magiclib.info.mod_name": "MagicLib",
+
+  "magiclib.rule.language.name": "language",
+  "magiclib.rule.language.desc": "Control the language used by SettingManager.",
+  "magiclib.rule.language.extra.0": "(Example) Extra desc line1.",
+  "magiclib.rule.language.extra.1": "(Example) Extra desc line2.",
+
+  "magiclib.rule.settingManagerLevel.name": "settingManagerLevel",
+  "magiclib.rule.settingManagerLevel.desc": "SettingManager Manager Permission Levels.",
+
+  "magiclib.rule.booleanTest.name": "booleanTest",
+  "magiclib.rule.booleanTest.desc": "",
+
+  "magiclib.rule.commandFullTest.name": "commandFullTest",
+  "magiclib.rule.commandFullTest.desc": "",
+
+  "magiclib.rule.commandLiteTest.name": "commandLiteTest",
+  "magiclib.rule.commandLiteTest.desc": "",
+
+  "magiclib.rule.enumTest.name": "enumTest",
+  "magiclib.rule.enumTest.desc": "",
+
+  "magiclib.rule.intTest.name": "intTest",
+  "magiclib.rule.intTest.desc": "",
+
+  "magiclib.ui.all_rule": "All %s settings:",
+  "magiclib.ui.browse": "Browse categories:",
+  "magiclib.ui.change_permanently": "Change permanently?",
+  "magiclib.ui.could_not_set": "Couldn't set value for rule %s.",
+  "magiclib.ui.current_rule": "Current %s settings: ",
+  "magiclib.ui.current_value": "Current value: ",
+  "magiclib.ui.default": "Default",
+  "magiclib.ui.default_rule": "Current %s startup settings from %s:",
+  "magiclib.ui.hover.change_permanently": "Click to keep the settings in %s to save across restarts.",
+  "magiclib.ui.hover.list_all_category": "List all %s settings",
+  "magiclib.ui.hover.refresh": "Refresh",
+  "magiclib.ui.hover.switch_to": "Switch to %s",
+  "magiclib.ui.matched_rule": "%s settings matching \"%s\":",
+  "magiclib.ui.modified": "Modified",
+  "magiclib.ui.null": "Null",
+  "magiclib.ui.options": "Options: ",
+  "magiclib.ui.reset_default": "Rule %s will no longer be set on restart.",
+  "magiclib.ui.set_default": "Rule %s will now default to %s.",
+  "magiclib.ui.tags": "Tags: ",
+  "magiclib.ui.unknown_rule": "Unknown rule: %s",
+  "magiclib.ui.version": "%s version: %s "
 }

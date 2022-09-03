@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "top.hendrixshen.magiclib.impl.mixin",
-  "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
+  "plugin": "top.hendrixshen.magiclib.impl.ImplMixinPlugin",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "client": [
@@ -9,5 +9,10 @@
     "client.malilib.MixinConfigBooleanHotkeyed",
     "client.malilib.MixinGuiTextFieldGeneric",
     "client.malilib.MixinWidgetConfigOption"
+  ],
+  "mixins": [
+    "common.carpet.MixinChunkMap",
+    "common.carpet.MixinParsedRule",
+    "common.carpet.MixinSettingManager"
   ]
 }

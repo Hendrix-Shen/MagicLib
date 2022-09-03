@@ -20,5 +20,55 @@
   "modmenu.descriptionTranslation.magiclib-1_16_5": "要用魔法打败魔法 :( ",
   "modmenu.descriptionTranslation.magiclib-1_17_1": "要用魔法打败魔法 :( ",
   "modmenu.descriptionTranslation.magiclib-1_18_2": "要用魔法打败魔法 :( ",
-  "modmenu.descriptionTranslation.magiclib-1_19_2": "要用魔法打败魔法 :( "
+  "modmenu.descriptionTranslation.magiclib-1_19_2": "要用魔法打败魔法 :( ",
+
+  "magiclib.category.generic": "通用",
+  "magiclib.category.example": "示例",
+
+  "magiclib.info.mod_name": "魔法类库",
+
+  "magiclib.rule.language.name": "语言",
+  "magiclib.rule.language.desc": "控制设置管理器所使用的语言。",
+  "magiclib.rule.language.extra.0": "（示例）额外描述第一行。",
+  "magiclib.rule.language.extra.1": "（示例）额外描述第二行。",
+
+  "magiclib.rule.settingManagerLevel.name": "规则管理器等级",
+  "magiclib.rule.settingManagerLevel.desc": "规则管理器权限等级。",
+
+  "magiclib.rule.booleanTest.name": "布尔测试",
+  "magiclib.rule.booleanTest.desc": "",
+
+  "magiclib.rule.commandFullTest.name": "完整风格命令测试",
+  "magiclib.rule.commandFullTest.desc": "",
+
+  "magiclib.rule.commandLiteTest.name": "简约风格命令测试",
+  "magiclib.rule.commandLiteTest.desc": "",
+
+  "magiclib.rule.enumTest.name": "枚举测试",
+  "magiclib.rule.enumTest.desc": "",
+
+  "magiclib.rule.intTest.name": "整型测试",
+  "magiclib.rule.intTest.desc": "",
+
+  "magiclib.ui.all_rule": "%s 中全部规则: ",
+  "magiclib.ui.browse": "预览分类: ",
+  "magiclib.ui.change_permanently": "永久更改？",
+  "magiclib.ui.could_not_set": "无法设置 %s。",
+  "magiclib.ui.current_rule": "当前 %s 规则: ",
+  "magiclib.ui.current_value": "当前值: ",
+  "magiclib.ui.default": "默认值",
+  "magiclib.ui.default_rule": "当前 %s 写入 %s 中启动时自动部署的规则: ",
+  "magiclib.ui.hover.change_permanently": "点击将设置保存到 %s 以便在服务器重新启动后重新应用规则。",
+  "magiclib.ui.hover.list_all_category": "列出 %s 分类下所有规则。",
+  "magiclib.ui.hover.refresh": "刷新",
+  "magiclib.ui.hover.switch_to": "设置为 %s",
+  "magiclib.ui.matched_rule": "%s 符合“%s”分类的规则: ",
+  "magiclib.ui.modified": "已修改",
+  "magiclib.ui.null": "空",
+  "magiclib.ui.options": "选项: ",
+  "magiclib.ui.reset_default": "规则 %s 在重启后将恢复至默认值.",
+  "magiclib.ui.set_default": "规则 %s 的默认值被设置为 %s。",
+  "magiclib.ui.tags": "分类: ",
+  "magiclib.ui.unknown_rule": "未知规则: %s",
+  "magiclib.ui.version": "%s 版本: %s "
 }
