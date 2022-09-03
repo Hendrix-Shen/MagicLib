@@ -39,15 +39,17 @@ public abstract class MixinStyle implements StyleCompatApi {
     //$$ public abstract Style copy();
     //#endif
 
-    //#if MC > 11502
     @Shadow
+    //#if MC > 11502
     //#if MC > 11502 && MC <= 11605
     //$$ @Environment(EnvType.CLIENT)
     //#endif
     public abstract Style withUnderlined(@Nullable Boolean underlined);
+    //#else
+    //$$ public abstract Style setUnderlined(Boolean underlined);
     //#endif
 
-    //#if MC >11502 && MC <= 11605
+    //#if MC > 11502 && MC <= 11605
     //$$ @SuppressWarnings("ConstantConditions")
     //#endif
     @Override
@@ -94,7 +96,7 @@ public abstract class MixinStyle implements StyleCompatApi {
         //#if MC > 11502
         return this.withUnderlined(underlined);
         //#else
-        //$$     return this.copy().setUnderlined(underlined);
+        //$$     return this.setUnderlined(underlined);
         //#endif
     }
 }
