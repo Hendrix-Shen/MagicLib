@@ -123,7 +123,9 @@ public abstract class MixinParsedRule<T> {
             this.options = Arrays.stream(this.type.getEnumConstants())
                     .map(e -> ((Enum<?>)e).name().toLowerCase(Locale.ROOT))
                     .collect(ImmutableList.toImmutableList());
+            this.isStrict = true;
         } else if (this.type == String.class && commandAnnotation != null) {
+            this.isStrict = false;
             //#if MC > 11605
             this.options = commandAnnotation.full() ? Validators.Command.FULL_OPTIONS : Validators.Command.MINIMAL_OPTIONS;
             //#else
@@ -132,7 +134,7 @@ public abstract class MixinParsedRule<T> {
             //#if MC > 11802
             this.realValidators.add(this.magiclib$instantiateValidator(Validators.Command.class));
             //#else
-            //$$ this.validators.add(this.magiclib$instantiateValidator(Validators.CommandUpdate.class));
+            //$$ this.validators.add(this.magiclib$instantiateValidator(Validators.Command.class));
             //#endif
         } else {
             //#if MC > 11605
@@ -142,9 +144,9 @@ public abstract class MixinParsedRule<T> {
             //#endif
         }
 
-        if (numericAnnotation != null && (field.getType() == Byte.class || field.getType() == Short.class ||
-                field.getType() == Integer.class || field.getType() == Long.class || field.getType() == Float.class ||
-                field.getType() == Double.class)) {
+        if (numericAnnotation != null && (this.type == Byte.class || this.type == Short.class ||
+                this.type == Integer.class || this.type == Long.class || this.type == Float.class ||
+                this.type == Double.class)) {
             //#if MC > 11802
             this.realValidators.add(0, new Validators.Numeric<>(numericAnnotation.maxValue(), numericAnnotation.minValue(), numericAnnotation.canMaxEquals(), numericAnnotation.canMinEquals()));
             //#else
@@ -159,7 +161,6 @@ public abstract class MixinParsedRule<T> {
             //$$ this.validators.add(0, new Validators.Strict<>());
             //#endif
         }
-        //todo Full feature
     }
 
     @SuppressWarnings({"rawtypes"})

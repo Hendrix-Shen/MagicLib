@@ -204,7 +204,7 @@ public class WrapperSettingManager extends SettingsManager {
         return ruleOption;
     }
 
-    public RuleOption getCarpetRule(ParsedRule<?> carpetRule) {
+    public RuleOption getRuleOption(ParsedRule<?> carpetRule) {
         return this.RULE_TO_OPTION.get(carpetRule);
     }
 
@@ -271,6 +271,14 @@ public class WrapperSettingManager extends SettingsManager {
 
     public String trInfo(String info) {
         return this.tr(this.getCurrentLanguageCode(), String.format("%s.info.%s", this.identifier, info));
+    }
+
+    public String trValidator(String uiText) {
+        return this.tr(this.getCurrentLanguageCode(), String.format("%s.validator.%s", MagicLibReference.getModId(), uiText));
+    }
+
+    public String trValidator(String uiText, Object... objects) {
+        return this.tr(this.getCurrentLanguageCode(), String.format("%s.validator.%s", MagicLibReference.getModId(), uiText), objects);
     }
 
     public String trUI(String uiText) {
@@ -344,7 +352,6 @@ public class WrapperSettingManager extends SettingsManager {
 
     public int setRule(CommandSourceStack source, @NotNull RuleOption ruleOption, String newValue) {
         if (ruleOption.setValue(source, newValue) == null) {
-            MessageUtil.sendMessage(source, this.trUI("could_not_set", ruleOption.getName()));
             return 1;
         }
         List<Component> components = Lists.newArrayList();
@@ -359,11 +366,14 @@ public class WrapperSettingManager extends SettingsManager {
 
     @SuppressWarnings("unchecked")
     public int setDefault(CommandSourceStack source, RuleOption ruleOption, String newValue) {
-        if (this.locked() || ruleOption == null) {
+        if (this.locked()) {
             return 0;
         }
 
-        //TODO Compat legacy carpet
+        if (ruleOption.setValue(source, newValue) == null) {
+            return 1;
+        }
+
         Class<?> carpetSM = WrapperSettingManager.class.getSuperclass();
         //#if MC > 11502
         Object path = ReflectUtil.invokeDeclared(carpetSM, "getFile", this);
@@ -385,10 +395,6 @@ public class WrapperSettingManager extends SettingsManager {
         //$$ReflectUtil.invokeDeclared(carpetSM, "writeSettingsToConf", this,
         //$$        new Class[]{Map.class}, ruleMap);
         //#endif
-        if (ruleOption.setValue(source, newValue) == null) {
-            MessageUtil.sendMessage(source, this.trUI("could_not_set", this.getTranslatedRuleName(ruleOption.getName())));
-            return 1;
-        }
         MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("set_default", this.getTranslatedRuleName(ruleOption.getName()),
                 ruleOption.getStringValue())).withStyle(style -> style.withItalic(true).withColor(ChatFormatting.GRAY)));
         return 1;
@@ -396,11 +402,14 @@ public class WrapperSettingManager extends SettingsManager {
 
     @SuppressWarnings("unchecked")
     public int removeDefault(CommandSourceStack source, RuleOption ruleOption) {
-        if (this.locked() || ruleOption == null) {
+        if (this.locked()) {
             return 0;
         }
 
-        //TODO Compat legacy carpet
+        if (ruleOption.resetValue(source) == null) {
+            return 1;
+        }
+
         Class<?> carpetSM = WrapperSettingManager.class.getSuperclass();
         //#if MC > 11502
         Object path = ReflectUtil.invokeDeclared(carpetSM, "getFile", this);
@@ -422,10 +431,6 @@ public class WrapperSettingManager extends SettingsManager {
         //$$ReflectUtil.invokeDeclared(carpetSM, "writeSettingsToConf", this,
         //$$        new Class[]{Map.class}, ruleMap);
         //#endif
-        if (ruleOption.resetValue(source) == null) {
-            MessageUtil.sendMessage(source, this.trUI("could_not_set", this.getTranslatedRuleName(ruleOption.getName())));
-            return 1;
-        }
         MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("reset_default", this.getTranslatedRuleName(ruleOption.getName())))
                 .withStyle(style -> style.withItalic(true).withColor(ChatFormatting.GRAY)));
         return 1;
@@ -501,7 +506,6 @@ public class WrapperSettingManager extends SettingsManager {
     private int listDefaultSettings(CommandSourceStack source) {
         MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("default_rule",  this.trFancyName(), String.format("%s.conf", this.identifier)))
                 .withStyle(style -> style.withBold(true)));
-        //TODO Compat legacy carpet
         Class<?> carpetSM = WrapperSettingManager.class.getSuperclass();
         //#if MC > 11502
         Object path = ReflectUtil.invokeDeclared(carpetSM, "getFile", this);

@@ -1,26 +1,37 @@
 package top.hendrixshen.magiclib.api.rule;
 
 import carpet.CarpetServer;
-import carpet.settings.ParsedRule;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.commands.CommandSourceStack;
-import top.hendrixshen.magiclib.language.I18n;
+import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.util.MessageUtil;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
-//TODO Auto i18n
 public class Validators {
     public static class Strict<T> extends Validator<T> {
         @Override
-        public T validateCompat(CommandSourceStack source, ParsedRule<T> changingRule, T newValue, String userInput) {
-            if (!changingRule.options.contains(userInput)) {
-                MessageUtil.sendMessage(source, I18n.get("magiclib.validator.strict.failure", changingRule.options.toString()));
-                return null;
+        public T getValidValue(CommandSourceStack source, RuleOption ruleOption, T newValue, String userInput) {
+            if (ruleOption.getOptions().contains(userInput)) {
+                return newValue;
             }
+            MessageUtil.sendMessage(source, MagicLibReference.getSettingManager()
+                    .trValidator("strict.validValue", ruleOption.getOptions().toString()));
+            return null;
+        }
+    }
 
-            return newValue;
+    public static class StrictIgnoreCase<T> extends Validator<T> {
+        @Override
+        public T getValidValue(CommandSourceStack source, RuleOption ruleOption, T newValue, String userInput) {
+            if (ruleOption.getOptions().stream().map(s -> s.toLowerCase(Locale.ROOT)).collect(Collectors.toList()).contains(userInput.toLowerCase(Locale.ROOT))) {
+                return newValue;
+            }
+            MessageUtil.sendMessage(source, MagicLibReference.getSettingManager()
+                    .trValidator("strictIgnoreCase.validValue", ruleOption.getOptions().toString()));
+            return null;
         }
     }
 
@@ -29,24 +40,16 @@ public class Validators {
         public static final List<String> MINIMAL_OPTIONS = ImmutableList.of("true", "false", "ops");
 
         @Override
-        public String validateCompat(CommandSourceStack source, ParsedRule<String> changingRule, String newValue, String userInput) {
-            return !FULL_OPTIONS.contains(newValue.toLowerCase(Locale.ROOT)) ? null : newValue.toLowerCase(Locale.ROOT);
-        }
-
-        @Override
-        public String description() {
-            return I18n.get("magiclib.validator.command.description");
-        }
-    }
-
-    public static class CommandUpdate<T> extends Validator<T> {
-        @Override
-        public T validateCompat(CommandSourceStack commandSourceStack, ParsedRule<T> carpetRule, T newValue, String userInput) {
-            if (CarpetServer.settingsManager != null) {
-                CarpetServer.settingsManager.notifyPlayersCommandsChanged();
+        public String getValidValue(CommandSourceStack source, RuleOption ruleOption, String newValue, String userInput) {
+            if (FULL_OPTIONS.contains(newValue.toLowerCase(Locale.ROOT))) {
+                if (CarpetServer.settingsManager != null) {
+                    CarpetServer.settingsManager.notifyPlayersCommandsChanged();
+                }
+                return newValue.toLowerCase(Locale.ROOT);
             }
-
-            return newValue;
+            MessageUtil.sendMessage(source, MagicLibReference.getSettingManager()
+                    .trValidator("command.validValue", ruleOption.getOptions().toString()));
+            return null;
         }
     }
 
@@ -57,14 +60,14 @@ public class Validators {
         private final boolean canMinEquals;
 
         public Numeric(double max, double min, boolean canMaxEquals, boolean canMinEquals) {
-            this.max = max;
-            this.min = min;
+            this.max = Math.max(min, max);
+            this.min = Math.min(min, max);
             this.canMaxEquals = canMaxEquals;
             this.canMinEquals = canMinEquals;
         }
 
         @Override
-        public T validateCompat(CommandSourceStack source, ParsedRule<T> changingRule, T newValue, String userInput) {
+        public T getValidValue(CommandSourceStack source, RuleOption ruleOption, T newValue, String userInput) {
             if (!(newValue instanceof Number)) {
                 throw new IllegalArgumentException("Illegal validator call.");
             }
@@ -73,6 +76,9 @@ public class Validators {
                     (!this.canMaxEquals && number.doubleValue() >= this.max) ||
                     (this.canMinEquals && number.doubleValue() < this.min) ||
                     (!this.canMinEquals && number.doubleValue() <= this.min)) {
+                MessageUtil.sendMessage(source, MagicLibReference.getSettingManager()
+                        .trValidator("numeric.validValue", String.format("%s%s, %s%s",
+                                this.canMinEquals ? "[" : "(", this.min, this.max, this.canMaxEquals ? "]" : ")")));
                 return null;
             }
             return newValue;

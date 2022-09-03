@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import top.hendrixshen.magiclib.api.rule.WrapperSettingManager;
 import top.hendrixshen.magiclib.util.VersionParser;
 
 public class MagicLibReference {
@@ -51,5 +52,9 @@ public class MagicLibReference {
 
     public static String getModVersionType() {
         return MOD_VERSION_TYPE;
+    }
+
+    public static WrapperSettingManager getSettingManager() {
+        return WrapperSettingManager.get(MagicLibReference.getModId());
     }
 }

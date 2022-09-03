@@ -80,5 +80,11 @@
   "magiclib.ui.set_default": "Rule %s will now default to %s.",
   "magiclib.ui.tags": "Tags: ",
   "magiclib.ui.unknown_rule": "Unknown rule: %s",
-  "magiclib.ui.version": "%s version: %s "
+  "magiclib.ui.version": "%s version: %s ",
+
+  "magiclib.validator.abstract.invalid": "Wrong value for %s: %s",
+  "magiclib.validator.strict.validValue": "Valid options(Case-sensitive): %s",
+  "magiclib.validator.strictIgnoreCase.validValue": "Valid options(Case-insensitive): %s",
+  "magiclib.validator.command.validValue": "Valid options: %s",
+  "magiclib.validator.numeric.validValue": "Number must be within the interval: %s"
 }

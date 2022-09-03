@@ -52,14 +52,14 @@
 
   "magiclib.ui.all_rule": "%s 中全部规则: ",
   "magiclib.ui.browse": "预览分类: ",
-  "magiclib.ui.change_permanently": "永久更改？",
-  "magiclib.ui.could_not_set": "无法设置 %s。",
+  "magiclib.ui.change_permanently": "永久更改?",
+  "magiclib.ui.could_not_set": "无法设置 %s.",
   "magiclib.ui.current_rule": "当前 %s 规则: ",
   "magiclib.ui.current_value": "当前值: ",
   "magiclib.ui.default": "默认值",
   "magiclib.ui.default_rule": "当前 %s 写入 %s 中启动时自动部署的规则: ",
-  "magiclib.ui.hover.change_permanently": "点击将设置保存到 %s 以便在服务器重新启动后重新应用规则。",
-  "magiclib.ui.hover.list_all_category": "列出 %s 分类下所有规则。",
+  "magiclib.ui.hover.change_permanently": "点击将设置保存到 %s 以便在服务器重新启动后重新应用规则.",
+  "magiclib.ui.hover.list_all_category": "列出 %s 分类下所有规则.",
   "magiclib.ui.hover.refresh": "刷新",
   "magiclib.ui.hover.switch_to": "设置为 %s",
   "magiclib.ui.matched_rule": "%s 符合“%s”分类的规则: ",
@@ -67,8 +67,14 @@
   "magiclib.ui.null": "空",
   "magiclib.ui.options": "选项: ",
   "magiclib.ui.reset_default": "规则 %s 在重启后将恢复至默认值.",
-  "magiclib.ui.set_default": "规则 %s 的默认值被设置为 %s。",
+  "magiclib.ui.set_default": "规则 %s 的默认值被设置为 %s.",
   "magiclib.ui.tags": "分类: ",
   "magiclib.ui.unknown_rule": "未知规则: %s",
-  "magiclib.ui.version": "%s 版本: %s "
+  "magiclib.ui.version": "%s 版本: %s",
+
+  "magiclib.validator.abstract.invalid": "对于规则 %s 无效的值: %s",
+  "magiclib.validator.strict.validValue": "有效值(区分大小写): %s",
+  "magiclib.validator.strictIgnoreCase.validValue": "有效值(不区分大小写): %s",
+  "magiclib.validator.command.validValue": "有效值: %s",
+  "magiclib.validator.numeric.validValue": "数字必须在区间内: %s"
 }
