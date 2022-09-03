@@ -163,7 +163,7 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
     }
 
     public boolean exists(String key) {
-        return defaultLanguage.contains(key);
+        return defaultLanguage.containsKey(key);
     }
 
     public boolean exists(String code, String key) {
@@ -171,6 +171,6 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
         if (currentLanguage == null) {
             return false;
         }
-        return currentLanguage.contains(key);
+        return currentLanguage.containsKey(key);
     }
 }
