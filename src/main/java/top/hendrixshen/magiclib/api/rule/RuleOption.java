@@ -79,7 +79,7 @@ public class RuleOption {
             return null;
         }
         //#else
-        //$$ return this.parsedRule.set(source, newValue) == null;
+        //$$ return this.parsedRule.set(source, newValue);
         //#endif
     }
 

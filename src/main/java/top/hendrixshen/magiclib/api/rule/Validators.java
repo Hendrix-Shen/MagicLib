@@ -2,8 +2,10 @@ package top.hendrixshen.magiclib.api.rule;
 
 import carpet.CarpetServer;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import top.hendrixshen.magiclib.MagicLibReference;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.util.MessageUtil;
 
 import java.util.List;
@@ -17,8 +19,8 @@ public class Validators {
             if (ruleOption.getOptions().contains(userInput)) {
                 return newValue;
             }
-            MessageUtil.sendMessage(source, MagicLibReference.getSettingManager()
-                    .trValidator("strict.validValue", ruleOption.getOptions().toString()));
+            MessageUtil.sendMessage(source, ComponentCompatApi.literal(MagicLibReference.getSettingManager()
+                    .trValidator("strict.validValue", ruleOption.getOptions().toString())).withStyle(style -> style.withColor(ChatFormatting.RED)));
             return null;
         }
     }
@@ -29,8 +31,8 @@ public class Validators {
             if (ruleOption.getOptions().stream().map(s -> s.toLowerCase(Locale.ROOT)).collect(Collectors.toList()).contains(userInput.toLowerCase(Locale.ROOT))) {
                 return newValue;
             }
-            MessageUtil.sendMessage(source, MagicLibReference.getSettingManager()
-                    .trValidator("strictIgnoreCase.validValue", ruleOption.getOptions().toString()));
+            MessageUtil.sendMessage(source, ComponentCompatApi.literal(MagicLibReference.getSettingManager()
+                    .trValidator("strictIgnoreCase.validValue", ruleOption.getOptions().toString())).withStyle(style -> style.withColor(ChatFormatting.RED)));
             return null;
         }
     }
@@ -47,8 +49,8 @@ public class Validators {
                 }
                 return newValue.toLowerCase(Locale.ROOT);
             }
-            MessageUtil.sendMessage(source, MagicLibReference.getSettingManager()
-                    .trValidator("command.validValue", ruleOption.getOptions().toString()));
+            MessageUtil.sendMessage(source, ComponentCompatApi.literal(MagicLibReference.getSettingManager()
+                    .trValidator("command.validValue", ruleOption.getOptions().toString())).withStyle(style -> style.withColor(ChatFormatting.RED)));
             return null;
         }
     }
@@ -76,9 +78,10 @@ public class Validators {
                     (!this.canMaxEquals && number.doubleValue() >= this.max) ||
                     (this.canMinEquals && number.doubleValue() < this.min) ||
                     (!this.canMinEquals && number.doubleValue() <= this.min)) {
-                MessageUtil.sendMessage(source, MagicLibReference.getSettingManager()
+                MessageUtil.sendMessage(source, ComponentCompatApi.literal(MagicLibReference.getSettingManager()
                         .trValidator("numeric.validValue", String.format("%s%s, %s%s",
-                                this.canMinEquals ? "[" : "(", this.min, this.max, this.canMaxEquals ? "]" : ")")));
+                                this.canMinEquals ? "[" : "(", this.min, this.max, this.canMaxEquals ? "]" : ")")))
+                        .withStyle(style -> style.withColor(ChatFormatting.RED)));
                 return null;
             }
             return newValue;

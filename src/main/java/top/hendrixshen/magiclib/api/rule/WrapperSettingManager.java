@@ -66,7 +66,11 @@ public class WrapperSettingManager extends SettingsManager {
         return WrapperSettingManager.INSTANCES.get(identifier);
     }
 
-    public static void register(String identifier, WrapperSettingManager wrapperSettingsManager) {
+    public static void register(String identifier, @NotNull WrapperSettingManager wrapperSettingsManager) {
+        if (wrapperSettingsManager.getClass() == WrapperSettingManager.class) {
+            throw new IllegalArgumentException("Forbidden original use of WrapperSettingManager!");
+        }
+
         if (WrapperSettingManager.INSTANCES.containsKey(identifier)) {
             MagicLibReference.LOGGER.error("SettingManager {} is registered", identifier);
         }
@@ -367,7 +371,8 @@ public class WrapperSettingManager extends SettingsManager {
     @SuppressWarnings("unchecked")
     public int setDefault(CommandSourceStack source, RuleOption ruleOption, String newValue) {
         if (this.locked()) {
-            return 0;
+            MessageUtil.sendMessage(source, trUI("locked"));
+            return 1;
         }
 
         if (ruleOption.setValue(source, newValue) == null) {
@@ -403,7 +408,8 @@ public class WrapperSettingManager extends SettingsManager {
     @SuppressWarnings("unchecked")
     public int removeDefault(CommandSourceStack source, RuleOption ruleOption) {
         if (this.locked()) {
-            return 0;
+            MessageUtil.sendMessage(source, trUI("locked"));
+            return 1;
         }
 
         if (ruleOption.resetValue(source) == null) {

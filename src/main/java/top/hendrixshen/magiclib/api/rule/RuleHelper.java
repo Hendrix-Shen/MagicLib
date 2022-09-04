@@ -11,9 +11,18 @@ public class RuleHelper {
 
     public static WrapperSettingManager getSettingManager(ParsedRule<?> parsedRule) {
         //#if MC > 11802
-        return (WrapperSettingManager) ReflectUtil.getFieldValue("carpet.settings.ParsedRule", "realSettingsManager", parsedRule);
+        Object settingManager = ReflectUtil.getFieldValue("carpet.settings.ParsedRule", "realSettingsManager", parsedRule);
         //#else
-        //$$ return (WrapperSettingManager) ReflectUtil.getFieldValue("carpet.settings.ParsedRule", "settingsManager", parsedRule);
+        //$$ Object settingManager =  ReflectUtil.getFieldValue("carpet.settings.ParsedRule", "settingsManager", parsedRule);
         //#endif
+
+        if (!(settingManager instanceof WrapperSettingManager)) {
+            //#if MC > 11802
+            throw new IllegalArgumentException(String.format("Rule %s is not registered by WrapperSettingManager!", parsedRule.name()));
+            //#else
+            //$$ throw new IllegalArgumentException(String.format("Rule %s is not registered by WrapperSettingManager!", parsedRule.name));
+            //#endif
+        }
+        return (WrapperSettingManager) settingManager;
     }
 }

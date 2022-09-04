@@ -2,16 +2,23 @@ package top.hendrixshen.magiclib.impl.mixin.common.carpet;
 
 import carpet.settings.ParsedRule;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import org.apache.commons.lang3.ClassUtils;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-//#if MC > 11802
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+//#if MC > 11802
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+//#elseif MC <= 11605
+//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//$$ import top.hendrixshen.magiclib.api.rule.RuleHelper;
+//#else
+//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //#endif
+import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.api.rule.Validators;
 import top.hendrixshen.magiclib.api.rule.WrapperSettingManager;
 import top.hendrixshen.magiclib.api.rule.annotation.Command;
@@ -19,6 +26,8 @@ import top.hendrixshen.magiclib.api.rule.annotation.Numeric;
 import top.hendrixshen.magiclib.api.rule.annotation.Rule;
 import top.hendrixshen.magiclib.compat.annotation.InitMethod;
 import top.hendrixshen.magiclib.compat.annotation.Public;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
+import top.hendrixshen.magiclib.util.MessageUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -29,9 +38,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-//#if MC > 11605
-
-//#endif
 
 @Mixin(ParsedRule.class)
 public abstract class MixinParsedRule<T> {
@@ -60,6 +66,8 @@ public abstract class MixinParsedRule<T> {
     public carpet.api.settings.SettingsManager realSettingsManager;
     //#endif
 
+    public Class<?> typeCompat;
+
     @Shadow
     public abstract T get();
 
@@ -69,6 +77,9 @@ public abstract class MixinParsedRule<T> {
 
     @Shadow
     public abstract Class<T> type();
+    //#else
+    //$$ @Shadow
+    //$$ abstract ParsedRule<T> set(CommandSourceStack source, T value, String stringValue);
     //#endif
 
     @Public
@@ -81,6 +92,7 @@ public abstract class MixinParsedRule<T> {
         //#else
         //$$ this.type = field.getType();
         //#endif
+        this.typeCompat = ClassUtils.primitiveToWrapper(field.getType());
         this.description = null;
         this.defaultAsString = this.magiclib$convertToString(this.get());
         this.isStrict = rule.strict();
@@ -109,22 +121,24 @@ public abstract class MixinParsedRule<T> {
             //#else
             //$$ this.options = ImmutableList.copyOf(rule.options());
             //#endif
-        //#if MC > 11802
-        } else if (this.type == Boolean.class) {
-        //#else
-        //$$ } else if (this.type == Boolean.TYPE) {
-        //#endif
+        } else if (this.typeCompat == Boolean.class) {
+            this.isStrict = false;
             //#if MC > 11605
             this.options = Arrays.asList("true", "false");
             //#else
             //$$ this.options = ImmutableList.of("true", "false");
             //#endif
-        } else if (this.type.isEnum()) {
+            //#if MC > 11802
+            this.realValidators.add(0, new Validators.StrictIgnoreCase<>());
+            //#else
+            //$$ this.validators.add(0, new Validators.StrictIgnoreCase<>());
+            //#endif
+        } else if (this.typeCompat.isEnum()) {
+            this.isStrict = false;
             this.options = Arrays.stream(this.type.getEnumConstants())
                     .map(e -> ((Enum<?>)e).name().toLowerCase(Locale.ROOT))
                     .collect(ImmutableList.toImmutableList());
-            this.isStrict = true;
-        } else if (this.type == String.class && commandAnnotation != null) {
+        } else if (this.typeCompat == String.class && commandAnnotation != null) {
             this.isStrict = false;
             //#if MC > 11605
             this.options = commandAnnotation.full() ? Validators.Command.FULL_OPTIONS : Validators.Command.MINIMAL_OPTIONS;
@@ -144,9 +158,9 @@ public abstract class MixinParsedRule<T> {
             //#endif
         }
 
-        if (numericAnnotation != null && (this.type == Byte.class || this.type == Short.class ||
-                this.type == Integer.class || this.type == Long.class || this.type == Float.class ||
-                this.type == Double.class)) {
+        if (numericAnnotation != null && (this.typeCompat == Byte.class || this.typeCompat == Short.class ||
+                this.typeCompat == Integer.class || this.typeCompat == Long.class || this.typeCompat == Float.class ||
+                this.typeCompat == Double.class)) {
             //#if MC > 11802
             this.realValidators.add(0, new Validators.Numeric<>(numericAnnotation.maxValue(), numericAnnotation.minValue(), numericAnnotation.canMaxEquals(), numericAnnotation.canMinEquals()));
             //#else
@@ -179,32 +193,88 @@ public abstract class MixinParsedRule<T> {
         return value instanceof Enum ? ((Enum)value).name().toLowerCase(Locale.ROOT) : value.toString();
     }
 
-    //#if MC > 11802
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Inject(
+            //#if MC > 11802
             method = "set(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)V",
+            //#else
+            //$$ method = "set(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)Lcarpet/settings/ParsedRule;",
+            //#endif
             at = @At(
                     value = "HEAD"
             ),
             cancellable = true
     )
+    //#if MC > 11802
     public void set(CommandSourceStack source, String value, CallbackInfo ci) throws carpet.api.settings.InvalidRuleValueException {
         if (!(this.realSettingsManager instanceof WrapperSettingManager)) {
             return;
         }
-        if (this.type == String.class) {
+        if (this.typeCompat == String.class) {
             this.set(source, (T) value, value);
-        } else if (this.type == Boolean.class) {
+        } else if (this.typeCompat == Boolean.class) {
             this.set(source, (T) (Object) Boolean.parseBoolean(value), value);
-        } else if (this.type == Integer.class) {
+        } else if (this.typeCompat == Integer.class) {
             this.set(source, (T) (Object) Integer.parseInt(value), value);
-        } else if (this.type == Double.class) {
+        } else if (this.typeCompat == Double.class) {
             this.set(source, (T) (Object) Double.parseDouble(value), value);
-        } else if (this.type.isEnum()) {
+        } else if (this.typeCompat.isEnum()) {
             String ucValue = value.toUpperCase(Locale.ROOT);
-            this.set(source, (T) (Object) Enum.valueOf((Class<? extends Enum>) type, ucValue), value);
+            try {
+                this.set(source, (T) (Object) Enum.valueOf((Class<? extends Enum>) type, ucValue), value);
+            } catch (IllegalArgumentException e) {
+                MessageUtil.sendMessage(source, ComponentCompatApi.literal(MagicLibReference.getSettingManager().trUI("enum_exception", ucValue))
+                        .withStyle(style -> style.withColor(ChatFormatting.RED)));
+                throw new carpet.api.settings.InvalidRuleValueException();
+            }
+        } else {
+            MessageUtil.sendMessage(source, ComponentCompatApi.literal(MagicLibReference.getSettingManager().trUI("unknown_type", this.typeCompat))
+                    .withStyle(style -> style.withColor(ChatFormatting.RED)));
+            throw new carpet.api.settings.InvalidRuleValueException();
         }
         ci.cancel();
+    //#else
+    //$$ public void set(CommandSourceStack source, String value, CallbackInfoReturnable<ParsedRule<T>> cir) {
+    //#else
+    //$$     if (this.typeCompat == String.class) {
+    //$$         cir.setReturnValue(this.set(source, (T) value, value));
+    //$$     } else if (this.typeCompat == Boolean.class) {
+    //$$         cir.setReturnValue(this.set(source, (T) (Object) Boolean.parseBoolean(value), value));
+    //$$     } else if (this.typeCompat == Integer.class) {
+    //$$         cir.setReturnValue(this.set(source, (T) (Object) Integer.parseInt(value), value));
+    //$$     } else if (this.typeCompat == Double.class) {
+    //$$         cir.setReturnValue(this.set(source, (T) (Object) Double.parseDouble(value), value));
+    //$$     } else if (this.typeCompat.isEnum()) {
+    //$$         String ucValue = value.toUpperCase(Locale.ROOT);
+    //$$         try {
+    //$$             cir.setReturnValue(this.set(source, (T) (Object) Enum.valueOf((Class<? extends Enum>) type, ucValue), value));
+    //$$         } catch (IllegalArgumentException e) {
+    //$$             MessageUtil.sendMessage(source, ComponentCompatApi.literal(MagicLibReference.getSettingManager().trUI("enum_exception", ucValue))
+    //$$                     .withStyle(style -> style.withColor(ChatFormatting.RED)));
+    //$$             cir.setReturnValue(null);
+    //$$         }
+    //$$     } else {
+    //$$         MessageUtil.sendMessage(source, ComponentCompatApi.literal(MagicLibReference.getSettingManager().trUI("unknown_type", this.typeCompat))
+    //$$                 .withStyle(style -> style.withColor(ChatFormatting.RED)));
+    //$$         cir.setReturnValue(null);
+    //$$     }
+    //#endif
     }
+
+    //#if MC <= 11605
+    //$$ @Inject(
+    //$$         method = "set(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/Object;Ljava/lang/String;)Lcarpet/settings/ParsedRule;",
+    //$$         at = @At(
+    //$$                 value = "INVOKE",
+    //$$                 target = "Lcarpet/utils/Messenger;m(Lnet/minecraft/commands/CommandSourceStack;[Ljava/lang/Object;)V"
+    //$$         ),cancellable = true
+    //$$ )
+    //$$ private void onSetFailed(CommandSourceStack source, Object value, String userInput, @NotNull CallbackInfoReturnable<T> cir) {
+    //$$     try {
+    //$$         RuleHelper.getSettingManager((ParsedRule<?>) (Object) this);
+    //$$         cir.setReturnValue(null);
+    //$$     } catch (IllegalArgumentException ignore) {
+    //$$     }
+    //$$ }
     //#endif
 }
