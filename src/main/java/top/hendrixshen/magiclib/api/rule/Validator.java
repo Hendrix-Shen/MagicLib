@@ -19,10 +19,10 @@ public abstract class Validator<T> extends carpet.api.settings.Validator<T> {
     @Override
     //#if MC >= 11901
     public T validate(CommandSourceStack source, CarpetRule<T> carpetRule, T newValue, String userInput) {
-        return this.validateCompat(source, MagicLibReference.getSettingManager().getRuleOption((ParsedRule<T>) carpetRule), newValue, userInput);
+        return this.validateCompat(source, RuleHelper.getSettingManager((ParsedRule<T>) carpetRule).getRuleOption((ParsedRule<T>) carpetRule), newValue, userInput);
     //#else
     //$$ public T validate(CommandSourceStack source, ParsedRule<T> carpetRule, T newValue, String userInput) {
-    //$$     return this.validateCompat(source, MagicLibReference.getSettingManager().getRuleOption(carpetRule), newValue, userInput);
+    //$$     return this.validateCompat(source, RuleHelper.getSettingManager((ParsedRule<T>) carpetRule).getRuleOption(carpetRule), newValue, userInput);
     //#endif
     }
 
