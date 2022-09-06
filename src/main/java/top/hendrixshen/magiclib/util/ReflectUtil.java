@@ -3,9 +3,11 @@ package top.hendrixshen.magiclib.util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class ReflectUtil {
     public static @NotNull Class<?> getClass(String className) {
@@ -27,17 +29,20 @@ public class ReflectUtil {
 
     public static @NotNull Object newInstance(String className, int index, Object... parameters) {
         try {
-            return Class.forName(className).getDeclaredConstructors()[index].newInstance(parameters);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
+            Constructor<?> constructor = ReflectUtil.getClass(className).getDeclaredConstructors()[index];
+            constructor.setAccessible(true);
+            return constructor.newInstance(parameters);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static @NotNull Object newInstance(String className, Class<?>[] parameterTypes, Object... parameters) {
         try {
-            return Class.forName(className).getDeclaredConstructor(parameterTypes).newInstance(parameters);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | ClassNotFoundException |
-                 NoSuchMethodException e) {
+            Constructor<?> constructor = ReflectUtil.getClass(className).getDeclaredConstructor(parameterTypes);
+            constructor.setAccessible(true);
+            return constructor.newInstance(parameters);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }

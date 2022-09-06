@@ -20,6 +20,7 @@
   "server": [
   ],
   "mixins": [
+    "carpettisaddition.MixinCarpetRuleRegistrar",
     "minecraft.network.chat.MixinBaseComponent",
     "minecraft.network.chat.MixinStyle",
     "minecraft.world.MixinSimpleContainer",
