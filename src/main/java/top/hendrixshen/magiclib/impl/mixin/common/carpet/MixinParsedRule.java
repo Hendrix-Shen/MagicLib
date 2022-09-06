@@ -236,6 +236,9 @@ public abstract class MixinParsedRule<T> {
     //#else
     //$$ public void set(CommandSourceStack source, String value, CallbackInfoReturnable<ParsedRule<T>> cir) {
     //#else
+    //$$     if (!(this.settingsManager instanceof WrapperSettingManager)) {
+    //$$         return;
+    //$$     }
     //$$     if (this.typeCompat == String.class) {
     //$$         cir.setReturnValue(this.set(source, (T) value, value));
     //$$     } else if (this.typeCompat == Boolean.class) {
