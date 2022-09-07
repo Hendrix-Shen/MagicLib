@@ -108,16 +108,24 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
                                               ConfigBooleanHotkeyed resettableConfig,
                                               IConfigBoolean booleanConfig,
                                               IKeybind keybind) {
-        int booleanBtnWidth = 60;
+        int booleanBtnWidth = (configWidth - 24) / 2;
         ConfigButtonBoolean booleanButton = new ConfigButtonBoolean(x, y, booleanBtnWidth, 20, booleanConfig);
         x += booleanBtnWidth + 2;
-        configWidth -= booleanBtnWidth + 2 + 22;
+        //#if MC > 11701
+        configWidth -= booleanBtnWidth + 22;
+        //#else
+        //$$ configWidth -= booleanBtnWidth + 24;
+        //#endif
 
         ConfigButtonKeybind keybindButton = new ConfigButtonKeybind(x, y, configWidth, 20, keybind, this.host);
         x += configWidth + 2;
 
         this.addWidget(new WidgetKeybindSettings(x, y, 20, 20, keybind, booleanConfig.getName(), this.parent, this.host.getDialogHandler()));
+        //#if MC > 11701
         x += 22;
+        //#else
+        //$$ x += 24;
+        //#endif
 
         ButtonGeneric resetButton = this.createResetButton(x, y, resettableConfig);
 
