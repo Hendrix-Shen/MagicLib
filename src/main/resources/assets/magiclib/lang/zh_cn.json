@@ -1,5 +1,7 @@
 {
   "magiclib.gui.title": "MagicLib 测试 - 版本: %s (%s)",
+  "magiclib.gui.button.widget.trigger.text": "触发",
+  "magiclib.gui.button.widget.trigger.hover": "点击以触发一次 %1$s\n§7§o这将依次模拟热键按下与松开操作.",
   "magiclib.gui.button.tab.generic": "通用",
   "magiclib.gui.button.tab.test": "测试",
   "magiclib.config.generic.debug.name": "调试模式",

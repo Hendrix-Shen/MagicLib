@@ -1,5 +1,7 @@
 {
   "magiclib.gui.title": "MagicLib Test - Version: %s (%s)",
+  "magiclib.gui.button.widget.trigger.text": "Trigger",
+  "magiclib.gui.button.widget.trigger.hover": "Click to trigger %1$s once\n§7§oThis will simulate hotkey pressed and released in order.",
   "magiclib.gui.button.tab.generic": "Generic",
   "magiclib.gui.button.tab.test": "Test",
   "magiclib.config.generic.debug.name": "debug",

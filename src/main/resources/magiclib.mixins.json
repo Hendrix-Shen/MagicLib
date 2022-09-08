@@ -6,9 +6,11 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "client.language.MixinLanguageManager",
+    "client.malilib.KeybindMultiAccessor",
     "client.malilib.MixinConfigBooleanHotkeyed",
     "client.malilib.MixinGuiTextFieldGeneric",
-    "client.malilib.MixinWidgetConfigOption"
+    "client.malilib.MixinWidgetConfigOption",
+    "client.malilib.MixinWidgetConfigOptionForHotkeyed"
   ],
   "mixins": [
     "common.carpet.MixinChunkMap",
