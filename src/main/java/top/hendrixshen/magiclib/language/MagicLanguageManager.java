@@ -43,7 +43,7 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
     public void setCurrentCode(String currentCode) {
         if (!Objects.equals(this.currentCode, currentCode)) {
             this.currentCode = currentCode;
-            reload();
+            this.reload();
         }
     }
 
@@ -99,8 +99,8 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
     }
 
     public void reload() {
-        defaultLanguage.clear();
-        language.clear();
+        this.defaultLanguage.clear();
+        this.language.clear();
         ArrayList<String> codes = new ArrayList<>(fallbackLanguageList);
 
         codes.remove(currentCode);
@@ -114,8 +114,8 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
             String code = codes.get(i);
             ConcurrentHashMap<String, String> currentLanguage = new ConcurrentHashMap<>();
             initLanguage(code, currentLanguage);
-            language.put(code, currentLanguage);
-            defaultLanguage.putAll(currentLanguage);
+            this.language.put(code, currentLanguage);
+            this.defaultLanguage.putAll(currentLanguage);
         }
     }
 
@@ -125,7 +125,7 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
     }
 
     public String get(String key, Object... objects) {
-        String translateValue = defaultLanguage.getOrDefault(key, key);
+        String translateValue = this.defaultLanguage.getOrDefault(key, key);
         try {
             return String.format(translateValue, objects);
         } catch (IllegalFormatException var4) {
@@ -134,25 +134,25 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
     }
 
     public String get(String key) {
-        return defaultLanguage.getOrDefault(key, key);
+        return this.defaultLanguage.getOrDefault(key, key);
     }
 
     public String getByCode(String code, String key) {
-        ConcurrentHashMap<String, String> currentLanguage = language.getOrDefault(code, null);
+        ConcurrentHashMap<String, String> currentLanguage = this.language.getOrDefault(code, null);
         if (currentLanguage == null) {
             currentLanguage = new ConcurrentHashMap<>();
-            initLanguage(code, currentLanguage);
-            language.put(code, currentLanguage);
+            this.initLanguage(code, currentLanguage);
+            this.language.put(code, currentLanguage);
         }
         return currentLanguage.getOrDefault(key, key);
     }
 
     public String getByCode(String code, String key, Object... objects) {
-        ConcurrentHashMap<String, String> currentLanguage = language.getOrDefault(code, null);
+        ConcurrentHashMap<String, String> currentLanguage = this.language.getOrDefault(code, null);
         if (currentLanguage == null) {
             currentLanguage = new ConcurrentHashMap<>();
-            initLanguage(code, currentLanguage);
-            language.put(code, currentLanguage);
+            this.initLanguage(code, currentLanguage);
+            this.language.put(code, currentLanguage);
         }
         String translateValue = currentLanguage.getOrDefault(key, key);
         try {
@@ -163,13 +163,15 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
     }
 
     public boolean exists(String key) {
-        return defaultLanguage.containsKey(key);
+        return this.defaultLanguage.containsKey(key);
     }
 
     public boolean exists(String code, String key) {
-        ConcurrentHashMap<String, String> currentLanguage = language.getOrDefault(code, null);
+        ConcurrentHashMap<String, String> currentLanguage = this.language.getOrDefault(code, null);
         if (currentLanguage == null) {
-            return false;
+            currentLanguage = new ConcurrentHashMap<>();
+            this.initLanguage(code, currentLanguage);
+            this.language.put(code, currentLanguage);
         }
         return currentLanguage.containsKey(key);
     }
