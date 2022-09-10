@@ -3,6 +3,11 @@ package top.hendrixshen.magiclib.compat.mixin.minecraft.network.chat;
 //#if MC > 11502 && MC <= 11605
 //$$ import net.fabricmc.api.EnvType;
 //$$ import net.fabricmc.api.Environment;
+//$$ import net.minecraft.network.chat.ClickEvent;
+//$$ import net.minecraft.network.chat.HoverEvent;
+//$$ import net.minecraft.network.chat.TextColor;
+//$$ import net.minecraft.resources.ResourceLocation;
+//$$ import org.spongepowered.asm.mixin.Final;
 //#endif
 import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.Nullable;
@@ -50,6 +55,36 @@ public abstract class MixinStyle implements StyleCompatApi {
     //#endif
 
     //#if MC > 11502 && MC <= 11605
+    //$$ @Shadow
+    //$$ @Final
+    //$$ private @Nullable TextColor color;
+    //$$
+    //$$ @Shadow
+    //$$ @Final
+    //$$ private @Nullable Boolean bold;
+    //$$
+    //$$ @Shadow
+    //$$ @Final
+    //$$ private @Nullable Boolean italic;
+    //$$
+    //$$ @Shadow
+    //$$ @Final
+    //$$ private @Nullable ClickEvent clickEvent;
+    //$$
+    //$$ @Shadow
+    //$$ @Final
+    //$$ private @Nullable String insertion;
+    //$$
+    //$$ @Shadow
+    //$$ @Final
+    //$$ private @Nullable ResourceLocation font;
+    //$$
+    //$$ @Shadow
+    //$$ @Final
+    //$$ private @Nullable HoverEvent hoverEvent;
+    //#endif
+
+    //#if MC > 11502 && MC <= 11605
     //$$ @SuppressWarnings("ConstantConditions")
     //#endif
     @Override
@@ -89,12 +124,12 @@ public abstract class MixinStyle implements StyleCompatApi {
     }
 
     @Override
-    //#if MC > 11502 && MC <= 11605
-    //$$ @Environment(EnvType.CLIENT)
-    //#endif
     public Style withUnderlinedCompat(@Nullable Boolean underlined) {
-        //#if MC > 11502
+        //#if MC > 11605
         return this.withUnderlined(underlined);
+        //#elseif MC > 11502
+        //$$ return AccessorStyle.invokeConstructor(this.color, this.bold, this.italic, underlined, this.strikethrough,
+        //$$         this.obfuscated, this.clickEvent, this.hoverEvent, this.insertion, this.font);
         //#else
         //$$     return this.setUnderlined(underlined);
         //#endif

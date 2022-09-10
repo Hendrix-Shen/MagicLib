@@ -21,6 +21,7 @@
   ],
   "mixins": [
     "carpettisaddition.MixinCarpetRuleRegistrar",
+    "minecraft.network.chat.AccessorStyle",
     "minecraft.network.chat.MixinBaseComponent",
     "minecraft.network.chat.MixinStyle",
     "minecraft.world.MixinSimpleContainer",
