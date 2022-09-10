@@ -248,12 +248,14 @@ public class WrapperSettingManager extends SettingsManager {
 
     // The server side requires this way to use the fallback language.
     public String tr(String code, String key, Object... objects) {
-        return I18n.exists(code, key) ? I18n.getByCode(code, key, objects) : I18n.getByCode(WrapperSettingManager.DEFAULT_LANGUAGE, key, objects);
+        String value;
+        return (value = I18n.getByCode(code, key, objects)).equals(key) ? I18n.getByCode(WrapperSettingManager.DEFAULT_LANGUAGE, key, objects) : value;
     }
 
     // The server side requires this way to use the fallback language.
     public String tr(String code, String key) {
-        return I18n.exists(code, key) ? I18n.getByCode(code, key) : I18n.getByCode(WrapperSettingManager.DEFAULT_LANGUAGE, key);
+        String value;
+        return (value = I18n.getByCode(code, key)).equals(key) ? I18n.getByCode(WrapperSettingManager.DEFAULT_LANGUAGE, key) : value;
     }
 
     public String defaultRuleName(String ruleName) {
