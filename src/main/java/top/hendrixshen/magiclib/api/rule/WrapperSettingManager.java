@@ -17,6 +17,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -28,6 +30,7 @@ import net.minecraft.network.chat.HoverEvent;
 //$$ import org.apache.commons.lang3.tuple.Pair;
 //#endif
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.MagicLibSettings;
 import top.hendrixshen.magiclib.api.rule.annotation.Rule;
@@ -42,6 +45,7 @@ import java.lang.reflect.Field;
 //#endif
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
@@ -174,20 +178,26 @@ public class WrapperSettingManager extends SettingsManager {
                                 .suggests((c, b) -> SharedSuggestionProvider.suggest(this.OPTIONS.values().stream()
                                         .filter(RuleOption::isEnabled).map(RuleOption::getName), b))
                                 .then(Commands.argument("value", StringArgumentType.greedyString())
-                                        .suggests((c, b) -> SharedSuggestionProvider.suggest(this.getRuleOption(c)
-                                                .getOptions().stream().sorted().collect(Collectors.toList()), b))
+                                        .suggests(this::getRuleOptionSuggestion)
                                         .executes(c -> this.setDefault(c.getSource(), this.getRuleOption(c), StringArgumentType.getString(c, "value"))))))
                 .then(Commands.argument("rule", StringArgumentType.word())
                         .requires(s -> !this.locked())
                         .suggests((c, b) -> SharedSuggestionProvider.suggest(this.OPTIONS.values().stream()
                                 .filter(RuleOption::isEnabled).map(RuleOption::getName), b))
                         .then(Commands.argument("value", StringArgumentType.greedyString())
-                                .suggests((c, b) -> SharedSuggestionProvider.suggest(this.getRuleOption(c)
-                                        .getOptions().stream().sorted().collect(Collectors.toList()), b))
+                                .suggests(this::getRuleOptionSuggestion)
                                 .executes(c -> this.setRule(c.getSource(), this.getRuleOption(c), StringArgumentType.getString(c, "value"))))
                         .executes(c -> this.displayRuleMenu(c.getSource(), this.getRuleOption(c))));
         dispatcher.register(command);
     }
+
+    private @Nullable CompletableFuture<Suggestions> getRuleOptionSuggestion(CommandContext<CommandSourceStack> ctx,
+                                                                             SuggestionsBuilder suggestionsBuilder) throws CommandSyntaxException {
+        RuleOption ruleOption = this.getRuleOption(ctx);
+        return ruleOption.isEnabled() ? SharedSuggestionProvider.suggest(this.getRuleOption(ctx)
+                .getOptions().stream().sorted().collect(Collectors.toList()), suggestionsBuilder) : null;
+    }
+
 
     @Override
     public Iterable<String> getCategories() {
@@ -305,6 +315,11 @@ public class WrapperSettingManager extends SettingsManager {
     }
 
     public int displayRuleMenu(@NotNull CommandSourceStack source, @NotNull RuleOption ruleOption) {
+        if (!ruleOption.isEnabled()) {
+            MessageUtil.sendMessage(source, trUI("disabled", ruleOption.getName()));
+            return 1;
+        }
+
         MessageUtil.sendServerMessage(source.getServer(), "");
         MessageUtil.sendServerMessage(source.getServer(), ComponentCompatApi.literal(this.getTranslatedRuleName(ruleOption.getName())).withStyle(
                 style -> style.withBold(true)
@@ -357,9 +372,15 @@ public class WrapperSettingManager extends SettingsManager {
     }
 
     public int setRule(CommandSourceStack source, @NotNull RuleOption ruleOption, String newValue) {
+        if (!ruleOption.isEnabled()) {
+            MessageUtil.sendMessage(source, trUI("disabled", ruleOption.getName()));
+            return 1;
+        }
+
         if (ruleOption.setValue(source, newValue) == null) {
             return 1;
         }
+
         List<Component> components = Lists.newArrayList();
         components.add(ComponentCompatApi.literal(String.format("%s: %s, ", this.getTranslatedRuleName(ruleOption.getName()), newValue)));
         components.add(ComponentCompatApi.literal(String.format("[%s]", this.trUI("change_permanently")))
@@ -374,6 +395,11 @@ public class WrapperSettingManager extends SettingsManager {
     public int setDefault(CommandSourceStack source, RuleOption ruleOption, String newValue) {
         if (this.locked()) {
             MessageUtil.sendMessage(source, trUI("locked"));
+            return 1;
+        }
+
+        if (!ruleOption.isEnabled()) {
+            MessageUtil.sendMessage(source, trUI("disabled", ruleOption.getName()));
             return 1;
         }
 
@@ -414,6 +440,11 @@ public class WrapperSettingManager extends SettingsManager {
             return 1;
         }
 
+        if (!ruleOption.isEnabled()) {
+            MessageUtil.sendMessage(source, trUI("disabled", ruleOption.getName()));
+            return 1;
+        }
+
         if (ruleOption.resetValue(source) == null) {
             return 1;
         }
@@ -445,6 +476,7 @@ public class WrapperSettingManager extends SettingsManager {
     }
 
     public Collection<List<Component>> getMatchedSettings(@NotNull Collection<RuleOption> ruleOptions) {
+        ruleOptions = ruleOptions.stream().filter((RuleOption::isEnabled)).collect(Collectors.toList());
         Collection<List<Component>> collection = Lists.newArrayList();
         for (RuleOption ruleOption : ruleOptions) {
             List<Component> components = Lists.newArrayList();

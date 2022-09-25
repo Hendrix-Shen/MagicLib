@@ -3,6 +3,8 @@ package top.hendrixshen.magiclib;
 import top.hendrixshen.magiclib.api.rule.annotation.Command;
 import top.hendrixshen.magiclib.api.rule.annotation.Numeric;
 import top.hendrixshen.magiclib.api.rule.annotation.Rule;
+import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
 public class MagicLibSettings {
     @Rule(
@@ -17,6 +19,16 @@ public class MagicLibSettings {
 
     @Rule(categories = "example")
     public static boolean booleanTest = true;
+
+    @Rule(
+            categories = "example",
+            dependencies = @Dependencies(
+                    and = {
+                            @Dependency("carpet-extra")
+                    }
+            )
+    )
+    public static boolean carpetExtraTest = true;
 
     @Command(full = true)
     @Rule(categories = "example")

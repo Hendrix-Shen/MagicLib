@@ -37,6 +37,9 @@
   "magiclib.rule.settingManagerLevel.name": "规则管理器等级",
   "magiclib.rule.settingManagerLevel.desc": "规则管理器权限等级。",
 
+  "magiclib.rule.carpetExtraTest.name": "地毯扩展测试",
+  "magiclib.rule.carpetExtraTest.desc": "",
+
   "magiclib.rule.booleanTest.name": "布尔测试",
   "magiclib.rule.booleanTest.desc": "",
 
@@ -60,6 +63,7 @@
   "magiclib.ui.current_value": "当前值: ",
   "magiclib.ui.default": "默认值",
   "magiclib.ui.default_rule": "当前 %s 写入 %s 中启动时自动部署的规则: ",
+  "magiclib.ui.disabled": "规则 %s 已被禁用.",
   "magiclib.ui.enum_exception": "不存在枚举常量: %s",
   "magiclib.ui.hover.change_permanently": "点击将设置保存到 %s 以便在服务器重新启动后重新应用规则.",
   "magiclib.ui.hover.list_all_category": "列出 %s 分类下所有规则.",

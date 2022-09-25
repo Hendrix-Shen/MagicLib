@@ -50,6 +50,9 @@
   "magiclib.rule.booleanTest.name": "booleanTest",
   "magiclib.rule.booleanTest.desc": "",
 
+  "magiclib.rule.carpetExtraTest.name": "carpetExtraTest",
+  "magiclib.rule.carpetExtraTest.desc": "",
+
   "magiclib.rule.commandFullTest.name": "commandFullTest",
   "magiclib.rule.commandFullTest.desc": "",
 
@@ -70,6 +73,7 @@
   "magiclib.ui.current_value": "Current value: ",
   "magiclib.ui.default": "Default",
   "magiclib.ui.default_rule": "Current %s startup settings from %s:",
+  "magiclib.ui.disabled": "Rule %s was disabled.",
   "magiclib.ui.enum_exception": "No enumeration constants: %s",
   "magiclib.ui.hover.change_permanently": "Click to keep the settings in %s to save across restarts.",
   "magiclib.ui.hover.list_all_category": "List all %s settings",
