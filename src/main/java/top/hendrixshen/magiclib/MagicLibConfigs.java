@@ -17,6 +17,7 @@ import top.hendrixshen.magiclib.dependency.Predicates;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.language.MagicLanguageManager;
+import top.hendrixshen.magiclib.tool.doc.ConfigDocumentGenerator;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,10 @@ public class MagicLibConfigs {
 
     @Config(category = ConfigCategory.GENERIC)
     public static ArrayList<String> fallbackLanguageList = Lists.newArrayList(MagicLanguageManager.DEFAULT_CODE);
+
+    @Hotkey()
+    @Config(category = ConfigCategory.GENERIC)
+    public static ConfigHotkey printDoc;
 
     @Numeric(maxValue = 500, minValue = 0, useSlider = true)
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
@@ -82,6 +87,14 @@ public class MagicLibConfigs {
             }
             MagicLibConfigGui.getInstance().reDraw();
         });
+
+        printDoc.getKeybind().setCallback(((keyAction, iKeybind) -> {
+            ConfigDocumentGenerator docGen = new ConfigDocumentGenerator(MagicLibReference.getModId());
+            docGen.genFile();
+            docGen.setCurrentLanguageCode("zh_cn");
+            docGen.genFile();
+            return true;
+        }));
     }
 
     public static void postDeserialize(ConfigHandler configHandler) {
