@@ -48,21 +48,57 @@ public class ReflectUtil {
     }
 
     public static void setFieldValue(String className, String fieldName, Object instance, Object value) {
+        ReflectUtil.setFieldValue(ReflectUtil.getClass(className), fieldName, instance, value);
+    }
+
+    public static void setFieldValue(@NotNull Class<?> cls, String fieldName, Object instance, Object value) {
         try {
-            Field field = Class.forName(className).getDeclaredField(fieldName);
+            Field field = cls.getField(fieldName);
             field.setAccessible(true);
             field.set(instance, value);
-        } catch (NoSuchFieldException | ClassNotFoundException | IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setDeclaredFieldValue(String className, String fieldName, Object instance, Object value) {
+        ReflectUtil.setDeclaredFieldValue(ReflectUtil.getClass(className), fieldName, instance, value);
+    }
+
+    public static void setDeclaredFieldValue(@NotNull Class<?> cls, String fieldName, Object instance, Object value) {
+        try {
+            Field field = cls.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(instance, value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static Object getFieldValue(String className, String fieldName, Object instance) {
+        return ReflectUtil.getDeclaredFieldValue(ReflectUtil.getClass(className), fieldName, instance);
+    }
+
+    public static Object getFieldValue(@NotNull Class<?> cls, String fieldName, Object instance) {
         try {
-            Field field = Class.forName(className).getDeclaredField(fieldName);
+            Field field = cls.getField(fieldName);
             field.setAccessible(true);
             return field.get(instance);
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Object getDeclaredFieldValue(String className, String fieldName, Object instance) {
+        return ReflectUtil.getDeclaredFieldValue(ReflectUtil.getClass(className), fieldName, instance);
+    }
+
+    public static Object getDeclaredFieldValue(@NotNull Class<?> cls, String fieldName, Object instance) {
+        try {
+            Field field = cls.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.get(instance);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

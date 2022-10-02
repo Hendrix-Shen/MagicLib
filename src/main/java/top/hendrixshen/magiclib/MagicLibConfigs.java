@@ -17,6 +17,7 @@ import top.hendrixshen.magiclib.dependency.Predicates;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.language.MagicLanguageManager;
+import top.hendrixshen.magiclib.tool.doc.CarpetDocumentGenerator;
 import top.hendrixshen.magiclib.tool.doc.ConfigDocumentGenerator;
 
 import java.util.ArrayList;
@@ -89,10 +90,15 @@ public class MagicLibConfigs {
         });
 
         printDoc.getKeybind().setCallback(((keyAction, iKeybind) -> {
-            ConfigDocumentGenerator docGen = new ConfigDocumentGenerator(MagicLibReference.getModId());
-            docGen.genFile();
-            docGen.setCurrentLanguageCode("zh_cn");
-            docGen.genFile();
+            ConfigDocumentGenerator configDocumentGenerator = new ConfigDocumentGenerator(MagicLibReference.getModId());
+            configDocumentGenerator.genFile();
+            configDocumentGenerator.setCurrentLanguageCode("zh_cn");
+            configDocumentGenerator.genFile();
+            CarpetDocumentGenerator carpetDocumentGenerator = new CarpetDocumentGenerator(MagicLibReference.getModId());
+            carpetDocumentGenerator.setCurrentLanguageCode("en_us");
+            carpetDocumentGenerator.genFile();
+            carpetDocumentGenerator.setCurrentLanguageCode("zh_cn");
+            carpetDocumentGenerator.genFile();
             return true;
         }));
     }

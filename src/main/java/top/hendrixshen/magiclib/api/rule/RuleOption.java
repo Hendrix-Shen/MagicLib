@@ -6,9 +6,11 @@ import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.rule.annotation.Rule;
 import top.hendrixshen.magiclib.dependency.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.RuleDependencyPredicate;
+import top.hendrixshen.magiclib.util.ReflectUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 public class RuleOption {
@@ -118,5 +120,18 @@ public class RuleOption {
     @SuppressWarnings("rawtypes")
     private String getAsString(Object value) {
         return value instanceof Enum ? ((Enum)value).name().toLowerCase(Locale.ROOT) : value.toString();
+    }
+
+    public Class<?> getType() {
+        return (Class<?>) ReflectUtil.getDeclaredFieldValue(ParsedRule.class, "typeCompat", this.getRule());
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Validator<?>> getValidators() {
+        //#if MC > 11802
+        return (List<Validator<?>>) ReflectUtil.getFieldValue(ParsedRule.class, "realValidators", this.getRule());
+        //#else
+        //$$ return (List<Validator<?>>) ReflectUtil.getFieldValue(ParsedRule.class, "validators", this.getRule());
+        //#endif
     }
 }

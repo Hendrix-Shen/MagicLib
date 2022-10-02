@@ -204,6 +204,10 @@ public class WrapperSettingManager extends SettingsManager {
         return this.CATEGORIES;
     }
 
+    public Collection<RuleOption> getRuleOptions() {
+        return this.OPTIONS.values();
+    }
+
     public RuleOption getRuleOption(String name) {
         return this.OPTIONS.get(name);
     }
