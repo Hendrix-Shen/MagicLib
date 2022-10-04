@@ -15,7 +15,6 @@ import net.minecraft.commands.CommandBuildContext;
 //#endif
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
-import top.hendrixshen.magiclib.api.rule.WrapperSettingManager;
 
 import java.util.Collections;
 import java.util.Map;
