@@ -35,7 +35,7 @@ import java.util.Objects;
 
 @Dependencies(and = @Dependency(value = "malilib", versionPredicate = "<0.11.4"))
 @Mixin(value = WidgetConfigOption.class, remap = false)
-public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
+public abstract class MixinWidgetConfigOptionForBooleanHotkeyedLegacy extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
     @Mutable
     @Final
     @Shadow
@@ -51,7 +51,7 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
 
     private boolean initialBoolean;
 
-    public MixinWidgetConfigOption(int x, int y, int width, int height, WidgetListConfigOptionsBase<?, ?> parent, GuiConfigsBase.ConfigOptionWrapper entry, int listIndex) {
+    public MixinWidgetConfigOptionForBooleanHotkeyedLegacy(int x, int y, int width, int height, WidgetListConfigOptionsBase<?, ?> parent, GuiConfigsBase.ConfigOptionWrapper entry, int listIndex) {
         super(x, y, width, height, parent, entry, listIndex);
     }
 

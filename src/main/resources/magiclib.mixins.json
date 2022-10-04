@@ -9,7 +9,8 @@
     "client.malilib.KeybindMultiAccessor",
     "client.malilib.MixinConfigBooleanHotkeyed",
     "client.malilib.MixinGuiTextFieldGeneric",
-    "client.malilib.MixinWidgetConfigOption",
+    "client.malilib.MixinWidgetConfigOptionForBooleanHotkeyedLegacy",
+    "client.malilib.MixinWidgetConfigOptionForBooleanHotkeyedModern",
     "client.malilib.MixinWidgetConfigOptionForHotkeyed"
   ],
   "mixins": [
