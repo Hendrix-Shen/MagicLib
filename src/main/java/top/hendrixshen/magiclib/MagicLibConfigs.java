@@ -8,6 +8,7 @@ import fi.dy.masa.malilib.util.Color4f;
 import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.config.ConfigHandler;
 import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.config.annotation.Config;
@@ -23,26 +24,15 @@ import top.hendrixshen.magiclib.tool.doc.ConfigDocumentGenerator;
 import java.util.ArrayList;
 
 public class MagicLibConfigs {
-    @Hotkey(hotkey = "M,A,G")
-    @Config(category = ConfigCategory.GENERIC)
-    public static ConfigHotkey openConfigGui;
-
     @Config(category = ConfigCategory.GENERIC)
     public static boolean debug = false;
 
     @Config(category = ConfigCategory.GENERIC)
     public static ArrayList<String> fallbackLanguageList = Lists.newArrayList(MagicLanguageManager.DEFAULT_CODE);
 
-    @Hotkey()
+    @Hotkey(hotkey = "M,A,G")
     @Config(category = ConfigCategory.GENERIC)
-    public static ConfigHotkey printDoc;
-
-    @Numeric(maxValue = 500, minValue = 0, useSlider = true)
-    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
-    public static int intConfig = 0;
-
-    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
-    public static String stringConfig = "string";
+    public static ConfigHotkey openConfigGui;
 
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static boolean booleanConfig = false;
@@ -51,28 +41,39 @@ public class MagicLibConfigs {
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static boolean booleanHotkeyConfig = false;
 
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
+    public static Color4f colorConfig = Color4f.ZERO;
+
     @Numeric(maxValue = 0.9, minValue = 0.1)
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static double doubleConfig = 0.1;
 
+    @Numeric(maxValue = 500, minValue = 0, useSlider = true)
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
-    public static Color4f colorConfig = Color4f.ZERO;
-
-    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
-    public static ArrayList<String> stringListConfig = Lists.newArrayList("test1", "test2");
+    public static int intConfig = 0;
 
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
     public static IConfigOptionListEntry optionListConfig = ActiveMode.ALWAYS;
+
+    @Hotkey()
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
+    public static ConfigHotkey printDoc;
 
     @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class,
             dependencies = @Dependencies(and = @Dependency(value = "sodium", versionPredicate = ">=0.1")))
     public static boolean sodiumTest = false;
 
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
+    public static String stringConfig = "string";
+
+    @Config(category = ConfigCategory.TEST, predicate = Predicates.DebugOptionPredicate.class)
+    public static ArrayList<String> stringListConfig = Lists.newArrayList("test1", "test2");
+
     private static ArrayList<String> fallbackLanguageListOld = new ArrayList<>();
 
     private static boolean first = true;
 
-    public static void init(ConfigManager cm) {
+    public static void init(@NotNull ConfigManager cm) {
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
             MagicLibConfigGui screen = MagicLibConfigGui.getInstance();
             screen.setParentGui(Minecraft.getInstance().screen);
@@ -81,6 +82,7 @@ public class MagicLibConfigs {
         });
 
         cm.setValueChangeCallback("debug", option -> {
+            Configurator.setLevel(MagicLibReference.getModId(), MagicLibConfigs.debug ? Level.DEBUG : Level.INFO);
             if (debug) {
                 Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("DEBUG"));
             } else {
@@ -106,7 +108,7 @@ public class MagicLibConfigs {
     public static void postDeserialize(ConfigHandler configHandler) {
         Minecraft mc = Minecraft.getInstance();
         if (debug) {
-            Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("DEBUG"));
+            Configurator.setLevel(MagicLibReference.getModId(), Level.DEBUG);
         }
         if (first) {
             fallbackLanguageListOld.addAll(fallbackLanguageList);
