@@ -181,10 +181,10 @@ public class WrapperSettingManager extends SettingsManager {
                                         .suggests(this::getRuleOptionSuggestion)
                                         .executes(c -> this.setDefault(c.getSource(), this.getRuleOption(c), StringArgumentType.getString(c, "value"))))))
                 .then(Commands.argument("rule", StringArgumentType.word())
-                        .requires(s -> !this.locked())
                         .suggests((c, b) -> SharedSuggestionProvider.suggest(this.OPTIONS.values().stream()
                                 .filter(RuleOption::isEnabled).map(RuleOption::getName), b))
                         .then(Commands.argument("value", StringArgumentType.greedyString())
+                                .requires(s -> !this.locked())
                                 .suggests(this::getRuleOptionSuggestion)
                                 .executes(c -> this.setRule(c.getSource(), this.getRuleOption(c), StringArgumentType.getString(c, "value"))))
                         .executes(c -> this.displayRuleMenu(c.getSource(), this.getRuleOption(c))));
@@ -363,8 +363,8 @@ public class WrapperSettingManager extends SettingsManager {
             options.add(ComponentCompatApi.literal(option).withStyle(style ->
                     style.withUnderlinedCompat(ruleOption.getStringValue().equals(option))
                             .withColor(ruleOption.isDefault() ? ChatFormatting.GRAY : ruleOption.getDefaultStringValue().equals(option) ? ChatFormatting.DARK_GREEN : ChatFormatting.YELLOW)
-                            .withClickEvent(ruleOption.getStringValue().equals(option) ? null : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
-                            .withHoverEvent(ruleOption.getStringValue().equals(option) ? null : new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.switch_to", option))))));
+                            .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
+                            .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.switch_to", option))))));
             options.add(ComponentCompatApi.literal(" "));
         }
         if (options.size() > 2) {
@@ -496,8 +496,8 @@ public class WrapperSettingManager extends SettingsManager {
                 components.add(ComponentCompatApi.literal(String.format("[%s]", option)).withStyle(style ->
                         style.withUnderlinedCompat(ruleOption.getStringValue().equals(option))
                                 .withColor(ruleOption.isDefault() ? ChatFormatting.GRAY : ruleOption.getDefaultStringValue().equals(option) ? ChatFormatting.DARK_GREEN : ChatFormatting.YELLOW)
-                                .withClickEvent(ruleOption.getStringValue().equals(option) ? null : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
-                                .withHoverEvent(ruleOption.getStringValue().equals(option) ? null : new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.switch_to", option))))));
+                                .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
+                                .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.switch_to", option))))));
                 components.add(ComponentCompatApi.literal(" "));
             }
             components.remove(components.size() - 1);
