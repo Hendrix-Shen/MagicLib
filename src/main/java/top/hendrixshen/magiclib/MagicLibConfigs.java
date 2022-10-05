@@ -83,16 +83,12 @@ public class MagicLibConfigs {
 
         cm.setValueChangeCallback("debug", option -> {
             Configurator.setLevel(MagicLibReference.getModId(), MagicLibConfigs.debug ? Level.DEBUG : Level.INFO);
-            if (debug) {
-                Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("DEBUG"));
-            } else {
-                Configurator.setLevel(MagicLibReference.getModId(), Level.toLevel("INFO"));
-            }
             MagicLibConfigGui.getInstance().reDraw();
         });
 
         printDoc.getKeybind().setCallback(((keyAction, iKeybind) -> {
             ConfigDocumentGenerator configDocumentGenerator = new ConfigDocumentGenerator(MagicLibReference.getModId());
+            configDocumentGenerator.setCurrentLanguageCode("en_us");
             configDocumentGenerator.genFile();
             configDocumentGenerator.setCurrentLanguageCode("zh_cn");
             configDocumentGenerator.genFile();
