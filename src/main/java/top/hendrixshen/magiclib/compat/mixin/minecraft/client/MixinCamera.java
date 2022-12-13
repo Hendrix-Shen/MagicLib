@@ -1,9 +1,9 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.client;
 
-import com.mojang.math.Quaternion;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
+import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.minecraft.client.CameraCompatApi;
@@ -17,7 +17,7 @@ import top.hendrixshen.magiclib.compat.minecraft.client.CameraCompatApi;
 public abstract class MixinCamera implements CameraCompatApi {
     //#if MC > 11404
     @Shadow
-    public abstract Quaternion rotation();
+    public abstract Quaternionf rotation();
     //#else
     //$$ @Shadow
     //$$ private float yRot;
@@ -27,7 +27,7 @@ public abstract class MixinCamera implements CameraCompatApi {
     //#endif
 
     @Override
-    public Quaternion rotationCompat() {
+    public Quaternionf rotationCompat() {
         //#if MC > 11404
         return this.rotation();
         //#else

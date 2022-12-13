@@ -1,11 +1,14 @@
 package top.hendrixshen.magiclib.language;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.FilePackResources;
 import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
@@ -30,13 +33,12 @@ public class MagicLanguageResourceManager implements ResourceManager {
     private final HashMap<ResourceLocation, Set<Resource>> resources = new HashMap<>();
 
     public MagicLanguageResourceManager() {
-
         try {
             for (URL resource : Collections.list(this.getClass().getClassLoader().getResources("assets"))) {
                 if (resource.getProtocol().equalsIgnoreCase("jar")) {
-                    addResources(getJarResources(resource));
+                    this.addResources(MagicLanguageResourceManager.getJarResources(resource));
                 } else if (resource.getProtocol().equalsIgnoreCase("file")) {
-                    addResources(getFileResources(resource));
+                    this.addResources(MagicLanguageResourceManager.getFileResources(resource));
                 }
             }
         } catch (IOException e) {
@@ -59,7 +61,11 @@ public class MagicLanguageResourceManager implements ResourceManager {
                 if (!entry.isDirectory()) {
                     String languagePath = String.format("lang/%s.json", code);
                     ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
-                    Resource resource = new MagicLanguageResource(namespace, resourceLocation, () -> {
+                    //#if MC >= 11903
+                    Resource resource = new MagicLanguageResource(new FilePackResources(namespace, new File(resourceUrl.getPath()), true), resourceLocation, () -> {
+                    //#else
+                    //$$ Resource resource = new MagicLanguageResource(namespace, resourceLocation, () -> {
+                    //#endif
                         try {
                             return jar.getInputStream(entry);
                         } catch (IOException e) {
@@ -92,8 +98,11 @@ public class MagicLanguageResourceManager implements ResourceManager {
                         String code = matcher.group(2);
                         String languagePath = String.format("lang/%s.json", code);
                         ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
-
-                        Resource resource = new MagicLanguageResource(namespace, resourceLocation, () -> {
+                        //#if MC >= 11903
+                        Resource resource = new MagicLanguageResource(new FilePackResources(namespace, file.toFile(), true), resourceLocation, () -> {
+                        //#else
+                        //$$ Resource resource = new MagicLanguageResource(namespace, resourceLocation, () -> {
+                        //#endif
                             try {
                                 return Files.newInputStream(file);
                             } catch (IOException e) {

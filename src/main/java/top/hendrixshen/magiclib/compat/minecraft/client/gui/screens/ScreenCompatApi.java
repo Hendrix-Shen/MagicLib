@@ -2,7 +2,7 @@ package top.hendrixshen.magiclib.compat.minecraft.client.gui.screens;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 
 @Environment(EnvType.CLIENT)
@@ -11,7 +11,7 @@ public interface ScreenCompatApi {
         throw new UnsupportedOperationException();
     }
 
-    default Widget addRenderableOnlyCompat(Widget widget) {
+    default Renderable addRenderableOnlyCompat(Renderable widget) {
         throw new UnsupportedOperationException();
     }
 

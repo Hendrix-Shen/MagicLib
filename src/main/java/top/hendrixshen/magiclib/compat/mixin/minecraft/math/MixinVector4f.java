@@ -1,25 +1,28 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.math;
 
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector4f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.minecraft.math.Vector4fCompatApi;
+import top.hendrixshen.magiclib.util.MiscUtil;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Vector4f.class)
 public abstract class MixinVector4f implements Vector4fCompatApi {
-    //#if MC > 11404
-    @Shadow
-    public abstract void transform(Matrix4f matrix4f);
+    //#if MC > 11404 && MC < 11903
+    //$$ @Shadow
+    //$$ public abstract void transform(Matrix4f matrix4f);
     //#endif
 
     @Override
     public void transformCompat(Matrix4f matrix4f) {
-        //#if MC > 11404
-        this.transform(matrix4f);
+        //#if MC >= 11903
+        matrix4f.transform(MiscUtil.cast(this));
+        //#elseif MC > 11404
+        //$$ this.transform(matrix4f);
         //#else
         //$$ Vector4f vector4f = (Vector4f) (Object) this;
         //$$ float[] values = ((AccessorMatrix4f) (Object) matrix4f).getValues();

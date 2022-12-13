@@ -1,8 +1,8 @@
 package top.hendrixshen.magiclib.compat.minecraft.math;
 
-import com.mojang.math.Matrix4f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.joml.Matrix4f;
 
 @Environment(EnvType.CLIENT)
 public interface Vector4fCompatApi {

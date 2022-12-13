@@ -71,6 +71,18 @@
       "net/minecraft/class_898": [
         "top/hendrixshen/magiclib/compat/minecraft/client/renderer/entity/EntityRenderDispatcherCompatApi"
       ],
+      "org/joml/Quaternionf": [
+        "top/hendrixshen/magiclib/compat/minecraft/math/QuaternionCompatApi"
+      ],
+      "org/joml/Matrix4f": [
+        "top/hendrixshen/magiclib/compat/minecraft/math/Matrix4fCompatApi"
+      ],
+      "org/joml/Vector3f": [
+        "top/hendrixshen/magiclib/compat/minecraft/math/Vector3fCompatApi"
+      ],
+      "org/joml/Vector4f": [
+        "top/hendrixshen/magiclib/compat/minecraft/math/Vector4fCompatApi"
+      ],
       "net/minecraft/class_1158": [
         "top/hendrixshen/magiclib/compat/minecraft/math/QuaternionCompatApi"
       ],

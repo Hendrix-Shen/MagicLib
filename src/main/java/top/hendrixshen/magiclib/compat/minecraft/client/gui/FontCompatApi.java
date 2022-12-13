@@ -1,9 +1,9 @@
 package top.hendrixshen.magiclib.compat.minecraft.client.gui;
 
-import com.mojang.math.Matrix4f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
+import org.joml.Matrix4f;
 
 @Environment(EnvType.CLIENT)
 public interface FontCompatApi {

@@ -62,6 +62,10 @@ loom {
         useLegacyMixinAp = false
     }
 
+    interfaceInjection {
+        enableDependencyInterfaceInjection = true
+    }
+
     runs {
         testmodClient {
             client()

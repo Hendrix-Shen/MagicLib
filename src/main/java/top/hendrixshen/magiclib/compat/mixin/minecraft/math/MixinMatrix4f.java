@@ -1,12 +1,17 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.math;
 
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+//#if MC >= 11903
+import org.joml.Matrix4fc;
+import org.joml.Quaternionfc;
+//#endif
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.minecraft.math.Matrix4fCompatApi;
+import top.hendrixshen.magiclib.util.MiscUtil;
 
 //#if MC <= 11404
 //$$ import org.spongepowered.asm.mixin.Final;
@@ -15,23 +20,35 @@ import top.hendrixshen.magiclib.compat.minecraft.math.Matrix4fCompatApi;
 @Environment(EnvType.CLIENT)
 @Mixin(Matrix4f.class)
 public abstract class MixinMatrix4f implements Matrix4fCompatApi {
-    //#if MC > 11605
+    //#if MC >= 11903
     @Shadow
-    public abstract void multiplyWithTranslation(float f, float g, float h);
+    public abstract Matrix4f translate(float x, float y, float z);
+    //#elseif MC > 11605
+    //$$ @Shadow
+    //$$ public abstract void multiplyWithTranslation(float f, float g, float h);
     //#endif
 
-    //#if MC > 11404
+    //#if MC >= 11903
     @Shadow
-    public abstract void setIdentity();
+    public abstract Matrix4f identity();
 
     @Shadow
-    public abstract void multiply(Matrix4f matrix4f);
+    public abstract Matrix4f mul(Matrix4fc right);
 
     @Shadow
-    public abstract void multiply(Quaternion quaternion);
-
-    @Shadow
-    public abstract Matrix4f copy();
+    public abstract Matrix4f rotate(Quaternionfc quat);
+    //#elseif MC > 11404
+    //$$ @Shadow
+    //$$ public abstract void setIdentity();
+    //$$
+    //$$ @Shadow
+    //$$ public abstract void multiply(Matrix4f matrix4f);
+    //$$
+    //$$ @Shadow
+    //$$ public abstract void multiply(Quaternion quaternion);
+    //$$
+    //$$ @Shadow
+    //$$ public abstract Matrix4f copy();
     //#else
     //$$ @Shadow
     //$$ @Final
@@ -40,8 +57,10 @@ public abstract class MixinMatrix4f implements Matrix4fCompatApi {
 
     @Override
     public void setIdentityCompat() {
-        //#if MC > 11404
-        this.setIdentity();
+        //#if MC >= 11903
+        this.identity();
+        //#elseif MC > 11404
+        //$$ this.setIdentity();
         //#else
         //$$ this.values[0] = 1.0F;
         //$$ this.values[4] = 0.0F;
@@ -64,8 +83,10 @@ public abstract class MixinMatrix4f implements Matrix4fCompatApi {
 
     @Override
     public void multiplyWithTranslationCompat(float f, float g, float h) {
-        //#if MC > 11605
-        this.multiplyWithTranslation(f, g, h);
+        //#if MC >= 11903
+        this.translate(f, g, h);
+        //#elseif MC > 11605
+        //$$ this.multiplyWithTranslation(f, g, h);
         //#elseif MC > 11404
         //$$ this.multiply(Matrix4f.createTranslateMatrix(f, g, h));
         //#else
@@ -78,8 +99,10 @@ public abstract class MixinMatrix4f implements Matrix4fCompatApi {
 
     @Override
     public void multiplyCompat(Matrix4f matrix4f) {
-        //#if MC > 11404
-        this.multiply(matrix4f);
+        //#if MC >= 11903
+        this.mul(matrix4f);
+        //#elseif MC > 11404
+        //$$ this.multiply(matrix4f);
         //#else
         //$$ float[] matrix4fValues = ((AccessorMatrix4f) (Object) matrix4f).getValues();
         //$$ float f = this.values[0] * matrix4fValues[0] + this.values[4] * matrix4fValues[1] + this.values[8] * matrix4fValues[2] + this.values[12] * matrix4fValues[3];
@@ -117,17 +140,25 @@ public abstract class MixinMatrix4f implements Matrix4fCompatApi {
         //#endif
     }
 
-    public void multiplyCompat(Quaternion quaternion) {
-        //#if MC > 11404
-        this.multiply(quaternion);
+    //#if MC >= 11903
+    public void multiplyCompat(Quaternionf quaternion) {
+    //#else
+    //$$public void multiplyCompat(Quaternion quaternion) {
+    //#endif
+        //#if MC >= 11903
+        this.rotate(quaternion);
+        //#elseif MC > 11404
+        //$$ this.multiply(quaternion);
         //#else
         //$$ this.multiplyCompat(new Matrix4f(quaternion));
         //#endif
     }
 
     public Matrix4f copyCompat() {
-        //#if MC > 11404
-        return this.copy();
+        //#if MC >= 11903
+        return new Matrix4f((Matrix4f) MiscUtil.cast(this));
+        //#elseif MC > 11404
+        //$$ return this.copy();
         //#else
         //$$ Matrix4f ret = new Matrix4f();
         //$$ for (int i = 0; i < 4; ++i) {

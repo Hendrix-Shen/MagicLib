@@ -1,8 +1,8 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.math;
 
-import com.mojang.math.Matrix4f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 
 //#if MC <= 11404

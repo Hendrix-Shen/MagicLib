@@ -1,12 +1,12 @@
 package top.hendrixshen.magiclib.compat.minecraft.client;
 
-import com.mojang.math.Quaternion;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
 public interface CameraCompatApi {
-    default Quaternion rotationCompat() {
+    default Quaternionf rotationCompat() {
         throw new UnsupportedOperationException();
     }
 

@@ -1,9 +1,9 @@
 package top.hendrixshen.magiclib.compat.minecraft.client.renderer.entity;
 
-import com.mojang.math.Quaternion;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.Entity;
+import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
 public interface EntityRenderDispatcherCompatApi {
@@ -11,7 +11,7 @@ public interface EntityRenderDispatcherCompatApi {
         throw new UnsupportedOperationException();
     }
 
-    default Quaternion cameraOrientationCompat() {
+    default Quaternionf cameraOrientationCompat() {
         throw new UnsupportedOperationException();
     }
 

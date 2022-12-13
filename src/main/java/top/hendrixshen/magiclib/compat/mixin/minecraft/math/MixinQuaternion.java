@@ -1,8 +1,8 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.math;
 
-import com.mojang.math.Quaternion;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.minecraft.math.QuaternionCompatApi;
@@ -13,18 +13,35 @@ import top.hendrixshen.magiclib.compat.minecraft.math.QuaternionCompatApi;
 //#endif
 
 @Environment(EnvType.CLIENT)
-@Mixin(Quaternion.class)
+@Mixin(Quaternionf.class)
 public abstract class MixinQuaternion implements QuaternionCompatApi {
-    //#if MC > 11404
+    //#if MC >= 11903
     @Shadow
-    public abstract void mul(float f);
+    public abstract Quaternionf mul(float f);
 
     @Shadow
-    public abstract void normalize();
+    public abstract Quaternionf normalize();
 
     @Shadow
-    public abstract Quaternion copy();
+    public abstract float x();
 
+    @Shadow
+    public abstract float y();
+
+    @Shadow
+    public abstract float z();
+
+    @Shadow
+    public abstract float w();
+    //#elseif MC > 11404
+    //$$ @Shadow
+    //$$ public abstract void mul(float f);
+    //$$
+    //$$ @Shadow
+    //$$ public abstract void normalize();
+    //$$
+    //$$ @Shadow
+    //$$ public abstract Quaternion copy();
     //#else
     //$$ @Final
     //$$ @Shadow
@@ -71,9 +88,11 @@ public abstract class MixinQuaternion implements QuaternionCompatApi {
     }
 
     @Override
-    public Quaternion copyCompat() {
-        //#if MC > 11404
-        return this.copy();
+    public Quaternionf copyCompat() {
+        //#if MC >= 11903
+        return new Quaternionf(this.x(), this.y(), this.z(), this.w());
+        //#elif MC > 11404
+        //$$ return this.copy();
         //#else
         //$$ return new Quaternion((Quaternion) (Object) this);
         //#endif

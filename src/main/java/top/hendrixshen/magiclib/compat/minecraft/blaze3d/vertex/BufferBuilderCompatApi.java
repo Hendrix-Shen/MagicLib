@@ -1,9 +1,9 @@
 package top.hendrixshen.magiclib.compat.minecraft.blaze3d.vertex;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.math.Matrix4f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.joml.Matrix4f;
 
 @Environment(EnvType.CLIENT)
 public interface BufferBuilderCompatApi {

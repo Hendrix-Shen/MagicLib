@@ -2,7 +2,7 @@ package top.hendrixshen.magiclib.compat.mixin.minecraft.client.gui.screen;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,7 +23,7 @@ public abstract class MixinScreen implements ScreenCompatApi {
     protected abstract GuiEventListener addRenderableWidget(GuiEventListener guiEventListener);
 
     @Shadow
-    protected abstract Widget addRenderableOnly(Widget widget);
+    protected abstract Renderable addRenderableOnly(Renderable widget);
 
     //#else
     //$$ @Shadow
@@ -45,7 +45,7 @@ public abstract class MixinScreen implements ScreenCompatApi {
     }
 
     @Override
-    public Widget addRenderableOnlyCompat(Widget widget) {
+    public Renderable addRenderableOnlyCompat(Renderable widget) {
         //#if MC > 11605
         return this.addRenderableOnly(widget);
         //#else

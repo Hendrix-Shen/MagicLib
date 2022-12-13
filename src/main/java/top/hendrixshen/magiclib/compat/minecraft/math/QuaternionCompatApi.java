@@ -1,12 +1,12 @@
 package top.hendrixshen.magiclib.compat.minecraft.math;
 
-import com.mojang.math.Quaternion;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
 public interface QuaternionCompatApi {
-    Quaternion ONE = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
+    Quaternionf ONE = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
 
     default void mulCompat(float f) {
         throw new UnsupportedOperationException();
@@ -16,7 +16,7 @@ public interface QuaternionCompatApi {
         throw new UnsupportedOperationException();
     }
 
-    default Quaternion copyCompat() {
+    default Quaternionf copyCompat() {
         throw new UnsupportedOperationException();
     }
 
