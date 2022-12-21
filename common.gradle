@@ -34,6 +34,12 @@ sourceSets {
 dependencies {
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
     mappings(loom.officialMojangMappings())
+
+    modCompileOnly("org.projectlombok:lombok:${project.lombok_version}")
+    annotationProcessor("org.projectlombok:lombok:${project.lombok_version}")
+    testCompileOnly("org.projectlombok:lombok:${project.lombok_version}")
+    testAnnotationProcessor("org.projectlombok:lombok:${project.lombok_version}")
+
     modApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
     modApi("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
 
