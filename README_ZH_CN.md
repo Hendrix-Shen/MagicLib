@@ -6,7 +6,7 @@
 ![Java](https://img.shields.io/badge/Java-8%20%7C%209%20%7C%2010%20%7C%2011%20%7C%2012%20%7C%2013%20%7C%2014%20%7C%2015%20%7C%2016%20%7C%2017%20%7C%2018-orange?style=flat-square)
 [![Issues](https://img.shields.io/github/issues/Hendrix-Shen/MagicLib?style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/issues)
 [![Pull Requests](https://img.shields.io/github/issues-pr/Hendrix-Shen/MagicLib?style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/pulls)
-[![Public Beta](https://img.shields.io/github/workflow/status/Hendrix-Shen/MagicLib/CI?label=Last%20building&style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/actions/workflows/CI.yml)
+[![Last Building](https://img.shields.io/github/actions/workflow/status/Hendrix-Shen/MagicLib/CI.yml?label=Last%20build&style=flat-square&branch=dev/0.6)](https://github.com/Hendrix-Shen/MagicLib/actions/workflows/CI.yml)
 [![Stable Release](https://img.shields.io/github/v/release/Hendrix-Shen/MagicLib?label=Stable%20Release&style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/releases)
 [![Development Release Downloads](https://img.shields.io/github/v/release/Hendrix-Shen/MagicLib?include_prereleases&label=Development%20Release&style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/releases)
 [![Github Release Downloads](https://img.shields.io/github/downloads/Hendrix-Shen/MagicLib/total?label=Github%20Release%20Downloads&style=flat-square)](https://github.com/Hendrix-Shen/MagicLib/releases)
@@ -19,10 +19,11 @@
 
 ## 依赖库
 
-| 依赖       | 类型  | 环境  | 链接                                                                                                                     |
-|----------|-----|-----|------------------------------------------------------------------------------------------------------------------------|
-| Malilib  | 必须  | 客户端 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                     |
-| Mod Menu | 可选  | 客户端 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu) |
+| 依赖       | 类型  | 环境        | 链接                                                                                                                                   |
+|----------|-----|-----------|--------------------------------------------------------------------------------------------------------------------------------------|
+| Carpet   | 必须  | 客户端 / 服务端 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) |
+| MaliLib  | 必须  | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   |
+| Mod Menu | 可选  | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu)               |
 
 ## 描述
 
@@ -53,7 +54,7 @@
 
 ### 支持
 
-当前主开发版本：1.19.2
+当前主开发版本：1.19.3
 
 并且使用 `预处理` 来兼容各版本。
 
@@ -64,7 +65,7 @@
 - Minecraft 1.16.5
 - Minecraft 1.17.1
 - Minecraft 1.18.2
-- Minecraft 1.19.2
+- Minecraft 1.19.3
 
 ### 混淆映射表
 
