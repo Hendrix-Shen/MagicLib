@@ -13,6 +13,7 @@ import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 public class MagicLib implements ModInitializer, ClientModInitializer, DedicatedServerModInitializer {
     private static final int CONFIG_VERSION = 1;
 
+    @Dependencies(and = @Dependency(value = "carpet"))
     @Override
     public void onInitialize() {
         WrapperSettingManager.register(MagicLibReference.getModId(), new MagicLibSettingManager(
