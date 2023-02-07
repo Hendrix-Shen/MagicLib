@@ -11,16 +11,18 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 //#endif
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
+@Pseudo
 @Dependencies(
         and = {
                 @Dependency(value = "minecraft", versionPredicate = ">1.18.2"),
                 @Dependency(value = "carpet-tis-addition", versionPredicate = ">=1.38")
         }
 )
-@Mixin(targets = "carpettisaddition.settings.CarpetRuleRegistrar")
+@Mixin(targets = "carpettisaddition.settings.CarpetRuleRegistrar", remap = false)
 public class MixinCarpetRuleRegistrar {
     //#if MC > 11802
     @Dynamic

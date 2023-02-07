@@ -5,7 +5,9 @@ import net.fabricmc.api.Environment;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+//#if MC < 11903
+//$$ import org.spongepowered.asm.mixin.Shadow;
+//#endif
 import top.hendrixshen.magiclib.compat.minecraft.math.Vector4fCompatApi;
 import top.hendrixshen.magiclib.util.MiscUtil;
 

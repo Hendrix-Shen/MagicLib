@@ -9,6 +9,10 @@ import net.minecraft.commands.CommandBuildContext;
 //#endif
 //$$ import carpet.settings.SettingsManager;
 //#endif
+//#if MC > 11404
+import carpet.network.ServerNetworkHandler;
+//#endif
+import carpet.script.CarpetEventServer;
 import carpet.settings.ParsedRule;
 import com.google.common.collect.Lists;
 import com.mojang.brigadier.CommandDispatcher;
@@ -59,6 +63,8 @@ public class WrapperSettingManager extends SettingsManager {
     private final String fancyName;
     private final String identifier;
     public static final String DEFAULT_LANGUAGE = "en_us";
+    private final List<WrapperSettingManager.RuleCallback> callbacks = Lists.newArrayList();
+    private static final List<WrapperSettingManager.RuleCallback> globalCallbacks = Lists.newArrayList();
     public WrapperSettingManager(String version, String identifier, String fancyName) {
         super(version, identifier, fancyName);
         this.version = version;
@@ -68,6 +74,28 @@ public class WrapperSettingManager extends SettingsManager {
 
     public static WrapperSettingManager get(String identifier) {
         return WrapperSettingManager.INSTANCES.get(identifier);
+    }
+
+    public void registerRuleCallback(WrapperSettingManager.RuleCallback callback) {
+        this.callbacks.add(callback);// 136
+    }
+
+    public static void registerGlobalRuleCallback(WrapperSettingManager.RuleCallback callback) {
+        WrapperSettingManager.globalCallbacks.add(callback);// 150
+    }
+
+    public void onRuleChange(CommandSourceStack source, @NotNull RuleOption rule, String value) {
+        this.callbacks.forEach(ruleCallback -> ruleCallback.callback(source, rule, value));
+        WrapperSettingManager.globalCallbacks.forEach(ruleCallback -> ruleCallback.callback(source, rule, value));
+        //#if MC > 11404
+        ServerNetworkHandler.updateRuleWithConnectedClients(rule.getRule());
+        //#endif
+        // TODO this.switchScarpetRuleIfNeeded(source, rule);// 266
+        //#if MC > 11502
+        if (CarpetEventServer.Event.CARPET_RULE_CHANGES.isNeeded()) {
+            CarpetEventServer.Event.CARPET_RULE_CHANGES.onCarpetRuleChanges(rule.getRule(), source);
+        }
+        //#endif
     }
 
     public static void register(String identifier, @NotNull WrapperSettingManager wrapperSettingsManager) {
@@ -197,7 +225,6 @@ public class WrapperSettingManager extends SettingsManager {
         return ruleOption.isEnabled() ? SharedSuggestionProvider.suggest(this.getRuleOption(ctx)
                 .getOptions().stream().sorted().collect(Collectors.toList()), suggestionsBuilder) : null;
     }
-
 
     @Override
     public Iterable<String> getCategories() {
@@ -577,5 +604,10 @@ public class WrapperSettingManager extends SettingsManager {
             MessageUtil.sendMessage(source, item);
         }
         return 1;
+    }
+
+    @FunctionalInterface
+    public interface RuleCallback {
+        void callback(CommandSourceStack source, RuleOption rule, String value);
     }
 }

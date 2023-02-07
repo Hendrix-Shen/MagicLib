@@ -16,8 +16,7 @@ import carpet.api.settings.SettingsManager;
 //#endif
 import org.spongepowered.asm.mixin.Mixin;
 
-
-@Mixin(SettingsManager.class)
+@Mixin(value = SettingsManager.class, remap = false)
 public class MixinSettingManager {
     //#if MC <= 11502
     //$$ @SuppressWarnings("ConstantConditions")

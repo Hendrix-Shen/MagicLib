@@ -13,7 +13,11 @@ import top.hendrixshen.magiclib.compat.minecraft.math.QuaternionCompatApi;
 //#endif
 
 @Environment(EnvType.CLIENT)
-@Mixin(Quaternionf.class)
+//#if MC >= 11903
+@Mixin(value = Quaternionf.class, remap = false)
+//#else
+//$$ @Mixin(Quaternion.class)
+//#endif
 public abstract class MixinQuaternion implements QuaternionCompatApi {
     //#if MC >= 11903
     @Shadow

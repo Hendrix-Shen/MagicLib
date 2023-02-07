@@ -18,7 +18,11 @@ import top.hendrixshen.magiclib.util.MiscUtil;
 //#endif
 
 @Environment(EnvType.CLIENT)
-@Mixin(Matrix4f.class)
+//#if MC >= 11903
+@Mixin(value = Matrix4f.class, remap = false)
+//#else
+//$$ @Mixin(Matrix4f.class)
+//#endif
 public abstract class MixinMatrix4f implements Matrix4fCompatApi {
     //#if MC >= 11903
     @Shadow

@@ -3,7 +3,9 @@ package top.hendrixshen.magiclib.compat.mixin.minecraft.math;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+//#if MC < 11903
+//$$ import org.spongepowered.asm.mixin.Shadow;
+//#endif
 import top.hendrixshen.magiclib.compat.minecraft.math.Vector3fCompatApi;
 import top.hendrixshen.magiclib.util.MiscUtil;
 

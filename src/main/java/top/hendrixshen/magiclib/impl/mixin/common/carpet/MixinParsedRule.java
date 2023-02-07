@@ -13,9 +13,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 //#if MC > 11802
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //#elseif MC <= 11605
-//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //$$ import top.hendrixshen.magiclib.api.rule.RuleHelper;
 //#else
+//#endif
+//#if MC <= 11802
 //$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //#endif
 import top.hendrixshen.magiclib.MagicLibReference;
@@ -39,7 +40,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Mixin(ParsedRule.class)
+@Mixin(value = ParsedRule.class, remap = false)
 public abstract class MixinParsedRule<T> {
     // All field are dummy.
     public Field field;
@@ -278,6 +279,39 @@ public abstract class MixinParsedRule<T> {
     //$$         cir.setReturnValue(null);
     //$$     } catch (IllegalArgumentException ignore) {
     //$$     }
+    //$$ }
+    //#endif
+
+    //#if MC > 11802
+    @Inject(
+            method = "set(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/Object;Ljava/lang/String;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lcarpet/api/settings/SettingsManager;notifyRuleChanged(Lnet/minecraft/commands/CommandSourceStack;Lcarpet/api/settings/CarpetRule;Ljava/lang/String;)V"
+            ),
+            remap = false
+    )
+    private void onRuleChanged(CommandSourceStack source, T value, String userInput, CallbackInfo ci) {
+        if (!(this.realSettingsManager instanceof WrapperSettingManager)) {
+            return;
+        }
+        WrapperSettingManager wrapperSettingManager = (WrapperSettingManager) this.realSettingsManager;
+        wrapperSettingManager.onRuleChange(source, wrapperSettingManager.getRuleOption(this.name), userInput);
+    }
+    //#else
+    //$$ @Inject(
+    //$$         method = "set(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/Object;Ljava/lang/String;)Lcarpet/settings/ParsedRule;",
+    //$$         at = @At(
+    //$$                 value = "INVOKE",
+    //$$                 target = "Lcarpet/settings/SettingsManager;notifyRuleChanged(Lnet/minecraft/commands/CommandSourceStack;Lcarpet/settings/ParsedRule;Ljava/lang/String;)V"
+    //$$         )
+    //$$ )
+    //$$ private void onRuleChanged(CommandSourceStack source, T value, String userInput, CallbackInfoReturnable<ParsedRule<T>> cir) {
+    //$$     if (!(this.settingsManager instanceof WrapperSettingManager)) {
+    //$$         return;
+    //$$     }
+    //$$     WrapperSettingManager wrapperSettingManager = (WrapperSettingManager) settingsManager;
+    //$$     wrapperSettingManager.onRuleChange(source, wrapperSettingManager.getRuleOption(this.name), userInput);
     //$$ }
     //#endif
 }
