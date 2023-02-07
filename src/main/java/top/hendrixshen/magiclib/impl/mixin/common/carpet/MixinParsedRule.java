@@ -40,7 +40,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Mixin(value = ParsedRule.class, remap = false)
+@Mixin(value = ParsedRule.class)
 public abstract class MixinParsedRule<T> {
     // All field are dummy.
     public Field field;
@@ -69,17 +69,17 @@ public abstract class MixinParsedRule<T> {
 
     public Class<?> typeCompat;
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract T get();
 
     //#if MC > 11802
     @Shadow
     protected abstract void set(CommandSourceStack par1, Object par2, String par3) throws carpet.api.settings.InvalidRuleValueException;
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract Class<T> type();
     //#else
-    //$$ @Shadow
+    //$$ @Shadow(remap = false)
     //$$ abstract ParsedRule<T> set(CommandSourceStack source, T value, String stringValue);
     //#endif
 
@@ -271,7 +271,8 @@ public abstract class MixinParsedRule<T> {
     //$$         at = @At(
     //$$                 value = "INVOKE",
     //$$                 target = "Lcarpet/utils/Messenger;m(Lnet/minecraft/commands/CommandSourceStack;[Ljava/lang/Object;)V"
-    //$$         ),cancellable = true
+    //$$         ),
+    //$$         cancellable = true
     //$$ )
     //$$ private void onSetFailed(CommandSourceStack source, Object value, String userInput, @NotNull CallbackInfoReturnable<T> cir) {
     //$$     try {
@@ -288,8 +289,7 @@ public abstract class MixinParsedRule<T> {
             at = @At(
                     value = "INVOKE",
                     target = "Lcarpet/api/settings/SettingsManager;notifyRuleChanged(Lnet/minecraft/commands/CommandSourceStack;Lcarpet/api/settings/CarpetRule;Ljava/lang/String;)V"
-            ),
-            remap = false
+            )
     )
     private void onRuleChanged(CommandSourceStack source, T value, String userInput, CallbackInfo ci) {
         if (!(this.realSettingsManager instanceof WrapperSettingManager)) {
