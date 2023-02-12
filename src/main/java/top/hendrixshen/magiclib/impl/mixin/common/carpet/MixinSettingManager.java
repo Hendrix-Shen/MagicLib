@@ -5,16 +5,16 @@ import carpet.api.settings.SettingsManager;
 //#else
 //$$ import carpet.settings.SettingsManager;
 //#if MC <= 11502
-//$$ import carpet.settings.SettingsManager;
 //$$ import com.mojang.brigadier.CommandDispatcher;
-//$$ import net.minecraft.commands.CommandSourceStack;
-//$$ import org.spongepowered.asm.mixin.injection.At;
-//$$ import org.spongepowered.asm.mixin.injection.Inject;
 //$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//$$ import top.hendrixshen.magiclib.api.rule.WrapperSettingManager;
 //#endif
 //#endif
+import net.minecraft.commands.CommandSourceStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import top.hendrixshen.magiclib.api.rule.WrapperSettingManager;
 
 @Mixin(value = SettingsManager.class, remap = false)
 public class MixinSettingManager {
@@ -32,4 +32,19 @@ public class MixinSettingManager {
     //$$     }
     //$$ }
     //#endif
+
+    @Inject(
+            method = "listAllSettings",
+            at = @At(
+                    value = "INVOKE",
+                    //#if MC > 11802
+                    target = "Lcarpet/api/settings/SettingsManager;getCategories()Ljava/lang/Iterable;"
+                    //#else
+                    //$$ target = "Lcarpet/settings/SettingsManager;getCategories()Ljava/lang/Iterable;"
+                    //#endif
+            )
+    )
+    private void printAdditionVersion(CommandSourceStack source, CallbackInfoReturnable<Integer> cir) {
+        WrapperSettingManager.printAllExtensionVersion(source);
+    }
 }

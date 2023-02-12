@@ -76,6 +76,13 @@ public class WrapperSettingManager extends SettingsManager {
         return WrapperSettingManager.INSTANCES.get(identifier);
     }
 
+    public static void printAllExtensionVersion(CommandSourceStack source) {
+        for (WrapperSettingManager instance : WrapperSettingManager.INSTANCES.values()) {
+            MessageUtil.sendMessage(source, ComponentCompatApi.literal(instance.trUI("version", instance.trFancyName(), instance.getVersion()))
+                    .withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+        }
+    }
+
     public void registerRuleCallback(WrapperSettingManager.RuleCallback callback) {
         this.callbacks.add(callback);// 136
     }
@@ -549,10 +556,7 @@ public class WrapperSettingManager extends SettingsManager {
         for (List<Component> item : this.getMatchedSettings(this.getNonDefaultRuleOption())) {
             MessageUtil.sendMessage(source, item);
         }
-        for (WrapperSettingManager instance : WrapperSettingManager.INSTANCES.values()) {
-            MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("version", instance.trFancyName(), instance.getVersion()))
-                    .withStyle(style -> style.withColor(ChatFormatting.GRAY)));
-        }
+        WrapperSettingManager.printAllExtensionVersion(source);
         MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("browse",  this.trFancyName()))
                 .withStyle(style -> style.withBold(true)));
         List<Component> categories = Lists.newArrayList();
