@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.compat.mixin.minecraft.world.entity.player;
 
+import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,11 +22,28 @@ public abstract class MixinPlayer implements PlayerCompatApi {
     //$$ public Inventory inventory;
     //#endif
 
+    //#if MC > 11605
+    @Shadow
+    public abstract Abilities getAbilities();
+    //#else
+    //$$ @Shadow
+    //$$ public Abilities abilities;
+    //#endif
+
     public Inventory getInventoryCompat() {
         //#if MC > 11605
         return this.getInventory();
         //#else
-        //$$     return this.inventory;
+        //$$ return this.inventory;
+        //#endif
+    }
+
+    @Override
+    public Abilities getAbilitiesCompat() {
+        //#if MC > 11605
+        return this.getAbilities();
+        //#else
+        //$$ return this.abilities;
         //#endif
     }
 }
