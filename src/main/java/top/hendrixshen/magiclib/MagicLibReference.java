@@ -9,8 +9,10 @@ import top.hendrixshen.magiclib.util.VersionParser;
 public class MagicLibReference {
     private static final String MOD_ID = "magiclib";
 
-    //#if MC > 11802
+    //#if MC > 11902
     public static final String CURRENT_MOD_ID = MOD_ID + "-1_19_3";
+    //#elseif MC > 11802
+    //$$ private static final String CURRENT_MOD_ID = MOD_ID + "-1_19_2";
     //#elseif MC > 11701
     //$$ private static final String CURRENT_MOD_ID = MOD_ID + "-1_18_2";
     //#elseif MC > 11605

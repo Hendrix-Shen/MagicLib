@@ -27,14 +27,14 @@ public class MagicLanguageResource extends Resource {
     private final ResourceLocation location;
     private final Supplier<InputStream> inputStreamSupplier;
 
-    //#if MC > 11903
+    //#if MC > 11902
     public MagicLanguageResource(PackResources resources, ResourceLocation resourceLocation, Supplier<InputStream> inputStreamSupplier) {
         super(resources, inputStreamSupplier::get);
-        this.resources =resources;
+        this.resources = resources;
     //#else
     //$$ public MagicLanguageResource(String sourceName, ResourceLocation resourceLocation, Supplier<InputStream> inputStreamSupplier) {
     //#if MC > 11802
-    //$$     super(string, inputStreamSupplier::get);
+    //$$     super(sourceName, inputStreamSupplier::get);
     //#endif
     //$$     this.sourceName = sourceName;
     //#endif
