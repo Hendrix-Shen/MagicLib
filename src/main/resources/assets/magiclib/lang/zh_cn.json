@@ -138,7 +138,7 @@
   "magiclib.ui.hover.refresh": "刷新",
   "magiclib.ui.hover.switch_to": "设置为 %s",
   "magiclib.ui.locked": "此规则管理器已锁定. 如果你认为这是一个错误，请联系服务器管理员.",
-  "magiclib.ui.matched_rule": "%s 符合“%s”分类的规则: ",
+  "magiclib.ui.matched_rule": "%s 符合“%s”的规则: ",
   "magiclib.ui.modified": "已修改",
   "magiclib.ui.null": "空",
   "magiclib.ui.options": "选项: ",

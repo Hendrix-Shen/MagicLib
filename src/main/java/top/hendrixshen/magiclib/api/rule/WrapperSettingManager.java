@@ -222,12 +222,14 @@ public class WrapperSettingManager extends SettingsManager {
                                 .requires(s -> !this.locked())
                                 .suggests(this::getRuleOptionSuggestion)
                                 .executes(c -> this.setRule(c.getSource(), this.getRuleOption(c), StringArgumentType.getString(c, "value"))))
-                        .executes(c -> this.displayRuleMenu(c.getSource(), this.getRuleOption(c))));
+                        .executes(c -> this.displayRuleMenu(c.getSource(), this.getRuleOption(c))))
+                .then(Commands.literal("search")
+                        .then(Commands.argument("search", StringArgumentType.greedyString())
+                                .executes(c -> this.searchRule(c.getSource(), StringArgumentType.getString(c, "search")))));
         dispatcher.register(command);
     }
 
-    private @Nullable CompletableFuture<Suggestions> getRuleOptionSuggestion(CommandContext<CommandSourceStack> ctx,
-                                                                             SuggestionsBuilder suggestionsBuilder) throws CommandSyntaxException {
+    private @Nullable CompletableFuture<Suggestions> getRuleOptionSuggestion(CommandContext<CommandSourceStack> ctx, SuggestionsBuilder suggestionsBuilder) throws CommandSyntaxException {
         RuleOption ruleOption = this.getRuleOption(ctx);
         return ruleOption.isEnabled() ? SharedSuggestionProvider.suggest(this.getRuleOption(ctx)
                 .getOptions().stream().sorted().collect(Collectors.toList()), suggestionsBuilder) : null;
@@ -358,15 +360,15 @@ public class WrapperSettingManager extends SettingsManager {
             return 1;
         }
 
-        MessageUtil.sendServerMessage(source.getServer(), "");
-        MessageUtil.sendServerMessage(source.getServer(), ComponentCompatApi.literal(this.getTranslatedRuleName(ruleOption.getName())).withStyle(
+        MessageUtil.sendMessage(source, "");
+        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.getTranslatedRuleName(ruleOption.getName())).withStyle(
                 style -> style.withBold(true)
                         .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/%s %s", this.identifier, ruleOption.getName())))
                         .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.refresh"))
                                 .withStyle(style1 -> style1.withColor(ChatFormatting.GRAY))))));
-        MessageUtil.sendServerMessage(source.getServer(), this.trRuleDesc(ruleOption.getName()));
+        MessageUtil.sendMessage(source, this.trRuleDesc(ruleOption.getName()));
         for (Component component : this.trRuleExtraInfo(ruleOption.getName())) {
-            MessageUtil.sendServerMessage(source.getServer(), component.copy().withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+            MessageUtil.sendMessage(source, component.copy().withStyle(style -> style.withColor(ChatFormatting.GRAY)));
         }
         List<Component> categories = Lists.newArrayList();
         categories.add(ComponentCompatApi.literal(this.trUI("tags")));
@@ -382,14 +384,14 @@ public class WrapperSettingManager extends SettingsManager {
         } else {
             categories.add(ComponentCompatApi.literal(this.trUI("null")).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
         }
-        MessageUtil.sendServerMessage(source.getServer(), categories);
+        MessageUtil.sendMessage(source, categories);
         List<Component> value = Lists.newArrayList();
         value.add(ComponentCompatApi.literal(this.trUI("current_value")));
         value.add(ComponentCompatApi.literal(String.format("%s (%s)", ruleOption.getValue(), ruleOption.isDefault() ?
                 this.trUI("default") : this.trUI("modified"))).withStyle(
                         style -> style.withBold(true)
                                 .withColor(ruleOption.isDefault() ? ChatFormatting.DARK_RED : ChatFormatting.GREEN)));
-        MessageUtil.sendServerMessage(source.getServer(), value);
+        MessageUtil.sendMessage(source, value);
         List<Component> options = Lists.newArrayList();
         options.add(ComponentCompatApi.literal(this.trUI("options")));
         options.add(ComponentCompatApi.literal("[ ").withStyle(style -> style.withColor(ChatFormatting.YELLOW)));
@@ -405,7 +407,7 @@ public class WrapperSettingManager extends SettingsManager {
             options.remove(options.size() - 1);
         }
         options.add(ComponentCompatApi.literal(" ]").withStyle(style -> style.withColor(ChatFormatting.YELLOW)));
-        MessageUtil.sendServerMessage(source.getServer(), options);
+        MessageUtil.sendMessage(source, options);
         return 1;
     }
 
@@ -573,7 +575,7 @@ public class WrapperSettingManager extends SettingsManager {
         } else {
             categories.add(ComponentCompatApi.literal(this.trUI("null")).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
         }
-        MessageUtil.sendServerMessage(source.getServer(), categories);
+        MessageUtil.sendMessage(source, categories);
         return 1;
     }
 
@@ -594,19 +596,33 @@ public class WrapperSettingManager extends SettingsManager {
         //#else
         //$$ Set<String> defaults = ((Pair<Map<String, String>, Boolean>) conf).getLeft().keySet();
         //#endif
-        for (List<Component> item : this.getMatchedSettings(this.OPTIONS.values().stream().filter(ruleOption ->
-                defaults.contains(ruleOption.getName())).collect(Collectors.toList()))) {
-            MessageUtil.sendMessage(source, item);
-        }
+        this.getMatchedSettings(this.OPTIONS
+                .values()
+                .stream()
+                .filter(ruleOption -> defaults.contains(ruleOption.getName()))
+                .collect(Collectors.toList()))
+                .forEach(components -> MessageUtil.sendMessage(source, components));
         return 1;
     }
 
     public int listAllSettings(CommandSourceStack source) {
         MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("all_rule",  this.trFancyName()))
                 .withStyle(style -> style.withBold(true)));
-        for (List<Component> item : this.getMatchedSettings(this.OPTIONS.values())) {
-            MessageUtil.sendMessage(source, item);
-        }
+        this.getMatchedSettings(this.OPTIONS.values()).forEach(components -> MessageUtil.sendMessage(source, components));
+        return 1;
+    }
+
+    public int searchRule(CommandSourceStack source, String content) {
+        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("matched_rule",  this.trFancyName(), content))
+                .withStyle(style -> style.withBold(true)));
+
+        this.getMatchedSettings(this.OPTIONS
+                .values()
+                .stream()
+                .filter(ruleOption -> this.getTranslatedRuleName(ruleOption.getName()).toLowerCase().contains(content.toLowerCase()))
+                .collect(Collectors.toList()))
+                .forEach(components -> MessageUtil.sendMessage(source, components));
+
         return 1;
     }
 
