@@ -73,9 +73,9 @@ public interface ButtonCompatApi {
             //#if MC > 11902
             return this.builder.build();
             //#elseif MC > 11502
-            //$$ return new Button(this.x, this.y, this.height, this.width, this.message, this.onPress::onPress);
+            //$$ return new Button(this.x, this.y, this.width, this.height, this.message, this.onPress::onPress);
             //#else
-            //$$ return new Button(this.x, this.y, this.height, this.width, this.message.getString(), this.onPress::onPress);
+            //$$ return new Button(this.x, this.y, this.width, this.height, this.message.getString(), this.onPress::onPress);
             //#endif
         }
     }
