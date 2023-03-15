@@ -10,8 +10,10 @@ package com.mojang.math;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.tuple.Triple;
-import top.hendrixshen.magiclib.compat.minecraft.math.QuaternionCompatApi;
-import top.hendrixshen.magiclib.compat.mixin.minecraft.math.AccessorMatrix4f;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.compat.minecraft.api.math.QuaternionCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.mixin.math.AccessorMatrix4f;
 
 import java.nio.FloatBuffer;
 
@@ -34,7 +36,7 @@ public final class Matrix3f {
     public Matrix3f() {
     }
 
-    public Matrix3f(Quaternion quaternion) {
+    public Matrix3f(@NotNull Quaternion quaternion) {
         float f = quaternion.i();
         float g = quaternion.j();
         float h = quaternion.k();
@@ -80,7 +82,8 @@ public final class Matrix3f {
         this.m22 = values[10];
     }
 
-    public Matrix3f(Matrix3f matrix3f) {
+    @Contract(pure = true)
+    public Matrix3f(@NotNull Matrix3f matrix3f) {
         this.m00 = matrix3f.m00;
         this.m01 = matrix3f.m01;
         this.m02 = matrix3f.m02;
@@ -119,7 +122,7 @@ public final class Matrix3f {
         return Pair.of(i, j);
     }
 
-    private static Quaternion stepJacobi(Matrix3f matrix3f) {
+    private static Quaternion stepJacobi(@NotNull Matrix3f matrix3f) {
         Matrix3f matrix3f2 = new Matrix3f();
         Quaternion quaternion = QuaternionCompatApi.ONE.copy();
         Pair<Float, Float> pair;
@@ -195,7 +198,7 @@ public final class Matrix3f {
         return quaternion;
     }
 
-    private static void sortSingularValues(Matrix3f matrix3f, Quaternion quaternion) {
+    private static void sortSingularValues(@NotNull Matrix3f matrix3f, Quaternion quaternion) {
         float f = matrix3f.m00 * matrix3f.m00 + matrix3f.m10 * matrix3f.m10 + matrix3f.m20 * matrix3f.m20;
         float g = matrix3f.m01 * matrix3f.m01 + matrix3f.m11 * matrix3f.m11 + matrix3f.m21 * matrix3f.m21;
         float h = matrix3f.m02 * matrix3f.m02 + matrix3f.m12 * matrix3f.m12 + matrix3f.m22 * matrix3f.m22;
@@ -361,7 +364,7 @@ public final class Matrix3f {
         return j * 3 + i;
     }
 
-    public void load(FloatBuffer floatBuffer) {
+    public void load(@NotNull FloatBuffer floatBuffer) {
         this.m00 = floatBuffer.get(bufferIndex(0, 0));
         this.m01 = floatBuffer.get(bufferIndex(0, 1));
         this.m02 = floatBuffer.get(bufferIndex(0, 2));
@@ -373,7 +376,7 @@ public final class Matrix3f {
         this.m22 = floatBuffer.get(bufferIndex(2, 2));
     }
 
-    public void loadTransposed(FloatBuffer floatBuffer) {
+    public void loadTransposed(@NotNull FloatBuffer floatBuffer) {
         this.m00 = floatBuffer.get(bufferIndex(0, 0));
         this.m01 = floatBuffer.get(bufferIndex(1, 0));
         this.m02 = floatBuffer.get(bufferIndex(2, 0));
@@ -394,7 +397,8 @@ public final class Matrix3f {
 
     }
 
-    public void load(Matrix3f matrix3f) {
+    @Contract(mutates = "this")
+    public void load(@NotNull Matrix3f matrix3f) {
         this.m00 = matrix3f.m00;
         this.m01 = matrix3f.m01;
         this.m02 = matrix3f.m02;
@@ -430,7 +434,7 @@ public final class Matrix3f {
         return stringBuilder.toString();
     }
 
-    public void store(FloatBuffer floatBuffer) {
+    public void store(@NotNull FloatBuffer floatBuffer) {
         floatBuffer.put(bufferIndex(0, 0), this.m00);
         floatBuffer.put(bufferIndex(0, 1), this.m01);
         floatBuffer.put(bufferIndex(0, 2), this.m02);
@@ -442,7 +446,7 @@ public final class Matrix3f {
         floatBuffer.put(bufferIndex(2, 2), this.m22);
     }
 
-    public void storeTransposed(FloatBuffer floatBuffer) {
+    public void storeTransposed(@NotNull FloatBuffer floatBuffer) {
         floatBuffer.put(bufferIndex(0, 0), this.m00);
         floatBuffer.put(bufferIndex(1, 0), this.m01);
         floatBuffer.put(bufferIndex(2, 0), this.m02);
@@ -460,7 +464,6 @@ public final class Matrix3f {
         } else {
             this.store(floatBuffer);
         }
-
     }
 
     public void setIdentity() {
@@ -539,10 +542,10 @@ public final class Matrix3f {
         } else {
             this.m22 = f;
         }
-
     }
 
-    public void mul(Matrix3f matrix3f) {
+    @Contract(mutates = "this")
+    public void mul(@NotNull Matrix3f matrix3f) {
         float f = this.m00 * matrix3f.m00 + this.m01 * matrix3f.m10 + this.m02 * matrix3f.m20;
         float g = this.m00 * matrix3f.m01 + this.m01 * matrix3f.m11 + this.m02 * matrix3f.m21;
         float h = this.m00 * matrix3f.m02 + this.m01 * matrix3f.m12 + this.m02 * matrix3f.m22;
@@ -579,7 +582,8 @@ public final class Matrix3f {
         this.m22 *= f;
     }
 
-    public void add(Matrix3f matrix3f) {
+    @Contract(mutates = "this")
+    public void add(@NotNull Matrix3f matrix3f) {
         this.m00 += matrix3f.m00;
         this.m01 += matrix3f.m01;
         this.m02 += matrix3f.m02;
@@ -591,7 +595,8 @@ public final class Matrix3f {
         this.m22 += matrix3f.m22;
     }
 
-    public void sub(Matrix3f matrix3f) {
+    @Contract(mutates = "this")
+    public void sub(@NotNull Matrix3f matrix3f) {
         this.m00 -= matrix3f.m00;
         this.m01 -= matrix3f.m01;
         this.m02 -= matrix3f.m02;

@@ -1,149 +1,177 @@
 package top.hendrixshen.magiclib.util;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.MagicLibReference;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.Optional;
 
 public class ReflectUtil {
-    public static @NotNull Class<?> getClass(String className) {
+    public static Optional<Class<?>> getClass(String className) {
         try {
-            return Class.forName(className);
+            return Optional.of(Class.forName(className));
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            return Optional.empty();
         }
     }
 
-    public static @NotNull Class<?> getInnerClass(@NotNull Class<?> outerClass, String innerClassName) {
+    public static Optional<Class<?>> getInnerClass(@NotNull Class<?> outerClass, String innerClassName) {
         for (Class<?> cls : outerClass.getDeclaredClasses()) {
             if (cls.getName().replace(String.format("%s$", outerClass.getName()), "").equals(innerClassName)) {
-                return cls;
+                return Optional.of(cls);
             }
         }
-        throw new RuntimeException();
+
+        return Optional.empty();
     }
 
-    public static @NotNull Object newInstance(String className, int index, Object... parameters) {
-        try {
-            Constructor<?> constructor = ReflectUtil.getClass(className).getDeclaredConstructors()[index];
+    public static @NotNull Optional<?> newInstance(String className, int index, Object... parameters) {
+        Optional<Class<?>> optional = ReflectUtil.getClass(className);
+
+        if (optional.isPresent()) {
+            Constructor<?> constructor = optional.get().getDeclaredConstructors()[index];
             constructor.setAccessible(true);
-            return constructor.newInstance(parameters);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+
+            try {
+                return Optional.of(constructor.newInstance(parameters));
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                MagicLibReference.getLogger().throwing(e);
+            }
         }
+
+        return Optional.empty();
     }
 
-    public static @NotNull Object newInstance(String className, Class<?>[] parameterTypes, Object... parameters) {
-        try {
-            Constructor<?> constructor = ReflectUtil.getClass(className).getDeclaredConstructor(parameterTypes);
-            constructor.setAccessible(true);
-            return constructor.newInstance(parameters);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
+    public static @NotNull Optional<?> newInstance(String className, Class<?>[] parameterTypes, Object... parameters) {
+        Optional<Class<?>> optional = ReflectUtil.getClass(className);
+
+        if (optional.isPresent()) {
+            try {
+                Constructor<?> constructor = optional.get().getDeclaredConstructor(parameterTypes);
+                constructor.setAccessible(true);
+                return Optional.of(constructor.newInstance(parameters));
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                MagicLibReference.getLogger().throwing(e);
+            }
         }
+
+        return Optional.empty();
     }
 
-    public static void setFieldValue(String className, String fieldName, Object instance, Object value) {
-        ReflectUtil.setFieldValue(ReflectUtil.getClass(className), fieldName, instance, value);
+    public static boolean setFieldValue(String className, String fieldName, Object instance, Object value) {
+        return ReflectUtil.getClass(className).filter(cls -> ReflectUtil.setFieldValue(cls, fieldName, instance, value)).isPresent();
     }
 
-    public static void setFieldValue(@NotNull Class<?> cls, String fieldName, Object instance, Object value) {
+    public static boolean setFieldValue(@NotNull Class<?> cls, String fieldName, Object instance, Object value) {
         try {
             Field field = cls.getField(fieldName);
             field.setAccessible(true);
             field.set(instance, value);
+            return true;
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+            MagicLibReference.getLogger().throwing(e);
         }
+
+        return false;
     }
 
-    public static void setDeclaredFieldValue(String className, String fieldName, Object instance, Object value) {
-        ReflectUtil.setDeclaredFieldValue(ReflectUtil.getClass(className), fieldName, instance, value);
+    public static boolean setDeclaredFieldValue(String className, String fieldName, Object instance, Object value) {
+        return ReflectUtil.getClass(className).filter(cls -> ReflectUtil.setDeclaredFieldValue(cls, fieldName, instance, value)).isPresent();
     }
 
-    public static void setDeclaredFieldValue(@NotNull Class<?> cls, String fieldName, Object instance, Object value) {
+    public static boolean setDeclaredFieldValue(@NotNull Class<?> cls, String fieldName, Object instance, Object value) {
         try {
             Field field = cls.getDeclaredField(fieldName);
             field.setAccessible(true);
             field.set(instance, value);
+            return true;
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+            MagicLibReference.getLogger().throwing(e);
         }
+
+        return false;
     }
 
-    public static Object getFieldValue(String className, String fieldName, Object instance) {
-        return ReflectUtil.getDeclaredFieldValue(ReflectUtil.getClass(className), fieldName, instance);
+    public static Optional<?> getFieldValue(String className, String fieldName, Object instance) {
+        return ReflectUtil.getClass(className).flatMap(cls -> ReflectUtil.getFieldValue(cls, fieldName, instance));
     }
 
-    public static Object getFieldValue(@NotNull Class<?> cls, String fieldName, Object instance) {
+    public static Optional<?> getFieldValue(@NotNull Class<?> cls, String fieldName, Object instance) {
         try {
             Field field = cls.getField(fieldName);
             field.setAccessible(true);
-            return field.get(instance);
+            return Optional.ofNullable(field.get(instance));
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+            MagicLibReference.getLogger().throwing(e);
         }
+
+        return Optional.empty();
     }
 
-    public static Object getDeclaredFieldValue(String className, String fieldName, Object instance) {
-        return ReflectUtil.getDeclaredFieldValue(ReflectUtil.getClass(className), fieldName, instance);
+    public static Optional<?> getDeclaredFieldValue(String className, String fieldName, Object instance) {
+        return ReflectUtil.getClass(className).flatMap(cls -> ReflectUtil.getDeclaredFieldValue(cls, fieldName, instance));
     }
 
-    public static Object getDeclaredFieldValue(@NotNull Class<?> cls, String fieldName, Object instance) {
+    public static Optional<?> getDeclaredFieldValue(@NotNull Class<?> cls, String fieldName, Object instance) {
         try {
             Field field = cls.getDeclaredField(fieldName);
             field.setAccessible(true);
-            return field.get(instance);
+            return Optional.ofNullable(field.get(instance));
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+            MagicLibReference.getLogger().throwing(e);
         }
+
+        return Optional.empty();
     }
 
-    public static Object invoke(String className, String methodName, Object instance, Object... parameters) {
-        return ReflectUtil.invoke(ReflectUtil.getClass(className), methodName, instance, parameters);
+    public static Optional<?> invoke(String className, String methodName, Object instance, Object... parameters) {
+        return ReflectUtil.getClass(className).flatMap(cls -> ReflectUtil.invoke(cls, methodName, instance, parameters));
     }
 
-    public static Object invoke(String className, String methodName, Object instance, Class<?>[] type, Object... parameters) {
-        return ReflectUtil.invoke(ReflectUtil.getClass(className), methodName, instance, type,parameters);
+    public static Optional<?> invoke(String className, String methodName, Object instance, Class<?>[] type, Object... parameters) {
+        return ReflectUtil.getClass(className).flatMap(cls -> ReflectUtil.invoke(cls, methodName, instance, type, parameters));
     }
 
-    public static Object invoke(@NotNull Class<?> cls, String methodName, Object instance, Object... parameters) {
+    public static Optional<?> invoke(@NotNull Class<?> cls, String methodName, Object instance, Object... parameters) {
         return ReflectUtil.invoke(cls, methodName, instance, null, parameters);
     }
 
-    public static Object invoke(@NotNull Class<?> cls, String methodName, Object instance, Class<?>[] type, Object... parameters) {
+    public static Optional<?> invoke(@NotNull Class<?> cls, String methodName, Object instance, Class<?>[] type, Object... parameters) {
         try {
             Method method = cls.getMethod(methodName, type);
             method.setAccessible(true);
-            return method.invoke(instance, parameters);
+            return Optional.ofNullable(method.invoke(instance, parameters));
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            MagicLibReference.getLogger().throwing(e);
         }
+
+        return Optional.empty();
     }
 
-    public static Object invokeDeclared(String className, String methodName, Object instance, Object... parameters) {
-        return ReflectUtil.invokeDeclared(ReflectUtil.getClass(className), methodName, instance, parameters);
+    public static Optional<?> invokeDeclared(String className, String methodName, Object instance, Object... parameters) {
+        return ReflectUtil.getClass(className).flatMap(cls -> ReflectUtil.invokeDeclared(cls, methodName, instance, parameters));
     }
 
-    public static Object invokeDeclared(String className, String methodName, Object instance, Class<?>[] type, Object... parameters) {
-        return ReflectUtil.invokeDeclared(ReflectUtil.getClass(className), methodName, instance, type, parameters);
+    public static Optional<?> invokeDeclared(String className, String methodName, Object instance, Class<?>[] type, Object... parameters) {
+        return ReflectUtil.getClass(className).flatMap(cls -> ReflectUtil.invokeDeclared(cls, methodName, instance, type, parameters));
     }
 
-    public static Object invokeDeclared(@NotNull Class<?> cls, String methodName, Object instance, Object... parameters) {
+    public static Optional<?> invokeDeclared(@NotNull Class<?> cls, String methodName, Object instance, Object... parameters) {
         return ReflectUtil.invokeDeclared(cls, methodName, instance,null, parameters);
     }
 
-    public static Object invokeDeclared(@NotNull Class<?> cls, String methodName, Object instance, Class<?>[] type, Object... parameters) {
+    public static Optional<?> invokeDeclared(@NotNull Class<?> cls, String methodName, Object instance, Class<?>[] type, Object... parameters) {
         try {
             Method method = cls.getDeclaredMethod(methodName, type);
             method.setAccessible(true);
-            return method.invoke(instance, parameters);
+            return Optional.ofNullable(method.invoke(instance, parameters));
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            MagicLibReference.getLogger().throwing(e);
         }
+
+        return Optional.empty();
     }
 }

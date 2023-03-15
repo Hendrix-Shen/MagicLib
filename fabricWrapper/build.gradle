@@ -3,13 +3,11 @@ plugins {
 }
 apply(plugin: "maven-publish")
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-archivesBaseName = project.archives_base_name
-version = project.parent.version
-group = project.maven_group
-
+setArchivesBaseName("${project.archives_base_name}")
+setGroup(project.mod_maven_group)
+setSourceCompatibility(JavaVersion.VERSION_1_8)
+setTargetCompatibility(JavaVersion.VERSION_1_8)
+setVersion(project.parent.version)
 
 def fabric_subprojects = project.parent.subprojects.findAll({
     it.name != "fabricWrapper"
@@ -48,17 +46,25 @@ processResources {
     // disable cache
     outputs.upToDateWhen { false }
     var jars = []
+
     fabric_subprojects.each({
         jars.add(["file": "META-INF/jars/${project.archives_base_name}-${it.minecraft_version}-${project.version}.jar"])
     })
+
+    from("${rootDir}/icon.png") {
+        into("assets/${project.mod_id}")
+    }
+
     filesMatching("fabric.mod.json") {
-        expand(["mod_version" : project.version,
-                "mod_id"      : project.mod_id,
-                "mod_name"    : project.mod_name,
-                "mod_homepage": project.mod_homepage,
-                "mod_sources" : project.mod_sources,
-                "mod_license" : project.mod_license,
-                "sub_jars"    : new JsonBuilder(jars).toPrettyString(),
+        expand([
+                "mod_description": project.mod_description,
+                "mod_homepage"   : project.mod_homepage,
+                "mod_id"         : project.mod_id,
+                "mod_license"    : project.mod_license,
+                "mod_name"       : project.mod_name,
+                "mod_version"    : project.version,
+                "mod_sources"    : project.mod_sources,
+                "sub_jars"       : new JsonBuilder(jars).toPrettyString(),
         ])
     }
 }
@@ -66,8 +72,9 @@ processResources {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = project.mod_id
-            version = project.version
+            artifactId(project.mod_id)
+            groupId("${project.mod_maven_group}")
+            version(rootProject.mavenArtifactVersion)
             from(components.java)
         }
     }

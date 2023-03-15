@@ -1,0 +1,36 @@
+{
+  "required": true,
+  "package": "top.hendrixshen.magiclib.compat.minecraft.mixin",
+  "plugin": "top.hendrixshen.magiclib.compat.minecraft.MinecraftCompatAPIMixinPlugin",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "blaze3d.vertex.MixinBufferBuilder",
+    "client.MixinCamera",
+    "client.MixinMinecraft",
+    "client.gui.MixinFont",
+    "client.gui.screen.MixinScreen",
+    "client.renderer.entity.MixinEntityRenderDispatcher",
+    "math.AccessorMatrix4f",
+    "math.MixinMatrix4f",
+    "math.MixinQuaternion",
+    "math.MixinVector4f"
+  ],
+  "mixins": [
+    "math.MixinVector3f",
+    "network.chat.AccessorStyle",
+    "network.chat.MixinMutableComponent",
+    "network.chat.MixinStyle",
+    "world.MixinSimpleContainer",
+    "world.entity.MixinEntity",
+    "world.entity.player.MixinPlayer",
+    "world.inventory.MixinSlot",
+    "world.item.MixinItemStack",
+    "world.level.MixinLevel",
+    "world.level.block.entity.MixinBlockEntity",
+    "world.level.block.state.MixinBlockState"
+  ]
+}

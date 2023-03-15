@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "top.hendrixshen.magiclib.carpet.mixin",
+  "plugin": "top.hendrixshen.magiclib.carpet.CarpetCompatMixinPlugin",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+  ],
+  "mixins": [
+    "MixinParsedRule",
+    "MixinSettingManager",
+    "accessor.SettingsManagerAccessor",
+    "carpettisaddition.MixinCarpetRuleRegistrar",
+    "dev.MixinChunkMap"
+  ]
+}

@@ -7,6 +7,6 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 public class RenderSystem extends GlStateManager {
     public static void defaultBlendFunc() {
-        blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ZERO);
     }
 }

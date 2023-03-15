@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +21,7 @@ public class MiscUtil {
         return (T) obj;
     }
 
-    public static JsonObject readJson(URL url) throws IOException {
+    public static JsonObject readJson(@NotNull URL url) throws IOException {
         InputStream inputStream = url.openStream();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         JsonObject jsonObject = GSON.fromJson(inputStreamReader, JsonObject.class);

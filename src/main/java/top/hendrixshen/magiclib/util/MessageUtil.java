@@ -1,50 +1,38 @@
-/*
- * Copyright (c) Copyright 2020 - 2022 The Cat Town Craft and contributors.
- * This source code is subject to the terms of the GNU Lesser General Public
- * License, version 3. If a copy of the LGPL was not distributed with this
- * file, You can obtain one at: https://www.gnu.org/licenses/lgpl-3.0.txt
- */
 package top.hendrixshen.magiclib.util;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.MagicLibReference;
+import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
+
+import java.util.List;
+import java.util.Optional;
+
 //#if MC > 11502
 import net.minecraft.world.level.Level;
 //#else
 //$$ import net.minecraft.world.level.dimension.DimensionType;
 //#endif
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.MagicLibReference;
-import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
-
-import java.util.List;
 
 public class MessageUtil {
     public static void sendMessage(CommandSourceStack source, String message) {
         MessageUtil.sendMessage(source, ComponentCompatApi.literal(message));
     }
 
-    public static void sendMessage(CommandSourceStack source, Component component) {
-        if (source != null) {
-            //#if MC >= 11600
-            source.sendSuccess(component, source.getServer() != null && source.getServer().getLevel(Level.OVERWORLD) != null);
-            //#else
-            //$$ source.sendSuccess(component, source.getServer() != null && source.getServer().getLevel(DimensionType.OVERWORLD) != null);
-            //#endif
-        }
+    public static void sendMessage(CommandSourceStack source, Component messages) {
+        //#if MC > 11502
+        Optional.ofNullable(source).ifPresent(sourceStack -> sourceStack.sendSuccess(messages, source.getServer().getLevel(Level.OVERWORLD) != null));
+        //#else
+        //$$ Optional.ofNullable(source).ifPresent(sourceStack -> sourceStack.sendSuccess(messages, source.getServer() != null && source.getServer().getLevel(DimensionType.OVERWORLD) != null));
+        //#endif
     }
 
-    public static void sendMessage(CommandSourceStack source, @NotNull List<Component> component) {
-        //#if MC > 11502
-        net.minecraft.network.chat.MutableComponent mutableComponent = ComponentCompatApi.literal("");
-        //#else
-        //$$ Component mutableComponent = ComponentCompatApi.literal("");
-        //#endif
-        for (Component message : component) {
-            mutableComponent.append(message);
-        }
+    public static void sendMessage(CommandSourceStack source, @NotNull List<Component> messages) {
+        MutableComponent mutableComponent = ComponentCompatApi.literal("");
+        messages.forEach(mutableComponent::append);
         MessageUtil.sendMessage(source, mutableComponent);
     }
 
@@ -52,26 +40,23 @@ public class MessageUtil {
         MessageUtil.sendServerMessage(server, ComponentCompatApi.literal(message));
     }
 
-    public static void sendServerMessage(MinecraftServer server, Component component) {
-        if (server != null) {
-            MagicLibReference.LOGGER.info(component.getString());
-            for (Player player : server.getPlayerList().getPlayers()) {
-                player.sendSystemMessageCompat(component);
-            }
-        } else {
-            MagicLibReference.LOGGER.error("Message not delivered: " + component.getString());
-        }
+    public static void sendServerMessage(MinecraftServer server, Component message) {
+        Optional.of(server).ifPresent(s -> {
+            MagicLibReference.getLogger().info(message.getString());
+            s.getPlayerList().getPlayers().forEach(p ->
+                    //#if MC > 11802
+                    p.sendSystemMessage(message));
+                    //#elseif MC > 11502
+                    //$$ p.sendMessage(message, p.getUUID()));
+                    //#else
+                    //$$ p.sendMessage(message));
+                    //#endif
+        });
     }
 
     public static void sendServerMessage(MinecraftServer server, @NotNull List<Component> component) {
-        //#if MC > 11502
-        net.minecraft.network.chat.MutableComponent mutableComponent = ComponentCompatApi.literal("");
-        //#else
-        //$$ Component mutableComponent = ComponentCompatApi.literal("");
-        //#endif
-        for (Component message : component) {
-            mutableComponent.append(message);
-        }
+        MutableComponent mutableComponent = ComponentCompatApi.literal("");
+        component.forEach(mutableComponent::append);
         MessageUtil.sendServerMessage(server, mutableComponent);
     }
 }

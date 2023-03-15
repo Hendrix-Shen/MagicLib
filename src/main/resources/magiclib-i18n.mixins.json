@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "top.hendrixshen.magiclib.language.mixin",
+  "plugin": "top.hendrixshen.magiclib.language.I18nMixinPlugin",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "MixinLanguageManager",
+    "MixinMinecraft"
+  ]
+}

@@ -31,21 +31,13 @@
   "magiclib.config.test.stringListConfig.name": "字符串列表",
   "magiclib.config.test.stringListConfig.comment": "字符串列表描述",
 
-  "magiclib.misc.versionType.Development": "开发版",
-  "magiclib.misc.versionType.Public Beta": "公共测试版",
-  "magiclib.misc.versionType.Public Release": "公共发行版",
-  "magiclib.misc.versionType.Unknown": "未知版本",
+  "magiclib.misc.versionType.development": "开发版",
+  "magiclib.misc.versionType.publicBeta": "公共测试版",
+  "magiclib.misc.versionType.publicRelease": "公共发行版",
+  "magiclib.misc.versionType.unknown": "未知版本",
 
-  "modmenu.descriptionTranslation.magiclib": "要用魔法打败魔法 :( ",
-  "modmenu.descriptionTranslation.magiclib-1_14_4": "要用魔法打败魔法 :( ",
-  "modmenu.descriptionTranslation.magiclib-1_15_2": "要用魔法打败魔法 :( ",
-  "modmenu.descriptionTranslation.magiclib-1_16_5": "要用魔法打败魔法 :( ",
-  "modmenu.descriptionTranslation.magiclib-1_17_1": "要用魔法打败魔法 :( ",
-  "modmenu.descriptionTranslation.magiclib-1_18_2": "要用魔法打败魔法 :( ",
-  "modmenu.descriptionTranslation.magiclib-1_19_2": "要用魔法打败魔法 :( ",
-
+  "magiclib.category.debug": "调试",
   "magiclib.category.generic": "通用",
-  "magiclib.category.example": "示例",
 
   "magiclib.document.config.label.category": "分类",
   "magiclib.document.config.label.default_value": "默认值",
@@ -153,5 +145,14 @@
   "magiclib.validator.strict.validValue": "有效值(区分大小写): %s",
   "magiclib.validator.strictIgnoreCase.validValue": "有效值(不区分大小写): %s",
   "magiclib.validator.command.validValue": "有效值: %s",
-  "magiclib.validator.numeric.validValue": "数字必须在区间内: %s"
+  "magiclib.validator.numeric.validValue": "数字必须在区间内: %s",
+
+  "modmenu.descriptionTranslation.magiclib": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_14_4": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_15_2": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_16_5": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_17_1": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_18_2": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_19_2": "要用魔法打败魔法 :( ",
+  "modmenu.descriptionTranslation.magiclib-1_19_3": "要用魔法打败魔法 :( "
 }

@@ -4,7 +4,7 @@
   "version": "${mod_version}",
   "icon": "assets/${mod_id}/icon.png",
   "name": "${mod_name} for ${minecraft_version}",
-  "description": "To beat magic with magic :(",
+  "description": "${mod_description}",
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -36,12 +36,14 @@
       "top.hendrixshen.magiclib.MagicLib"
     ],
     "modmenu": [
-      "top.hendrixshen.magiclib.compat.modmenu.ModMenuApiImpl"
+      "top.hendrixshen.magiclib.impl.compat.modmenu.ModMenuApiImpl"
     ]
   },
   "mixins": [
-    "${mod_id}.mixins.json",
-    "${mod_id}.compat.mixins.json"
+    "${mod_id}-carpet.mixins.json",
+    "${mod_id}-i18n.mixins.json",
+    "${mod_id}-malilib.mixins.json",
+    "${mod_id}-minecraft-compat-api.mixins.json"
   ],
   "depends": {
     "minecraft": "${minecraft_dependency}"
@@ -57,64 +59,66 @@
     },
     "loom:injected_interfaces": {
       "net/minecraft/class_287": [
-        "top/hendrixshen/magiclib/compat/minecraft/blaze3d/vertex/BufferBuilderCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/blaze3d/vertex/BufferBuilderCompatApi"
       ],
       "net/minecraft/class_310": [
-        "top/hendrixshen/magiclib/compat/minecraft/client/MinecraftCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/client/MinecraftCompatApi"
       ],
       "net/minecraft/class_327": [
-        "top/hendrixshen/magiclib/compat/minecraft/client/gui/FontCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/client/gui/FontCompatApi"
       ],
       "net/minecraft/class_437": [
-        "top/hendrixshen/magiclib/compat/minecraft/client/gui/screens/ScreenCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/client/gui/screens/ScreenCompatApi"
       ],
       "net/minecraft/class_898": [
-        "top/hendrixshen/magiclib/compat/minecraft/client/renderer/entity/EntityRenderDispatcherCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/client/renderer/entity/EntityRenderDispatcherCompatApi"
       ],
-      "net/minecraft/class_1158": [
-        "top/hendrixshen/magiclib/compat/minecraft/math/QuaternionCompatApi"
-      ],
-      "net/minecraft/class_1159": [
-        "top/hendrixshen/magiclib/compat/minecraft/math/Matrix4fCompatApi"
-      ],
-      "net/minecraft/class_1160": [
-        "top/hendrixshen/magiclib/compat/minecraft/math/Vector3fCompatApi"
-      ],
-      "net/minecraft/class_1162": [
-        "top/hendrixshen/magiclib/compat/minecraft/math/Vector4fCompatApi"
-      ],
+      //#if MC < 11903
+      //$$ "net/minecraft/class_1158": [
+      //$$   "top/hendrixshen/magiclib/compat/minecraft/api/math/QuaternionCompatApi"
+      //$$ ],
+      //$$ "net/minecraft/class_1159": [
+      //$$   "top/hendrixshen/magiclib/compat/minecraft/api/math/Matrix4fCompatApi"
+      //$$ ],
+      //$$ "net/minecraft/class_1160": [
+      //$$   "top/hendrixshen/magiclib/compat/minecraft/api/math/Vector3fCompatApi"
+      //$$ ],
+      //$$ "net/minecraft/class_1162": [
+      //$$   "top/hendrixshen/magiclib/compat/minecraft/api/math/Vector4fCompatApi"
+      //$$ ],
+      //#endif
       "net/minecraft/class_1277": [
-        "top/hendrixshen/magiclib/compat/minecraft/world/SimpleContainerCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/world/SimpleContainerCompatApi"
       ],
       "net/minecraft/class_1297": [
-        "top/hendrixshen/magiclib/compat/minecraft/world/entity/EntityCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/world/entity/EntityCompatApi"
       ],
       "net/minecraft/class_1657": [
-        "top/hendrixshen/magiclib/compat/minecraft/world/entity/player/PlayerCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/world/entity/player/PlayerCompatApi"
       ],
       "net/minecraft/class_1735": [
-        "top/hendrixshen/magiclib/compat/minecraft/world/inventory/SlotCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/world/inventory/SlotCompatApi"
       ],
       "net/minecraft/class_1799": [
-        "top/hendrixshen/magiclib/compat/minecraft/world/item/ItemStackCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/world/item/ItemStackCompatApi"
       ],
       "net/minecraft/class_1937": [
-        "top/hendrixshen/magiclib/compat/minecraft/world/level/LevelCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/world/level/LevelCompatApi"
       ],
       "net/minecraft/class_2561": [
-        "top/hendrixshen/magiclib/compat/minecraft/network/chat/ComponentCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/network/chat/ComponentCompatApi"
       ],
       "net/minecraft/class_2583": [
-        "top/hendrixshen/magiclib/compat/minecraft/network/chat/StyleCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/network/chat/StyleCompatApi"
       ],
       "net/minecraft/class_2586": [
-        "top/hendrixshen/magiclib/compat/minecraft/world/level/block/entity/BlockEntityCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/world/level/block/entity/BlockEntityCompatApi"
       ],
       "net/minecraft/class_2680": [
-        "top/hendrixshen/magiclib/compat/minecraft/world/level/block/state/BlockStateCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/world/level/block/state/BlockStateCompatApi"
       ],
       "net/minecraft/class_4184": [
-        "top/hendrixshen/magiclib/compat/minecraft/client/CameraCompatApi"
+        "top/hendrixshen/magiclib/compat/minecraft/api/client/CameraCompatApi"
       ]
     }
   }

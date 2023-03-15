@@ -1,62 +1,24 @@
 package top.hendrixshen.magiclib;
 
+import lombok.Getter;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import top.hendrixshen.magiclib.api.rule.WrapperSettingManager;
-import top.hendrixshen.magiclib.util.VersionParser;
+import top.hendrixshen.magiclib.util.StringUtil;
 
 public class MagicLibReference {
-    private static final String MOD_ID = "magiclib";
-
-    //#if MC > 11902
-    public static final String CURRENT_MOD_ID = MOD_ID + "-1_19_3";
-    //#elseif MC > 11802
-    //$$ private static final String CURRENT_MOD_ID = MOD_ID + "-1_19_2";
-    //#elseif MC > 11701
-    //$$ private static final String CURRENT_MOD_ID = MOD_ID + "-1_18_2";
-    //#elseif MC > 11605
-    //$$ private static final String CURRENT_MOD_ID = MOD_ID + "-1_17_1";
-    //#elseif MC > 11502
-    //$$ private static final String CURRENT_MOD_ID = MOD_ID + "-1_16_5";
-    //#elseif MC > 11404
-    //$$ private static final String CURRENT_MOD_ID = MOD_ID + "-1_15_2";
-    //#else
-    //$$ private static final String CURRENT_MOD_ID = MOD_ID + "-1_14_4";
-    //#endif
-    private static final String CURRENT_MOD_NAME = FabricLoader.getInstance().getModContainer(CURRENT_MOD_ID).orElseThrow(RuntimeException::new).getMetadata().getName();
-    private static final String MOD_NAME = CURRENT_MOD_NAME.split(" ")[0];
-    private static final String MOD_VERSION = FabricLoader.getInstance().getModContainer(CURRENT_MOD_ID)
-            .orElseThrow(RuntimeException::new).getMetadata().getVersion().getFriendlyString();
-    private static final String MOD_VERSION_TYPE = VersionParser.getVersionType(MOD_VERSION);
-
-    public static Logger LOGGER = LogManager.getLogger(MOD_ID);
-
-    public static String getCurrentModId() {
-        return CURRENT_MOD_ID;
-    }
-
-    public static String getCurrentModName() {
-        return CURRENT_MOD_NAME;
-    }
-
-    public static String getModId() {
-        return MOD_ID;
-    }
-
-    public static String getModName() {
-        return MOD_NAME;
-    }
-
-    public static String getModVersion() {
-        return MOD_VERSION;
-    }
-
-    public static String getModVersionType() {
-        return MOD_VERSION_TYPE;
-    }
-
-    public static WrapperSettingManager getSettingManager() {
-        return WrapperSettingManager.get(MagicLibReference.getModId());
-    }
+    @Getter
+    private static final String modIdentifier = "@MOD_IDENTIFIER@";
+    @Getter
+    private static final String modIdentifierCurrent = "@MOD_IDENTIFIER@-@MINECRAFT_VERSION_IDENTIFY@";
+    @Getter
+    private static final String modName = "@MOD_NAME@";
+    @Getter
+    private static final String modNameCurrent = FabricLoader.getInstance().getModContainer(modIdentifierCurrent).orElseThrow(RuntimeException::new).getMetadata().getName();
+    @Getter
+    private static final String modVersion = FabricLoader.getInstance().getModContainer(modIdentifierCurrent).orElseThrow(RuntimeException::new).getMetadata().getVersion().getFriendlyString();
+    @Getter
+    private static final String modVersionType = StringUtil.getVersionType(modVersion);
+    @Getter
+    private static final Logger logger = LogManager.getLogger(modIdentifier);
 }

@@ -1,117 +1,126 @@
 apply(plugin: "maven-publish")
 apply(plugin: "fabric-loom")
 apply(plugin: "io.github.juuxel.loom-quiltflower")
+apply(plugin: "net.kyori.blossom")
 apply(plugin: "com.replaymod.preprocess")
+
+repositories {
+    mavenLocal()
+    maven {
+        name("Curse Maven")
+        url("https://www.cursemaven.com")
+    }
+    maven {
+        name("FabricMC Maven")
+        url("https://maven.fabricmc.net")
+    }
+    maven {
+        name("Nyan Maven")
+        url("https://maven.hendrixshen.top")
+    }
+    mavenCentral()
+}
 
 int mcVersion = 1
 
 preprocess {
-    mcVersion = vars.get()["MC"]
-    tabIndentation = false
+    mcVersion = (int) it.vars.get()["MC"]
+    tabIndentation.set(false)
+    patternAnnotation.set("top.hendrixshen.magiclib.compat.preprocess.api.annotation.Preprocess")
 }
 
-repositories {
-    maven {
-        url("https://www.cursemaven.com")
-    }
-    maven {
-        url("https://api.modrinth.com/maven")
-    }
-    maven {
-        url("https://maven.hendrixshen.top")
-    }
-    mavenCentral()
-    mavenLocal()
-}
+def apiDependencies = [
+        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true],
+        ["curse.maven:carpet-349239"         , "carpet" , true],
+        ["curse.maven:malilib-303119"        , "malilib", true],
+        ["curse.maven:modmenu-308702"        , "modmenu", true]
+]
 
-sourceSets {
-    testmod {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
-    }
-}
+
+def runtimeDependencies = [
+        ["curse.maven:auto-config-updated-api-373261" , "auto_config_updated_api", mcVersion <= 11502],
+        ["curse.maven:cloth-config-348521"            , "cloth_config"           , mcVersion <= 11502],
+        ["curse.maven:in-game-account-switcher-232676", "inGameAccountSwitcher"  , true],
+        ["curse.maven:lazydfu-433518"                 , "lazydfu"                , true],
+        ["curse.maven:imblockerfabric-399225"         , "imblockerfabric"        , true],
+        ["curse.maven:smooth-boot-415758"             , "smoothboot"             , true]
+]
 
 dependencies {
+    // Development environment
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
     mappings(loom.officialMojangMappings())
-
-    modCompileOnly("org.projectlombok:lombok:${project.lombok_version}")
-    annotationProcessor("org.projectlombok:lombok:${project.lombok_version}")
-    testCompileOnly("org.projectlombok:lombok:${project.lombok_version}")
-    testAnnotationProcessor("org.projectlombok:lombok:${project.lombok_version}")
-
-    modApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
     modApi("net.fabricmc:fabric-loader:${project.fabric_loader_version}")
 
-    modApi("curse.maven:carpet-349239:${project.carpet_version}")
-    modApi("curse.maven:malilib-303119:${project.malilib_version}")
-    modApi("curse.maven:modmenu-308702:${project.modmenu_version}")
+    // Annotation processor
+    modApi("org.projectlombok:lombok:${project.lombok_version}")
+    annotationProcessor("org.projectlombok:lombok:${project.lombok_version}")
 
-    if (mcVersion <= 11502) {
-        modRuntimeOnly("curse.maven:auto-config-updated-api-373261:${project.auto_config_updated_api_version}")
-        modRuntimeOnly("curse.maven:cloth-config-348521:${project.cloth_config_version}")
+    // API
+    apiDependencies.forEach {item ->
+        String dependencyNotation = item[0]
+        boolean shouldResolve = item[2]
+        if (shouldResolve) {
+            modApi("${dependencyNotation}:${project.property("${item[1]}_version")}")
+        }
     }
-    modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.inGameAccountSwitcher_version}")
-    modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
-    modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric_version}")
-    modRuntimeOnly("curse.maven:smooth-boot-415758:${project.smoothboot_version}")
 
-    testmodImplementation(sourceSets.main.output)
+    // Runtime Library - Make development environment comfortable.
+    runtimeDependencies.forEach {item ->
+        String dependencyNotation = item[0]
+        boolean shouldResolve = item[2]
+        if (shouldResolve) {
+            modRuntimeOnly("${dependencyNotation}:${project.property("${item[1]}_version")}")
+        }
+    }
 
     runtimeOnly(project(path: ":fabricWrapper"))
 }
 
+setArchivesBaseName("${project.archives_base_name}-${project.minecraft_version}")
+setGroup(project.mod_maven_group)
+setSourceCompatibility(JavaVersion.VERSION_1_8)
+setTargetCompatibility(JavaVersion.VERSION_1_8)
+setVersion(project.parent.version)
+
 loom {
     interfaceInjection {
-        enableDependencyInterfaceInjection = true
+        enableDependencyInterfaceInjection.set(true)
+    }
+
+    runConfigs {
+        configureEach {
+            // Dump modified classes automatically.
+            property("mixin.debug.export", "true")
+        }
+
+        client {
+            programArgs([
+                    "--width",
+                    "1920",
+                    "--height",
+                    "1080",
+            ])
+            runDir("run/client")
+        }
+
+        server {
+            runDir("run/server")
+        }
     }
 
     runs {
-        testmodClient {
+        mixinAuditClient {
             client()
-            name = "Testmod Client"
-            source sourceSets.testmod
+            vmArgs("-D${project.mod_id}.mixin_audit=true")
+            ideConfigGenerated(false)
         }
-        testmodServer {
+
+        mixinAuditServer {
             server()
-            name = "Testmod Server"
-            source sourceSets.testmod
+            vmArgs("-D${project.mod_id}.mixin_audit=true")
+            ideConfigGenerated(false)
         }
-
-        autoTestServer {
-            inherit testmodServer
-            name "Auto Test Server"
-            vmArg "-D${project.mod_id}.autoTest"
-        }
-
-        gametest {
-            inherit testmodServer
-            name "Game Test"
-
-            // Enable the gametest runner
-            vmArg "-D${project.mod_id}.gametest"
-            vmArg "-D${project.mod_id}.gametest.report-file=${project.buildDir}/junit.xml"
-            runDir "run/gametest"
-        }
-    }
-
-    runConfigs.all {
-        // Dump modified classes automatically.
-        property("mixin.debug.export", "true")
-    }
-
-    runConfigs.client {
-        programArgs([
-                "--width",
-                "1920",
-                "--height",
-                "1080",
-        ])
-        runDir("run/client")
-    }
-
-    runConfigs.server {
-        runDir("run/server")
     }
 
     runClient {
@@ -119,63 +128,70 @@ loom {
         if (!new File("${projectDir}/run/client/options.txt").exists()) {
             new File("${projectDir}/run/client").mkdirs()
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("${projectDir}/run/client/options.txt"))
-            bufferedWriter.write("autoJump:false\n")
-            bufferedWriter.write("enableVsync:false\n")
-            bufferedWriter.write("forceUnicodeFont:true\n")
-            bufferedWriter.write("fov:1.0\n")
-            bufferedWriter.write("gamma:16.0\n")
-            bufferedWriter.write("guiScale:2\n")
-            bufferedWriter.write("lang:zh_CN\n")
-            bufferedWriter.write("maxFps:260\n")
-            bufferedWriter.write("renderDistance:10\n")
-            bufferedWriter.write("soundCategory_master:0.0")
+            bufferedWriter.writeLine("autoJump:false")
+            bufferedWriter.writeLine("enableVsync:false")
+            bufferedWriter.writeLine("forceUnicodeFont:true")
+            bufferedWriter.writeLine("fov:1.0")
+            bufferedWriter.writeLine("gamma:16.0")
+            bufferedWriter.writeLine("guiScale:3")
+            bufferedWriter.writeLine("lang:${Locale.getDefault().toString()}")
+            bufferedWriter.writeLine("maxFps:260")
+            bufferedWriter.writeLine("renderDistance:10")
+            bufferedWriter.writeLine("soundCategory_master:0.0")
             bufferedWriter.close()
         }
     }
 
     runServer {
         defaultCharacterEncoding("UTF-8")
-        // Auto agree EULA
+        // Agree eula before server init.
         if (!new File("${projectDir}/run/server/eula.txt").exists()) {
             new File("${projectDir}/run/server").mkdirs()
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("${projectDir}/run/server/eula.txt"))
-            bufferedWriter.write("eula=true")
+            bufferedWriter.writeLine("eula=true")
             bufferedWriter.close()
         }
     }
 }
 
-// test.dependsOn runGametest
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.compilerArgs.add("-Xlint:-removal")
+}
 
 remapJar {
     remapperIsolation = true
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-archivesBaseName = project.archives_base_name + "-" + project.minecraft_version
-version = project.parent.version
-group = project.maven_group
-
 processResources {
+    from("${rootDir}/icon.png") {
+        into("assets/${project.mod_id}")
+    }
+
     filesMatching("fabric.mod.json") {
-        expand(["mod_version"         : project.version,
-                "mod_id"              : project.mod_id,
-                "mod_name"            : project.mod_name,
-                "mod_homepage"        : project.mod_homepage,
-                "mod_sources"         : project.mod_sources,
-                "mod_license"         : project.mod_license,
+        filter { line ->
+            line.trim().startsWith("//") ? "" : line
+        }
+
+        expand([
                 "minecraft_dependency": project.minecraft_dependency,
                 "minecraft_version_id": project.minecraft_version.replace(".", "_"),
-                "minecraft_version"   : project.minecraft_version
+                "minecraft_version"   : project.minecraft_version,
+                "mod_description"     : project.mod_description,
+                "mod_homepage"        : project.mod_homepage,
+                "mod_id"              : project.mod_id,
+                "mod_license"         : project.mod_license,
+                "mod_name"            : project.mod_name,
+                "mod_sources"         : project.mod_sources,
+                "mod_version"         : project.version
         ])
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.options.compilerArgs += '-Xlint:-removal'
+blossom {
+    replaceToken("@MOD_IDENTIFIER@"            , project.mod_id)
+    replaceToken("@MOD_NAME@"                  , project.mod_name)
+    replaceToken("@MINECRAFT_VERSION_IDENTIFY@", project.minecraft_version.replace(".", "_"))
 }
 
 java {
@@ -183,24 +199,24 @@ java {
 }
 
 jar {
-    from("../../LICENSE")
+    from("${rootDir}/LICENSE")
 }
 
-import groovy.util.Node
-
-publishing {
+publishing() {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = "${project.mod_id}-${project.minecraft_version.replace(".", "_")}"
-            version = project.version
+            artifactId("${project.mod_id}-${project.minecraft_version.replace(".", "_")}")
+            groupId("${project.mod_maven_group}")
+            version(rootProject.mavenArtifactVersion)
             from(components.java)
         }
     }
 
     repositories {
         mavenLocal()
+
         maven {
-            url("$rootDir/publish")
+            url("${rootDir}/publish")
         }
     }
 }

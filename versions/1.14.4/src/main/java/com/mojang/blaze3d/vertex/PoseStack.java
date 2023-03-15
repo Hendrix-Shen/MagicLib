@@ -12,13 +12,12 @@ import com.mojang.math.Quaternion;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
-import top.hendrixshen.magiclib.compat.minecraft.math.Matrix4fCompatApi;
-import top.hendrixshen.magiclib.compat.minecraft.util.MthCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.api.math.Matrix4fCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.api.util.MthCompatApi;
 
 import java.util.Deque;
 
 // Code from mojang minecraft 1.18.2!
-
 @Environment(EnvType.CLIENT)
 public class PoseStack {
     private final Deque<Pose> poseStack = Util.make(Queues.newArrayDeque(), (arrayDeque) -> {

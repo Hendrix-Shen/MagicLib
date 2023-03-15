@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "top.hendrixshen.magiclib.malilib.mixin",
+  "plugin": "top.hendrixshen.magiclib.malilib.MalilibExtraMixinPlugin",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "MixinWidgetConfigOptionForBooleanHotkeyed",
+    "MixinWidgetConfigOptionForHotkeyed",
+    "accessor.KeybindMultiAccessor",
+    "backport.MixinConfigBooleanHotkeyed",
+    "backport.MixinWidgetConfigOptionForBooleanHotkeyed",
+    "dev.MixinGuiTextFieldGeneric"
+  ]
+}

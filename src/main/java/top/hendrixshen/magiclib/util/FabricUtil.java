@@ -8,9 +8,10 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.version.VersionPredicate;
+import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLibReference;
-import top.hendrixshen.magiclib.dependency.DepCheckException;
-import top.hendrixshen.magiclib.dependency.Dependencies;
+import top.hendrixshen.magiclib.dependency.api.DepCheckException;
+import top.hendrixshen.magiclib.dependency.impl.Dependencies;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -59,14 +60,14 @@ public class FabricUtil {
                 try {
                     return (boolean) fabricLegacyVersionPredicateParser.invoke(null, version, versionPredicate);
                 } catch (InvocationTargetException | IllegalAccessException e) {
-                    MagicLibReference.LOGGER.error("Failed to invoke fabricLegacyVersionPredicateParser#matches", e);
+                    MagicLibReference.getLogger().error("Failed to invoke fabricLegacyVersionPredicateParser#matches", e);
                     throw new RuntimeException(e);
                 }
             } else {
                 return VersionPredicate.parse(versionPredicate).test(version);
             }
         } catch (Throwable e) {
-            MagicLibReference.LOGGER.error("Failed to parse version or version predicate {} {}: {}", version.getFriendlyString(), versionPredicate, e);
+            MagicLibReference.getLogger().error("Failed to parse version or version predicate {} {}: {}", version.getFriendlyString(), versionPredicate, e);
             return false;
         }
     }
@@ -92,33 +93,40 @@ public class FabricUtil {
      */
     public static boolean isModLoaded(String modId, String versionPredicate) {
         Optional<ModContainer> modContainerOptional = FabricLoader.getInstance().getModContainer(modId);
+
         if (modContainerOptional.isPresent()) {
             ModContainer modContainer = modContainerOptional.get();
             return isModLoaded(modContainer.getMetadata().getVersion(), versionPredicate);
         }
+
         return false;
     }
 
-    public static Set<URL> getResources(String name) throws IOException {
+    public static @NotNull Set<URL> getResources(String name) throws IOException {
         ClassLoader urlLoader = Thread.currentThread().getContextClassLoader();
         HashSet<URL> hashSet = new HashSet<>();
         Enumeration<URL> urlEnumeration = urlLoader.getResources(name);
+
         while (urlEnumeration.hasMoreElements()) {
             hashSet.add(urlEnumeration.nextElement());
         }
+
         return hashSet;
     }
 
-    private static Map<String, Dependencies<Object>> getModInitDependencies(String entryKey, String entryMethod) {
+    private static @NotNull Map<String, Dependencies<Object>> getModInitDependencies(String entryKey, String entryMethod) {
         Map<String, Dependencies<Object>> ret = new HashMap<>();
+
         for (ModMetaData modMetaData : ModMetaData.data.values()) {
-            for (String entrypointValue : modMetaData.entrypoints.getOrDefault(entryKey, new HashSet<>())) {
+            for (String entrypointValue : modMetaData.entryPoints.getOrDefault(entryKey, new HashSet<>())) {
                 Dependencies<Object> dependencies = Dependencies.getFabricEntrypointDependencies(entrypointValue, entryMethod);
+
                 if (dependencies != null) {
                     ret.put(modMetaData.id, dependencies);
                 }
             }
         }
+
         return ret;
     }
 
@@ -128,20 +136,22 @@ public class FabricUtil {
      */
     public static void compatVersionCheck() {
         FabricLoader fabricLoader = FabricLoader.getInstance();
-
         StringBuilder result = new StringBuilder();
+
         BiConsumer<String, Dependencies<Object>> depCheckCallback = (modId, dependencies) -> {
             String depResult = dependencies.getCheckResult(null);
             if (!depResult.equals(Dependencies.SATISFIED)) {
                 if (result.length() != 0) {
                     result.append("\n");
                 }
+
                 result.append(String.format("Mod %s compat version check failed.\n", modId));
                 result.append(depResult);
             }
         };
 
         getModInitDependencies("main", "onInitialize").forEach(depCheckCallback);
+
         if (fabricLoader.getEnvironmentType() == EnvType.CLIENT) {
             getModInitDependencies("client", "onInitializeClient").forEach(depCheckCallback);
         } else {
@@ -158,12 +168,14 @@ public class FabricUtil {
      *
      * @param exception Thrown exceptions.
      */
-    public static void displayCriticalError(Throwable exception) {
-        exception.printStackTrace();
-        String nm = System.getProperty("java.awt.headless");
-        if (Boolean.parseBoolean(nm)) {
+    public static void displayCriticalError(@NotNull Throwable exception) {
+        MagicLibReference.getLogger().throwing(exception);
+        String headless = System.getProperty("java.awt.headless");
+
+        if (Boolean.parseBoolean(headless)) {
             System.setProperty("java.awt.headless", "");
         }
+
         if (fabricLegacyDisplayCriticalError != null) {
             try {
                 fabricLegacyDisplayCriticalError.invoke(null, exception, true);
@@ -197,6 +209,7 @@ public class FabricUtil {
 
         static {
             URL logUrl = null;
+
             try {
                 for (URL url : getResources("fabric.mod.json")) {
                     logUrl = url;
@@ -205,31 +218,32 @@ public class FabricUtil {
                         ModMetaData modMetaData = new ModMetaData(jsonObject);
                         data.put(modMetaData.id, modMetaData);
                     } catch (Throwable e) {
-                        MagicLibReference.LOGGER.debug("Exception when parse {}.", url);
+                        MagicLibReference.getLogger().debug("Exception when parse {}.", url);
                     }
                 }
             } catch (IOException e) {
-                MagicLibReference.LOGGER.error("Exception when parse {}.", logUrl);
+                MagicLibReference.getLogger().error("Exception when parse {}.", logUrl);
                 FabricUtil.displayCriticalError(e);
             }
         }
 
         public String id;
         public JsonObject json;
-        public HashMap<String, HashSet<String>> entrypoints;
+        public HashMap<String, HashSet<String>> entryPoints;
 
-        private ModMetaData(JsonObject json) {
+        private ModMetaData(@NotNull JsonObject json) {
             this.id = json.get("id").getAsString();
             this.json = json;
-            this.entrypoints = new HashMap<>();
+            this.entryPoints = new HashMap<>();
 
             JsonObject entrypointsJsonObject = json.getAsJsonObject("entrypoints");
             if (entrypointsJsonObject != null) {
                 for (Map.Entry<String, JsonElement> entrypointEntry : entrypointsJsonObject.entrySet()) {
                     JsonArray entrypointArray = entrypointEntry.getValue().getAsJsonArray();
+
                     for (int i = 0; i < entrypointArray.size(); ++i) {
                         String entrypoint = entrypointArray.get(i).getAsString();
-                        HashSet<String> entrypointSet = entrypoints.computeIfAbsent(
+                        HashSet<String> entrypointSet = entryPoints.computeIfAbsent(
                                 entrypointEntry.getKey(), key -> new HashSet<>());
                         entrypointSet.add(entrypoint);
                     }

@@ -1,8 +1,11 @@
 package top.hendrixshen.magiclib.util;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.MixinEnvironment;
+import top.hendrixshen.magiclib.MagicLibReference;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -26,24 +29,27 @@ public class MagicStreamHandler extends URLStreamHandler {
         }
     }
 
-    public static void addClass(ClassNode classNode) {
+    public static void addClass(@NotNull ClassNode classNode) {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         classNode.accept(cw);
         addFile(String.format("/%s.class", classNode.name), cw.toByteArray());
+
         if (MixinEnvironment.getCurrentEnvironment().getOption(MixinEnvironment.Option.DEBUG_EXPORT)) {
             File f = new File(".mixin.out/" + classNode.name.replace("/", ".") + ".remap.class");
+
             try {
                 OutputStream fOut = Files.newOutputStream(f.toPath());
                 fOut.write(cw.toByteArray());
                 fOut.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                MagicLibReference.getLogger().throwing(e);
                 throw new RuntimeException(e);
             }
         }
     }
 
-    public static URL getMemoryClassLoaderUrl() {
+    @Contract(" -> new")
+    public static @NotNull URL getMemoryClassLoaderUrl() {
         try {
             return new URL(MAGIC_PROTOCOL, null, -1, "/", handler);
         } catch (MalformedURLException e) {
@@ -52,10 +58,11 @@ public class MagicStreamHandler extends URLStreamHandler {
     }
 
     @Override
-    protected URLConnection openConnection(URL u) throws IOException {
+    protected URLConnection openConnection(@NotNull URL u) throws IOException {
         if (!u.getProtocol().equals(MAGIC_PROTOCOL)) {
             throw new IOException("Cannot handle protocol: " + u.getProtocol());
         }
+
         return new URLConnection(u) {
             private byte[] data = null;
 
@@ -70,8 +77,11 @@ public class MagicStreamHandler extends URLStreamHandler {
             @Override
             public long getContentLengthLong() {
                 initDataIfNeeded();
-                if (data == null)
+
+                if (data == null) {
                     return 0;
+                }
+
                 return data.length;
             }
 
@@ -83,13 +93,15 @@ public class MagicStreamHandler extends URLStreamHandler {
             }
 
             private void initDataIfNeeded() {
-                if (data == null)
+                if (data == null) {
                     data = contents.get(u);
+                }
             }
 
             private void checkDataAvailability() throws IOException {
-                if (data == null)
+                if (data == null) {
                     throw new IOException("In-memory data cannot be found for: " + u.getPath());
+                }
             }
         };
     }

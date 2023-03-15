@@ -4,7 +4,8 @@ plugins {
     // https://github.com/Juuxel/LoomQuiltflower
     id("io.github.juuxel.loom-quiltflower").version("1.8.0").apply(false)
     id("com.replaymod.preprocess").version("SNAPSHOT")
-    id("org.ajoberstar.grgit").version("4.1.0")
+    id("org.ajoberstar.grgit").version("5.0.0")
+    id("net.kyori.blossom").version("1.3.1").apply(false)
 }
 
 preprocess {
@@ -18,34 +19,55 @@ preprocess {
 
     mc1144.link(mc1152, null)
     mc1152.link(mc1165, null)
-    mc1165.link(mc1171, null)
+    mc1165.link(mc1171, file("versions/mapping-1.16.5-1.17.1.txt"))
     mc1171.link(mc1182, null)
-    mc1182.link(mc1192, null)
+    mc1182.link(mc1192, file("versions/mapping-1.18.2-1.19.2.txt"))
     mc1192.link(mc1193, file("versions/mapping-1.19.2-1.19.3.txt"))
 }
 
-def ENV = System.getenv()
-String realVersion = "${project.mod_version}"
-
-realVersion += "." + (ENV.BUILD_NUMBER ? "${ENV.BUILD_NUMBER}" : Integer.MAX_VALUE)
-realVersion += ENV.COMMIT_SHA ? "+${ENV.COMMIT_SHA}" : ""
-switch (ENV.BUILD_TYPE) {
-    case "RELEASE":
-        realVersion += "-stable"
-        break
-    case "BETA":
-        realVersion += "-beta"
-        break
-    default:
-        realVersion += "-dev"
+String getVersionGit(List paths) {
+    if (grgit == null) {
+        return "nogit"
+    }
+    List latestCommits = paths.isEmpty() ? grgit.log(maxCommits: 1) : grgit.log(paths: paths, maxCommits: 1)
+    return latestCommits.isEmpty() ? "uncommited" : "${latestCommits.get(0).id.substring(0, 7)}"
 }
 
-version = realVersion
+String getBuildNumber() {
+    Map<String, String> ENV = System.getenv()
+    return ENV.GITHUB_RUN_NUMBER ? ENV.GITHUB_RUN_NUMBER : Integer.MAX_VALUE
+}
 
-task cleanPreprocessSources {
+String getVersionType() {
+    Map<String, String> ENV = System.getenv()
+    switch (ENV.BUILD_TYPE) {
+        case "RELEASE":
+            return "stable"
+        case "BETA":
+            return "beta"
+        default:
+            return "dev"
+    }
+}
+
+int getVersionPatch(List paths) {
+    if (grgit == null) {
+        return 0
+    }
+    List latestCommits = paths.isEmpty() ? grgit.log() : grgit.log(paths: paths)
+    return latestCommits.size()
+}
+
+setVersion("${project.mod_version}.${project.getVersionPatch([])}+${project.getVersionGit([])}-${project.getVersionType()}")
+ext {
+    mavenArtifactVersion = getVersionType() == "stable" ? "${project.mod_version}.${project.getVersionPatch([])}" : project.version
+}
+
+tasks.register("cleanPreprocessSources") {
+    it.setGroup("magicproject")
     doFirst {
         subprojects {
-            def path = project.projectDir.toPath().resolve('build/preprocessed')
+            def path = project.projectDir.toPath().resolve("build/preprocessed")
             path.toFile().deleteDir()
         }
     }

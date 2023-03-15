@@ -31,13 +31,13 @@
   "magiclib.config.test.stringListConfig.name": "stringListConfig",
   "magiclib.config.test.stringListConfig.comment": "stringListConfig comment",
 
-  "magiclib.misc.versionType.Development": "Development",
-  "magiclib.misc.versionType.Public Beta": "Public Beta",
-  "magiclib.misc.versionType.Public Release": "Public Release",
-  "magiclib.misc.versionType.Unknown": "Unknown",
+  "magiclib.misc.versionType.development": "Development",
+  "magiclib.misc.versionType.publicBeta": "Public Beta",
+  "magiclib.misc.versionType.publicRelease": "Public Release",
+  "magiclib.misc.versionType.unknown": "Unknown",
 
+  "magiclib.category.debug": "Debug",
   "magiclib.category.generic": "Generic",
-  "magiclib.category.example": "Example",
 
   "magiclib.document.config.label.category": "Category",
   "magiclib.document.config.label.default_value": "Default value",
@@ -145,5 +145,14 @@
   "magiclib.validator.strict.validValue": "Valid options(Case-sensitive): %s",
   "magiclib.validator.strictIgnoreCase.validValue": "Valid options(Case-insensitive): %s",
   "magiclib.validator.command.validValue": "Valid options: %s",
-  "magiclib.validator.numeric.validValue": "Number must be within the interval: %s"
+  "magiclib.validator.numeric.validValue": "Number must be within the interval: %s",
+
+  "modmenu.descriptionTranslation.magiclib": "To beat magic with magic :( ",
+  "modmenu.descriptionTranslation.magiclib-1_14_4": "To beat magic with magic :(",
+  "modmenu.descriptionTranslation.magiclib-1_15_2": "To beat magic with magic :(",
+  "modmenu.descriptionTranslation.magiclib-1_16_5": "To beat magic with magic :(",
+  "modmenu.descriptionTranslation.magiclib-1_17_1": "To beat magic with magic :(",
+  "modmenu.descriptionTranslation.magiclib-1_18_2": "To beat magic with magic :(",
+  "modmenu.descriptionTranslation.magiclib-1_19_2": "To beat magic with magic :(",
+  "modmenu.descriptionTranslation.magiclib-1_19_3": "To beat magic with magic :("
 }

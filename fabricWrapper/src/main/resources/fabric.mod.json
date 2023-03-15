@@ -4,7 +4,7 @@
   "version": "${mod_version}",
   "icon": "assets/${mod_id}/icon.png",
   "name": "${mod_name}",
-  "description": "To beat magic with magic :(",
+  "description": "${mod_description}",
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -28,7 +28,7 @@
   "environment": "*",
   "entrypoints": {
     "modmenu": [
-      "top.hendrixshen.magiclib.compat.modmenu.WrapperModMenuApiImpl"
+      "top.hendrixshen.magiclib.impl.compat.modmenu.WrapperModMenuApiImpl"
     ]
   },
   "custom": {
