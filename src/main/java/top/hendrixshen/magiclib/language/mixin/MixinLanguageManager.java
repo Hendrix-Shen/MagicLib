@@ -34,7 +34,11 @@ public class MixinLanguageManager {
 
     @Shadow
     @Final
-    private static LanguageInfo DEFAULT_LANGUAGE;
+    //#if MC > 11903
+    public static String DEFAULT_LANGUAGE_CODE;
+    //#else
+    //$$ private static LanguageInfo DEFAULT_LANGUAGE;
+    //#endif
     //#endif
 
     @Inject(
@@ -53,7 +57,11 @@ public class MixinLanguageManager {
                     value = "RETURN"
             )
     )
-    private void postSetSelected(LanguageInfo languageInfo, CallbackInfo ci) {
+    //#if MC > 11903
+    private void postSetSelected(String languageCode, CallbackInfo ci) {
+    //#else
+    //$$ private void postSetSelected(LanguageInfo languageInfo, CallbackInfo ci) {
+    //#endif
         MagicLanguageManager.INSTANCE.setCurrentCode(this.currentCode);
     }
 
@@ -63,11 +71,19 @@ public class MixinLanguageManager {
             method = "onResourceManagerReload",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/resources/language/ClientLanguage;loadFrom(Lnet/minecraft/server/packs/resources/ResourceManager;Ljava/util/List;)Lnet/minecraft/client/resources/language/ClientLanguage;",
+                    //#if MC > 11903
+                    target = "Lnet/minecraft/client/resources/language/ClientLanguage;loadFrom(Lnet/minecraft/server/packs/resources/ResourceManager;Ljava/util/List;Z)Lnet/minecraft/client/resources/language/ClientLanguage;",
+                    //#else
+                    //$$ target = "Lnet/minecraft/client/resources/language/ClientLanguage;loadFrom(Lnet/minecraft/server/packs/resources/ResourceManager;Ljava/util/List;)Lnet/minecraft/client/resources/language/ClientLanguage;",
+                    //#endif
                     ordinal = 0
             )
     )
-    private @NotNull List<LanguageInfo> addFallbackLanguage(List<LanguageInfo> languageInfoList) {
+    //#if MC > 11903
+    private @NotNull List<String> addFallbackLanguage(List<String> languageInfoList) {
+    //#else
+    //$$ private @NotNull List<LanguageInfo> addFallbackLanguage(List<LanguageInfo> languageInfoList) {
+    //#endif
         ArrayList<String> codes = Lists.newArrayList(ConfigEntrypoint.getFallbackLanguageListFromConfig());
 
         if (!codes.isEmpty()) {
@@ -87,12 +103,20 @@ public class MixinLanguageManager {
             LanguageInfo languageInfo = this.languages.getOrDefault(code, null);
 
             if (languageInfo != null) {
-                languageInfoList.add(languageInfo);
+                //#if MC > 11903
+                languageInfoList.add(code);
+                //#else
+                //$$ languageInfoList.add(languageInfo);
+                //#endif
             }
         }
 
         if (languageInfoList.isEmpty()) {
-            languageInfoList.add(DEFAULT_LANGUAGE);
+            //#if MC > 11903
+            languageInfoList.add(DEFAULT_LANGUAGE_CODE);
+            //#else
+            //$$ languageInfoList.add(DEFAULT_LANGUAGE);
+            //#endif
         }
 
         return languageInfoList;

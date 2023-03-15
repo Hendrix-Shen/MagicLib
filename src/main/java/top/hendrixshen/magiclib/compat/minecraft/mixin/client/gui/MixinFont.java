@@ -50,7 +50,11 @@ public abstract class MixinFont implements FontCompatApi {
 
     //#if MC > 11502
     @Shadow
-    public abstract int drawInBatch(Component component, float f, float g, int i, boolean bl, Matrix4f matrix4f, MultiBufferSource multiBufferSource, boolean bl2, int j, int k);
+    //#if MC > 11903
+    public abstract int drawInBatch(Component component, float x, float y, int color, boolean shadow, Matrix4f matrix4f, MultiBufferSource multiBufferSource, Font.DisplayMode displayMode, int backgroundColor, int light);
+    //#else
+    //$$ public abstract int drawInBatch(Component component, float x, float y, int color, boolean shadow, Matrix4f matrix4f, MultiBufferSource multiBufferSource, boolean seeThrough, int backgroundColor, int light);
+    //#endif
     //#endif
 
     @Override
@@ -59,7 +63,11 @@ public abstract class MixinFont implements FontCompatApi {
         //#if MC > 11404
         MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(tesselator.getBuilder());
         //#if MC > 11502
-        int ret = this.drawInBatch(component, x, y, color, shadow, matrix4f, bufferSource, seeThrough, backgroundColor, light);
+        //#if MC > 11903
+        int ret = this.drawInBatch(component, x, y, color, shadow, matrix4f, bufferSource, seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, backgroundColor, light);
+        //#else
+        //$$ int ret = this.drawInBatch(component, x, y, color, shadow, matrix4f, bufferSource, seeThrough, backgroundColor, light);
+        //#endif
         //#else
         //$$ int ret = this.drawInBatch(component.getColoredString(), x, y, color, shadow, matrix4f, bufferSource,
         //$$         seeThrough, backgroundColor, light);

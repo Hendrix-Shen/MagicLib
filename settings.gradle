@@ -2,7 +2,7 @@ pluginManagement {
     repositories {
         mavenLocal()
         maven {
-            name("Fabric")
+            name("FabricMC Maven")
             url("https://maven.fabricmc.net")
         }
         maven {
@@ -14,7 +14,7 @@ pluginManagement {
             url("https://maven.hendrixshen.top")
         }
         maven {
-            name("Cotton")
+            name("Cotton Maven")
             url("https://server.bbkr.space/artifactory/libs-release")
         }
         mavenCentral()
@@ -30,6 +30,7 @@ def versions = Arrays.asList(
         "1.18.2",
         "1.19.2",
         "1.19.3",
+        "1.19.4",
 )
 for (String version : versions) {
     include(":$version")

@@ -21,8 +21,8 @@
 
 | 依赖       | 类型  | 环境        | 链接                                                                                                                                   |
 |----------|-----|-----------|--------------------------------------------------------------------------------------------------------------------------------------|
-| Carpet   | 必须  | 客户端 / 服务端 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) |
-| MaliLib  | 必须  | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   |
+| Carpet   | 可选  | 客户端 / 服务端 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) |
+| MaliLib  | 可选  | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   |
 | Mod Menu | 可选  | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu)               |
 
 ## 描述
@@ -65,7 +65,9 @@
 - Minecraft 1.16.5
 - Minecraft 1.17.1
 - Minecraft 1.18.2
+- Minecraft 1.19.2
 - Minecraft 1.19.3
+- Minecraft 1.19.4
 
 ### 混淆映射表
 

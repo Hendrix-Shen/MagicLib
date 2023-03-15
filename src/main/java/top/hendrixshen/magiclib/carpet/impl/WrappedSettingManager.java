@@ -1,7 +1,6 @@
 package top.hendrixshen.magiclib.carpet.impl;
 
 import carpet.CarpetServer;
-import carpet.script.CarpetEventServer;
 import carpet.settings.ParsedRule;
 import com.google.common.collect.Lists;
 import com.mojang.brigadier.CommandDispatcher;
@@ -44,6 +43,10 @@ import java.util.stream.Collectors;
 import carpet.network.ServerNetworkHandler;
 //#endif
 
+//#if MC > 11502 && MC < 11904
+//$$ import carpet.script.CarpetEventServer;
+//#endif
+
 //#if MC <= 11605
 //$$ import org.apache.commons.lang3.tuple.Pair;
 //#endif
@@ -53,6 +56,9 @@ import carpet.network.ServerNetworkHandler;
 //#endif
 
 //#if MC > 11900
+//#if MC > 11903
+import carpet.api.settings.CarpetRule;
+//#endif
 import carpet.api.settings.SettingsManager;
 import net.minecraft.commands.CommandBuildContext;
 //#else
@@ -110,10 +116,14 @@ public class WrappedSettingManager extends SettingsManager {
         ServerNetworkHandler.updateRuleWithConnectedClients(rule.getRule());
         //#endif
 
-        //#if MC > 11502
-        if (CarpetEventServer.Event.CARPET_RULE_CHANGES.isNeeded()) {
-            CarpetEventServer.Event.CARPET_RULE_CHANGES.onCarpetRuleChanges(rule.getRule(), source);
-        }
+        //#if MC > 11904
+        ReflectUtil.invoke("carpet.api.settings.SettingsManager",
+                "switchScarpetRuleIfNeeded", this,
+                new Class[]{CommandSourceStack.class, CarpetRule.class}, source, rule.getRule());
+        //#elseif MC > 11502
+        //$$ if (CarpetEventServer.Event.CARPET_RULE_CHANGES.isNeeded()) {
+        //$$    CarpetEventServer.Event.CARPET_RULE_CHANGES.onCarpetRuleChanges(rule.getRule(), source);
+        //$$ }
         //#endif
     }
 

@@ -14,7 +14,7 @@ import top.hendrixshen.magiclib.compat.preprocess.api.DummyClass;
 //$$ import org.spongepowered.asm.mixin.Shadow;
 //#endif
 
-//#if MC > 11903
+//#if MC > 11902
 @Mixin(DummyClass.class)
 //#else
 //$$ @Mixin(Vector3f.class)

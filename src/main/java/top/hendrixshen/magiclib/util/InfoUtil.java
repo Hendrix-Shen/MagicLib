@@ -68,7 +68,7 @@ public class InfoUtil {
         });
     }
 
-    //#if MC > 11802
+    //#if MC > 11802 && MC < 11903
     //$$ public static Component getSign(String text) {
     //$$     ClientChatPreview ccp = new ClientChatPreview(Minecraft.getInstance());
     //#if MC > 11900

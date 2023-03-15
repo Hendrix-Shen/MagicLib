@@ -21,8 +21,10 @@ public interface ComponentCompatApi {
 
     @Contract("_, _ -> new")
     static @NotNull MutableComponent translatable(String string, Object... objects) {
-        //#if MC > 11802
-        return MutableComponent.create(new TranslatableContents(string, objects));
+        //#if MC > 11903
+        return MutableComponent.create(new TranslatableContents(string, null, objects));
+        //#elseif MC > 11802
+        //$$ return MutableComponent.create(new TranslatableContents(string, objects));
         //#else
         //$$ return new TranslatableComponent(string, objects);
         //#endif

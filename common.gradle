@@ -32,7 +32,9 @@ preprocess {
 def apiDependencies = [
         ["net.fabricmc.fabric-api:fabric-api", "fabric" , true],
         ["curse.maven:carpet-349239"         , "carpet" , true],
-        ["curse.maven:malilib-303119"        , "malilib", true],
+        ["curse.maven:malilib-303119"        , "malilib", mcVersion <= 11903],
+        // Temp, from Nyan Maven
+        ["fi.dy.masa:malilib"                , "malilib", mcVersion > 11903],
         ["curse.maven:modmenu-308702"        , "modmenu", true]
 ]
 
@@ -40,10 +42,10 @@ def apiDependencies = [
 def runtimeDependencies = [
         ["curse.maven:auto-config-updated-api-373261" , "auto_config_updated_api", mcVersion <= 11502],
         ["curse.maven:cloth-config-348521"            , "cloth_config"           , mcVersion <= 11502],
-        ["curse.maven:in-game-account-switcher-232676", "inGameAccountSwitcher"  , true],
+        ["curse.maven:in-game-account-switcher-232676", "inGameAccountSwitcher"  , mcVersion <= 11903],
         ["curse.maven:lazydfu-433518"                 , "lazydfu"                , true],
-        ["curse.maven:imblockerfabric-399225"         , "imblockerfabric"        , true],
-        ["curse.maven:smooth-boot-415758"             , "smoothboot"             , true]
+        ["curse.maven:imblockerfabric-399225"         , "imblockerfabric"        , mcVersion <= 11903],
+        ["curse.maven:smooth-boot-415758"             , "smoothboot"             , mcVersion <= 11903]
 ]
 
 dependencies {

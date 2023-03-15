@@ -21,8 +21,8 @@
 
 | Dependency | Type     | Environment     | Link                                                                                                                                 |
 |------------|----------|-----------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| Carpet     | Required | Client / Server | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) |
-| MaliLib    | Required | Client          | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   |
+| Carpet     | Optional | Client / Server | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) |
+| MaliLib    | Optional | Client          | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   |
 | Mod Menu   | Optional | Client          | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu)               |
 
 ## Description
@@ -65,7 +65,9 @@ And use `preprocess` to be compatible with all versions.
 - Minecraft 1.16.5
 - Minecraft 1.17.1
 - Minecraft 1.18.2
+- Minecraft 1.19.2
 - Minecraft 1.19.3
+- Minecraft 1.19.4
 
 ### Mappings
 
