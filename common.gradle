@@ -113,15 +113,17 @@ loom {
 
     runs {
         mixinAuditClient {
-            client()
+            inherit(client)
             vmArgs("-D${project.mod_id}.mixin_audit=true")
             ideConfigGenerated(false)
+            runDir("run/client")
         }
 
         mixinAuditServer {
-            server()
+            inherit(server)
             vmArgs("-D${project.mod_id}.mixin_audit=true")
             ideConfigGenerated(false)
+            runDir("run/server")
         }
     }
 
