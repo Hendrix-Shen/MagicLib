@@ -49,7 +49,7 @@ public class Dependencies<T> {
             this.predicate = dependencies.predicate().getDeclaredConstructor().newInstance();
             // Ensure that the input type is correct.
             if (!(this.predicate instanceof top.hendrixshen.magiclib.dependency.api.annotation.Dependencies.DefaultPredicate)) {
-                this.predicate.getClass().getMethod("test", clazz);
+                this.predicate.getClass().getMethod("isSatisfied", clazz);
             }
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
