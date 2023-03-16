@@ -1,9 +1,9 @@
 plugins {
-    id('java-library')
+    id("java-library")
+    id("maven-publish")
 }
-apply(plugin: "maven-publish")
 
-setArchivesBaseName("${project.archives_base_name}")
+setArchivesBaseName("${project.mod_archives_base_name}")
 setGroup(project.mod_maven_group)
 setSourceCompatibility(JavaVersion.VERSION_1_8)
 setTargetCompatibility(JavaVersion.VERSION_1_8)
@@ -20,18 +20,21 @@ fabric_subprojects.collect {
 jar {
     // disable cache
     outputs.upToDateWhen { false }
+
     dependsOn(fabric_subprojects.collect {
         it.tasks.remapJar
     })
 
     doFirst {
         delete fileTree("build/tmp/submods/META-INF/jars")
+
         copy {
             from {
                 fabric_subprojects.collect {
                     it.remapJar.outputs.files
                 }
             }
+
             into("build/tmp/submods/META-INF/jars")
         }
     }
@@ -48,7 +51,7 @@ processResources {
     var jars = []
 
     fabric_subprojects.each({
-        jars.add(["file": "META-INF/jars/${project.archives_base_name}-${it.minecraft_version}-${project.version}.jar"])
+        jars.add(["file": "META-INF/jars/${project.mod_archives_base_name}-${it.minecraft_version}-${project.version}.jar"])
     })
 
     from("${rootDir}/icon.png") {
@@ -73,7 +76,6 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             artifactId(project.mod_id)
-            groupId("${project.mod_maven_group}")
             version(rootProject.mavenArtifactVersion)
             from(components.java)
         }
