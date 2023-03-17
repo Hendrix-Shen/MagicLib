@@ -6,18 +6,22 @@ apply(plugin: "com.replaymod.preprocess")
 
 repositories {
     mavenLocal()
+
     maven {
         name("Curse Maven")
         url("https://www.cursemaven.com")
     }
+
     maven {
         name("FabricMC Maven")
         url("https://maven.fabricmc.net")
     }
+
     maven {
         name("Nyan Maven")
         url("https://maven.hendrixshen.top")
     }
+
     mavenCentral()
 }
 
@@ -29,23 +33,24 @@ preprocess {
     patternAnnotation.set("top.hendrixshen.magiclib.compat.preprocess.api.annotation.Preprocess")
 }
 
+// Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true],
-        ["curse.maven:carpet-349239"         , "carpet" , true],
-        ["curse.maven:malilib-303119"        , "malilib", mcVersion <= 11903],
+        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true              , true],
+        ["curse.maven:carpet-349239"         , "carpet" , true              , false],
+        ["curse.maven:malilib-303119"        , "malilib", mcVersion <= 11903, false],
         // Temp, from Nyan Maven
-        ["fi.dy.masa:malilib"                , "malilib", mcVersion > 11903],
-        ["curse.maven:modmenu-308702"        , "modmenu", true]
+        ["fi.dy.masa:malilib"                , "malilib", mcVersion > 11903 , false],
+        ["curse.maven:modmenu-308702"        , "modmenu", true              , false]
 ]
 
-
+// Module, Property prefix, Resolve condition, Transitive dependencies.
 def runtimeDependencies = [
-        ["curse.maven:auto-config-updated-api-373261" , "auto_config_updated_api", mcVersion <= 11502],
-        ["curse.maven:cloth-config-348521"            , "cloth_config"           , mcVersion <= 11502],
-        ["curse.maven:in-game-account-switcher-232676", "inGameAccountSwitcher"  , mcVersion <= 11903],
-        ["curse.maven:lazydfu-433518"                 , "lazydfu"                , true],
-        ["curse.maven:imblockerfabric-399225"         , "imblockerfabric"        , mcVersion <= 11903],
-        ["curse.maven:smooth-boot-415758"             , "smoothboot"             , true]
+        ["curse.maven:auto-config-updated-api-373261" , "auto_config_updated_api", mcVersion <= 11502, false],
+        ["curse.maven:cloth-config-348521"            , "cloth_config"           , mcVersion <= 11502, false],
+        ["curse.maven:in-game-account-switcher-232676", "inGameAccountSwitcher"  , mcVersion <= 11903, false],
+        ["curse.maven:lazydfu-433518"                 , "lazydfu"                , true              , false],
+        ["curse.maven:imblockerfabric-399225"         , "imblockerfabric"        , true              , false],
+        ["curse.maven:smooth-boot-415758"             , "smoothboot"             , true              , false]
 ]
 
 dependencies {
@@ -61,20 +66,28 @@ dependencies {
     // API
     apiDependencies.forEach {item ->
         String dependencyNotation = item[0]
+        String propertyPrefix = item[1]
         boolean shouldResolve = item[2]
+        boolean shouldTransitive = item[3]
 
         if (shouldResolve) {
-            modApi("${dependencyNotation}:${project.property("${item[1]}_version")}")
+            modApi("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
+                transitive(shouldTransitive)
+            }
         }
     }
 
     // Runtime Library - Make development environment comfortable.
     runtimeDependencies.forEach {item ->
         String dependencyNotation = item[0]
+        String propertyPrefix = item[1]
         boolean shouldResolve = item[2]
+        boolean shouldTransitive = item[3]
 
         if (shouldResolve) {
-            modRuntimeOnly("${dependencyNotation}:${project.property("${item[1]}_version")}")
+            modRuntimeOnly("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
+                transitive(shouldTransitive)
+            }
         }
     }
 
@@ -129,6 +142,15 @@ loom {
         }
     }
 
+    runMixinAuditClient {
+        it.setGroup("${project.mod_id}")
+    }
+
+    runMixinAuditServer {
+        it.setGroup("${project.mod_id}")
+    }
+
+    // Setup client default settings.
     runClient {
         defaultCharacterEncoding("UTF-8")
 
@@ -149,6 +171,7 @@ loom {
         }
     }
 
+    // Setup server default settings.
     runServer {
         defaultCharacterEncoding("UTF-8")
 
@@ -163,7 +186,7 @@ loom {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
+    it.options.setEncoding("UTF-8")
     it.options.compilerArgs.add("-Xlint:-removal")
 }
 

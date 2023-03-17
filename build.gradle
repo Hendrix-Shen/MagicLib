@@ -27,46 +27,50 @@ preprocess {
     mc1193.link(mc1194, null)
 }
 
-String getVersionGit(List paths) {
-    if (grgit == null) {
-        return "nogit"
-    }
-    List latestCommits = paths.isEmpty() ? grgit.log(maxCommits: 1) : grgit.log(paths: paths, maxCommits: 1)
-    return latestCommits.isEmpty() ? "uncommited" : "${latestCommits.get(0).id.substring(0, 7)}"
-}
+ext {
+    env = System.getenv()
 
-String getBuildNumber() {
-    Map<String, String> ENV = System.getenv()
-    return ENV.GITHUB_RUN_NUMBER ? ENV.GITHUB_RUN_NUMBER : Integer.MAX_VALUE
-}
+    getVersionGit = { List paths ->
+        if (grgit == null) {
+            return "nogit"
+        }
 
-String getVersionType() {
-    Map<String, String> ENV = System.getenv()
-    switch (ENV.BUILD_TYPE) {
-        case "RELEASE":
-            return "stable"
-        case "BETA":
-            return "beta"
-        default:
-            return "dev"
+        List latestCommits = paths.isEmpty() ? grgit.log(maxCommits: 1) : grgit.log(paths: paths, maxCommits: 1)
+        return latestCommits.isEmpty() ? "uncommited" : "${latestCommits.get(0).id.substring(0, 7)}"
     }
-}
 
-int getVersionPatch(List paths) {
-    if (grgit == null) {
-        return 0
+    getBuildNumber = {
+        return ext.env.GITHUB_RUN_NUMBER ? ext.env.GITHUB_RUN_NUMBER : Integer.MAX_VALUE
     }
-    List latestCommits = paths.isEmpty() ? grgit.log() : grgit.log(paths: paths)
-    return latestCommits.size()
+
+    getVersionType = {
+        switch (ext.env.BUILD_TYPE) {
+            case "RELEASE":
+                return "stable"
+            case "BETA":
+                return "beta"
+            default:
+                return "dev"
+        }
+    }
+
+    getVersionPatch = { List paths ->
+        if (grgit == null) {
+            return 0
+        }
+
+        List latestCommits = paths.isEmpty() ? grgit.log() : grgit.log(paths: paths)
+        return latestCommits.size()
+    }
+
+    mavenArtifactVersion = project.getVersionType() == "stable" ? "${project.mod_version}.${project.getVersionPatch([])}" : project.version
 }
 
 setVersion("${project.mod_version}.${project.getVersionPatch([])}+${project.getVersionGit([])}-${project.getVersionType()}")
-ext {
-    mavenArtifactVersion = getVersionType() == "stable" ? "${project.mod_version}.${project.getVersionPatch([])}" : project.version
-}
 
 tasks.register("cleanPreprocessSources") {
-    it.setGroup("magicproject")
+    it.setGroup("${project.mod_id}")
+
     doFirst {
         subprojects {
             def path = project.projectDir.toPath().resolve("build/preprocessed")
