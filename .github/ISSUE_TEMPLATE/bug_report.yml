@@ -1,7 +1,9 @@
 name: Bug Report
 description: Create a report to help us improve.
 title: "[Bug] "
-labels: ["bug"]
+labels:
+  - "bug"
+  - "pending"
 body:
   - type: markdown
     attributes:

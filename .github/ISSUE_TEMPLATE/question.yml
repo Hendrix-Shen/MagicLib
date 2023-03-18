@@ -1,7 +1,9 @@
 name: Question
 description: Anything you don't understand.
 title: "[Question] "
-labels: ["question"]
+labels:
+  - "question"
+  - "pending"
 body:
   - type: markdown
     attributes:
