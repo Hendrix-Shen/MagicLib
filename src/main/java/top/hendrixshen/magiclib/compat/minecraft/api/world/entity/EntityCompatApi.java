@@ -66,6 +66,24 @@ public interface EntityCompatApi {
         throw new UnImplCompatApiException();
     }
 
+    default float maxUpStepCompat() {
+        throw new UnImplCompatApiException();
+    }
+
+    default void setMaxUpStepCompat(float maxUpStep) {
+        throw new UnImplCompatApiException();
+    }
+
+    //#if MC < 11904
+    //$$ default float maxUpStep() {
+    //$$     return this.maxUpStepCompat();
+    //$$ }
+    //$$
+    //$$ default void setMaxUpStep(float maxUpStep) {
+    //$$     this.setMaxUpStepCompat(maxUpStep);
+    //$$ }
+    //#endif
+
     //#if MC < 11900
     //$$ default void sendSystemMessage(Component component) {
     //$$     this.sendSystemMessageCompat(component);

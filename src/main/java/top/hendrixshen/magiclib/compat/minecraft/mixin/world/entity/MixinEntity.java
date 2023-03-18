@@ -19,6 +19,17 @@ import top.hendrixshen.magiclib.compat.minecraft.api.world.entity.EntityCompatAp
 
 @Mixin(Entity.class)
 public abstract class MixinEntity implements EntityCompatApi {
+    //#if MC > 11903
+    @Shadow
+    private float maxUpStep;
+
+    @Shadow
+    public abstract void setMaxUpStep(float maxUpStep);
+    //#else
+    //$$ @Shadow
+    //$$ public float maxUpStep;
+    //#endif
+
     //#if MC > 11404
     @Shadow
     public abstract double getX();
@@ -200,6 +211,20 @@ public abstract class MixinEntity implements EntityCompatApi {
         this.setOnGround(onGround);
         //#else
         //$$ this.onGround = onGround;
+        //#endif
+    }
+
+    @Override
+    public float maxUpStepCompat() {
+        return this.maxUpStep;
+    }
+
+    @Override
+    public void setMaxUpStepCompat(float maxUpStep) {
+        //#if MC > 11903
+        this.setMaxUpStep(maxUpStep);
+        //#else
+        //$$ this.maxUpStep = maxUpStep;
         //#endif
     }
 }
