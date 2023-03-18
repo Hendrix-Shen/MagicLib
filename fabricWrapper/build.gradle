@@ -1,13 +1,15 @@
+import groovy.json.JsonBuilder
+
 plugins {
     id("java-library")
     id("maven-publish")
 }
 
-setArchivesBaseName("${project.mod_archives_base_name}")
-setGroup(project.mod_maven_group)
-setSourceCompatibility(JavaVersion.VERSION_1_8)
-setTargetCompatibility(JavaVersion.VERSION_1_8)
-setVersion(project.parent.version)
+archivesBaseName("${project.mod_archives_base_name}")
+group(project.mod_maven_group)
+sourceCompatibility(JavaVersion.VERSION_1_8)
+targetCompatibility(JavaVersion.VERSION_1_8)
+version(project.parent.version)
 
 def fabric_subprojects = project.parent.subprojects.findAll({
     it.name != "fabricWrapper"
@@ -43,8 +45,6 @@ jar {
     from("build/tmp/submods")
 }
 
-import groovy.json.JsonBuilder
-
 processResources {
     // disable cache
     outputs.upToDateWhen { false }
@@ -74,15 +74,16 @@ processResources {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            artifactId(project.mod_id)
-            version(rootProject.mavenArtifactVersion)
+        create("mavenJava", MavenPublication) {
+            artifactId("${project.mod_id}")
+            version("${rootProject.getMavenArtifactVersion()}")
             from(components.java)
         }
     }
 
     repositories {
         mavenLocal()
+
         maven {
             url("$rootDir/publish")
         }

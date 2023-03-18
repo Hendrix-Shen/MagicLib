@@ -63,7 +63,9 @@ ext {
         return latestCommits.size()
     }
 
-    mavenArtifactVersion = project.getVersionType() == "stable" ? "${project.mod_version}.${project.getVersionPatch([])}" : project.version
+    getMavenArtifactVersion = {
+        return ext.getVersionType() == "stable" ? "${project.mod_version}.${ext.getVersionPatch([])}" : project.version
+    }
 }
 
 setVersion("${project.mod_version}.${project.getVersionPatch([])}+${project.getVersionGit([])}-${project.getVersionType()}")

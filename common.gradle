@@ -28,7 +28,7 @@ repositories {
 int mcVersion = 1
 
 preprocess {
-    mcVersion = (int) it.vars.get()["MC"]
+    mcVersion = vars.get().get("MC")
     tabIndentation.set(false)
     patternAnnotation.set("top.hendrixshen.magiclib.compat.preprocess.api.annotation.Preprocess")
 }
@@ -94,36 +94,34 @@ dependencies {
     runtimeOnly(project(path: ":fabricWrapper"))
 }
 
-setArchivesBaseName("${project.mod_archives_base_name}-${project.minecraft_version}")
-setGroup(project.mod_maven_group)
-setSourceCompatibility(JavaVersion.VERSION_1_8)
-setTargetCompatibility(JavaVersion.VERSION_1_8)
-setVersion(project.parent.version)
+archivesBaseName("${project.mod_archives_base_name}-${project.minecraft_version}")
+group(project.mod_maven_group)
+sourceCompatibility(JavaVersion.VERSION_1_8)
+targetCompatibility(JavaVersion.VERSION_1_8)
+version(project.parent.version)
 
 loom {
     interfaceInjection {
         enableDependencyInterfaceInjection.set(true)
     }
 
-    runConfigs {
-        configureEach {
-            // Dump modified classes automatically.
-            property("mixin.debug.export", "true")
-        }
+    runConfigs.configureEach {
+        // Dump modified classes automatically.
+        property("mixin.debug.export", "true")
+    }
 
-        client {
-            programArgs([
-                    "--width",
-                    "1920",
-                    "--height",
-                    "1080",
-            ])
-            runDir("run/client")
-        }
+    runConfigs.named("client") {
+        programArgs([
+                "--width",
+                "1920",
+                "--height",
+                "1080",
+        ])
+        runDir("run/client")
+    }
 
-        server {
-            runDir("run/server")
-        }
+    runConfigs.named("server") {
+        runDir("run/server")
     }
 
     runs {
@@ -143,11 +141,11 @@ loom {
     }
 
     runMixinAuditClient {
-        it.setGroup("${project.mod_id}")
+        setGroup("${project.mod_id}")
     }
 
     runMixinAuditServer {
-        it.setGroup("${project.mod_id}")
+        setGroup("${project.mod_id}")
     }
 
     // Setup client default settings.
@@ -186,12 +184,12 @@ loom {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.setEncoding("UTF-8")
-    it.options.compilerArgs.add("-Xlint:-removal")
+    options.setEncoding("UTF-8")
+    options.getCompilerArgs().add("-Xlint:-removal")
 }
 
 remapJar {
-    remapperIsolation = true
+    remapperIsolation.set(true)
 }
 
 processResources {
@@ -235,9 +233,9 @@ jar {
 
 publishing() {
     publications {
-        mavenJava(MavenPublication) {
+        create("mavenJava", MavenPublication) {
             artifactId("${project.mod_id}-${project.minecraft_version.replace(".", "_")}")
-            version(rootProject.mavenArtifactVersion)
+            version("${rootProject.getMavenArtifactVersion()}")
             from(components.java)
         }
     }
