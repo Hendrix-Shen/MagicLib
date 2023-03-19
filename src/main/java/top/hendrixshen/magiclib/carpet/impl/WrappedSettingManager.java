@@ -18,7 +18,6 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLibReference;
@@ -116,7 +115,7 @@ public class WrappedSettingManager extends SettingsManager {
         //#endif
 
         //#if MC > 11904
-        ReflectUtil.invoke("carpet.api.settings.SettingsManager",
+        ReflectUtil.invokeDeclared("carpet.api.settings.SettingsManager",
                 "switchScarpetRuleIfNeeded", this,
                 new Class[]{CommandSourceStack.class, CarpetRule.class}, source, rule.getRule());
         //#elseif MC > 11502
