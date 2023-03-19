@@ -183,6 +183,14 @@ loom {
     }
 }
 
+tasks.findAll { it.name in [
+        "runClient", "runServer",
+        "runMixinAuditClient", "runMixinAuditServer",
+        "preprocessCode", "preprocessResources",
+        "preprocessTestCode", "preprocessTestResources"] }.forEach {
+    it.group("${project.mod_id}")
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.setEncoding("UTF-8")
     options.getCompilerArgs().add("-Xlint:-removal")

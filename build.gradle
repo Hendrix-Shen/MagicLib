@@ -71,7 +71,7 @@ ext {
 setVersion("${project.mod_version}.${project.getVersionPatch([])}+${project.getVersionGit([])}-${project.getVersionType()}")
 
 tasks.register("cleanPreprocessSources") {
-    it.setGroup("${project.mod_id}")
+    it.group("${project.mod_id}")
 
     doFirst {
         subprojects {
