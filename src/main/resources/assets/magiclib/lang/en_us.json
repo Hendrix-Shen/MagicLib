@@ -32,8 +32,8 @@
   "magiclib.config.test.stringListConfig.comment": "stringListConfig comment",
 
   "magiclib.misc.versionType.development": "Development",
-  "magiclib.misc.versionType.publicBeta": "Public Beta",
-  "magiclib.misc.versionType.publicRelease": "Public Release",
+  "magiclib.misc.versionType.beta": "Public Beta",
+  "magiclib.misc.versionType.stable": "Public Release",
   "magiclib.misc.versionType.unknown": "Unknown",
 
   "magiclib.category.debug": "Debug",

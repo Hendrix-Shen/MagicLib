@@ -32,8 +32,8 @@
   "magiclib.config.test.stringListConfig.comment": "字符串列表描述",
 
   "magiclib.misc.versionType.development": "开发版",
-  "magiclib.misc.versionType.publicBeta": "公共测试版",
-  "magiclib.misc.versionType.publicRelease": "公共发行版",
+  "magiclib.misc.versionType.beta": "公共测试版",
+  "magiclib.misc.versionType.stable": "公共发行版",
   "magiclib.misc.versionType.unknown": "未知版本",
 
   "magiclib.category.debug": "调试",
