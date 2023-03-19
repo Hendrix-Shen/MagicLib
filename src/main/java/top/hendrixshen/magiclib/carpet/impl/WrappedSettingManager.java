@@ -69,7 +69,6 @@ import net.minecraft.commands.CommandBuildContext;
 //$$ import carpet.settings.SettingsManager;
 //#endif
 
-@ApiStatus.OverrideOnly
 //#if MC >= 11901
 @SuppressWarnings("removal")
 //#endif
