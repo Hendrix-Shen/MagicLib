@@ -35,12 +35,10 @@ preprocess {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true              , true],
-        ["curse.maven:carpet-349239"         , "carpet" , true              , false],
-        ["curse.maven:malilib-303119"        , "malilib", mcVersion <= 11903, false],
-        // Temp, from Nyan Maven
-        ["fi.dy.masa:malilib"                , "malilib", mcVersion > 11903 , false],
-        ["curse.maven:modmenu-308702"        , "modmenu", true              , false]
+        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true, true],
+        ["curse.maven:carpet-349239"         , "carpet" , true, false],
+        ["curse.maven:malilib-303119"        , "malilib", true, false],
+        ["curse.maven:modmenu-308702"        , "modmenu", true, false]
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
