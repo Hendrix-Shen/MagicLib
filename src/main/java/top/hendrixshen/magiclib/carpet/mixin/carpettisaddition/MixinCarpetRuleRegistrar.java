@@ -41,7 +41,7 @@ public class MixinCarpetRuleRegistrar {
     private @NotNull Object redirectConstructorCall(Constructor<?> constructor, Object @NotNull ... parameters) {
         return ReflectUtil.newInstance("carpet.settings.ParsedRule", new Class[]{
                 Field.class, ReflectUtil.getInnerClass(ReflectUtil.getClass("carpet.settings.ParsedRule").orElseThrow(RuntimeException::new), "RuleAnnotation")
-                .orElseThrow(RuntimeException::new), carpet.api.settings.SettingsManager.class}, parameters[0], parameters[1], parameters[2]);
+                .orElseThrow(RuntimeException::new), carpet.api.settings.SettingsManager.class}, parameters[0], parameters[1], parameters[2]).orElseThrow(RuntimeException::new);
     }
     //#endif
 }
