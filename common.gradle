@@ -35,20 +35,21 @@ preprocess {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true, true],
-        ["curse.maven:carpet-349239"         , "carpet" , true, false],
-        ["curse.maven:malilib-303119"        , "malilib", true, false],
-        ["curse.maven:modmenu-308702"        , "modmenu", true, false]
+        ["curse.maven:carpet-349239"         , "carpet" , true             , false],
+        ["curse.maven:malilib-303119"        , "malilib", mcVersion < 12000, false],
+        ["curse.maven:modmenu-308702"        , "modmenu", true             , false],
+        ["fi.dy.masa:malilib"                , "malilib", mcVersion > 11904, false],
+        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true             , true],
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def runtimeDependencies = [
-        ["curse.maven:auto-config-updated-api-373261" , "auto_config_updated_api", mcVersion <= 11502, false],
-        ["curse.maven:cloth-config-348521"            , "cloth_config"           , mcVersion <= 11502, false],
-        ["curse.maven:in-game-account-switcher-232676", "inGameAccountSwitcher"  , mcVersion <= 11903, false],
-        ["curse.maven:lazydfu-433518"                 , "lazydfu"                , true              , false],
-        ["curse.maven:imblockerfabric-399225"         , "imblockerfabric"        , true              , false],
-        ["curse.maven:smooth-boot-415758"             , "smoothboot"             , true              , false]
+        ["curse.maven:auto-config-updated-api-373261" , "auto_config_updated_api", mcVersion < 11600, false],
+        ["curse.maven:cloth-config-348521"            , "cloth_config"           , mcVersion < 11600, false],
+        ["curse.maven:in-game-account-switcher-232676", "inGameAccountSwitcher"  , mcVersion < 12000, false],
+        ["curse.maven:lazydfu-433518"                 , "lazydfu"                , true             , false],
+        ["curse.maven:imblockerfabric-399225"         , "imblockerfabric"        , true             , false],
+        ["curse.maven:smooth-boot-415758"             , "smoothboot"             , mcVersion < 12000, false]
 ]
 
 dependencies {
@@ -136,14 +137,6 @@ loom {
             ideConfigGenerated(false)
             runDir("run/server")
         }
-    }
-
-    runMixinAuditClient {
-        setGroup("${project.mod_id}")
-    }
-
-    runMixinAuditServer {
-        setGroup("${project.mod_id}")
     }
 
     // Setup client default settings.
