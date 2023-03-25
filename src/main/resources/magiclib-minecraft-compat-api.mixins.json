@@ -14,13 +14,13 @@
     "client.gui.MixinFont",
     "client.gui.screen.MixinScreen",
     "client.renderer.entity.MixinEntityRenderDispatcher",
+    "math.MixinVector3f",
     "math.AccessorMatrix4f",
     "math.MixinMatrix4f",
     "math.MixinQuaternion",
     "math.MixinVector4f"
   ],
   "mixins": [
-    "math.MixinVector3f",
     "network.chat.AccessorStyle",
     "network.chat.MixinMutableComponent",
     "network.chat.MixinStyle",

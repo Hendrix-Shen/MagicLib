@@ -9,7 +9,6 @@ import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 //#if MC > 11902
 @Deprecated
 //#endif
-@Environment(EnvType.CLIENT)
 public interface Matrix4fCompatApi {
     //#if MC > 11902
     /**

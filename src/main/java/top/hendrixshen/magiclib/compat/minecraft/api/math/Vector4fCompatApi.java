@@ -5,7 +5,6 @@ import net.fabricmc.api.Environment;
 import org.joml.Matrix4f;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
-@Environment(EnvType.CLIENT)
 public interface Vector4fCompatApi {
     default void transformCompat(Matrix4f matrix4f) {
         throw new UnImplCompatApiException();

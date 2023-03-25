@@ -5,7 +5,6 @@ import net.fabricmc.api.Environment;
 import org.joml.Quaternionf;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
-@Environment(EnvType.CLIENT)
 public interface QuaternionCompatApi {
     Quaternionf ONE = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
 
