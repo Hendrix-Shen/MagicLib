@@ -1,11 +1,12 @@
+import net.fabricmc.loom.util.Checksum
+
 plugins {
-    id("maven-publish")
     id("fabric-loom").version("1.1-SNAPSHOT").apply(false)
-    // https://github.com/Juuxel/LoomQuiltflower
     id("io.github.juuxel.loom-quiltflower").version("1.8.0").apply(false)
-    id("com.replaymod.preprocess").version("SNAPSHOT")
-    id("org.ajoberstar.grgit").version("5.0.0")
+    id("maven-publish")
     id("net.kyori.blossom").version("1.3.1").apply(false)
+    id("org.ajoberstar.grgit").version("5.0.0")
+    id("com.replaymod.preprocess").version("SNAPSHOT")
 }
 
 preprocess {
@@ -30,7 +31,7 @@ preprocess {
 }
 
 ext {
-    env = System.getenv()
+    environment = System.getenv()
 
     getVersionGit = { List paths ->
         if (grgit == null) {
@@ -42,11 +43,11 @@ ext {
     }
 
     getBuildNumber = {
-        return ext.env.GITHUB_RUN_NUMBER ? ext.env.GITHUB_RUN_NUMBER : Integer.MAX_VALUE
+        return ext.environment.GITHUB_RUN_NUMBER ? ext.environment.GITHUB_RUN_NUMBER : Integer.MAX_VALUE
     }
 
     getVersionType = {
-        switch (ext.env.BUILD_TYPE) {
+        switch (ext.environment.BUILD_TYPE) {
             case "RELEASE":
                 return "stable"
             case "BETA":
