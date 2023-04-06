@@ -264,14 +264,17 @@ tasks.register("runProductionServer", JavaExec) {
     }
 }
 
-tasks.findAll { it.name in [
-        "serverPropertiesJar",
-        "runClient"            , "runServer",
-        "runMixinAuditClient"  , "runMixinAuditServer",
-        "runProductionClient"  , "runProductionServer",
-        "preprocessCode"       , "preprocessResources",
-        "preprocessTestCode"   , "preprocessTestResources"] }.forEach {
-    it.group("${project.mod_id}")
+["serverPropertiesJar",
+ "runClient"            , "runServer",
+ "runMixinAuditClient"  , "runMixinAuditServer",
+ "runProductionClient"  , "runProductionServer",
+ "preprocessCode"       , "preprocessResources",
+ "preprocessTestCode"   , "preprocessTestResources"].forEach {
+    if (tasks.getNames().contains(it)) {
+        tasks.named(it) {
+            it.group("${mod_id}")
+        }
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -322,10 +325,10 @@ java {
 
 publishing() {
     publications {
-        create("mavenJava", MavenPublication) {
+        register("mavenJava", MavenPublication) {
             artifactId("${project.mod_id}-${project.minecraft_version.replace(".", "_")}")
-            version("${rootProject.getMavenArtifactVersion()}")
             from(components.java)
+            version("${rootProject.getMavenArtifactVersion()}")
         }
     }
 
