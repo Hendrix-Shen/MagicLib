@@ -37,15 +37,13 @@ preprocess {
 
 configurations {
     register("productionRuntimeClient") {configuration ->
-        configurations
-                .findAll { it.name in [
-                        "minecraftLibraries",
-                        "loaderLibraries",
-                        "minecraftRuntimeOnlyLibraries"
-                ]}
-                .forEach { Configuration superConfigurations ->
-                    configuration.extendsFrom(superConfigurations)
-                }
+        configurations.findAll { it.name in [
+                "minecraftLibraries",
+                "loaderLibraries",
+                "minecraftRuntimeOnlyLibraries"
+        ]}.forEach { Configuration superConfigurations ->
+            configuration.extendsFrom(superConfigurations)
+        }
     }
 
     register("productionRuntimeServer")
@@ -265,11 +263,11 @@ tasks.register("runProductionServer", JavaExec) {
 }
 
 ["serverPropertiesJar",
- "runClient"            , "runServer",
- "runMixinAuditClient"  , "runMixinAuditServer",
- "runProductionClient"  , "runProductionServer",
- "preprocessCode"       , "preprocessResources",
- "preprocessTestCode"   , "preprocessTestResources"].forEach {
+ "runClient"          , "runServer",
+ "runMixinAuditClient", "runMixinAuditServer",
+ "runProductionClient", "runProductionServer",
+ "preprocessCode"     , "preprocessResources",
+ "preprocessTestCode" , "preprocessTestResources"].forEach {
     if (tasks.getNames().contains(it)) {
         tasks.named(it) {
             it.group("${mod_id}")
