@@ -1,8 +1,7 @@
 package top.hendrixshen.magiclib.util;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -14,9 +13,12 @@ import top.hendrixshen.magiclib.dependency.api.DepCheckException;
 import top.hendrixshen.magiclib.dependency.impl.Dependencies;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.BiConsumer;
 
@@ -213,10 +215,13 @@ public class FabricUtil {
             try {
                 for (URL url : getResources("fabric.mod.json")) {
                     logUrl = url;
-                    JsonObject jsonObject = MiscUtil.readJson(url);
+                    InputStream inputStream = url.openStream();
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+                    JsonReader jsonReader = new JsonReader(inputStreamReader);
+
                     try {
-                        ModMetaData modMetaData = new ModMetaData(jsonObject);
-                        data.put(modMetaData.id, modMetaData);
+                        ModMetaData modMetaData = new ModMetaData(jsonReader);
+                        ModMetaData.data.put(modMetaData.id, modMetaData);
                     } catch (Throwable e) {
                         MagicLibReference.getLogger().debug("Exception when parse {}.", url);
                     }
@@ -228,27 +233,48 @@ public class FabricUtil {
         }
 
         public String id;
-        public JsonObject json;
         public HashMap<String, HashSet<String>> entryPoints;
 
-        private ModMetaData(@NotNull JsonObject json) {
-            this.id = json.get("id").getAsString();
-            this.json = json;
+        private ModMetaData(@NotNull JsonReader reader) throws IOException {
             this.entryPoints = new HashMap<>();
+            reader.beginObject();
 
-            JsonObject entrypointsJsonObject = json.getAsJsonObject("entrypoints");
-            if (entrypointsJsonObject != null) {
-                for (Map.Entry<String, JsonElement> entrypointEntry : entrypointsJsonObject.entrySet()) {
-                    JsonArray entrypointArray = entrypointEntry.getValue().getAsJsonArray();
+            while (reader.hasNext()) {
+                String key = reader.nextName();
 
-                    for (int i = 0; i < entrypointArray.size(); ++i) {
-                        String entrypoint = entrypointArray.get(i).getAsString();
-                        HashSet<String> entrypointSet = entryPoints.computeIfAbsent(
-                                entrypointEntry.getKey(), key -> new HashSet<>());
-                        entrypointSet.add(entrypoint);
-                    }
+                switch (key) {
+                    case "id":
+                        this.id = reader.nextString();
+                        break;
+
+                    case "entrypoints":
+                        reader.beginObject();
+
+                        while (reader.hasNext()) {
+                            final String entryKey = reader.nextName();
+                            reader.beginArray();
+
+                            while (reader.hasNext()) {
+                                if (reader.peek() == JsonToken.STRING) {
+                                    HashSet<String> entrypointSet = this.entryPoints.computeIfAbsent(
+                                            entryKey, k -> new HashSet<>());
+                                    entrypointSet.add(reader.nextString());
+                                } else {
+                                    reader.skipValue();
+                                }
+                            }
+
+                            reader.endArray();
+                        }
+
+                        reader.endObject();
+                        break;
+                    default:
+                        reader.skipValue();
                 }
             }
+
+            reader.endObject();
         }
     }
 }
