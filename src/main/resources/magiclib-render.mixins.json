@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "top.hendrixshen.magiclib.render.mixin",
+  "plugin": "top.hendrixshen.magiclib.render.RenderMixinPlugin",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "MixinGameRenderer",
+    "MixinLevelRenderer"
+  ]
+}
