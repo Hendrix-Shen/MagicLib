@@ -92,10 +92,10 @@ public abstract class MixinFont implements FontCompatApi {
         //$$
         //$$ BufferBuilder bufferBuilder = tesselator.getBuilder();
         //$$ bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
-        //$$ bufferBuilder.vertex(x - 1, y - 1, 0).color(r, g, b, a).endVertex();
-        //$$ bufferBuilder.vertex(x - 1, y + 8, 0).color(r, g, b, a).endVertex();
-        //$$ bufferBuilder.vertex(x + this.width(component) + 1, y + 8, 0).color(r, g, b, a).endVertex();
-        //$$ bufferBuilder.vertex(x + this.width(component) + 1, y - 1, 0).color(r, g, b, a).endVertex();
+        //$$ bufferBuilder.vertex(x - 1, y - 1, 0.01F).color(r, g, b, a).endVertex();
+        //$$ bufferBuilder.vertex(x - 1, y + 9, 0.01F).color(r, g, b, a).endVertex();
+        //$$ bufferBuilder.vertex(x + this.width(component) + 1, y + 9, 0.01F).color(r, g, b, a).endVertex();
+        //$$ bufferBuilder.vertex(x + this.width(component) + 1, y - 1, 0.01F).color(r, g, b, a).endVertex();
         //$$ tesselator.end();
         //$$ GlStateManager.enableTexture();
         //$$ int ret;
