@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import top.hendrixshen.magiclib.render.api.IPostRenderEntityRenderer;
 import top.hendrixshen.magiclib.render.api.IPostRenderLevelRenderer;
 
 import java.util.List;
@@ -13,14 +15,26 @@ public class RenderEventHandler {
     @Getter
     private static final RenderEventHandler instance = new RenderEventHandler();
     private static final Minecraft mc = Minecraft.getInstance();
+    private static final List<IPostRenderEntityRenderer> postRenderEntityRenderers = Lists.newArrayList();
     private static final List<IPostRenderLevelRenderer> postRenderLevelRenderers = Lists.newArrayList();
+
+    public static void registerPostRenderEntityRenderer(IPostRenderEntityRenderer renderer) {
+        RenderEventHandler.postRenderEntityRenderers.add(renderer);
+    }
 
     public static void registerPostRenderLevelRenderer(IPostRenderLevelRenderer renderer) {
         RenderEventHandler.postRenderLevelRenderers.add(renderer);
     }
 
+    public void dispatchPostRenderEntityEvent(Entity entity, PoseStack poseStack, float tickDelta) {
+        mc.getProfiler().popPush("MagicRenderEventHandler::dispatchPostRenderEntityEvent");
+        RenderContext renderContext = new RenderContext(poseStack);
+        RenderEventHandler.postRenderEntityRenderers.forEach(renderer -> renderer.render(entity, renderContext, tickDelta));
+        mc.getProfiler().pop();
+    }
+
     public void dispatchPostRenderLevelEvent(Level level, PoseStack poseStack, float tickDelta) {
-        mc.getProfiler().popPush("MagicRenderEventHandler::dispatchRenderWorldPostEvent");
+        mc.getProfiler().popPush("MagicRenderEventHandler::dispatchPostRenderLevelEvent");
         RenderContext renderContext = new RenderContext(poseStack);
         RenderEventHandler.postRenderLevelRenderers.forEach(renderer -> renderer.render(level, renderContext, tickDelta));
         mc.getProfiler().pop();
