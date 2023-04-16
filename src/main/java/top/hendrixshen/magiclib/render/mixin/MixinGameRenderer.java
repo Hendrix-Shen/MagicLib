@@ -33,7 +33,7 @@ public class MixinGameRenderer {
     //$$         )
     //$$ )
     //$$ private void postRenderLevel(float tickDelta, long endTime, CallbackInfo ci) {
-    //$$     RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(MiscUtil.cast(Minecraft.getInstance().level), new PoseStack());
+    //$$     RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(MiscUtil.cast(Minecraft.getInstance().level), new PoseStack(), tickDelta);
     //$$ }
     //#endif
 }

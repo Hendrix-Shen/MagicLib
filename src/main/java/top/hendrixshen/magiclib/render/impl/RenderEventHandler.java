@@ -19,10 +19,10 @@ public class RenderEventHandler {
         RenderEventHandler.postRenderLevelRenderers.add(renderer);
     }
 
-    public void dispatchPostRenderLevelEvent(Level level, PoseStack poseStack) {
+    public void dispatchPostRenderLevelEvent(Level level, PoseStack poseStack, float tickDelta) {
         mc.getProfiler().popPush("MagicRenderEventHandler::dispatchRenderWorldPostEvent");
         RenderContext renderContext = new RenderContext(poseStack);
-        RenderEventHandler.postRenderLevelRenderers.forEach(renderer -> renderer.render(level, renderContext));
+        RenderEventHandler.postRenderLevelRenderers.forEach(renderer -> renderer.render(level, renderContext, tickDelta));
         mc.getProfiler().pop();
     }
 }

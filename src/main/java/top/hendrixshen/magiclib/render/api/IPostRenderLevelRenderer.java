@@ -8,5 +8,5 @@ import top.hendrixshen.magiclib.render.impl.RenderContext;
 @Environment(EnvType.CLIENT)
 @FunctionalInterface
 public interface IPostRenderLevelRenderer {
-    void render(Level level, RenderContext context);
+    void render(Level level, RenderContext context, float tickDelta);
 }
