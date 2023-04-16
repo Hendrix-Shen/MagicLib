@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.render.impl.RenderEventHandler;
+import top.hendrixshen.magiclib.util.MiscUtil;
 //#else
 //$$ import top.hendrixshen.magiclib.compat.preprocess.api.DummyClass;
 //#endif
@@ -39,7 +40,7 @@ public class MixinLevelRenderer {
             )
     )
     private void postRenderLevel(PoseStack poseStack, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, CallbackInfo ci) {
-        RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(poseStack);
+        RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(MiscUtil.cast(this), poseStack);
     }
     //#endif
 }

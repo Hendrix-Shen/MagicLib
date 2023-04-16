@@ -8,15 +8,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.compat.preprocess.api.DummyClass;
 //#else
 //$$ import com.mojang.blaze3d.vertex.PoseStack;
-//$$ import net.minecraft.client.Camera;
+//$$ import net.minecraft.client.Minecraft;
 //$$ import net.minecraft.client.renderer.GameRenderer;
-//$$ import org.spongepowered.asm.mixin.Final;
-//$$ import org.spongepowered.asm.mixin.Shadow;
 //$$ import org.spongepowered.asm.mixin.injection.At;
 //$$ import org.spongepowered.asm.mixin.injection.Inject;
 //$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//$$ import top.hendrixshen.magiclib.compat.minecraft.api.math.Vector3fCompatApi;
 //$$ import top.hendrixshen.magiclib.render.impl.RenderEventHandler;
+//$$ import top.hendrixshen.magiclib.util.MiscUtil;
 //#endif
 
 @Environment(EnvType.CLIENT)
@@ -27,10 +25,6 @@ import top.hendrixshen.magiclib.compat.preprocess.api.DummyClass;
 //#endif
 public class MixinGameRenderer {
     //#if MC < 11500
-    //$$ @Shadow
-    //$$ @Final
-    //$$ private Camera mainCamera;
-    //$$
     //$$ @Inject(
     //$$         method = "render(FJ)V",
     //$$         at = @At(
@@ -39,7 +33,7 @@ public class MixinGameRenderer {
     //$$         )
     //$$ )
     //$$ private void postRenderLevel(float tickDelta, long endTime, CallbackInfo ci) {
-    //$$     RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(new PoseStack());
+    //$$     RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(MiscUtil.cast(Minecraft.getInstance().level), new PoseStack());
     //$$ }
     //#endif
 }
