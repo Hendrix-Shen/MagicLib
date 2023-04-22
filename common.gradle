@@ -12,11 +12,24 @@ repositories {
     maven {
         name("Curse Maven")
         url("https://www.cursemaven.com")
+
+        content {
+            includeGroup("curse.maven")
+        }
     }
 
     maven {
         name("FabricMC Maven")
         url("https://maven.fabricmc.net")
+    }
+
+    maven {
+        name("Modrinth Maven")
+        url("https://api.modrinth.com/maven")
+
+        content {
+            includeGroup("maven.modrinth")
+        }
     }
 
     maven {
@@ -52,21 +65,21 @@ configurations {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["curse.maven:carpet-349239"         , "carpet" , true             , false],
+        ["maven.modrinth:carpet"             , "carpet" , true             , false],
         ["curse.maven:malilib-303119"        , "malilib", mcVersion < 12000, false],
-        ["curse.maven:modmenu-308702"        , "modmenu", true             , false],
         ["fi.dy.masa:malilib"                , "malilib", mcVersion > 11904, false],
+        ["maven.modrinth:modmenu"            , "modmenu", true             , false],
         ["net.fabricmc.fabric-api:fabric-api", "fabric" , true             , true],
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def runtimeDependencies = [
-        ["curse.maven:auto-config-updated-api-373261" , "auto_config_updated_api", mcVersion < 11600, false],
-        ["curse.maven:cloth-config-348521"            , "cloth_config"           , mcVersion < 11600, false],
-        ["curse.maven:in-game-account-switcher-232676", "inGameAccountSwitcher"  , mcVersion < 12000, false],
-        ["curse.maven:lazydfu-433518"                 , "lazydfu"                , true             , false],
-        ["curse.maven:imblockerfabric-399225"         , "imblockerfabric"        , true             , false],
-        ["curse.maven:smooth-boot-415758"             , "smoothboot"             , mcVersion < 12000, false]
+        ["curse.maven:auto-config-updated-api-373261", "auto_config_updated_api", mcVersion < 11600, false],
+        ["maven.modrinth:cloth-config"               , "cloth_config"           , mcVersion < 11600, false],
+        ["maven.modrinth:in-game-account-switcher"   , "inGameAccountSwitcher"  , mcVersion < 12000, false],
+        ["maven.modrinth:lazydfu"                    , "lazydfu"                , true             , false],
+        ["maven.modrinth:imblocker"                  , "imblockerfabric"        , true             , false],
+        ["curse.maven:smooth-boot-415758"            , "smoothboot"             , mcVersion < 12000, false]
 ]
 
 dependencies {
