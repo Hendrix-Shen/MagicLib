@@ -18,7 +18,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 @Environment(EnvType.CLIENT)
 @Mixin(EntityRenderer.class)
 public class MixinEntityRenderer<T extends Entity> {
-    @Inject(method = "render", at = @At(value = "RETURN"))
+    @Inject(
+            method = "render",
+            at = @At(
+                    value = "RETURN"
+            )
+    )
     //#if MC > 11404
     private void postRenderEntity(T entity, float yaw, float tickDelta, PoseStack poseStack, MultiBufferSource source, int light, CallbackInfo ci) {
     //#else

@@ -29,14 +29,22 @@ public class RenderEventHandler {
     public void dispatchPostRenderEntityEvent(Entity entity, PoseStack poseStack, float tickDelta) {
         mc.getProfiler().popPush("MagicRenderEventHandler::dispatchPostRenderEntityEvent");
         RenderContext renderContext = new RenderContext(poseStack);
-        RenderEventHandler.postRenderEntityRenderers.forEach(renderer -> renderer.render(entity, renderContext, tickDelta));
+        RenderEventHandler.postRenderEntityRenderers.forEach(renderer -> {
+            mc.getProfiler().push(String.format("%s::render", renderer.getClass().getName()));
+            renderer.render(entity, renderContext, tickDelta);
+            mc.getProfiler().pop();
+        });
         mc.getProfiler().pop();
     }
 
     public void dispatchPostRenderLevelEvent(Level level, PoseStack poseStack, float tickDelta) {
         mc.getProfiler().popPush("MagicRenderEventHandler::dispatchPostRenderLevelEvent");
         RenderContext renderContext = new RenderContext(poseStack);
-        RenderEventHandler.postRenderLevelRenderers.forEach(renderer -> renderer.render(level, renderContext, tickDelta));
+        RenderEventHandler.postRenderLevelRenderers.forEach(renderer -> {
+            mc.getProfiler().push(String.format("%s::render", renderer.getClass().getName()));
+            renderer.render(level, renderContext, tickDelta);
+            mc.getProfiler().pop();
+        });
         mc.getProfiler().pop();
     }
 }
