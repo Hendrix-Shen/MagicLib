@@ -65,7 +65,7 @@ configurations {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["maven.modrinth:carpet"             , "carpet" , true             , false],
+        ["carpet:fabric-carpet"              , "carpet" , true             , false],
         ["curse.maven:malilib-303119"        , "malilib", mcVersion < 12000, false],
         ["fi.dy.masa:malilib"                , "malilib", mcVersion > 11904, false],
         ["maven.modrinth:modmenu"            , "modmenu", true             , false],
@@ -298,6 +298,8 @@ remapJar {
 }
 
 processResources {
+    outputs.upToDateWhen { false }
+
     from("${rootDir}/LICENSE")
 
     from("${rootDir}/icon.png") {
