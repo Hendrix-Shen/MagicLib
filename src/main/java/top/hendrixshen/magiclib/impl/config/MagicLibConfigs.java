@@ -76,7 +76,7 @@ public class MagicLibConfigs {
     public static void init(@NotNull ConfigManager cm) {
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
             MagicLibConfigGui screen = MagicLibConfigGui.getInstance();
-            //#if MC > 11903 && MC < 12000
+            //#if MC > 11903
             screen.setParent(Minecraft.getInstance().screen);
             //#else
             //$$ screen.setParentGui(Minecraft.getInstance().screen);
@@ -92,8 +92,6 @@ public class MagicLibConfigs {
     }
 
     public static void postDeserialize(ConfigHandler configHandler) {
-        Minecraft mc = Minecraft.getInstance();
-
         if (debug) {
             Configurator.setLevel(MagicLibReference.getModIdentifier(), Level.DEBUG);
         }

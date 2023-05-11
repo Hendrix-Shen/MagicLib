@@ -23,7 +23,7 @@ public class ConfigEntrypoint {
         }
 
         Object screen = ReflectUtil.invokeDeclared("top.hendrixshen.magiclib.impl.config.MagicLibConfigGui", "getInstance", null).orElseThrow(RuntimeException::new);
-        //#if MC > 11903 && MC < 12000
+        //#if MC > 11903
         ReflectUtil.invoke("top.hendrixshen.magiclib.impl.config.MagicLibConfigGui", "setParent", screen, new Class[] {Screen.class}, parent);
         //#else
         //$$ ReflectUtil.invoke("top.hendrixshen.magiclib.impl.config.MagicLibConfigGui", "setParentGui", screen, new Class[] {Screen.class}, parent);
