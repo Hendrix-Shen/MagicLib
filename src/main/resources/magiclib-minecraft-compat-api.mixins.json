@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "top.hendrixshen.magiclib.compat.minecraft.mixin",
-  "plugin": "top.hendrixshen.magiclib.compat.minecraft.MinecraftCompatAPIMixinPlugin",
+  "plugin": "top.hendrixshen.magiclib.MagicLibMixinPlugin",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "injectors": {
