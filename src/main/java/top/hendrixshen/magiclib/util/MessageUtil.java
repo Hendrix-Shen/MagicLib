@@ -23,7 +23,9 @@ public class MessageUtil {
     }
 
     public static void sendMessage(CommandSourceStack source, Component messages) {
-        //#if MC > 11502
+        //#if MC > 11904
+        //$$ Optional.ofNullable(source).ifPresent(sourceStack -> sourceStack.sendSuccess(() -> messages, source.getServer().getLevel(Level.OVERWORLD) != null));
+        //#elseif MC > 11502
         Optional.ofNullable(source).ifPresent(sourceStack -> sourceStack.sendSuccess(messages, source.getServer().getLevel(Level.OVERWORLD) != null));
         //#else
         //$$ Optional.ofNullable(source).ifPresent(sourceStack -> sourceStack.sendSuccess(messages, source.getServer() != null && source.getServer().getLevel(DimensionType.OVERWORLD) != null));
