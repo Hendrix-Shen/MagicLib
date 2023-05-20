@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.render.impl;
+package top.hendrixshen.magiclib.event.render.impl;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -62,6 +62,14 @@ public class RenderContext {
         RenderSystem.blendFunc(srcFactor, dstFactor);
     }
 
+    public void color4f(float red, float green, float blue, float alpha) {
+        //#if MC > 11605
+        RenderSystem.setShaderColor(red, green, blue, alpha);
+        //#else
+        //$$ RenderSystem.color4f(red, green, blue, alpha);
+        //#endif
+    }
+
     //#if MC < 11904
     //$$ public void enableTexture() {
     //$$     RenderSystem.enableTexture();
@@ -75,12 +83,6 @@ public class RenderContext {
     //$$
     //$$ public void disableLighting() {
     //$$    RenderSystem.disableLighting();
-    //$$ }
-    //#endif
-
-    //#if MC < 11600
-    //$$ public void color4f(float red, float green, float blue, float alpha) {
-    //$$     RenderSystem.color4f(red, green, blue, alpha);
     //$$ }
     //#endif
 }

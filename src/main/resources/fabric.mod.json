@@ -41,10 +41,10 @@
   },
   "mixins": [
     "${mod_id}-carpet.mixins.json",
+    "${mod_id}-event.mixins.json",
     "${mod_id}-i18n.mixins.json",
     "${mod_id}-malilib.mixins.json",
-    "${mod_id}-minecraft-compat-api.mixins.json",
-    "${mod_id}-render.mixins.json"
+    "${mod_id}-minecraft-compat-api.mixins.json"
   ],
   "depends": {
     "minecraft": "${minecraft_dependency}"

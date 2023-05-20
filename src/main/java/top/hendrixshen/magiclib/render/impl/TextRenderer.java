@@ -12,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
+import top.hendrixshen.magiclib.event.render.impl.RenderContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +37,7 @@ public class TextRenderer {
     private boolean shadow = false;
     private boolean seeThrough = false;
 
+    @SuppressWarnings("UnnecessaryLocalVariable")
     public void render(RenderContext context) {
         if (this.lines.isEmpty()) {
             return;

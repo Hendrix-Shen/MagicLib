@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.render.mixin;
+package top.hendrixshen.magiclib.event.render.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.render.impl.RenderEventHandler;
+import top.hendrixshen.magiclib.event.render.impl.RenderEventHandler;
 
 //#if MC > 11404
 import net.minecraft.client.renderer.MultiBufferSource;

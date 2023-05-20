@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "top.hendrixshen.magiclib.render.mixin",
+  "package": "top.hendrixshen.magiclib.event.render.mixin",
   "plugin": "top.hendrixshen.magiclib.MagicLibMixinPlugin",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",

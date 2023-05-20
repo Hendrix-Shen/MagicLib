@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.render.mixin;
+package top.hendrixshen.magiclib.event.render.mixin;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.render.impl.RenderEventHandler;
+import top.hendrixshen.magiclib.event.render.impl.RenderEventHandler;
 //#else
 //$$ import top.hendrixshen.magiclib.compat.preprocess.api.DummyClass;
 //#endif
