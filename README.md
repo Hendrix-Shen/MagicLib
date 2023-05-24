@@ -15,7 +15,9 @@
 
 English | [中文](./README_ZH_CN.md)
 
-**Warning: The project is still in the early development stage.**
+⚠️**Warning: The project is still in the early development stage.**
+
+❗Before reporting a problem, be sure to try the latest [beta version](https://github.com/Hendrix-Shen/MagicLib/releases) to check if the problem still exists.
 
 ## Dependencies
 

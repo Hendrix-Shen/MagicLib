@@ -15,7 +15,9 @@
 
 [English](./README.md) | 中文
 
-**警告: 此项目仍然处于早期开发阶段。**
+⚠️**警告: 此项目仍然处于早期开发阶段。**
+
+❗在报告问题前，请务必尝试最新[测试版](https://github.com/Hendrix-Shen/MagicLib/releases)，检查问题是否依然存在。
 
 ## 依赖库
 
