@@ -18,11 +18,11 @@ public class RenderContext {
         this.poseStack = poseStack;
     }
 
-    public void pushMatrix() {
+    public void pushPose() {
         this.poseStack.pushPose();
     }
 
-    public void popMatrix() {
+    public void popPose() {
         this.poseStack.popPose();
     }
 

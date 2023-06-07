@@ -2,23 +2,27 @@ package top.hendrixshen.magiclib.render.impl;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.Tesselator;
 import lombok.Getter;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.event.render.impl.RenderContext;
+import top.hendrixshen.magiclib.util.RenderUtil;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 //#if MC < 11904
-//$$ import com.mojang.blaze3d.systems.RenderSystem;
 //$$ import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
@@ -27,15 +31,39 @@ import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
 
 public class TextRenderer {
-    private final List<Component> lines = Lists.newArrayList();
-    private Vec3 pos = Vec3.ZERO;
+    public static final double DEFAULT_FONT_SCALE = 0.025;
+
+    private final List<Component> lines;
+    private Vec3 pos;
+    private double shiftX;
+    private double shiftY;
     @Getter
-    private double fontSize = 0.02;
-    private double lineHeight = (Minecraft.getInstance().font.lineHeight + 1.0) / Minecraft.getInstance().font.lineHeight;
-    private int color = 0xFFFFFFFF;
-    private int backgroundColor = 0x00000000;
-    private boolean shadow = false;
-    private boolean seeThrough = false;
+    private double fontScale;
+    private double lineHeightRatio;
+    private int color;
+    private int backgroundColor;
+    private boolean shadow;
+    private boolean seeThrough;
+    private HorizontalAlignment horizontalAlignment;
+    private VerticalAlignment verticalAlignment;
+
+    private TextRenderer() {
+        this.lines = Lists.newArrayList();
+        this.shiftX = this.shiftY = 0.0;
+        this.fontScale = DEFAULT_FONT_SCALE;
+        this.lineHeightRatio = 1.0 * RenderUtil.TEXT_LINE_HEIGHT / RenderUtil.TEXT_HEIGHT;
+        this.color = 0xFFFFFFFF;
+        this.backgroundColor = 0x00000000;
+        this.shadow = false;
+        this.seeThrough = false;
+        this.horizontalAlignment = HorizontalAlignment.DEFAULT;
+        this.verticalAlignment = VerticalAlignment.DEFAULT;
+    }
+
+    @Contract(value = " -> new", pure = true)
+    public static @NotNull TextRenderer create() {
+        return new TextRenderer();
+    }
 
     @SuppressWarnings("UnnecessaryLocalVariable")
     public void render(RenderContext context) {
@@ -44,101 +72,84 @@ public class TextRenderer {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        Camera camera = mc.gameRenderer.getMainCamera();
 
-        if (camera.isInitialized() && mc.player != null) {
-            double x = this.pos.x();
-            double y = this.pos.y();
-            double z = this.pos.z();
-            double camX = camera.getPosition().x();
-            double camY = camera.getPosition().y();
-            double camZ = camera.getPosition().z();
-            //#if MC < 11904
-            //$$ context = new RenderContext(new PoseStack());
-            //#endif
-            context.pushMatrix();
-            context.translate(x - camX, y - camY, z - camZ);
-            //#if MC > 11902
-            context.mulPoseMatrix(new Matrix4f().rotation(camera.rotationCompat()));
-            //#else
-            //$$ context.mulPoseMatrix(new Matrix4f(camera.rotationCompat()));
-            //#endif
-            context.scale(this.fontSize, -this.fontSize, this.fontSize);
-            //#if MC < 11700
-            //$$ context.disableLighting();
-            //#endif
+        //#if MC < 11904
+        //$$ context = new RenderContext(new PoseStack());
+        //#endif
+        CameraPositionTransformer transformer = new CameraPositionTransformer(this.pos);
+        transformer.apply(context);
 
-            if (this.seeThrough) {
-                context.disableDepthTest();
-            } else {
-                context.enableDepthTest();
-            }
+        context.scale(-this.fontScale, -this.fontScale, this.fontScale);
+        //#if MC < 11700
+        //$$ context.disableLighting();
+        //#endif
 
-            //#if MC < 11904
-            //$$ context.enableTexture();
-            //#endif
-            context.depthMask(true);
-            context.scale(-1.0, 1.0, 1.0);
-            int lineNum = this.lines.size();
-            double maxTextWidth = this.lines.stream().mapToInt(mc.font::width).max().orElse(0);
-            double totalTextX = maxTextWidth;
-            double totalTextY = mc.font.lineHeight * lineNum + (this.lineHeight - 1) * (lineNum - 1);
-            context.translate(-totalTextX * 0.5, -totalTextY * 0.5, 0);
-            //#if MC < 11904
-            //#if MC > 11605
-            //$$ RenderSystem.applyModelViewMatrix();
-            //#else
-            //$$ context.enableAlphaTest();
-            //#endif
-            //#endif
-            context.enableBlend();
-            context.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        if (this.seeThrough) {
+            context.disableDepthTest();
+        } else {
+            context.enableDepthTest();
+        }
 
-            for (int i = 0; i < lineNum; i++) {
-                Component text = this.lines.get(i);
-                float textX = (float)((maxTextWidth - mc.font.widthCompat(text)) / 2);
-                float textY = (float)(mc.font.lineHeight * this.lineHeight * i);
+        //#if MC < 11904
+        //$$ context.enableTexture();
+        //#endif
+        context.depthMask(true);
+        int lineNum = this.lines.size();
+        double maxTextWidth = this.lines.stream().mapToInt(RenderUtil::getRenderWidth).max().orElse(0);
+        double totalTextWidth = maxTextWidth;
+        double totalTextHeight = RenderUtil.TEXT_HEIGHT * lineNum + (this.lineHeightRatio - 1) * (lineNum - 1);
+        context.translate(this.horizontalAlignment.getTranslateX(totalTextWidth), this.verticalAlignment.getTranslateY(totalTextHeight), 0);
+        context.translate(this.shiftX, this.shiftY, 0);
+        //#if MC < 11904
+        //#if MC > 11605
+        //$$ RenderSystem.applyModelViewMatrix();
+        //#else
+        //$$ context.enableAlphaTest();
+        //#endif
+        //#endif
+        context.enableBlend();
+        context.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
-                int backgroundColor = this.backgroundColor;
+        for (int i = 0; i < lineNum; i++) {
+            Component text = this.lines.get(i);
+            float textX = (float) this.horizontalAlignment.getTextX(maxTextWidth, RenderUtil.getRenderWidth(text));
+            float textY = (float) (this.getLineHeight() * i);
+            int backgroundColor = this.backgroundColor;
 
-                while (true) {
-                    //#if MC > 11404
-                    MultiBufferSource.BufferSource source = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-                    //#endif
-                    Matrix4f matrix4f = context.getPoseStack().last().pose();
-                    //#if MC > 11502
-                    mc.font.drawInBatch(text, textX, textY, this.color, this.shadow, matrix4f, source,
-                    //#elseif MC > 11404
-                    //$$ mc.font.drawInBatch(text.getColoredString(), textX, textY, this.color, this.shadow, matrix4f, source,
-                    //#else
-                    //$$ mc.font.drawInBatch(text.getColoredString(), textX, textY, this.color, this.shadow, matrix4f,
-                    //#endif
-                            //#if MC > 11903
-                            this.seeThrough ? net.minecraft.client.gui.Font.DisplayMode.SEE_THROUGH : net.minecraft.client.gui.Font.DisplayMode.NORMAL,
-                            //#else
-                            //$$ this.seeThrough,
-                            //#endif
-                            backgroundColor, 0xF000F0);
-                    //#if MC > 11404
-                    source.endBatch();
-                    //#endif
+            while (true) {
+                //#if MC > 11404
+                MultiBufferSource.BufferSource source = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+                Matrix4f matrix4f = context.getPoseStack().last().pose();
+                //#if MC > 11903
+                mc.font.drawInBatch(text, textX, textY, this.color, this.shadow, matrix4f, source, this.seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, backgroundColor, 0xF000F0);
+                //#elseif MC > 11502
+                //$$ mc.font.drawInBatch(text, textX, textY, this.color, this.shadow, matrix4f, source, this.seeThrough, backgroundColor, 0xF000F0);
+                //#else
+                //$$ mc.font.drawInBatch(text.getColoredString(), textX, textY, this.color, this.shadow, matrix4f, source, this.seeThrough, backgroundColor, 0xF000F0);
+                //#endif
+                source.endBatch();
+                //#else
+                //$$ mc.font.drawInBatch(text.getColoredString(), textX, textY, this.color, this.shadow, context.getPoseStack().last().pose(), this.seeThrough, backgroundColor, 0xF000F0);
+                //#endif
 
-                    if (backgroundColor == 0) {
-                        break;
-                    } else {
-                        backgroundColor = 0;
-                    }
+                if (backgroundColor == 0) {
+                    break;
+                } else {
+                    backgroundColor = 0;
                 }
             }
-
-            //#if MC < 11600
-            //$$ context.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            //#endif
-            //#if MC < 11904
-            //$$ context.enableDepthTest();
-            //#endif
-            context.popMatrix();
         }
+
+        //#if MC < 11600
+        //$$ context.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        //#endif
+        //#if MC < 11904
+        //$$ context.enableDepthTest();
+        //#endif
+        transformer.restore();
+        //#if MC > 11605
+        RenderSystem.applyModelViewMatrix();
+        //#endif
     }
 
     private TextRenderer addLines(Component... lines) {
@@ -168,8 +179,8 @@ public class TextRenderer {
         return this.addLines(text);
     }
 
-    public TextRenderer lineHeight(double lineHeight) {
-        this.lineHeight = lineHeight;
+    public TextRenderer lineHeight(double lineHeightRatio) {
+        this.lineHeightRatio = lineHeightRatio;
         return this;
     }
 
@@ -186,8 +197,14 @@ public class TextRenderer {
         return this.pos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
     }
 
-    public TextRenderer fontSize(double fontSize) {
-        this.fontSize = fontSize;
+    public TextRenderer shift(double x, double y) {
+        this.shiftX = x;
+        this.shiftY = y;
+        return this;
+    }
+
+    public TextRenderer fontScale(double fontScale) {
+        this.fontScale = fontScale;
         return this;
     }
 
@@ -215,5 +232,68 @@ public class TextRenderer {
     public TextRenderer seeThrough(boolean seeThrough) {
         this.seeThrough = seeThrough;
         return this;
+    }
+
+    public TextRenderer align(HorizontalAlignment horizontalAlignment) {
+        this.horizontalAlignment = horizontalAlignment;
+        return this;
+    }
+
+    public TextRenderer align(VerticalAlignment verticalAlignment) {
+        this.verticalAlignment = verticalAlignment;
+        return this;
+    }
+
+
+    public double getLineHeight() {
+        return RenderUtil.TEXT_HEIGHT * this.lineHeightRatio;
+    }
+
+    public enum HorizontalAlignment {
+        // [-x]  ^Text  [+x]
+        LEFT(w -> 0.0, (w, tw) -> 0.0),
+        // [-x]  Text^  [+x]
+        RIGHT(w -> -w, (w, tw) -> w - tw),
+        // [-x]  Te^xt  [+x]
+        CENTER(w -> -0.5 * w, (w, tw) -> 0.5 * (w - tw));
+
+        public static final HorizontalAlignment DEFAULT = CENTER;
+
+        private final Function<Double, Double> trMapper;
+        private final BiFunction<Double, Double, Double> posMapper;
+
+        HorizontalAlignment(Function<Double, Double> trMapper, BiFunction<Double, Double, Double> posMapper) {
+            this.trMapper = trMapper;
+            this.posMapper = posMapper;
+        }
+
+        public double getTranslateX(double width) {
+            return this.trMapper.apply(width);
+        }
+
+        public double getTextX(double width, double textWidth) {
+            return this.posMapper.apply(width, textWidth);
+        }
+    }
+
+    public enum VerticalAlignment {
+        // [-y]  ^Text  [+y]
+        TOP(h -> 0.0),
+        // [-y]  Text^  [+y]
+        BOTTOM(h -> -h),
+        // [-y]  Te^xt  [+y]
+        CENTER(h -> -0.5 * h);
+
+        private final Function<Double, Double> trMapper;
+
+        public static final VerticalAlignment DEFAULT = CENTER;
+
+        VerticalAlignment(Function<Double, Double> trMapper) {
+            this.trMapper = trMapper;
+        }
+
+        public double getTranslateY(double height) {
+            return this.trMapper.apply(height);
+        }
     }
 }

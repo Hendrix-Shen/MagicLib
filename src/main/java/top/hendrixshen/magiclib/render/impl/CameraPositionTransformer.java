@@ -22,18 +22,18 @@ public class CameraPositionTransformer {
         Minecraft mc = Minecraft.getInstance();
         Camera camera = mc.gameRenderer.getMainCamera();
         Vec3 vec3 = this.pos.subtract(camera.getPosition());
-        context.pushMatrix();
+        context.pushPose();
         context.translate(vec3.x(), vec3.y(), vec3.z());
         //#if MC > 11902
         context.mulPoseMatrix(new Matrix4f().rotation(camera.rotationCompat()));
         //#else
-        //$$ new Matrix4f(camera.rotationCompat());
+        //$$ context.mulPoseMatrix(new Matrix4f(camera.rotationCompat()));
         //#endif
     }
 
     public void restore() {
         Objects.requireNonNull(this.context);
-        this.context.popMatrix();
+        this.context.popPose();
         this.context = null;
     }
 }
