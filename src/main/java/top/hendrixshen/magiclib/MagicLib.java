@@ -10,7 +10,7 @@ import top.hendrixshen.magiclib.tool.mixin.MixinAuditExecutor;
 
 public class MagicLib implements ModInitializer, ClientModInitializer {
     //#if MC > 11903 && MC < 12000
-    @Dependencies(and = @Dependency(value = "malilib", versionPredicate = ">=0.15.4", optional = true))
+    //$$ @Dependencies(and = @Dependency(value = "malilib", versionPredicate = ">=0.15.4", optional = true))
     //#endif
     @Override
     public void onInitializeClient() {

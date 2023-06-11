@@ -98,7 +98,7 @@ public abstract class MixinEntity implements EntityCompatApi {
 
     //#if MC > 11701
     @Shadow
-    public abstract Level getLevel();
+    public abstract Level level();
     //#else
     //$$ @Shadow
     //$$ public Level level;
@@ -107,7 +107,7 @@ public abstract class MixinEntity implements EntityCompatApi {
     @Override
     public Level getLevelCompat() {
         //#if MC > 11701
-        return this.getLevel();
+        return this.level();
         //#else
         //$$ return this.level;
         //#endif
@@ -173,7 +173,7 @@ public abstract class MixinEntity implements EntityCompatApi {
     public abstract BlockPos blockPosition();
 
     @Shadow
-    public abstract boolean isOnGround();
+    public abstract boolean onGround();
 
     @Shadow
     public abstract void setOnGround(boolean onGround);
@@ -199,7 +199,7 @@ public abstract class MixinEntity implements EntityCompatApi {
     @Override
     public boolean isOnGroundCompat() {
         //#if MC > 11502
-        return this.isOnGround();
+        return this.onGround();
         //#else
         //$$ return this.onGround;
         //#endif
