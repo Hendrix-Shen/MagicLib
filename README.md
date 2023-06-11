@@ -19,13 +19,15 @@ English | [中文](./README_ZH_CN.md)
 
 ❗Before reporting a problem, be sure to try the latest [beta version](https://github.com/Hendrix-Shen/MagicLib/releases) to check if the problem still exists.
 
+♻️Note: Minecraft 1.20 requires the use of a third-party port [Malilib](https://github.com/Nyan-Work/malilib/releases/tag/1.20).
+
 ## Dependencies
 
-| Dependency | Type     | Environment     | Link                                                                                                                                 |
-|------------|----------|-----------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| Carpet     | Optional | Client / Server | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) |
-| MaliLib    | Optional | Client          | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   |
-| Mod Menu   | Optional | Client          | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu)               |
+| Dependency | Type     | Environment     | Link                                                                                                                                 | For MC 1.20                                                         |
+|------------|----------|-----------------|--------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| Carpet     | Optional | Client / Server | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) | -                                                                   |
+| MaliLib    | Optional | Client          | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   | [Nyan-Work](https://github.com/Nyan-Work/malilib/releases/tag/1.20) |
+| Mod Menu   | Optional | Client          | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu)               | -                                                                   |
 
 ## Description
 
@@ -56,7 +58,7 @@ We have added a complete dependency checking system to verify dependency availab
 
 ### Support
 
-Current main development for Minecraft version: 1.19.4
+Current main development for Minecraft version: 1.20
 
 And use `preprocess` to be compatible with all versions.
 
@@ -70,6 +72,7 @@ And use `preprocess` to be compatible with all versions.
 - Minecraft 1.19.2
 - Minecraft 1.19.3
 - Minecraft 1.19.4
+- Minecraft 1.20
 
 ### Mappings
 

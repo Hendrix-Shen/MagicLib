@@ -19,13 +19,15 @@
 
 ❗在报告问题前，请务必尝试最新[测试版](https://github.com/Hendrix-Shen/MagicLib/releases)，检查问题是否依然存在。
 
+♻注意: Minecraft 1.20 需要使用第三方的 [Malilib](https://github.com/Nyan-Work/malilib/releases/tag/1.20)。
+
 ## 依赖库
 
-| 依赖       | 类型  | 环境        | 链接                                                                                                                                   |
-|----------|-----|-----------|--------------------------------------------------------------------------------------------------------------------------------------|
-| Carpet   | 可选  | 客户端 / 服务端 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) |
-| MaliLib  | 可选  | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   |
-| Mod Menu | 可选  | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu)               |
+| 依赖       | 类型  | 环境        | 链接                                                                                                                                   | 支持 1.20                                                             |
+|----------|-----|-----------|--------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| Carpet   | 可选  | 客户端 / 服务端 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) | -                                                                   |
+| MaliLib  | 可选  | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   | [Nyan-Work](https://github.com/Nyan-Work/malilib/releases/tag/1.20) |
+| Mod Menu | 可选  | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu)               | -                                                                   |
 
 ## 描述
 
@@ -56,7 +58,7 @@
 
 ### 支持
 
-当前主开发版本：1.19.4
+当前主开发版本：1.20
 
 并且使用 `预处理` 来兼容各版本。
 
@@ -70,6 +72,7 @@
 - Minecraft 1.19.2
 - Minecraft 1.19.3
 - Minecraft 1.19.4
+- Minecraft 1.20
 
 ### 混淆映射表
 
