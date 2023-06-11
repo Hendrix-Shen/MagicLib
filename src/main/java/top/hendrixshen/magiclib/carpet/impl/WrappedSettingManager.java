@@ -114,7 +114,7 @@ public class WrappedSettingManager extends SettingsManager {
         ServerNetworkHandler.updateRuleWithConnectedClients(rule.getRule());
         //#endif
 
-        //#if MC > 11904
+        //#if MC > 11903
         ReflectUtil.invokeDeclared("carpet.api.settings.SettingsManager",
                 "switchScarpetRuleIfNeeded", this,
                 new Class[]{CommandSourceStack.class, CarpetRule.class}, source, rule.getRule());
