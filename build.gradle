@@ -16,7 +16,7 @@ preprocess {
     def mc1192 = createNode("1.19.2", 1_19_02, "mojang")
     def mc1193 = createNode("1.19.3", 1_19_03, "mojang")
     def mc1194 = createNode("1.19.4", 1_19_04, "mojang")
-    def mc1200 = createNode("1.20"  , 1_20_00, "mojang")
+    def mc1201 = createNode("1.20.1", 1_20_01, "mojang")
 
     mc1144.link(mc1152, null)
     mc1152.link(mc1165, null)
@@ -25,11 +25,11 @@ preprocess {
     mc1182.link(mc1192, file("versions/mapping-1.18.2-1.19.2.txt"))
     mc1192.link(mc1193, file("versions/mapping-1.19.2-1.19.3.txt"))
     mc1193.link(mc1194, null)
-    mc1194.link(mc1200, null)
+    mc1194.link(mc1201, null)
 }
 
 ext {
-    environmentMap = System.getenv()
+    Map<String, String> environmentMap = System.getenv()
 
     getVersionGit = { List paths ->
         if (grgit == null) {
@@ -41,11 +41,11 @@ ext {
     }
 
     getBuildNumber = {
-        return ext.environmentMap.GITHUB_RUN_NUMBER ? ext.environmentMap.GITHUB_RUN_NUMBER : Integer.MAX_VALUE
+        return environmentMap.GITHUB_RUN_NUMBER ? environmentMap.GITHUB_RUN_NUMBER : Integer.MAX_VALUE
     }
 
     getVersionType = {
-        switch (ext.environmentMap.BUILD_TYPE) {
+        switch (environmentMap.BUILD_TYPE) {
             case "RELEASE":
                 return "stable"
             case "BETA":
