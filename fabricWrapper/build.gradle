@@ -3,6 +3,7 @@ import groovy.json.JsonBuilder
 plugins {
     id("java-library")
     id("maven-publish")
+    id("signing")
 }
 
 archivesBaseName("${project.mod_archives_base_name}-all")
@@ -75,12 +76,55 @@ processResources {
     }
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc {
+    options {
+        source("17")
+        encoding("UTF-8")
+        charSet("UTF-8")
+        addStringOption("Xdoclint:none", "-quiet")
+    }
+
+    include("**/api/**")
+}
+
 publishing {
     publications {
         register("mavenJava", MavenPublication) {
             artifactId("${project.mod_id}")
             version("${rootProject.getMavenArtifactVersion()}")
             from(components.java)
+
+            pom {
+                name.set("${project.mod_name}")
+                description.set("${project.mod_description}")
+                url.set("${project.mod_sources}")
+
+                licenses {
+                    license {
+                        name.set("${project.mod_license}")
+                        url.set("${project.mod_license_url}")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("${project.author_id}")
+                        name.set("${project.author_name}")
+                        email.set("${project.author_email}")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:${project.mod_sources}.git")
+                    developerConnection.set("scm:git:${project.mod_sources.replace("https", "ssh")}.git")
+                    url.set("${project.mod_sources}")
+                }
+            }
         }
     }
 
@@ -88,7 +132,37 @@ publishing {
         mavenLocal()
 
         maven {
+            name("ProjectLocal")
             url("$rootDir/publish")
         }
+
+        String mavenCentral_username = project.getOrDefault("secrets.mavenCentral.username", project.getENV().MAVEN_CENTRAL_USERNAME)
+        String mavenCentral_password = project.getOrDefault("secrets.mavenCentral.password", project.getENV().MAVEN_CENTRAL_PASSWORD)
+
+        if (mavenCentral_username && mavenCentral_password) {
+            maven {
+                name("MavenCentral")
+                String releaseRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                String snapshotRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                url(project.getVersionType() == "stanle" ? releaseRepoUrl : snapshotRepoUrl)
+
+                credentials {
+                    username(mavenCentral_username)
+                    username(mavenCentral_password)
+                }
+            }
+        }
     }
+}
+
+signing {
+    String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getENV().SIGNING_PGP_KEY)
+    String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getENV().SIGNING_PGP_PASSWORD)
+
+    required {
+        signingKey
+    }
+
+    useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
+    sign(publishing.publications.mavenJava)
 }

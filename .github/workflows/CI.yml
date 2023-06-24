@@ -68,16 +68,10 @@ jobs:
       - name: Publish Maven with Gradle
         env:
           BUILD_TYPE: "BETA"
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          SIGNING_PGP_KEY: ${{ secrets.SIGNING_PGP_KEY }}
         run: ./gradlew build publish -x test --stacktrace
-
-      - name: Upload Maven to GitHub
-        uses: s0/git-publish-subdir-action@v2.6.0
-        env:
-          REPO: git@github.com:Hendrix-Shen/Maven.git
-          BRANCH: master
-          FOLDER: publish
-          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
-          CLEAR_GLOBS_FILE: '.clear-target-files'
 
       - name: Upload assets to GitHub Action
         uses: actions/upload-artifact@v3
@@ -162,16 +156,10 @@ jobs:
       - name: Publish Maven with Gradle
         env:
           BUILD_TYPE: "RELEASE"
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          SIGNING_PGP_KEY: ${{ secrets.SIGNING_PGP_KEY }}
         run: ./gradlew build publish -x test --stacktrace
-
-      - name: Upload Maven to GitHub
-        uses: s0/git-publish-subdir-action@v2.6.0
-        env:
-          REPO: git@github.com:Hendrix-Shen/Maven.git
-          BRANCH: master
-          FOLDER: publish
-          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
-          CLEAR_GLOBS_FILE: '.clear-target-files'
 
       - name: Upload assets to GitHub Action
         uses: actions/upload-artifact@v3

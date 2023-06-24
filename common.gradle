@@ -3,7 +3,7 @@ import net.fabricmc.loom.util.Platform
 apply(plugin: "fabric-loom")
 apply(plugin: "io.github.juuxel.loom-quiltflower")
 apply(plugin: "maven-publish")
-apply(plugin: "net.kyori.blossom")
+apply(plugin: "signing")
 apply(plugin: "com.replaymod.preprocess")
 
 repositories {
@@ -53,7 +53,7 @@ configurations {
         configurations.findAll { it.name in [
                 "minecraftLibraries",
                 "loaderLibraries",
-                "minecraftRuntimeOnlyLibraries"
+                "minecraftRuntimeLibraries"
         ]}.forEach { Configuration superConfigurations ->
             configuration.extendsFrom(superConfigurations)
         }
@@ -155,10 +155,8 @@ loom {
 
     runConfigs.named("client") {
         programArgs([
-                "--width",
-                "1920",
-                "--height",
-                "1080",
+                "--width", Integer.parseInt(project.getOrDefault("ow.game.window.width", "1920") as String),
+                "--height", Integer.parseInt(project.getOrDefault("ow.game.window.height", "1080") as String)
         ])
         runDir("run/client")
     }
@@ -249,8 +247,8 @@ tasks.register("runProductionClient", JavaExec) {
                 "--assetIndex", loom.minecraftProvider.versionInfo.assetIndex().fabricId(loom.minecraftProvider.minecraftVersion()),
                 "--assetsDir", file("${loom.files.userCache}/assets").absolutePath,
                 "--gameDir", workingDir.absolutePath,
-                "--width", "1920",
-                "--height", "1080"
+                "--width", Integer.parseInt(project.getOrDefault("ow.game.window.width", "1920") as String),
+                "--height", Integer.parseInt(project.getOrDefault("ow.game.window.height", "1080") as String)
         )
         jvmArgs("-Dmixin.debug.export=true")
         jvmArgs("-Dfabric.addMods=${configurations.productionRuntimeMods.files.join(File.pathSeparator)}${File.pathSeparator}${tasks.remapJar.archiveFile.get().asFile.absolutePath}")
@@ -325,14 +323,30 @@ processResources {
     }
 }
 
-blossom {
-    replaceToken("@MOD_IDENTIFIER@"            , project.mod_id)
-    replaceToken("@MOD_NAME@"                  , project.mod_name)
-    replaceToken("@MINECRAFT_VERSION_IDENTIFY@", project.minecraft_version.replace(".", "_"))
+if (!Boolean.parseBoolean(project.getOrDefault("ow.build.plugin.disableBlossom", "false") as String)) {
+    apply(plugin: "net.kyori.blossom")
+
+    blossom {
+        replaceToken("@MOD_IDENTIFIER@"            , project.mod_id)
+        replaceToken("@MOD_NAME@"                  , project.mod_name)
+        replaceToken("@MINECRAFT_VERSION_IDENTIFY@", project.minecraft_version.replace(".", "_"))
+    }
 }
 
 java {
+    withJavadocJar()
     withSourcesJar()
+}
+
+javadoc {
+    options {
+        source("17")
+        encoding("UTF-8")
+        charSet("UTF-8")
+        addStringOption("Xdoclint:none", "-quiet")
+    }
+
+    include("**/api/**")
 }
 
 publishing() {
@@ -340,7 +354,34 @@ publishing() {
         register("mavenJava", MavenPublication) {
             artifactId("${project.mod_id}-${project.minecraft_version.replace(".", "_")}")
             from(components.java)
-            version("${rootProject.getMavenArtifactVersion()}")
+            version("${project.getMavenArtifactVersion()}")
+
+            pom {
+                name.set("${project.mod_name}")
+                description.set("${project.mod_description}")
+                url.set("${project.mod_sources}")
+
+                licenses {
+                    license {
+                        name.set("${project.mod_license}")
+                        url.set("${project.mod_license_url}")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("${project.author_id}")
+                        name.set("${project.author_name}")
+                        email.set("${project.author_email}")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:${project.mod_sources}.git")
+                    developerConnection.set("scm:git:${project.mod_sources.replace("https", "ssh")}.git")
+                    url.set("${project.mod_sources}")
+                }
+            }
         }
     }
 
@@ -348,7 +389,37 @@ publishing() {
         mavenLocal()
 
         maven {
+            name("ProjectLocal")
             url("${rootDir}/publish")
         }
+
+        String mavenCentral_username = project.getOrDefault("secrets.mavenCentral.username", project.getENV().MAVEN_CENTRAL_USERNAME)
+        String mavenCentral_password = project.getOrDefault("secrets.mavenCentral.password", project.getENV().MAVEN_CENTRAL_PASSWORD)
+
+        if (mavenCentral_username && mavenCentral_password) {
+            maven {
+                name("MavenCentral")
+                String releaseRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                String snapshotRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                url(project.getVersionType() == "stable" ? releaseRepoUrl : snapshotRepoUrl)
+
+                credentials {
+                    username(mavenCentral_username)
+                    username(mavenCentral_password)
+                }
+            }
+        }
     }
+}
+
+signing {
+    String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getENV().SIGNING_PGP_KEY)
+    String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getENV().SIGNING_PGP_PASSWORD)
+
+    required {
+        signingKey
+    }
+
+    useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
+    sign(publishing.publications.mavenJava)
 }

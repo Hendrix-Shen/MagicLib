@@ -29,3 +29,5 @@ bin/
 run/
 
 publish/
+
+local.properties
