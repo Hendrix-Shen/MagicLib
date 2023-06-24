@@ -148,7 +148,7 @@ publishing {
 
                 credentials {
                     username(mavenCentral_username)
-                    username(mavenCentral_password)
+                    password(mavenCentral_password)
                 }
             }
         }
