@@ -94,37 +94,22 @@ javadoc {
 
 publishing {
     publications {
-        register("mavenJava", MavenPublication) {
+        register("snapshot", MavenPublication) {
             artifactId("${project.mod_id}")
-            version("${rootProject.getMavenArtifactVersion()}")
             from(components.java)
+            version("${project.mod_version}-SNAPSHOT")
+            alias(true)
 
-            pom {
-                name.set("${project.mod_name}")
-                description.set("${project.mod_description}")
-                url.set("${project.mod_sources}")
+            project.addPomMetadataInformation(project, it)
+        }
 
-                licenses {
-                    license {
-                        name.set("${project.mod_license}")
-                        url.set("${project.mod_license_url}")
-                    }
-                }
+        register("release", MavenPublication) {
+            artifactId("${project.mod_id}")
+            from(components.java)
+            version("${project.getMavenArtifactVersion()}")
+            alias(false)
 
-                developers {
-                    developer {
-                        id.set("${project.author_id}")
-                        name.set("${project.author_name}")
-                        email.set("${project.author_email}")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:git:${project.mod_sources}.git")
-                    developerConnection.set("scm:git:${project.mod_sources.replace("https", "ssh")}.git")
-                    url.set("${project.mod_sources}")
-                }
-            }
+            project.addPomMetadataInformation(project, it)
         }
     }
 
@@ -132,25 +117,27 @@ publishing {
         mavenLocal()
 
         maven {
-            name("ProjectLocal")
-            url("$rootDir/publish")
+            name("projectLocalSnapshot")
+            url("${rootDir}/publish/snapshot")
         }
 
-        String mavenCentral_username = project.getOrDefault("secrets.mavenCentral.username", project.getENV().MAVEN_CENTRAL_USERNAME)
-        String mavenCentral_password = project.getOrDefault("secrets.mavenCentral.password", project.getENV().MAVEN_CENTRAL_PASSWORD)
+        maven {
+            name("projectLocalRelease")
+            url("${rootDir}/publish/release")
+        }
 
-        if (mavenCentral_username && mavenCentral_password) {
-            maven {
-                name("MavenCentral")
-                String releaseRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-                String snapshotRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-                url(project.getVersionType() == "stanle" ? releaseRepoUrl : snapshotRepoUrl)
+        maven {
+            name("mavenCentralSnapshot")
+            url("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 
-                credentials {
-                    username(mavenCentral_username)
-                    password(mavenCentral_password)
-                }
-            }
+            project.credentialsMavenCentral(it)
+        }
+
+        maven {
+            name("mavenCentralRelease")
+            url("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+            project.credentialsMavenCentral(it)
         }
     }
 }
@@ -164,5 +151,10 @@ signing {
     }
 
     useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
-    sign(publishing.publications.mavenJava)
+    sign(publishing.publications)
+}
+
+TaskCollection<Sign> signingTasks = tasks.withType(Sign)
+tasks.withType(AbstractPublishToMaven).configureEach {
+    it.dependsOn(signingTasks)
 }

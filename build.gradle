@@ -1,5 +1,3 @@
-import groovy.json.JsonBuilder
-
 plugins {
     id("fabric-loom").version("1.2-SNAPSHOT").apply(false)
     id("io.github.juuxel.loom-quiltflower").version("1.10.0").apply(false)
@@ -92,6 +90,49 @@ ext {
         String value
         (value = project.findProperty(key)) && !value.isEmpty() ? value : defaultValue
     }
+
+    String mavenCentral_username = project.getOrDefault("secrets.mavenCentral.username", project.getENV().MAVEN_CENTRAL_USERNAME)
+    String mavenCentral_password = project.getOrDefault("secrets.mavenCentral.password", project.getENV().MAVEN_CENTRAL_PASSWORD)
+
+    addPomMetadataInformation = { Project project, MavenPublication publication ->
+        publication.pom {
+            name.set("${project.mod_name}")
+            description.set("${project.mod_description}")
+            url.set("${project.mod_sources}")
+
+            licenses {
+                license {
+                    name.set("${project.mod_license}")
+                    url.set("${project.mod_license_url}")
+                }
+            }
+
+            developers {
+                developer {
+                    id.set("${project.author_id}")
+                    name.set("${project.author_name}")
+                    email.set("${project.author_email}")
+                }
+            }
+
+            scm {
+                connection.set("scm:git:${project.mod_sources}.git")
+                developerConnection.set("scm:git:${project.mod_sources.replace("https", "ssh")}.git")
+                url.set("${project.mod_sources}")
+            }
+        }
+    }
+
+    isMavenCentralCredentialsExist = {
+        return mavenCentral_username && mavenCentral_password
+    }
+
+    credentialsMavenCentral = { MavenArtifactRepository maven ->
+        maven.credentials {
+            username(mavenCentral_username)
+            password(mavenCentral_password)
+        }
+    }
 }
 
 setVersion("${project.mod_version}.${project.getVersionPatch([])}+${project.getVersionGit([])}-${project.getVersionType()}")
@@ -131,6 +172,21 @@ tasks.register("genLocalProperties") {
             bufferedWriter.close()
 
             project.getLogger().info("local.properties generated successfully!")
+        }
+    }
+}
+
+subprojects {
+    tasks.withType(PublishToMavenRepository).configureEach { PublishToMavenRepository publish
+        def predicate = provider {
+            (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
+                    (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
+                    (repository == publishing.repositories.mavenCentralSnapshot && publication == publishing.publications.snapshot && project.isMavenCentralCredentialsExist()) ||
+                    (repository == publishing.repositories.mavenCentralRelease && publication == publishing.publications.release && project.isMavenCentralCredentialsExist())
+        }
+
+        onlyIf {
+            predicate.get()
         }
     }
 }
