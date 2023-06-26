@@ -177,7 +177,7 @@ tasks.register("genLocalProperties") {
 }
 
 subprojects {
-    tasks.withType(PublishToMavenRepository).configureEach { PublishToMavenRepository publish
+    tasks.withType(PublishToMavenRepository).configureEach {
         def predicate = provider {
             (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
                     (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
