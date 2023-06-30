@@ -134,16 +134,15 @@ dependencies {
     productionRuntimeServer("net.fabricmc:fabric-installer:${project.fabric_installer_version}:server")
 
     // Misc
-    runtimeOnly(project(path: ":fabricWrapper")) {
-        trampoline(false)
-    }
+    runtimeOnly(project(path: ":fabricWrapper"))
 }
 
-archivesBaseName("${project.mod_archives_base_name}-${project.minecraft_version}")
 group(project.mod_maven_group)
-sourceCompatibility(JavaVersion.VERSION_1_8)
-targetCompatibility(JavaVersion.VERSION_1_8)
 version(project.parent.version)
+
+base {
+    archivesBaseName("${project.mod_archives_base_name}-${project.minecraft_version}")
+}
 
 loom {
     interfaceInjection {
@@ -336,6 +335,8 @@ if (!Boolean.parseBoolean(project.getOrDefault("ow.build.plugin.disableBlossom",
 }
 
 java {
+    sourceCompatibility(JavaVersion.VERSION_1_8)
+    targetCompatibility(JavaVersion.VERSION_1_8)
     withJavadocJar()
     withSourcesJar()
 }
