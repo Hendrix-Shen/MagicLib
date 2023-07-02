@@ -4,6 +4,12 @@ on:
     branches:
       - 'dev/**'
       - 'exp/**'
+    paths:
+      - "*.gradle"
+      - "gradle.properties"
+      - "src/**"
+      - "versions/**"
+      - ".github/**"
   release:
     types:
       - published
