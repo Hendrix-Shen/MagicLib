@@ -19,6 +19,10 @@ English | [中文](./README_ZH_CN.md)
 
 ❗Before reporting a problem, be sure to try the latest [beta version](https://github.com/Hendrix-Shen/MagicLib/releases) to check if the problem still exists.
 
+## Description
+
+A library of versatile mod dependencies.
+
 ## Dependencies
 
 | Dependency | Type     | Environment     | Link                                                                                                                                 |
@@ -26,10 +30,6 @@ English | [中文](./README_ZH_CN.md)
 | Carpet     | Optional | Client / Server | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) |
 | MaliLib    | Optional | Client          | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   |
 | Mod Menu   | Optional | Client          | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu)               |
-
-## Description
-
-A library of versatile mod dependencies.
 
 ## Feature
 

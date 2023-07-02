@@ -19,6 +19,10 @@
 
 ❗在报告问题前，请务必尝试最新[测试版](https://github.com/Hendrix-Shen/MagicLib/releases)，检查问题是否依然存在。
 
+## 描述
+
+一个多功能的模组依赖库。
+
 ## 依赖库
 
 | 依赖       | 类型 | 环境        | 链接                                                                                                                                   |
@@ -26,10 +30,6 @@
 | Carpet   | 可选 | 客户端 / 服务端 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/carpet) &#124; [GitHub](https://github.com/gnembon/fabric-carpet/releases) |
 | MaliLib  | 可选 | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   |
 | Mod Menu | 可选 | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu)               |
-
-## 描述
-
-一个多功能的模组依赖库。
 
 ## 功能
 
