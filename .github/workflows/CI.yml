@@ -186,21 +186,18 @@ jobs:
             fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
 
       - name: Publish release to CurseForge & Modrinth
-        uses: Kir-Antipov/mc-publish@v3.2
+        uses: Kir-Antipov/mc-publish@v3.3
         with:
           modrinth-id: mv1zH6ln
           modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
-
           curseforge-id: 576459
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
-
-          files-primary: fabricWrapper/build/libs/!(*-@(dev|sources)).jar
-          files-secondary: fabricWrapper/build/tmp/submods/META-INF/jars/!(*-@(dev|sources)).jar
-
-          name: ''
+          files: |
+            fabricWrapper/build/libs/!(*-@(dev|sources|javadoc)).jar
+            fabricWrapper/build/tmp/submods/META-INF/jars/!(*-@(dev|sources)).jar
+          name: 'MagicLib ${{ steps.mod_info.outputs.mod_version }}.${{ steps.get_commit_count.outputs.commit_count }}'
           version: ${{ steps.mod_info.outputs.mod_version }}.${{ steps.get_commit_count.outputs.commit_count }}
           version-type: 'release'
-
           changelog: ${{ github.event.release.body }}
           loaders: |
             fabric
@@ -215,7 +212,6 @@ jobs:
             1.19.3
             1.19.4
             1.20.1
-          version-resolver: latest
           java: |
             8
             9
@@ -228,7 +224,9 @@ jobs:
             16
             17
             18
-
+          dependencies: |
+            carpet(optional)
+            malilib(optional)
           retry-attempts: 2
           retry-delay: 10000
 
