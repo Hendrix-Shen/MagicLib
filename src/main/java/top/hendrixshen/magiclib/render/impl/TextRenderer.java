@@ -27,6 +27,7 @@ import java.util.function.Function;
 //#endif
 
 //#if MC > 11404
+import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
 
@@ -73,7 +74,9 @@ public class TextRenderer {
 
         Minecraft mc = Minecraft.getInstance();
 
-        //#if MC < 11904
+        //#if MC > 11605
+        context = new RenderContext(RenderSystem.getModelViewStack());
+        //#else
         //$$ context = new RenderContext(new PoseStack());
         //#endif
         CameraPositionTransformer transformer = new CameraPositionTransformer(this.pos);
@@ -100,12 +103,10 @@ public class TextRenderer {
         double totalTextHeight = RenderUtil.TEXT_HEIGHT * lineNum + (this.lineHeightRatio - 1) * (lineNum - 1);
         context.translate(this.horizontalAlignment.getTranslateX(totalTextWidth), this.verticalAlignment.getTranslateY(totalTextHeight), 0);
         context.translate(this.shiftX, this.shiftY, 0);
-        //#if MC < 11904
         //#if MC > 11605
-        //$$ RenderSystem.applyModelViewMatrix();
+        RenderSystem.applyModelViewMatrix();
         //#else
         //$$ context.enableAlphaTest();
-        //#endif
         //#endif
         context.enableBlend();
         context.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -119,7 +120,11 @@ public class TextRenderer {
             while (true) {
                 //#if MC > 11404
                 MultiBufferSource.BufferSource source = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-                Matrix4f matrix4f = context.getPoseStack().last().pose();
+                //#if MC > 11605
+                Matrix4f matrix4f = Transformation.identity().getMatrix();
+                //#else
+                //$$ Matrix4f matrix4f = context.getPoseStack().last().pose();
+                //#endif
                 //#if MC > 11903
                 mc.font.drawInBatch(text, textX, textY, this.color, this.shadow, matrix4f, source, this.seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, backgroundColor, 0xF000F0);
                 //#elseif MC > 11502

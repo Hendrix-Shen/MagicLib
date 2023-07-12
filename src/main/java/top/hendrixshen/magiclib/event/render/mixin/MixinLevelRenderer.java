@@ -4,7 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
 
-//#if MC > 11904
+//#if MC > 11903
 import org.spongepowered.asm.mixin.injection.Slice;
 //#endif
 
@@ -36,7 +36,7 @@ public class MixinLevelRenderer {
     @Shadow
     private ClientLevel level;
 
-    //#if MC > 11904
+    //#if MC > 11903
     @Inject(
             method = "renderLevel",
             slice = @Slice(
