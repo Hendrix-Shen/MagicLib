@@ -117,7 +117,9 @@ publishing {
     }
 
     repositories {
-        mavenLocal()
+        mavenLocal() {
+            name("mavenLocal")
+        }
 
         maven {
             name("projectLocalSnapshot")

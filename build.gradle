@@ -179,6 +179,7 @@ tasks.register("genLocalProperties") {
 subprojects {
     tasks.withType(PublishToMavenRepository).configureEach {
         def predicate = provider {
+            repository == publishing.repositories.mavenLocal ||
             (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
                     (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
                     (repository == publishing.repositories.mavenCentralSnapshot && publication == publishing.publications.snapshot && project.isMavenCentralCredentialsExist()) ||

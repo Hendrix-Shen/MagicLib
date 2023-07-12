@@ -19,11 +19,6 @@ repositories {
     }
 
     maven {
-        name("FabricMC Maven")
-        url("https://maven.fabricmc.net")
-    }
-
-    maven {
         name("Modrinth Maven")
         url("https://api.modrinth.com/maven")
 
@@ -75,9 +70,9 @@ def apiDependencies = [
 def runtimeDependencies = [
         ["curse.maven:auto-config-updated-api-373261", "auto_config_updated_api", mcVersion < 11600, false],
         ["maven.modrinth:cloth-config"               , "cloth_config"           , mcVersion < 11600, false],
-        ["maven.modrinth:in-game-account-switcher"   , "inGameAccountSwitcher"  , mcVersion < 12000, false],
+        ["maven.modrinth:in-game-account-switcher"   , "inGameAccountSwitcher"  , true             , false],
         ["maven.modrinth:lazydfu"                    , "lazydfu"                , true             , false],
-        ["maven.modrinth:imblocker"                  , "imblockerfabric"        , mcVersion < 12000, false],
+        ["maven.modrinth:imblocker"                  , "imblockerfabric"        , mcVersion < 12002, false],
         ["curse.maven:smooth-boot-415758"            , "smoothboot"             , mcVersion < 12000, false]
 ]
 
@@ -372,7 +367,9 @@ publishing() {
     }
 
     repositories {
-        mavenLocal()
+        mavenLocal() {
+            name("mavenLocal")
+        }
 
         maven {
             name("projectLocalSnapshot")
