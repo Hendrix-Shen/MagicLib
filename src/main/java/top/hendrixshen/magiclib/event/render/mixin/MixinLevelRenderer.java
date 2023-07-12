@@ -4,6 +4,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
 
+//#if MC > 11904
+import org.spongepowered.asm.mixin.injection.Slice;
+//#endif
+
 //#if MC > 11404
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
@@ -32,17 +36,35 @@ public class MixinLevelRenderer {
     @Shadow
     private ClientLevel level;
 
+    //#if MC > 11904
     @Inject(
             method = "renderLevel",
+            slice = @Slice(
+                    from = @At(
+                            value = "CONSTANT",
+                            args = "stringValue=weather",
+                            ordinal = 1
+                    )
+            ),
             at = @At(
                     value = "INVOKE",
-                    //#if MC > 11903
-                    target = "Lnet/minecraft/client/renderer/LevelRenderer;renderDebug(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/Camera;)V"
-                    //#else
-                    //$$ target = "Lnet/minecraft/client/renderer/LevelRenderer;renderDebug(Lnet/minecraft/client/Camera;)V"
-                    //#endif
+                    target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V",
+                    ordinal = 0
             )
     )
+    //#else
+    //$$ @Inject(
+    //$$         method = "renderLevel",
+    //$$         at = @At(
+    //$$                 value = "INVOKE",
+    //#if MC > 11903
+    //$$                 target = "Lnet/minecraft/client/renderer/LevelRenderer;renderDebug(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/Camera;)V"
+    //#else
+    //$$                 target = "Lnet/minecraft/client/renderer/LevelRenderer;renderDebug(Lnet/minecraft/client/Camera;)V"
+    //#endif
+    //$$         )
+    //$$ )
+    //#endif
     private void postRenderLevel(PoseStack poseStack, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, CallbackInfo ci) {
         RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(this.level, poseStack, tickDelta);
     }
