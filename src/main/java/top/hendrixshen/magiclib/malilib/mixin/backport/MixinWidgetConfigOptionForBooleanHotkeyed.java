@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 import top.hendrixshen.magiclib.malilib.impl.HotkeyedBooleanResetListener;
-import top.hendrixshen.magiclib.malilib.impl.config.TranslatableConfigBooleanHotkeyed;
+import top.hendrixshen.magiclib.malilib.impl.config.MagicConfigBooleanHotkeyed;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -82,7 +82,7 @@ public abstract class MixinWidgetConfigOptionForBooleanHotkeyed extends WidgetCo
                                            WidgetListConfigOptionsBase<?, ?> parent, CallbackInfo ci) {
         if (wrapper.getType() == GuiConfigsBase.ConfigOptionWrapper.Type.CONFIG) {
             IConfigBase config = wrapper.getConfig();
-            if (initialStringValue == null && config instanceof TranslatableConfigBooleanHotkeyed) {
+            if (initialStringValue == null && config instanceof MagicConfigBooleanHotkeyed) {
                 ConfigBooleanHotkeyed booleanHotkey = (ConfigBooleanHotkeyed) config;
                 this.initialBoolean = booleanHotkey.getBooleanValue();
                 this.initialStringValue = booleanHotkey.getKeybind().getStringValue();
@@ -101,7 +101,7 @@ public abstract class MixinWidgetConfigOptionForBooleanHotkeyed extends WidgetCo
     private void wasConfigBooleanHotkeyedModified(@NotNull CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue() && this.wrapper.getType() == GuiConfigsBase.ConfigOptionWrapper.Type.CONFIG) {
             IConfigBase config = this.wrapper.getConfig();
-            if (config instanceof TranslatableConfigBooleanHotkeyed) {
+            if (config instanceof MagicConfigBooleanHotkeyed) {
                 ConfigBooleanHotkeyed booleanHotkey = (ConfigBooleanHotkeyed) config;
                 IKeybind keybind = booleanHotkey.getKeybind();
                 cir.setReturnValue(this.initialBoolean != booleanHotkey.getBooleanValue() || !Objects.equals(this.initialStringValue, keybind.getStringValue()) || !this.initialKeybindSettings.equals(keybind.getSettings()));
@@ -119,7 +119,7 @@ public abstract class MixinWidgetConfigOptionForBooleanHotkeyed extends WidgetCo
             cancellable = true
     )
     private void addConfigBooleanHotkeyed(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
-        if (config instanceof TranslatableConfigBooleanHotkeyed) {
+        if (config instanceof MagicConfigBooleanHotkeyed) {
             ConfigBooleanHotkeyed hotkeyedBoolean = (ConfigBooleanHotkeyed) config;
             IKeybind keybind = hotkeyedBoolean.getKeybind();
             this.addBooleanAndHotkeyWidgets(x, y, configWidth, hotkeyedBoolean, hotkeyedBoolean, keybind);

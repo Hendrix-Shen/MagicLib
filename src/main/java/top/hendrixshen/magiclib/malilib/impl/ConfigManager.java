@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.malilib.api.annotation.Config;
 import top.hendrixshen.magiclib.malilib.api.annotation.Hotkey;
 import top.hendrixshen.magiclib.malilib.api.annotation.Numeric;
-import top.hendrixshen.magiclib.malilib.api.config.TranslatableConfig;
+import top.hendrixshen.magiclib.malilib.api.config.IMagicConfigBase;
 import top.hendrixshen.magiclib.malilib.impl.config.*;
 
 import java.lang.reflect.Field;
@@ -179,10 +179,10 @@ public class ConfigManager implements IKeybindProvider {
                         Hotkey hotkey = field.getAnnotation(Hotkey.class);
 
                         if (hotkey == null) {
-                            config = new TranslatableConfigBoolean(String.format("%s.config.%s", this.identifier, annotation.category()),
+                            config = new MagicConfigBoolean(String.format("%s.config.%s", this.identifier, annotation.category()),
                                     field.getName(), (Boolean) configFieldObj);
                         } else {
-                            config = new TranslatableConfigBooleanHotkeyed(String.format("%s.config.%s", this.identifier, annotation.category()),
+                            config = new MagicConfigBooleanHotkeyed(String.format("%s.config.%s", this.identifier, annotation.category()),
                                     field.getName(), (Boolean) configFieldObj, hotkey.hotkey());
                         }
 
@@ -192,16 +192,16 @@ public class ConfigManager implements IKeybindProvider {
                             option.getValueChangeCallback().accept(option);
                         });
 
-                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                        ((IMagicConfigBase) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigBoolean) c).getBooleanValue()));
                     } else if (configFieldObj instanceof Integer) {
                         Numeric numeric = field.getAnnotation(Numeric.class);
 
                         if (numeric == null) {
-                            config = new TranslatableConfigInteger(String.format("%s.config.%s", this.identifier, annotation.category()),
+                            config = new MagicConfigInteger(String.format("%s.config.%s", this.identifier, annotation.category()),
                                     field.getName(), (Integer) configFieldObj);
                         } else {
-                            config = new TranslatableConfigInteger(String.format("%s.config.%s", this.identifier, annotation.category()),
+                            config = new MagicConfigInteger(String.format("%s.config.%s", this.identifier, annotation.category()),
                                     field.getName(), (Integer) configFieldObj, (int) numeric.minValue(), (int) numeric.maxValue(), numeric.useSlider());
                         }
 
@@ -212,10 +212,10 @@ public class ConfigManager implements IKeybindProvider {
                             option.getValueChangeCallback().accept(option);
                         });
 
-                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                        ((IMagicConfigBase) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigInteger) c).getIntegerValue()));
                     } else if (configFieldObj instanceof String) {
-                        config = new TranslatableConfigString(String.format("%s.config.%s", this.identifier, annotation.category()),
+                        config = new MagicConfigString(String.format("%s.config.%s", this.identifier, annotation.category()),
                                 field.getName(), (String) configFieldObj);
                         option = new ConfigOption(annotation, config);
 
@@ -224,10 +224,10 @@ public class ConfigManager implements IKeybindProvider {
                             option.getValueChangeCallback().accept(option);
                         });
 
-                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                        ((IMagicConfigBase) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigString) c).getStringValue()));
                     } else if (configFieldObj instanceof Color4f) {
-                        config = new TranslatableConfigColor(String.format("%s.config.%s", this.identifier, annotation.category()),
+                        config = new MagicConfigColor(String.format("%s.config.%s", this.identifier, annotation.category()),
                                 field.getName(), String.format("#%08X", ((Color4f) configFieldObj).intValue));
                         option = new ConfigOption(annotation, config);
 
@@ -236,16 +236,16 @@ public class ConfigManager implements IKeybindProvider {
                             option.getValueChangeCallback().accept(option);
                         });
 
-                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                        ((IMagicConfigBase) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigColor) c).getColor()));
                     } else if (configFieldObj instanceof Double) {
                         Numeric numeric = field.getAnnotation(Numeric.class);
 
                         if (numeric == null) {
-                            config = new TranslatableConfigDouble(String.format("%s.config.%s", this.identifier, annotation.category()),
+                            config = new MagicConfigDouble(String.format("%s.config.%s", this.identifier, annotation.category()),
                                     field.getName(), (Double) configFieldObj);
                         } else {
-                            config = new TranslatableConfigDouble(String.format("%s.config.%s", this.identifier, annotation.category()),
+                            config = new MagicConfigDouble(String.format("%s.config.%s", this.identifier, annotation.category()),
                                     field.getName(), (Double) configFieldObj, numeric.minValue(), numeric.maxValue(), numeric.useSlider());
                         }
 
@@ -256,13 +256,13 @@ public class ConfigManager implements IKeybindProvider {
                             option.getValueChangeCallback().accept(option);
                         });
 
-                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                        ((IMagicConfigBase) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigDouble) c).getDoubleValue()));
                     } else if (field.getType() == ConfigHotkey.class) {
                         Hotkey hotkey = field.getAnnotation(Hotkey.class);
 
                         if (hotkey != null) {
-                            config = new TranslatableConfigHotkey(String.format("%s.config.%s", this.identifier, annotation.category()),
+                            config = new MagicConfigHotkey(String.format("%s.config.%s", this.identifier, annotation.category()),
                                     field.getName(), hotkey.hotkey());
                             option = new ConfigOption(annotation, config);
                             setFieldValue(field, null, config);
@@ -270,13 +270,13 @@ public class ConfigManager implements IKeybindProvider {
                             continue;
                         }
                     } else if (configFieldObj instanceof List<?>) {
-                        config = new TranslatableConfigStringList(String.format("%s.config.%s", this.identifier, annotation.category()),
+                        config = new MagicConfigStringList(String.format("%s.config.%s", this.identifier, annotation.category()),
                                 field.getName(), immutableStringListHelper((List<?>) configFieldObj));
                         option = new ConfigOption(annotation, config);
                         setFieldValue(field, null, ((ConfigStringList) config).getStrings());
                         config.setValueChangeCallback(c -> option.getValueChangeCallback().accept(option));
                     } else if (configFieldObj instanceof IConfigOptionListEntry) {
-                        config = new TranslatableConfigOptionList(String.format("%s.config.%s", this.identifier, annotation.category()),
+                        config = new MagicConfigOptionList(String.format("%s.config.%s", this.identifier, annotation.category()),
                                 field.getName(), (IConfigOptionListEntry) configFieldObj);
                         option = new ConfigOption(annotation, config);
 
@@ -285,7 +285,7 @@ public class ConfigManager implements IKeybindProvider {
                             option.getValueChangeCallback().accept(option);
                         });
 
-                        ((TranslatableConfig) config).setValueChangedFromJsonCallback(
+                        ((IMagicConfigBase) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigOptionList) c).getOptionListValue()));
                     } else {
                         continue;

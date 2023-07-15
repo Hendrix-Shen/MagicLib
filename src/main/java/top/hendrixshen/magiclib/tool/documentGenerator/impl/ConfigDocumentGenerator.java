@@ -51,23 +51,23 @@ public class ConfigDocumentGenerator extends BaseDocumentGenerator {
     }
 
     private String trType(@NotNull ConfigOption option) {
-        if (option.getConfig() instanceof TranslatableConfigBoolean) {
+        if (option.getConfig() instanceof MagicConfigBoolean) {
             return this.trType("boolean");
-        } else if (option.getConfig() instanceof TranslatableConfigBooleanHotkeyed) {
+        } else if (option.getConfig() instanceof MagicConfigBooleanHotkeyed) {
             return this.trType("boolean_with_hotkey");
-        } else if (option.getConfig() instanceof TranslatableConfigColor) {
+        } else if (option.getConfig() instanceof MagicConfigColor) {
             return this.trType("color");
-        } else if (option.getConfig() instanceof TranslatableConfigDouble) {
+        } else if (option.getConfig() instanceof MagicConfigDouble) {
             return this.trType("double");
-        } else if (option.getConfig() instanceof TranslatableConfigHotkey) {
+        } else if (option.getConfig() instanceof MagicConfigHotkey) {
             return this.trType("hotkey");
-        } else if (option.getConfig() instanceof TranslatableConfigInteger) {
+        } else if (option.getConfig() instanceof MagicConfigInteger) {
             return this.trType("integer");
-        } else if (option.getConfig() instanceof TranslatableConfigOptionList) {
+        } else if (option.getConfig() instanceof MagicConfigOptionList) {
             return this.trType("enum");
-        } else if (option.getConfig() instanceof TranslatableConfigString) {
+        } else if (option.getConfig() instanceof MagicConfigString) {
             return this.trType("string");
-        } else if (option.getConfig() instanceof TranslatableConfigStringList) {
+        } else if (option.getConfig() instanceof MagicConfigStringList) {
             return this.trType("string_list");
         }
 
@@ -159,56 +159,56 @@ public class ConfigDocumentGenerator extends BaseDocumentGenerator {
 
     public void genBooleanValueEntry(@NotNull ConfigOption option, @NotNull StringBuilder builder) {
         builder.append(String.format("- %s: `%s`", this.trLabel("default_value"),
-                ((TranslatableConfigBoolean) option.getConfig()).getStringValue()));
+                ((MagicConfigBoolean) option.getConfig()).getStringValue()));
     }
 
     public void genBooleanHotkeyedValueEntry(@NotNull ConfigOption option, @NotNull StringBuilder builder) {
         builder.append(String.format("- %s: `%s`, `%s`", this.trLabel("default_value"),
-                ((TranslatableConfigBooleanHotkeyed) option.getConfig()).getDefaultStringValue(),
-                ((TranslatableConfigBooleanHotkeyed) option.getConfig()).getKeybind().getStringValue().equals("")
-                        ? this.trLabel("no_key") : ((TranslatableConfigBooleanHotkeyed) option.getConfig()).getKeybind().getStringValue()));
+                ((MagicConfigBooleanHotkeyed) option.getConfig()).getDefaultStringValue(),
+                ((MagicConfigBooleanHotkeyed) option.getConfig()).getKeybind().getStringValue().equals("")
+                        ? this.trLabel("no_key") : ((MagicConfigBooleanHotkeyed) option.getConfig()).getKeybind().getStringValue()));
     }
 
     public void genColorValueEntry(@NotNull ConfigOption option, @NotNull StringBuilder builder) {
         builder.append(String.format("- %s: `%s`", this.trLabel("default_value"),
-                ((TranslatableConfigColor) option.getConfig()).getDefaultStringValue()));
+                ((MagicConfigColor) option.getConfig()).getDefaultStringValue()));
     }
 
     public void genDoubleValueEntry(@NotNull ConfigOption option, @NotNull StringBuilder builder) {
         builder.append(String.format("- %s: `%s`", this.trLabel("default_value"),
-                ((TranslatableConfigDouble) option.getConfig()).getDefaultStringValue()));
+                ((MagicConfigDouble) option.getConfig()).getDefaultStringValue()));
         builder.append("\n");
         builder.append(String.format("- %s: `%s`", this.trLabel("min_value"),
-                ((TranslatableConfigDouble) option.getConfig()).getMinDoubleValue()));
+                ((MagicConfigDouble) option.getConfig()).getMinDoubleValue()));
         builder.append("\n");
         builder.append(String.format("- %s: `%s`", this.trLabel("max_value"),
-                ((TranslatableConfigDouble) option.getConfig()).getMaxDoubleValue()));
+                ((MagicConfigDouble) option.getConfig()).getMaxDoubleValue()));
     }
 
     public void genHotkeyValueEntry(@NotNull ConfigOption option, @NotNull StringBuilder builder) {
         builder.append(String.format("- %s: `%s`", this.trLabel("default_value"),
-                ((TranslatableConfigHotkey) option.getConfig()).getDefaultStringValue().equals("") ?
-                        this.trLabel("no_key") : ((TranslatableConfigHotkey) option.getConfig()).getDefaultStringValue()));
+                ((MagicConfigHotkey) option.getConfig()).getDefaultStringValue().equals("") ?
+                        this.trLabel("no_key") : ((MagicConfigHotkey) option.getConfig()).getDefaultStringValue()));
     }
 
     public void genIntegerValueEntry(@NotNull ConfigOption option, @NotNull StringBuilder builder) {
         builder.append(String.format("- %s: `%s`", this.trLabel("default_value"),
-                ((TranslatableConfigInteger) option.getConfig()).getDefaultStringValue()));
+                ((MagicConfigInteger) option.getConfig()).getDefaultStringValue()));
         builder.append("\n");
         builder.append(String.format("- %s: `%s`", this.trLabel("min_value"),
-                ((TranslatableConfigInteger) option.getConfig()).getMinIntegerValue()));
+                ((MagicConfigInteger) option.getConfig()).getMinIntegerValue()));
         builder.append("\n");
         builder.append(String.format("- %s: `%s`", this.trLabel("max_value"),
-                ((TranslatableConfigInteger) option.getConfig()).getMaxIntegerValue()));
+                ((MagicConfigInteger) option.getConfig()).getMaxIntegerValue()));
     }
 
     public void genOptionListValueEntry(@NotNull ConfigOption option, @NotNull StringBuilder builder) {
-        IConfigOptionListEntry defaultValue = ((TranslatableConfigOptionList) option.getConfig()).getDefaultOptionListValue();
+        IConfigOptionListEntry defaultValue = ((MagicConfigOptionList) option.getConfig()).getDefaultOptionListValue();
         builder.append(String.format("- %s: `%s`", this.trLabel("default_value"), this.tr(String.format("%s.label.%s.%s",
                 this.getIdentifier(), option.getName(), defaultValue.getStringValue()))));
         builder.append("\n");
         List<String> values = Lists.newArrayList();
-        IConfigOptionListEntry value = ((TranslatableConfigOptionList) option.getConfig()).getDefaultOptionListValue();
+        IConfigOptionListEntry value = ((MagicConfigOptionList) option.getConfig()).getDefaultOptionListValue();
 
         do {
             values.add(String.format("`%s`", this.tr(String.format("%s.label.%s.%s", this.getIdentifier(), option.getName(), value.getStringValue()))));
@@ -226,34 +226,34 @@ public class ConfigDocumentGenerator extends BaseDocumentGenerator {
 
     public void genStringValueEntry(@NotNull ConfigOption option, @NotNull StringBuilder builder) {
         builder.append(String.format("- %s: `%s`", this.trLabel("default_value"),
-                ((TranslatableConfigString) option.getConfig()).getDefaultStringValue()));
+                ((MagicConfigString) option.getConfig()).getDefaultStringValue()));
     }
 
     public void genStringListValueEntry(@NotNull ConfigOption option, @NotNull StringBuilder builder) {
         builder.append(String.format("- %s: `%s`", this.trLabel("default_value"),
-                ((TranslatableConfigStringList) option.getConfig()).getDefaultStrings().toString()));
+                ((MagicConfigStringList) option.getConfig()).getDefaultStrings().toString()));
     }
 
     public StringBuilder genValueEntry(@NotNull ConfigOption option) {
         StringBuilder builder = new StringBuilder();
 
-        if (option.getConfig() instanceof TranslatableConfigBoolean) {
+        if (option.getConfig() instanceof MagicConfigBoolean) {
             this.genBooleanValueEntry(option, builder);
-        } else if (option.getConfig() instanceof TranslatableConfigBooleanHotkeyed) {
+        } else if (option.getConfig() instanceof MagicConfigBooleanHotkeyed) {
             this.genBooleanHotkeyedValueEntry(option, builder);
-        } else if (option.getConfig() instanceof TranslatableConfigColor) {
+        } else if (option.getConfig() instanceof MagicConfigColor) {
             this.genColorValueEntry(option, builder);
-        } else if (option.getConfig() instanceof TranslatableConfigDouble) {
+        } else if (option.getConfig() instanceof MagicConfigDouble) {
             this.genDoubleValueEntry(option, builder);
-        } else if (option.getConfig() instanceof TranslatableConfigHotkey) {
+        } else if (option.getConfig() instanceof MagicConfigHotkey) {
             this.genHotkeyValueEntry(option, builder);
-        } else if (option.getConfig() instanceof TranslatableConfigInteger) {
+        } else if (option.getConfig() instanceof MagicConfigInteger) {
             this.genIntegerValueEntry(option, builder);
-        } else if (option.getConfig() instanceof TranslatableConfigOptionList) {
+        } else if (option.getConfig() instanceof MagicConfigOptionList) {
             this.genOptionListValueEntry(option, builder);
-        } else if (option.getConfig() instanceof TranslatableConfigString) {
+        } else if (option.getConfig() instanceof MagicConfigString) {
             this.genStringValueEntry(option, builder);
-        } else if (option.getConfig() instanceof TranslatableConfigStringList) {
+        } else if (option.getConfig() instanceof MagicConfigStringList) {
             this.genStringListValueEntry(option, builder);
         } else {
             return null;

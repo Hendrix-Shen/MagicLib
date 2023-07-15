@@ -24,8 +24,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
-import top.hendrixshen.magiclib.language.api.I18n;
-import top.hendrixshen.magiclib.malilib.impl.config.TranslatableConfigHotkey;
+import top.hendrixshen.magiclib.malilib.impl.config.MagicConfigHotkey;
 import top.hendrixshen.magiclib.malilib.mixin.accessor.KeybindMultiAccessor;
 import top.hendrixshen.magiclib.util.StringUtil;
 
@@ -57,7 +56,7 @@ public abstract class MixinWidgetConfigOptionForHotkeyed extends WidgetConfigOpt
             cancellable = true
     )
     private void addConfigHotkeyedElements(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
-        if (config instanceof TranslatableConfigHotkey) {
+        if (config instanceof MagicConfigHotkey) {
             this.magiclib$addConfigHotkeyedElements(x, y, configWidth, (IHotkey)config);
             ci.cancel();
         }

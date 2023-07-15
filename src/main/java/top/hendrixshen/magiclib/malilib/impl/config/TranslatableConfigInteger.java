@@ -2,64 +2,56 @@ package top.hendrixshen.magiclib.malilib.impl.config;
 
 import com.google.gson.JsonElement;
 import fi.dy.masa.malilib.config.options.ConfigBase;
-import fi.dy.masa.malilib.config.options.ConfigInteger;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.language.api.I18n;
-import top.hendrixshen.magiclib.malilib.api.config.TranslatableConfig;
 
 import java.util.function.Consumer;
 
+@Deprecated()
+@ApiStatus.ScheduledForRemoval(inVersion = "0.8")
 @Environment(EnvType.CLIENT)
-public class TranslatableConfigInteger extends ConfigInteger implements TranslatableConfig {
-    private final String magicPrefix;
-
-    @Nullable
-    private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
-
-    public TranslatableConfigInteger(String prefix, String name, int defaultValue) {
-        super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
-        this.magicPrefix = prefix;
+public class TranslatableConfigInteger extends MagicConfigInteger {
+    public TranslatableConfigInteger(String modIdentifier, String name, int defaultValue) {
+        super(modIdentifier, name, defaultValue);
     }
 
-    public TranslatableConfigInteger(String prefix, String name, int defaultValue, int minValue, int maxValue) {
-        super(name, defaultValue, minValue, maxValue, String.format("%s.%s.comment", prefix, name));
-        this.magicPrefix = prefix;
+    public TranslatableConfigInteger(String modIdentifier, String name, int defaultValue, int minValue, int maxValue) {
+        super(modIdentifier, name, defaultValue, minValue, maxValue);
     }
 
-    public TranslatableConfigInteger(String prefix, String name, int defaultValue, int minValue, int maxValue, boolean useSlider) {
-        super(name, defaultValue, minValue, maxValue, useSlider, String.format("%s.%s.comment", prefix, name));
-        this.magicPrefix = prefix;
-    }
-
-    @Override
-    public String getComment() {
-        return I18n.get(String.format("%s.%s.comment", magicPrefix, getName()));
-    }
-
-    @Override
-    public String getConfigGuiDisplayName() {
-        return I18n.get(String.format("%s.%s.name", magicPrefix, getName()));
+    public TranslatableConfigInteger(String modIdentifier, String name, int defaultValue, int minValue, int maxValue, boolean useSlider) {
+        super(modIdentifier, name, defaultValue, minValue, maxValue, useSlider);
     }
 
     @Override
     public void setValueFromJsonElement(JsonElement jsonElement) {
         super.setValueFromJsonElement(jsonElement);
-
-        if (this.valueChangedFromJsonCallback != null) {
-            this.valueChangedFromJsonCallback.accept(this);
-        }
     }
 
     @Override
-    @Nullable
-    public Consumer<ConfigBase<?>> getValueChangedFromJsonCallback() {
-        return this.valueChangedFromJsonCallback;
+    public @Nullable Consumer<ConfigBase<?>> getValueChangedFromJsonCallback() {
+        return super.getValueChangedFromJsonCallback();
     }
 
     @Override
     public void setValueChangedFromJsonCallback(@Nullable Consumer<ConfigBase<?>> valueChangedFromJsonCallback) {
-        this.valueChangedFromJsonCallback = valueChangedFromJsonCallback;
+        super.setValueChangedFromJsonCallback(valueChangedFromJsonCallback);
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public String getPrettyName() {
+        return super.getPrettyName();
+    }
+
+    @Override
+    public String getComment() {
+        return super.getComment();
     }
 }

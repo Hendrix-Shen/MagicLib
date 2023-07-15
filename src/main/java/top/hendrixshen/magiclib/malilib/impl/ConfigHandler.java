@@ -104,6 +104,7 @@ public class ConfigHandler implements IConfigHandler {
         } catch (IOException e) {
             MagicLibReference.getLogger().warn("Failed to write JSON data to file '{}'", fileTmp.getAbsolutePath(), e);
         }
+
         return false;
     }
 

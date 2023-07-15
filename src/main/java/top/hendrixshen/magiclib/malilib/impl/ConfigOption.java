@@ -48,7 +48,7 @@ public class ConfigOption {
     }
 
     public boolean isEnabled() {
-        return this.modDependencies.satisfied(this) && predicate.isSatisfied(this);
+        return this.modDependencies.satisfied(this) && this.predicate.isSatisfied(this);
     }
 
     public ConfigBase<?> getConfig() {

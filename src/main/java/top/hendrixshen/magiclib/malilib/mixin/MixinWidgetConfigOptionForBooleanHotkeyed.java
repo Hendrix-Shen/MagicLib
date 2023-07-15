@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
-import top.hendrixshen.magiclib.malilib.impl.config.TranslatableConfigBooleanHotkeyed;
+import top.hendrixshen.magiclib.malilib.impl.config.MagicConfigBooleanHotkeyed;
 
 @Environment(EnvType.CLIENT)
 @Dependencies(and = @Dependency(value = "malilib", versionPredicate = ">=0.11.4"))
@@ -49,8 +49,8 @@ public abstract class MixinWidgetConfigOptionForBooleanHotkeyed extends WidgetCo
             cancellable = true
     )
     private void tweakConfigBooleanHotkeyedElements(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
-        if (config instanceof TranslatableConfigBooleanHotkeyed) {
-            TranslatableConfigBooleanHotkeyed hotkeyedBoolean = (TranslatableConfigBooleanHotkeyed) config;
+        if (config instanceof MagicConfigBooleanHotkeyed) {
+            MagicConfigBooleanHotkeyed hotkeyedBoolean = (MagicConfigBooleanHotkeyed) config;
             IKeybind keybind = hotkeyedBoolean.getKeybind();
             this.magiclib$addConfigBooleanHotkeyedElements(x, y, configWidth, hotkeyedBoolean, hotkeyedBoolean, keybind);
             ci.cancel();
