@@ -13,16 +13,16 @@ import java.util.function.Consumer;
 @ApiStatus.ScheduledForRemoval(inVersion = "0.8")
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigDouble extends MagicConfigDouble {
-    public TranslatableConfigDouble(String modIdentifier, String name, double defaultValue) {
-        super(modIdentifier, name, defaultValue);
+    public TranslatableConfigDouble(String prefix, String name, double defaultValue) {
+        super(prefix, name, defaultValue);
     }
 
-    public TranslatableConfigDouble(String modIdentifier, String name, double defaultValue, double minValue, double maxValue) {
-        super(modIdentifier, name, defaultValue, minValue, maxValue);
+    public TranslatableConfigDouble(String prefix, String name, double defaultValue, double minValue, double maxValue) {
+        super(prefix, name, defaultValue, minValue, maxValue);
     }
 
-    public TranslatableConfigDouble(String modIdentifier, String name, double defaultValue, double minValue, double maxValue, boolean useSlider) {
-        super(modIdentifier, name, defaultValue, minValue, maxValue, useSlider);
+    public TranslatableConfigDouble(String prefix, String name, double defaultValue, double minValue, double maxValue, boolean useSlider) {
+        super(prefix, name, defaultValue, minValue, maxValue, useSlider);
     }
 
     @Override

@@ -17,23 +17,23 @@ public interface IMagicConfigBase extends IConfigBase {
 
     void setValueChangedFromJsonCallback(@Nullable Consumer<ConfigBase<?>> valueChangedFromJsonCallback);
 
-    String getModIdentifier();
+    String getPrefix();
 
     @Override
     default String getComment() {
-        String key = String.format("%s.%s.comment", this.getModIdentifier(), this.getName());
+        String key = String.format("%s.%s.comment", this.getPrefix(), this.getName());
         return I18n.exists(key) ? I18n.get(key) : this.getName();
     }
 
     @Override
     default String getPrettyName() {
-        String key = String.format("%s.%s.pretty_name", this.getModIdentifier(), this.getName());
+        String key = String.format("%s.%s.pretty_name", this.getPrefix(), this.getName());
         return I18n.exists(key) ? I18n.get(key) : StringUtils.splitCamelCase(this.getConfigGuiDisplayName());
     }
 
     @Override
     default String getConfigGuiDisplayName() {
-        String key = String.format("%s.%s.name", this.getModIdentifier(), this.getName());
+        String key = String.format("%s.%s.name", this.getPrefix(), this.getName());
         return I18n.exists(key) ? I18n.get(key) : this.getName();
     }
 }

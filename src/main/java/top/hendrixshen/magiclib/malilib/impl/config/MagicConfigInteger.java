@@ -12,24 +12,24 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class MagicConfigInteger extends ConfigInteger implements IMagicConfigBase {
-    private final String modIdentifier;
+    private final String prefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
 
-    public MagicConfigInteger(String modIdentifier, String name, int defaultValue) {
-        super(name, defaultValue, String.format("%s.%s.comment", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+    public MagicConfigInteger(String prefix, String name, int defaultValue) {
+        super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
+        this.prefix = prefix;
     }
 
-    public MagicConfigInteger(String modIdentifier, String name, int defaultValue, int minValue, int maxValue) {
-        super(name, defaultValue, minValue, maxValue, String.format("%s.%s.comment", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+    public MagicConfigInteger(String prefix, String name, int defaultValue, int minValue, int maxValue) {
+        super(name, defaultValue, minValue, maxValue, String.format("%s.%s.comment", prefix, name));
+        this.prefix = prefix;
     }
 
-    public MagicConfigInteger(String modIdentifier, String name, int defaultValue, int minValue, int maxValue, boolean useSlider) {
-        super(name, defaultValue, minValue, maxValue, useSlider, String.format("%s.%s.comment", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+    public MagicConfigInteger(String prefix, String name, int defaultValue, int minValue, int maxValue, boolean useSlider) {
+        super(name, defaultValue, minValue, maxValue, useSlider, String.format("%s.%s.comment", prefix, name));
+        this.prefix = prefix;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MagicConfigInteger extends ConfigInteger implements IMagicConfigBas
     }
 
     @Override
-    public String getModIdentifier() {
-        return this.modIdentifier;
+    public String getPrefix() {
+        return this.prefix;
     }
 }

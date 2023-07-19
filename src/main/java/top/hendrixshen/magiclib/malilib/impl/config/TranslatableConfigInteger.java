@@ -13,16 +13,16 @@ import java.util.function.Consumer;
 @ApiStatus.ScheduledForRemoval(inVersion = "0.8")
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigInteger extends MagicConfigInteger {
-    public TranslatableConfigInteger(String modIdentifier, String name, int defaultValue) {
-        super(modIdentifier, name, defaultValue);
+    public TranslatableConfigInteger(String prefix, String name, int defaultValue) {
+        super(prefix, name, defaultValue);
     }
 
-    public TranslatableConfigInteger(String modIdentifier, String name, int defaultValue, int minValue, int maxValue) {
-        super(modIdentifier, name, defaultValue, minValue, maxValue);
+    public TranslatableConfigInteger(String prefix, String name, int defaultValue, int minValue, int maxValue) {
+        super(prefix, name, defaultValue, minValue, maxValue);
     }
 
-    public TranslatableConfigInteger(String modIdentifier, String name, int defaultValue, int minValue, int maxValue, boolean useSlider) {
-        super(modIdentifier, name, defaultValue, minValue, maxValue, useSlider);
+    public TranslatableConfigInteger(String prefix, String name, int defaultValue, int minValue, int maxValue, boolean useSlider) {
+        super(prefix, name, defaultValue, minValue, maxValue, useSlider);
     }
 
     @Override

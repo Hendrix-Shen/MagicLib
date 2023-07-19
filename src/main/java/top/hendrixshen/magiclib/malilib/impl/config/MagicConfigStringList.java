@@ -13,14 +13,14 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class MagicConfigStringList extends ConfigStringList implements IMagicConfigBase {
-    private final String modIdentifier;
+    private final String prefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
 
-    public MagicConfigStringList(String modIdentifier, String name, ImmutableList<String> defaultValue) {
-        super(name, defaultValue, String.format("%s.%s.comment", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+    public MagicConfigStringList(String prefix, String name, ImmutableList<String> defaultValue) {
+        super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
+        this.prefix = prefix;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MagicConfigStringList extends ConfigStringList implements IMagicCon
     }
 
     @Override
-    public String getModIdentifier() {
-        return this.modIdentifier;
+    public String getPrefix() {
+        return this.prefix;
     }
 }

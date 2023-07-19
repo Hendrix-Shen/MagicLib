@@ -14,8 +14,8 @@ import java.util.function.Consumer;
 @ApiStatus.ScheduledForRemoval(inVersion = "0.8")
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigStringList extends MagicConfigStringList {
-    public TranslatableConfigStringList(String modIdentifier, String name, ImmutableList<String> defaultValue) {
-        super(modIdentifier, name, defaultValue);
+    public TranslatableConfigStringList(String prefix, String name, ImmutableList<String> defaultValue) {
+        super(prefix, name, defaultValue);
     }
 
     @Override

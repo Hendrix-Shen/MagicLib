@@ -12,14 +12,14 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class MagicConfigColor extends ConfigColor implements IMagicConfigBase {
-    private final String modIdentifier;
+    private final String prefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
 
-    public MagicConfigColor(String modIdentifier, String name, String defaultValue) {
-        super(name, defaultValue, String.format("%s.%s.comment", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+    public MagicConfigColor(String prefix, String name, String defaultValue) {
+        super(name, defaultValue, String.format("%s.%s.comment", prefix, name));
+        this.prefix = prefix;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class MagicConfigColor extends ConfigColor implements IMagicConfigBase {
     }
 
     @Override
-    public String getModIdentifier() {
-        return this.modIdentifier;
+    public String getPrefix() {
+        return this.prefix;
     }
 }

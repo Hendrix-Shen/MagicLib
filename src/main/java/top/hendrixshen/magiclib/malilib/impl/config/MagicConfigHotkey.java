@@ -13,23 +13,23 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class MagicConfigHotkey extends ConfigHotkey implements IMagicConfigBase {
-    private final String modIdentifier;
+    private final String prefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
 
-    public MagicConfigHotkey(String modIdentifier, String name, String defaultStorageString) {
+    public MagicConfigHotkey(String prefix, String name, String defaultStorageString) {
         super(name, defaultStorageString,
-                String.format("%s.%s.comment", modIdentifier, name),
-                String.format("%s.%s.pretty_name", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+                String.format("%s.%s.comment", prefix, name),
+                String.format("%s.%s.pretty_name", prefix, name));
+        this.prefix = prefix;
     }
 
-    public MagicConfigHotkey(String modIdentifier, String name, String defaultStorageString, KeybindSettings settings) {
+    public MagicConfigHotkey(String prefix, String name, String defaultStorageString, KeybindSettings settings) {
         super(name, defaultStorageString, settings,
-                String.format("%s.%s.comment", modIdentifier, name),
-                String.format("%s.%s.pretty_name", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+                String.format("%s.%s.comment", prefix, name),
+                String.format("%s.%s.pretty_name", prefix, name));
+        this.prefix = prefix;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MagicConfigHotkey extends ConfigHotkey implements IMagicConfigBase 
     }
 
     @Override
-    public String getModIdentifier() {
-        return this.modIdentifier;
+    public String getPrefix() {
+        return this.prefix;
     }
 }

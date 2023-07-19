@@ -13,8 +13,8 @@ import java.util.function.Consumer;
 @ApiStatus.ScheduledForRemoval(inVersion = "0.8")
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigBoolean extends MagicConfigBoolean {
-    public TranslatableConfigBoolean(String modIdentifier, String name, boolean defaultValue) {
-        super(modIdentifier, name, defaultValue);
+    public TranslatableConfigBoolean(String prefix, String name, boolean defaultValue) {
+        super(prefix, name, defaultValue);
     }
 
     @Override

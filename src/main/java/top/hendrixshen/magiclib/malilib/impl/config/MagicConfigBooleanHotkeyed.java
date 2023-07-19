@@ -13,23 +13,23 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class MagicConfigBooleanHotkeyed extends ConfigBooleanHotkeyed implements IMagicConfigBase {
-    private final String modIdentifier;
+    private final String prefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
 
-    public MagicConfigBooleanHotkeyed(String modIdentifier, String name, boolean defaultValue, String defaultHotkey) {
+    public MagicConfigBooleanHotkeyed(String prefix, String name, boolean defaultValue, String defaultHotkey) {
         super(name, defaultValue, defaultHotkey,
-                String.format("%s.%s.comment", modIdentifier, name),
-                String.format("%s.%s.pretty_name", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+                String.format("%s.%s.comment", prefix, name),
+                String.format("%s.%s.pretty_name", prefix, name));
+        this.prefix = prefix;
     }
 
-    public MagicConfigBooleanHotkeyed(String modIdentifier, String name, boolean defaultValue, String defaultHotkey, KeybindSettings settings) {
+    public MagicConfigBooleanHotkeyed(String prefix, String name, boolean defaultValue, String defaultHotkey, KeybindSettings settings) {
         super(name, defaultValue, defaultHotkey, settings,
-                String.format("%s.%s.comment", modIdentifier, name),
-                String.format("%s.%s.pretty_name", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+                String.format("%s.%s.comment", prefix, name),
+                String.format("%s.%s.pretty_name", prefix, name));
+        this.prefix = prefix;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MagicConfigBooleanHotkeyed extends ConfigBooleanHotkeyed implements
     }
 
     @Override
-    public String getModIdentifier() {
-        return this.modIdentifier;
+    public String getPrefix() {
+        return this.prefix;
     }
 }

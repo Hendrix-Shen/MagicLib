@@ -13,16 +13,16 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class MagicConfigOptionList extends ConfigOptionList implements IMagicConfigBase {
-    private final String modIdentifier;
+    private final String prefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
 
-    public MagicConfigOptionList(String modIdentifier, String name, IConfigOptionListEntry defaultValue) {
+    public MagicConfigOptionList(String prefix, String name, IConfigOptionListEntry defaultValue) {
         super(name, defaultValue,
-                String.format("%s.%s.comment", modIdentifier, name),
-                String.format("%s.%s.pretty_name", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+                String.format("%s.%s.comment", prefix, name),
+                String.format("%s.%s.pretty_name", prefix, name));
+        this.prefix = prefix;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MagicConfigOptionList extends ConfigOptionList implements IMagicCon
     }
 
     @Override
-    public String getModIdentifier() {
-        return this.modIdentifier;
+    public String getPrefix() {
+        return this.prefix;
     }
 }

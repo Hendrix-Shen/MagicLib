@@ -14,12 +14,12 @@ import java.util.function.Consumer;
 @ApiStatus.ScheduledForRemoval(inVersion = "0.8")
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigHotkey extends MagicConfigHotkey {
-    public TranslatableConfigHotkey(String modIdentifier, String name, String defaultStorageString) {
-        super(modIdentifier, name, defaultStorageString);
+    public TranslatableConfigHotkey(String prefix, String name, String defaultStorageString) {
+        super(prefix, name, defaultStorageString);
     }
 
-    public TranslatableConfigHotkey(String modIdentifier, String name, String defaultStorageString, KeybindSettings settings) {
-        super(modIdentifier, name, defaultStorageString, settings);
+    public TranslatableConfigHotkey(String prefix, String name, String defaultStorageString, KeybindSettings settings) {
+        super(prefix, name, defaultStorageString, settings);
     }
 
     @Override

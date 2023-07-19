@@ -12,16 +12,16 @@ import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class MagicConfigBoolean extends ConfigBoolean implements IMagicConfigBase {
-    private final String modIdentifier;
+    private final String prefix;
 
     @Nullable
     private Consumer<ConfigBase<?>> valueChangedFromJsonCallback;
 
-    public MagicConfigBoolean(String modIdentifier, String name, boolean defaultValue) {
+    public MagicConfigBoolean(String prefix, String name, boolean defaultValue) {
         super(name, defaultValue,
-                String.format("%s.%s.comment", modIdentifier, name),
-                String.format("%s.%s.pretty_name", modIdentifier, name));
-        this.modIdentifier = modIdentifier;
+                String.format("%s.%s.comment", prefix, name),
+                String.format("%s.%s.pretty_name", prefix, name));
+        this.prefix = prefix;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class MagicConfigBoolean extends ConfigBoolean implements IMagicConfigBas
     }
 
     @Override
-    public String getModIdentifier() {
-        return this.modIdentifier;
+    public String getPrefix() {
+        return this.prefix;
     }
 }

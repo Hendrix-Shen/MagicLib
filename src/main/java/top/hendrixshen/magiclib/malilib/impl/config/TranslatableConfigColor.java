@@ -13,8 +13,8 @@ import java.util.function.Consumer;
 @ApiStatus.ScheduledForRemoval(inVersion = "0.8")
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigColor extends MagicConfigColor {
-    public TranslatableConfigColor(String modIdentifier, String name, String defaultValue) {
-        super(modIdentifier, name, defaultValue);
+    public TranslatableConfigColor(String prefix, String name, String defaultValue) {
+        super(prefix, name, defaultValue);
     }
 
     @Override
