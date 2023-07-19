@@ -6,6 +6,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.SharedConstants;
+import top.hendrixshen.magiclib.util.MiscUtil;
 
 import java.util.function.Consumer;
 
@@ -13,6 +15,10 @@ import java.util.function.Consumer;
 @ApiStatus.ScheduledForRemoval(inVersion = "0.8")
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigDouble extends MagicConfigDouble {
+    static {
+        MiscUtil.warnDeprecatedFeature(SharedConstants.MAGICLIB_VERSION_0_8);
+    }
+
     public TranslatableConfigDouble(String prefix, String name, double defaultValue) {
         super(prefix, name, defaultValue);
     }
