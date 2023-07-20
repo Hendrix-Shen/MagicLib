@@ -247,7 +247,7 @@ tasks.register("runProductionClient", JavaExec) {
                 "--height", Integer.parseInt(project.getOrDefault("ow.game.window.height", "1080") as String)
         )
         jvmArgs("-Dmixin.debug.export=true")
-        jvmArgs("-Dfabric.addMods=${configurations.productionRuntimeMods.files.join(File.pathSeparator)}${File.pathSeparator}${tasks.remapJar.archiveFile.get().asFile.absolutePath}")
+        jvmArgs("-Dfabric.addMods=${configurations.productionRuntimeMods.files.join(File.pathSeparator)}${File.pathSeparator}${tasks.remapJar.archiveFile.get().asFile.absolutePath}${File.pathSeparator}${project(":fabricWrapper").tasks.jar.archiveFile.get()}")
 
         if (Platform.CURRENT.operatingSystem.isMacOS()) {
             jvmArgs("-XstartOnFirstThread")
@@ -264,7 +264,7 @@ tasks.register("runProductionServer", JavaExec) {
     doFirst {
         args("nogui")
         jvmArgs("-Dmixin.debug.export=true")
-        jvmArgs("-Dfabric.addMods=${configurations.productionRuntimeMods.files.join(File.pathSeparator)}${File.pathSeparator}${tasks.remapJar.archiveFile.get().asFile.absolutePath}")
+        jvmArgs("-Dfabric.addMods=${configurations.productionRuntimeMods.files.join(File.pathSeparator)}${File.pathSeparator}${tasks.remapJar.archiveFile.get().asFile.absolutePath}${File.pathSeparator}${project(":fabricWrapper").tasks.jar.archiveFile.get()}")
     }
 }
 
