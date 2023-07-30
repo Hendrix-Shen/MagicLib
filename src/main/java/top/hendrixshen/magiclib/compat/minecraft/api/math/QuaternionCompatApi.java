@@ -1,7 +1,5 @@
 package top.hendrixshen.magiclib.compat.minecraft.api.math;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.joml.Quaternionf;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 

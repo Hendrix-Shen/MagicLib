@@ -7,5 +7,5 @@ import top.hendrixshen.magiclib.compat.preprocess.api.DummyClass;
 
 @Environment(EnvType.CLIENT)
 @Mixin(DummyClass.class)
-public class MixinGameRenderer {
+public class MixinLevelRenderer {
 }
