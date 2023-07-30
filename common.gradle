@@ -1,7 +1,7 @@
 import net.fabricmc.loom.util.Platform
 
 apply(plugin: "fabric-loom")
-apply(plugin: "io.github.juuxel.loom-quiltflower")
+apply(plugin: "io.github.juuxel.loom-vineflower")
 apply(plugin: "maven-publish")
 apply(plugin: "signing")
 apply(plugin: "com.replaymod.preprocess")
@@ -152,7 +152,8 @@ loom {
     runConfigs.named("client") {
         programArgs([
                 "--width", Integer.parseInt(project.getOrDefault("ow.game.window.width", "1920") as String),
-                "--height", Integer.parseInt(project.getOrDefault("ow.game.window.height", "1080") as String)
+                "--height", Integer.parseInt(project.getOrDefault("ow.game.window.height", "1080") as String),
+                "--username", project.getOrDefault("ow.game.window.username", "dev")
         ])
         runDir("run/client")
     }
@@ -244,7 +245,8 @@ tasks.register("runProductionClient", JavaExec) {
                 "--assetsDir", file("${loom.files.userCache}/assets").absolutePath,
                 "--gameDir", workingDir.absolutePath,
                 "--width", Integer.parseInt(project.getOrDefault("ow.game.window.width", "1920") as String),
-                "--height", Integer.parseInt(project.getOrDefault("ow.game.window.height", "1080") as String)
+                "--height", Integer.parseInt(project.getOrDefault("ow.game.window.height", "1080") as String),
+                "--username", project.getOrDefault("ow.game.window.username", "dev")
         )
         jvmArgs("-Dmixin.debug.export=true")
         jvmArgs("-Dfabric.addMods=${configurations.productionRuntimeMods.files.join(File.pathSeparator)}${File.pathSeparator}${tasks.remapJar.archiveFile.get().asFile.absolutePath}${File.pathSeparator}${project(":fabricWrapper").tasks.jar.archiveFile.get()}")

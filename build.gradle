@@ -1,6 +1,6 @@
 plugins {
     id("fabric-loom").version("1.3-SNAPSHOT").apply(false)
-    id("io.github.juuxel.loom-quiltflower").version("1.11.0").apply(false)
+    id("io.github.juuxel.loom-vineflower").version("1.11.0").apply(false)
     id("maven-publish")
     id("net.kyori.blossom").version("1.3.1").apply(false)
     id("org.ajoberstar.grgit").version("5.2.0")
@@ -169,6 +169,7 @@ tasks.register("genLocalProperties") {
             bufferedWriter.writeLine("ow.build.plugin.disableBlossom=")
             bufferedWriter.writeLine("ow.game.window.width=")
             bufferedWriter.writeLine("ow.game.window.height=")
+            bufferedWriter.writeLine("ow.game.window.username=")
             bufferedWriter.close()
 
             project.getLogger().info("local.properties generated successfully!")
