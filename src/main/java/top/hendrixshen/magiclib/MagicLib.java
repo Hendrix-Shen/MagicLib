@@ -2,11 +2,14 @@ package top.hendrixshen.magiclib;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
-import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
-import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.carpet.CarpetEntrypoint;
 import top.hendrixshen.magiclib.impl.config.ConfigEntrypoint;
 import top.hendrixshen.magiclib.tool.mixin.MixinAuditExecutor;
+
+//#if MC > 11903 && MC < 12000
+//$$ import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
+//$$ import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
+//#endif
 
 public class MagicLib implements ModInitializer, ClientModInitializer {
     //#if MC > 11903 && MC < 12000

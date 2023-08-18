@@ -1,9 +1,10 @@
 {
-  "magiclib.gui.title": "MagicLib Test - Version: %s (%s)",
   "magiclib.gui.button.widget.trigger.text": "Trigger",
   "magiclib.gui.button.widget.trigger.hover": "Click to trigger %1$s once\n§7§oThis will simulate hotkey pressed and released in order.",
   "magiclib.gui.button.tab.generic": "Generic",
   "magiclib.gui.button.tab.test": "Test",
+  "magiclib.gui.bottom_line.stat": "Total: %1$s (Available: %2$s + Unavailable: %3$s), Modified: %4$s",
+  "magiclib.gui.title": "MagicLib Test - Version: %s (%s)",
 
   "magiclib.config.generic.debug.name": "debug",
   "magiclib.config.generic.debug.comment": "Display debug message",

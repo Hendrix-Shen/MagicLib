@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.carpet.api.CarpetExtensionCompatApi;
 import top.hendrixshen.magiclib.carpet.api.annotation.Rule;
-import top.hendrixshen.magiclib.carpet.mixin.accessor.SettingsManagerAccessor;
+import top.hendrixshen.magiclib.mixin.carpet.accessor.SettingsManagerAccessor;
 import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.impl.carpet.MagicLibSettings;
 import top.hendrixshen.magiclib.language.api.I18n;
@@ -61,7 +61,7 @@ import carpet.api.settings.CarpetRule;
 import carpet.api.settings.SettingsManager;
 import net.minecraft.commands.CommandBuildContext;
 //#else
-//$$ import top.hendrixshen.magiclib.carpet.mixin.accessor.SettingsManagerAccessor;
+//$$ import top.hendrixshen.magiclib.mixin.carpet.accessor.SettingsManagerAccessor;
 //#if MC > 11502
 //$$ import carpet.settings.Condition;
 //#endif

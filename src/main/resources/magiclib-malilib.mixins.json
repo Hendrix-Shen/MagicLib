@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "top.hendrixshen.magiclib.malilib.mixin",
+  "package": "top.hendrixshen.magiclib.mixin.malilib",
   "plugin": "top.hendrixshen.magiclib.MagicLibMixinPlugin",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",

@@ -13,7 +13,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.compat.minecraft.api.math.QuaternionCompatApi;
-import top.hendrixshen.magiclib.compat.minecraft.mixin.math.AccessorMatrix4f;
+import top.hendrixshen.magiclib.mixin.compat.minecraft.math.AccessorMatrix4f;
 
 import java.nio.FloatBuffer;
 

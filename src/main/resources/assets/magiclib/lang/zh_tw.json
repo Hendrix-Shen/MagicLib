@@ -1,9 +1,10 @@
 {
-  "magiclib.gui.title": "MagicLib 測試 - 版本: %s (%s)",
   "magiclib.gui.button.widget.trigger.text": "觸發",
   "magiclib.gui.button.widget.trigger.hover": "點擊以觸發一次 %1$s\n§7§o這將依次模擬快捷鍵按下與鬆開操作.",
   "magiclib.gui.button.tab.generic": "通用",
   "magiclib.gui.button.tab.test": "測試",
+  "magiclib.gui.bottom_line.stat": "總計: %1$s (可用: %2$s + 不可用: %3$s), 已修改: %4$s",
+  "magiclib.gui.title": "MagicLib 測試 - 版本: %s (%s)",
 
   "magiclib.config.generic.debug.name": "除錯模式",
   "magiclib.config.generic.debug.comment": "開啟後會輸出除錯的日誌",

@@ -8,7 +8,7 @@ import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.SharedConstants;
-import top.hendrixshen.magiclib.util.MiscUtil;
+import top.hendrixshen.magiclib.helper.DeprecatedFeatureHelper;
 
 import java.util.function.Consumer;
 
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 @Environment(EnvType.CLIENT)
 public class TranslatableConfigOptionList extends MagicConfigOptionList {
     static {
-        MiscUtil.warnDeprecatedFeature(SharedConstants.MAGICLIB_VERSION_0_8);
+        DeprecatedFeatureHelper.warn(SharedConstants.MAGICLIB_VERSION_0_8);
     }
 
     public TranslatableConfigOptionList(String prefix, String name, IConfigOptionListEntry defaultValue) {

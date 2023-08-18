@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.malilib.impl.gui;
 
 import com.google.common.collect.Lists;
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import net.fabricmc.api.EnvType;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.language.api.I18n;
 import top.hendrixshen.magiclib.malilib.impl.ConfigManager;
 import top.hendrixshen.magiclib.malilib.impl.ConfigOption;
+import top.hendrixshen.magiclib.util.RenderUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +22,6 @@ public class ConfigGui extends GuiConfigsBase {
     private String tab;
     private final String identifier;
     private final Supplier<String> titleSupplier;
-
     private final ConfigManager configManager;
 
     public ConfigGui(String identifier, String defaultTab, ConfigManager configManager, String title) {
@@ -47,6 +48,7 @@ public class ConfigGui extends GuiConfigsBase {
         this.setTitle(this.titleSupplier.get());
         int x = 10;
         int y = 26;
+        this.initBottomLine();
 
         for (String category : configManager.getCategories()) {
             if (this.configManager.getOptionsByCategory(category).stream().noneMatch(ConfigOption::isEnabled)) {
@@ -55,6 +57,32 @@ public class ConfigGui extends GuiConfigsBase {
 
             x += this.createNavigationButton(x, y, category);
         }
+    }
+
+    private void initBottomLine() {
+        int available = 0;
+        int unavailable = 0;
+        int modified = 0;
+
+        for (ConfigOption option : this.configManager.getAllOptions()) {
+            if (option.isEnabled()) {
+                if (option.getConfig().isModified()) {
+                    modified++;
+                }
+
+                available++;
+            } else {
+                unavailable++;
+            }
+        }
+
+        int total = available + unavailable;
+        String stats = I18n.get("magiclib.gui.bottom_line.stat", total, available, unavailable, modified);
+        int width = RenderUtil.getRenderWidth(stats);
+        int height = RenderUtil.TEXT_HEIGHT;
+        int x = 10;
+        int y = this.height - height - GuiBase.TOP;
+        this.addLabel(x, y, width, height, 0xFFAAAAAA, stats);
     }
 
     private int createNavigationButton(int x, int y, String category) {

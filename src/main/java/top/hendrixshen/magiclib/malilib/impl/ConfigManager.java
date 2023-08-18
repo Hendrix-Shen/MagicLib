@@ -18,6 +18,7 @@ import top.hendrixshen.magiclib.malilib.api.config.IMagicConfigBase;
 import top.hendrixshen.magiclib.malilib.impl.config.*;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +50,7 @@ public class ConfigManager implements IKeybindProvider {
      * @param identifier Your mod identifier.
      * @return Magic Configuration Manager for specified modid registered.
      */
-    public static ConfigManager get(String identifier) {
+    public static @NotNull ConfigManager get(String identifier) {
         ConfigManager configManager = INSTANCES.get(identifier);
 
         if (configManager == null) {
@@ -99,28 +100,6 @@ public class ConfigManager implements IKeybindProvider {
             option.setValueChangeCallback(callback);
             return true;
         }).isPresent();
-    }
-
-    /**
-     * Get option under the specified name.
-     *
-     * @return A configuration.
-     */
-    public Optional<ConfigOption> getOptionByName(String optionName) {
-        return Optional.ofNullable(OPTIONS.getOrDefault(optionName, null));
-    }
-
-    /**
-     * Get config under the specified name with config type.
-     */
-    public <T> Optional<T> getConfig(Class<T> clazz, String optionName) {
-        Optional<ConfigOption> optionOptional = getOptionByName(optionName);
-
-        if (optionOptional.isPresent()) {
-            return optionOptional.get().getConfig(clazz);
-        } else {
-            return Optional.empty();
-        }
     }
 
     /**
@@ -322,6 +301,38 @@ public class ConfigManager implements IKeybindProvider {
      */
     public Collection<ConfigOption> getOptionsByCategory(String category) {
         return this.OPTIONS.values().stream().filter(option -> option.getCategory().equals(category)).collect(Collectors.toList());
+    }
+
+    /**
+     * Get config under the specified name with config type.
+     */
+    public <T> Optional<T> getConfig(Class<T> clazz, String optionName) {
+        Optional<ConfigOption> optionOptional = getOptionByName(optionName);
+
+        if (optionOptional.isPresent()) {
+            return optionOptional.get().getConfig(clazz);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+
+    /**
+     * Get all options.
+     *
+     * @return All configurations.
+     */
+    public Collection<ConfigOption> getAllOptions() {
+        return new ArrayList<>(this.OPTIONS.values());
+    }
+
+    /**
+     * Get option under the specified name.
+     *
+     * @return A configuration.
+     */
+    public Optional<ConfigOption> getOptionByName(String optionName) {
+        return Optional.ofNullable(OPTIONS.getOrDefault(optionName, null));
     }
 
     /**

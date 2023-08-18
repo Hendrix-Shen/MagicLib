@@ -1,4 +1,10 @@
+import com.google.common.collect.ImmutableList
+import com.google.common.collect.ImmutableMap
 import net.fabricmc.loom.util.Platform
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.LdcInsnNode
 
 apply(plugin: "fabric-loom")
 apply(plugin: "io.github.juuxel.loom-vineflower")
@@ -321,16 +327,6 @@ processResources {
     }
 }
 
-if (!Boolean.parseBoolean(project.getOrDefault("ow.build.plugin.disableBlossom", "false") as String)) {
-    apply(plugin: "net.kyori.blossom")
-
-    blossom {
-        replaceToken("@MOD_IDENTIFIER@"            , project.mod_id)
-        replaceToken("@MOD_NAME@"                  , project.mod_name)
-        replaceToken("@MINECRAFT_VERSION_IDENTIFY@", project.minecraft_version.replace(".", "_"))
-    }
-}
-
 java {
     sourceCompatibility(JavaVersion.VERSION_1_8)
     targetCompatibility(JavaVersion.VERSION_1_8)
@@ -414,4 +410,65 @@ signing {
 TaskCollection<Sign> signingTasks = tasks.withType(Sign)
 tasks.withType(AbstractPublishToMaven).configureEach {
     it.dependsOn(signingTasks)
+}
+
+ImmutableMap<Object, Object> replaceTokenMap = ImmutableMap.builder()
+        .put("@MOD_IDENTIFIER@"            , project.mod_id)
+        .put("@MOD_NAME@"                  , project.mod_name)
+        .put("@MINECRAFT_VERSION_IDENTIFY@", project.minecraft_version.replace(".", "_"))
+        .build()
+ImmutableList<Object> replaceTokenFile = ImmutableList.builder()
+        .add("MagicLibReference")
+        .build()
+
+jar {
+    doFirst {
+        File dir = file("build/classes/java")
+
+        dir.eachFileRecurse {
+            String path = it.path.replace(file("build/classes/java").path, "")
+
+            if (path.endsWith(".class") && replaceTokenFile.stream().anyMatch { path.contains(it as String) }) {
+                ClassReader cr = new ClassReader(it.newInputStream().bytes)
+                ClassNode cn = new ClassNode()
+                cr.accept(cn, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG)
+
+                // ReplaceToken in fields
+                cn.fields.each {
+                    if (it.desc == "Ljava/lang/String;" && it.value instanceof String) {
+                        String value = it.value as String
+
+                        replaceTokenMap.each {
+                            value = value.replace(it.key as String, it.value as String)
+                        }
+
+                        it.value = value
+                    }
+                }
+
+                // ReplaceToken in methods
+                cn.methods.each {
+                    it.instructions.each {
+                        if (it instanceof LdcInsnNode) {
+                            LdcInsnNode ldc = it as LdcInsnNode
+
+                            if (ldc.cst instanceof String) {
+                                String value = ldc.cst as String
+
+                                replaceTokenMap.each {
+                                    value = value.replace(it.key as String, it.value as String)
+                                }
+
+                                ldc.cst = value
+                            }
+                        }
+                    }
+                }
+
+                ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES)
+                cn.accept(cw)
+                new FileOutputStream(it).write(cw.toByteArray())
+            }
+        }
+    }
 }

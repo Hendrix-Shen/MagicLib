@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "top.hendrixshen.magiclib.event.render.mixin",
+  "package": "top.hendrixshen.magiclib.mixin.event",
   "plugin": "top.hendrixshen.magiclib.MagicLibMixinPlugin",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
@@ -8,8 +8,8 @@
     "defaultRequire": 1
   },
   "client": [
-    "MixinEntityRenderer",
-    "MixinGameRenderer",
-    "MixinLevelRenderer"
+    "render.MixinEntityRenderer",
+    "render.MixinGameRenderer",
+    "render.MixinLevelRenderer"
   ]
 }

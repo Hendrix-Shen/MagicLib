@@ -2,7 +2,6 @@ package top.hendrixshen.magiclib.util;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLibReference;
@@ -10,6 +9,12 @@ import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompa
 
 import java.util.List;
 import java.util.Optional;
+
+//#if MC > 11802
+import net.minecraft.network.chat.MutableComponent;
+//#else
+//$$ import net.minecraft.network.chat.BaseComponent;
+//#endif
 
 //#if MC > 11502
 import net.minecraft.world.level.Level;
@@ -32,10 +37,8 @@ public class MessageUtil {
         //#endif
     }
 
-    public static void sendMessage(CommandSourceStack source, @NotNull List<Component> messages) {
-        MutableComponent mutableComponent = ComponentCompatApi.literal("");
-        messages.forEach(mutableComponent::append);
-        MessageUtil.sendMessage(source, mutableComponent);
+    public static void sendMessage(CommandSourceStack source, List<Component> messages) {
+        MessageUtil.sendMessage(source, MessageUtil.insertComponent(messages));
     }
 
     public static void sendServerMessage(MinecraftServer server, String message) {
@@ -56,9 +59,21 @@ public class MessageUtil {
         });
     }
 
-    public static void sendServerMessage(MinecraftServer server, @NotNull List<Component> component) {
-        MutableComponent mutableComponent = ComponentCompatApi.literal("");
-        component.forEach(mutableComponent::append);
-        MessageUtil.sendServerMessage(server, mutableComponent);
+    public static void sendServerMessage(MinecraftServer server, List<Component> messages) {
+        MessageUtil.sendServerMessage(server, MessageUtil.insertComponent(messages));
+    }
+
+    //#if MC > 11802
+    private static @NotNull MutableComponent insertComponent(@NotNull List<Component> messages) {
+    //#else
+    //$$ private static @NotNull BaseComponent insertComponent(@NotNull List<Component> messages) {
+    //#endif
+        //#if MC > 11802
+        MutableComponent components = ComponentCompatApi.literal("");
+        //#else
+        //$$ BaseComponent components = ComponentCompatApi.literal("");
+        //#endif
+        messages.forEach(components::append);
+        return components;
     }
 }
