@@ -3,3 +3,4 @@ jdk:
   - openjdk17
 install:
   - ./gradlew preprocessResources
+  - ./gradlew build publishToMavenLocal
