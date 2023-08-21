@@ -98,7 +98,7 @@ jobs:
             fabricWrapper/build/libs/*.jar
             fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
           name: "[CI#${{ github.run_number }}]${{ steps.mod_info.outputs.mod_name }} ${{ steps.mod_info.outputs.mod_version }}.${{ steps.get_commit_count.outputs.commit_count }}+${{ steps.get_short_sha.outputs.short_sha }}"
-          tag_name: "${{ github.ref_name }}.${{ github.commit_count }}"
+          tag_name: "${{ github.ref_name }}.${{ steps.get_commit_count.outputs.commit_count }}"
           target_commitish: ${{ github.event.ref }}
           generate_release_notes: true
 
