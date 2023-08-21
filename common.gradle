@@ -421,12 +421,12 @@ ImmutableList<Object> replaceTokenFile = ImmutableList.builder()
         .add("MagicLibReference")
         .build()
 
-jar {
-    doFirst {
+tasks.classes {
+    doLast {
         File dir = file("build/classes/java")
 
         dir.eachFileRecurse {
-            String path = it.path.replace(file("build/classes/java").path, "")
+            String path = it.path.replace(dir.path, "")
 
             if (path.endsWith(".class") && replaceTokenFile.stream().anyMatch { path.contains(it as String) }) {
                 ClassReader cr = new ClassReader(it.newInputStream().bytes)
