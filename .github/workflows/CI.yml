@@ -98,7 +98,7 @@ jobs:
             fabricWrapper/build/libs/*.jar
             fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
           name: "[CI#${{ github.run_number }}]${{ steps.mod_info.outputs.mod_name }} ${{ steps.mod_info.outputs.mod_version }}.${{ steps.get_commit_count.outputs.commit_count }}+${{ steps.get_short_sha.outputs.short_sha }}"
-          tag_name: "${{ github.ref_name }}.${{ github.run_number }}"
+          tag_name: "${{ github.ref_name }}.${{ github.commit_count }}"
           target_commitish: ${{ github.event.ref }}
           generate_release_notes: true
 
@@ -212,7 +212,7 @@ jobs:
             1.19.3
             1.19.4
             1.20.1
-          game-version-filter: min | releases
+          game-version-filter: any
           java: |
             8
             9
