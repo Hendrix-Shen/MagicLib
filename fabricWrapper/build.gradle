@@ -70,7 +70,7 @@ processResources {
                 "mod_id"              : project.mod_id,
                 "mod_license"         : project.mod_license,
                 "mod_name"            : project.mod_name,
-                "mod_version"         : project.version,
+                "mod_version"         : project.getModVersion(),
                 "mod_sources"         : project.mod_sources,
                 "sub_jars"            : new JsonBuilder(jars).toPrettyString(),
         ])

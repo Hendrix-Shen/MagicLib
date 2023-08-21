@@ -132,9 +132,13 @@ ext {
             password(mavenCentral_password)
         }
     }
+
+    getModVersion = {
+        return "${project.mod_version}.${getVersionPatch([])}+${getVersionGit([])}-${getVersionType()}"
+    }
 }
 
-setVersion("${project.mod_version}.${project.getVersionPatch([])}+${project.getVersionGit([])}-${project.getVersionType()}")
+setVersion(project.getModVersion())
 
 tasks.register("cleanPreprocessSources") {
     it.group("${project.mod_id}")
