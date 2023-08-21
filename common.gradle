@@ -73,13 +73,14 @@ configurations {
     register("productionRuntimeMods")
 }
 
-// Module, Property prefix, Resolve condition, Transitive dependencies, Compile only.
+// Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["carpet:fabric-carpet"              , "carpet" , true             , false, false],
-        ["curse.maven:malilib-303119"        , "malilib", mcVersion < 12002, false, false],
-        ["com.github.Nyan-Work:malilib"      , "malilib", mcVersion > 12001, false, true],
-        ["maven.modrinth:modmenu"            , "modmenu", true             , false, mcVersion > 12001],
-        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true             , true , false] ,
+        ["carpet:fabric-carpet"              , "carpet" , true             , false],
+        ["curse.maven:malilib-303119"        , "malilib", mcVersion < 12002, false],
+        ["com.github.Nyan-Work:malilib"      , "malilib", mcVersion > 12001, false],
+        ["maven.modrinth:modmenu"            , "modmenu", mcVersion < 12002, false],
+        ["com.github.Nyan-Work:ModMenu"      , "modmenu", mcVersion > 12001, false],
+        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true             , true ],
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
@@ -109,21 +110,14 @@ dependencies {
         String propertyPrefix = item[1]
         boolean shouldResolve = item[2]
         boolean shouldTransitive = item[3]
-        boolean compileOnly = item[4]
 
         if (shouldResolve) {
-            if (compileOnly) {
-                modCompileOnly("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
-                    transitive(shouldTransitive)
-                }
-            } else {
-                modApi("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
-                    transitive(shouldTransitive)
-                }
+            modApi("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
+                transitive(shouldTransitive)
+            }
 
-                productionRuntimeMods("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
-                    transitive(shouldTransitive)
-                }
+            productionRuntimeMods("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
+                transitive(shouldTransitive)
             }
         }
     }
