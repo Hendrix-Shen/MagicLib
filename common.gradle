@@ -38,6 +38,15 @@ repositories {
         url("https://masa.dy.fi/maven")
     }
 
+    maven {
+        name("Jitpack Maven")
+        url("https://jitpack.io")
+
+        content {
+            includeGroup("com.github.Nyan-Work")
+        }
+    }
+
     mavenCentral()
 }
 
@@ -64,22 +73,24 @@ configurations {
     register("productionRuntimeMods")
 }
 
-// Module, Property prefix, Resolve condition, Transitive dependencies.
+// Module, Property prefix, Resolve condition, Transitive dependencies, Compile only.
 def apiDependencies = [
-        ["carpet:fabric-carpet"              , "carpet" , true, false],
-        ["curse.maven:malilib-303119"        , "malilib", true, false],
-        ["maven.modrinth:modmenu"            , "modmenu", true, false],
-        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true, true],
+        ["carpet:fabric-carpet"              , "carpet" , true             , false, false],
+        ["curse.maven:malilib-303119"        , "malilib", mcVersion < 12002, false, false],
+        ["com.github.Nyan-Work:malilib"      , "malilib", mcVersion > 12001, false, true],
+        ["maven.modrinth:modmenu"            , "modmenu", true             , false, mcVersion > 12001],
+        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true             , true , false] ,
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def runtimeDependencies = [
-        ["curse.maven:auto-config-updated-api-373261", "auto_config_updated_api", mcVersion < 11600, false],
-        ["maven.modrinth:cloth-config"               , "cloth_config"           , mcVersion < 11600, false],
-        ["maven.modrinth:in-game-account-switcher"   , "inGameAccountSwitcher"  , true             , false],
-        ["maven.modrinth:lazydfu"                    , "lazydfu"                , true             , false],
-        ["maven.modrinth:imblocker"                  , "imblockerfabric"        , mcVersion < 12002, false],
-        ["curse.maven:smooth-boot-415758"            , "smoothboot"             , mcVersion < 12000, false]
+        ["curse.maven:auto-config-updated-api-373261", "auto_config_updated_api", mcVersion < 11600                     , false],
+        ["maven.modrinth:cloth-config"               , "cloth_config"           , mcVersion < 11600                     , false],
+        ["maven.modrinth:in-game-account-switcher"   , "inGameAccountSwitcher"  , mcVersion < 12002                     , false],
+        ["maven.modrinth:lazydfu"                    , "lazydfu"                , true                                  , false],
+        ["maven.modrinth:imblocker"                  , "imblockerfabric"        , mcVersion < 12002                     , false],
+        ["curse.maven:smooth-boot-415758"            , "smoothboot"             , mcVersion < 12000                     , false],
+        ["maven.modrinth:threadtweak"                , "threadtweak"            , mcVersion > 11904 && mcVersion < 12002, false],
 ]
 
 dependencies {
@@ -98,14 +109,21 @@ dependencies {
         String propertyPrefix = item[1]
         boolean shouldResolve = item[2]
         boolean shouldTransitive = item[3]
+        boolean compileOnly = item[4]
 
         if (shouldResolve) {
-            modApi("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
-                transitive(shouldTransitive)
-            }
+            if (compileOnly) {
+                modCompileOnly("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
+                    transitive(shouldTransitive)
+                }
+            } else {
+                modApi("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
+                    transitive(shouldTransitive)
+                }
 
-            productionRuntimeMods("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
-                transitive(shouldTransitive)
+                productionRuntimeMods("${dependencyNotation}:${project.property("${propertyPrefix}_version")}") {
+                    transitive(shouldTransitive)
+                }
             }
         }
     }

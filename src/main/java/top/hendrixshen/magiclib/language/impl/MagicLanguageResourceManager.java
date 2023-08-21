@@ -60,18 +60,21 @@ public class MagicLanguageResourceManager implements ResourceManager {
                 if (!entry.isDirectory()) {
                     String languagePath = String.format("lang/%s.json", code);
                     ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
-                    //#if MC >= 11903
-                    Resource resource = new MagicLanguageResource(new FilePackResources(namespace, new File(resourceUrl.getPath()), true), resourceLocation, () -> {
-                    //#else
-                    //$$ Resource resource = new MagicLanguageResource(namespace, resourceLocation, () -> {
-                    //#endif
-                        try {
-                            return jar.getInputStream(entry);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-
+                    Resource resource = new MagicLanguageResource(
+                            //#if MC > 12001
+                            //$$ new FilePackResources.FileResourcesSupplier(new File(resourceUrl.getPath()), true).openPrimary(namespace),
+                            //#elseif MC > 11902
+                            new FilePackResources(namespace, new File(resourceUrl.getPath()), true),
+                            //#else
+                            //$$ namespace,
+                            //#endif
+                            resourceLocation,
+                            () -> {
+                                try {
+                                    return jar.getInputStream(entry);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }});
                     ret.put(resourceLocation, resource);
                 }
             }
@@ -100,18 +103,23 @@ public class MagicLanguageResourceManager implements ResourceManager {
                         String code = matcher.group(2);
                         String languagePath = String.format("lang/%s.json", code);
                         ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
-                        //#if MC >= 11903
-                        Resource resource = new MagicLanguageResource(new FilePackResources(namespace, file.toFile(), true), resourceLocation, () -> {
-                        //#else
-                        //$$ Resource resource = new MagicLanguageResource(namespace, resourceLocation, () -> {
-                        //#endif
-                            try {
-                                return Files.newInputStream(file);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
 
+                        Resource resource = new MagicLanguageResource(
+                                //#if MC > 12001
+                                //$$ new FilePackResources.FileResourcesSupplier(file, true).openPrimary(namespace),
+                                //#elseif MC > 11902
+                                new FilePackResources(namespace, file.toFile(), true),
+                                //#else
+                                //$$ namespace,
+                                //#endif
+                                resourceLocation,
+                                () -> {
+                                    try {
+                                        return Files.newInputStream(file);
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
                         ret.put(resourceLocation, resource);
                     }
                     return FileVisitResult.CONTINUE;
