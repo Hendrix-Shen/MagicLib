@@ -23,6 +23,11 @@ public class MagicConfigString extends ConfigString implements IMagicConfigBase 
     }
 
     @Override
+    public String getConfigGuiDisplayName() {
+        return IMagicConfigBase.super.getConfigGuiDisplayName();
+    }
+
+    @Override
     public void setValueFromJsonElement(JsonElement jsonElement) {
         super.setValueFromJsonElement(jsonElement);
 

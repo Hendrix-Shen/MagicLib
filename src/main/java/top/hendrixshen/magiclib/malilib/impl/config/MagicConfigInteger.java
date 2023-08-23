@@ -22,6 +22,11 @@ public class MagicConfigInteger extends ConfigInteger implements IMagicConfigBas
         this.prefix = prefix;
     }
 
+    @Override
+    public String getConfigGuiDisplayName() {
+        return IMagicConfigBase.super.getConfigGuiDisplayName();
+    }
+
     public MagicConfigInteger(String prefix, String name, int defaultValue, int minValue, int maxValue) {
         super(name, defaultValue, minValue, maxValue, String.format("%s.%s.comment", prefix, name));
         this.prefix = prefix;

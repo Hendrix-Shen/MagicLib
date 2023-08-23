@@ -25,6 +25,11 @@ public class MagicConfigHotkey extends ConfigHotkey implements IMagicConfigBase 
         this.prefix = prefix;
     }
 
+    @Override
+    public String getConfigGuiDisplayName() {
+        return IMagicConfigBase.super.getConfigGuiDisplayName();
+    }
+
     public MagicConfigHotkey(String prefix, String name, String defaultStorageString, KeybindSettings settings) {
         super(name, defaultStorageString, settings,
                 String.format("%s.%s.comment", prefix, name),

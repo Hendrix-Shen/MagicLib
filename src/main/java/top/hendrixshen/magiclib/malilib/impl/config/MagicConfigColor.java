@@ -32,6 +32,11 @@ public class MagicConfigColor extends ConfigColor implements IMagicConfigBase {
     }
 
     @Override
+    public String getConfigGuiDisplayName() {
+        return IMagicConfigBase.super.getConfigGuiDisplayName();
+    }
+
+    @Override
     @Nullable
     public Consumer<ConfigBase<?>> getValueChangedFromJsonCallback() {
         return this.valueChangedFromJsonCallback;

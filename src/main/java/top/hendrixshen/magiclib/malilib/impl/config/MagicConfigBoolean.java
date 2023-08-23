@@ -25,6 +25,11 @@ public class MagicConfigBoolean extends ConfigBoolean implements IMagicConfigBas
     }
 
     @Override
+    public String getConfigGuiDisplayName() {
+        return IMagicConfigBase.super.getConfigGuiDisplayName();
+    }
+
+    @Override
     public void setValueFromJsonElement(JsonElement jsonElement) {
         super.setValueFromJsonElement(jsonElement);
 

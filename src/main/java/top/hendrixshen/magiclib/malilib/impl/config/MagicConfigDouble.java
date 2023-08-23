@@ -22,6 +22,11 @@ public class MagicConfigDouble extends ConfigDouble implements IMagicConfigBase 
         this.prefix = prefix;
     }
 
+    @Override
+    public String getConfigGuiDisplayName() {
+        return IMagicConfigBase.super.getConfigGuiDisplayName();
+    }
+
     public MagicConfigDouble(String prefix, String name, double defaultValue, double minValue, double maxValue) {
         super(name, defaultValue, minValue, maxValue, String.format("%s.%s.comment", prefix, name));
         this.prefix = prefix;
