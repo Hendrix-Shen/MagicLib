@@ -4,7 +4,7 @@ plugins {
     id("maven-publish")
     id("org.ajoberstar.grgit").version("5.2.0")
     id("signing")
-    id("com.replaymod.preprocess").version("20230807-1")
+    id("com.replaymod.preprocess").version("16a0d7b710")
 }
 
 preprocess {
