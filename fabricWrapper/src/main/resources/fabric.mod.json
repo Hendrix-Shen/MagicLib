@@ -40,8 +40,6 @@
     }
   },
   "depends": {
-    "fabricloader": ">=0.11.7",
-    "minecraft": ${minecraft_dependency}
-  },
-  "jars": ${sub_jars}
+    "fabricloader": ">=0.11.7"
+  }
 }
