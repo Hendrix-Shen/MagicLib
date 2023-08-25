@@ -5,7 +5,7 @@ on:
       - 'dev/**'
       - 'exp/**'
     paths:
-      - "*.gradle"
+      - "**.gradle"
       - "gradle.properties"
       - "src/**"
       - "versions/**"
