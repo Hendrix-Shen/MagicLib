@@ -86,7 +86,6 @@ processResources {
         writer.append(builder.toPrettyString())
         writer.flush()
         writer.close()
-        println builder.toPrettyString()
     }
 }
 
