@@ -22,6 +22,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+//#if MC > 11201
+//$$ import org.spongepowered.asm.mixin.Unique;
+//#endif
+
 @Environment(EnvType.CLIENT)
 @Mixin(LanguageManager.class)
 public class MixinLanguageManager {
@@ -32,12 +36,17 @@ public class MixinLanguageManager {
     @Shadow
     private Map<String, LanguageInfo> languages;
 
+    //#if MC > 12001
+    //$$ @Unique
+    //$$ private static final String magiclib$DEFAULT_LANGUAGE = "en_us";
+    //#else
     @Shadow
     @Final
     //#if MC > 11903
     public static String DEFAULT_LANGUAGE_CODE;
     //#else
     //$$ private static LanguageInfo DEFAULT_LANGUAGE;
+    //#endif
     //#endif
     //#endif
 
@@ -57,11 +66,14 @@ public class MixinLanguageManager {
                     value = "RETURN"
             )
     )
-    //#if MC > 11903
-    private void postSetSelected(String languageCode, CallbackInfo ci) {
-    //#else
-    //$$ private void postSetSelected(LanguageInfo languageInfo, CallbackInfo ci) {
-    //#endif
+    private void postSetSelected(
+            //#if MC > 11903
+            String languageCode,
+            //#else
+            //$$ LanguageInfo languageInfo,
+            //#endif
+            CallbackInfo ci
+    ) {
         MagicLanguageManager.INSTANCE.setCurrentCode(this.currentCode);
     }
 
@@ -112,11 +124,15 @@ public class MixinLanguageManager {
         }
 
         if (languageInfoList.isEmpty()) {
-            //#if MC > 11903
-            languageInfoList.add(DEFAULT_LANGUAGE_CODE);
-            //#else
-            //$$ languageInfoList.add(DEFAULT_LANGUAGE);
-            //#endif
+            languageInfoList.add(
+                    //#if MC > 12001
+                    //$$ magiclib$DEFAULT_LANGUAGE
+                    //#elseif MC > 11903
+                    DEFAULT_LANGUAGE_CODE
+                    //#else
+                    //$$ DEFAULT_LANGUAGE
+                    //#endif
+            );
         }
 
         return languageInfoList;
