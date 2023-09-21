@@ -1,6 +1,8 @@
 pluginManagement {
     repositories {
         mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
 
         maven {
             name("FabricMC Maven")
@@ -11,9 +13,6 @@ pluginManagement {
             name("Jitpack")
             url("https://jitpack.io")
         }
-
-        mavenCentral()
-        gradlePluginPortal()
     }
 
     resolutionStrategy {

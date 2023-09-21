@@ -19,6 +19,8 @@
 
 ❗在报告问题前，请务必尝试最新[测试版](https://github.com/Hendrix-Shen/MagicLib/releases)，检查问题是否依然存在。
 
+♻注意: Minecraft 1.20 需要使用第三方的 [Malilib](https://github.com/Nyan-Work/malilib/releases/tag/snapshot-1.20.2)。
+
 ## 描述
 
 一个多功能的模组依赖库。
@@ -71,6 +73,7 @@
 - Minecraft 1.19.3
 - Minecraft 1.19.4
 - Minecraft 1.20.1
+- Minecraft 1.20.2
 
 ### 混淆映射表
 

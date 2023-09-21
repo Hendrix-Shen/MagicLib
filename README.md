@@ -19,6 +19,8 @@ English | [中文](./README_ZH_CN.md)
 
 ❗Before reporting a problem, be sure to try the latest [beta version](https://github.com/Hendrix-Shen/MagicLib/releases) to check if the problem still exists.
 
+♻️Note: Minecraft 1.20 requires the use of a third-party port [Malilib](https://github.com/Nyan-Work/malilib/releases/tag/snapshot-1.20.2).
+
 ## Description
 
 A library of versatile mod dependencies.
@@ -71,6 +73,7 @@ And use `preprocess` to be compatible with all versions.
 - Minecraft 1.19.3
 - Minecraft 1.19.4
 - Minecraft 1.20.1
+- Minecraft 1.20.2
 
 ### Mappings
 
