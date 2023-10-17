@@ -62,9 +62,9 @@ public class MagicLanguageResourceManager implements ResourceManager {
                     ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
                     Resource resource = new MagicLanguageResource(
                             //#if MC > 12001
-                            //$$ new FilePackResources.FileResourcesSupplier(new File(resourceUrl.getPath()), true).openPrimary(namespace),
+                            new FilePackResources.FileResourcesSupplier(new File(resourceUrl.getPath()), true).openPrimary(namespace),
                             //#elseif MC > 11902
-                            new FilePackResources(namespace, new File(resourceUrl.getPath()), true),
+                            //$$ new FilePackResources(namespace, new File(resourceUrl.getPath()), true),
                             //#else
                             //$$ namespace,
                             //#endif
@@ -106,9 +106,9 @@ public class MagicLanguageResourceManager implements ResourceManager {
 
                         Resource resource = new MagicLanguageResource(
                                 //#if MC > 12001
-                                //$$ new FilePackResources.FileResourcesSupplier(file, true).openPrimary(namespace),
+                                new FilePackResources.FileResourcesSupplier(file, true).openPrimary(namespace),
                                 //#elseif MC > 11902
-                                new FilePackResources(namespace, file.toFile(), true),
+                                //$$ new FilePackResources(namespace, file.toFile(), true),
                                 //#else
                                 //$$ namespace,
                                 //#endif

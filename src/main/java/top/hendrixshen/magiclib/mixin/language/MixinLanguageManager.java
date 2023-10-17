@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 //#if MC > 11201
-//$$ import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.Unique;
 //#endif
 
 @Environment(EnvType.CLIENT)
@@ -37,13 +37,13 @@ public class MixinLanguageManager {
     private Map<String, LanguageInfo> languages;
 
     //#if MC > 12001
-    //$$ @Unique
-    //$$ private static final String magiclib$DEFAULT_LANGUAGE = "en_us";
+    @Unique
+    private static final String magiclib$DEFAULT_LANGUAGE = "en_us";
     //#else
-    @Shadow
-    @Final
+    //$$ @Shadow
+    //$$ @Final
     //#if MC > 11903
-    public static String DEFAULT_LANGUAGE_CODE;
+    //$$ public static String DEFAULT_LANGUAGE_CODE;
     //#else
     //$$ private static LanguageInfo DEFAULT_LANGUAGE;
     //#endif
@@ -126,9 +126,9 @@ public class MixinLanguageManager {
         if (languageInfoList.isEmpty()) {
             languageInfoList.add(
                     //#if MC > 12001
-                    //$$ magiclib$DEFAULT_LANGUAGE
+                    magiclib$DEFAULT_LANGUAGE
                     //#elseif MC > 11903
-                    DEFAULT_LANGUAGE_CODE
+                    //$$ DEFAULT_LANGUAGE_CODE
                     //#else
                     //$$ DEFAULT_LANGUAGE
                     //#endif
