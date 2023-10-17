@@ -75,11 +75,10 @@ configurations {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["carpet:fabric-carpet"              , "carpet" , true             , false],
-        ["curse.maven:malilib-303119"        , "malilib", mcVersion < 12002, false],
-        ["com.github.Nyan-Work:malilib"      , "malilib", mcVersion > 12001, false],
-        ["maven.modrinth:modmenu"            , "modmenu", true             , false],
-        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true             , true ],
+        ["carpet:fabric-carpet"              , "carpet" , true, false],
+        ["curse.maven:malilib-303119"        , "malilib", true, false],
+        ["maven.modrinth:modmenu"            , "modmenu", true, false],
+        ["net.fabricmc.fabric-api:fabric-api", "fabric" , true, true ],
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
