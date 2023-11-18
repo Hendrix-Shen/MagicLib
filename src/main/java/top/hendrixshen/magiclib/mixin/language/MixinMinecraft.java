@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.language.impl.MagicLanguageManager;
 
 @Environment(EnvType.CLIENT)
-@Mixin(Minecraft.class)
+@Mixin(value = Minecraft.class, priority = 1001)
 public class MixinMinecraft {
     @Inject(
             //#if MC > 11404
