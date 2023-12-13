@@ -1,20 +1,10 @@
 package top.hendrixshen.magiclib.compat.minecraft.api.network.chat;
 
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.contents.LiteralContents;
-import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.network.chat.*;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
-
-//#if MC < 11900
-//$$ import net.minecraft.network.chat.BaseComponent;
-//#endif
-
-//#if MC > 11502
-import net.minecraft.network.chat.MutableComponent;
-//#endif
 
 public interface ComponentCompatApi {
     @Contract("_ -> new")
@@ -24,7 +14,7 @@ public interface ComponentCompatApi {
     //$$ static @NotNull BaseComponent literal(String string) {
     //#endif
         //#if MC > 11802
-        return MutableComponent.create(new LiteralContents(string));
+        return Component.literal(string);
         //#else
         //$$ return new TextComponent(string);
         //#endif
@@ -36,10 +26,8 @@ public interface ComponentCompatApi {
     //#else
     //$$ static @NotNull BaseComponent translatable(String string, Object... objects) {
     //#endif
-        //#if MC > 11903
-        return MutableComponent.create(new TranslatableContents(string, null, objects));
-        //#elseif MC > 11802
-        //$$ return MutableComponent.create(new TranslatableContents(string, objects));
+        //#if MC > 11802
+        return Component.translatable(string, objects);
         //#else
         //$$ return new TranslatableComponent(string, objects);
         //#endif
