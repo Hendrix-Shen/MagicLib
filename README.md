@@ -56,7 +56,7 @@ We have added a complete dependency checking system to verify dependency availab
 
 ### Support
 
-Current main development for Minecraft version: 1.20.2
+Current main development for Minecraft version: 1.20.4
 
 And use `preprocess` to be compatible with all versions.
 
@@ -72,6 +72,7 @@ And use `preprocess` to be compatible with all versions.
 - Minecraft 1.19.4
 - Minecraft 1.20.1
 - Minecraft 1.20.2
+- Minecraft 1.20.4
 
 ### Mappings
 
