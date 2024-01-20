@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "icon": "assets/${mod_id}/icon.png",
+  "version": "${mod_version}",
+  "authors": [
+    {
+      "name": "Hendrix-Shen",
+      "contact": {
+        "homepage": "https://github.com/Hendrix-Shen"
+      }
+    },
+    {
+      "name": "plusls",
+      "contact": {
+        "homepage": "https://github.com/plusls"
+      }
+    }
+  ],
+  "contributors": [
+  ],
+  "contact": {
+    "homepage": "${mod_homepage}",
+    "issues": "${mod_sources}/issues",
+    "sources": "${mod_sources}"
+  },
+  "license": "${mod_license}",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+    ],
+    "client": [
+    ],
+    "modmenu": [
+    ]
+  },
+  "mixins": [
+    "magiclib-core-bootstrap.mixins.json"
+  ],
+  "depends": {
+  },
+  "custom": {
+    "modmenu:api": true,
+    "modmenu:parent": "magiclib",
+    "modmenu": {
+      "badges": [
+        "library"
+      ],
+      "parent": "magiclib"
+    }
+  }
+}

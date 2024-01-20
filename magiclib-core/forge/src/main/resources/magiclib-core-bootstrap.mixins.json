@@ -1,0 +1,5 @@
+{
+  "required": true,
+  "package": "top.hendrixshen.magiclib.impl.platform.forge",
+  "plugin": "top.hendrixshen.magiclib.impl.platform.forge.ForgeBootstrapMixinPlugin"
+}

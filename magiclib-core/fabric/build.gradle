@@ -1,0 +1,28 @@
+repositories {
+    maven {
+        name("FabricMC")
+        url("https://maven.fabricmc.net")
+    }
+}
+
+dependencies {
+    compileOnly("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
+}
+
+processResources {
+    filesMatching("fabric.mod.json") {
+        expand([
+                "mod_description"     : project.parent.property("mod.description"),
+                "mod_homepage"        : project.parent.property("mod.homepage"),
+                "mod_id"              : project.parent.property("mod.id"),
+                "mod_license"         : project.parent.property("mod.license"),
+                "mod_name"            : project.parent.property("mod.name"),
+                "mod_sources"         : project.parent.property("mod.sources"),
+                "mod_version"         : project.version
+        ])
+    }
+
+    from("${rootDir}/LICENSE")
+    from("${rootDir}/icon.png")
+    into("assets/${project.parent.property("mod.id")}")
+}

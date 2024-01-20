@@ -1,0 +1,14 @@
+modLoader = "javafml"
+loaderVersion = "*"
+license = "${mod_license}"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+description = '''
+${mod_description}
+'''
+logoFile = "icon.png"
+authors = "Hendrix-Shen, Plusls"
+displayURL = "${mod_homepage}"

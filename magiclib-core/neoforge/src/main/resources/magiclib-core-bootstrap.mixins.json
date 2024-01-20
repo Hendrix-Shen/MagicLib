@@ -1,0 +1,5 @@
+{
+  "required": true,
+  "package": "top.hendrixshen.magiclib",
+  "plugin": "top.hendrixshen.magiclib.impl.platform.neoforge.NeoForgeBootstrapMixinPlugin"
+}

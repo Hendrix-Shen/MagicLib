@@ -1,0 +1,189 @@
+plugins {
+    id("java")
+    id("java-library")
+    id("maven-publish")
+    id("signing")
+
+    id("com.github.johnrengelman.shadow").version("8.1.1")
+}
+
+allprojects {
+    apply(plugin: "java")
+    apply(plugin: "java-library")
+    apply(plugin: "maven-publish")
+    apply(plugin: "signing")
+
+    apply(plugin: "com.github.johnrengelman.shadow")
+
+    configurations {
+        register("shade")
+        register("shadeOnly")
+
+        compileOnly.extendsFrom(shade)
+    }
+}
+
+subprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven {
+            name("SpongePowered")
+            url("https://repo.spongepowered.org/maven")
+        }
+    }
+
+    dependencies {
+        // Mixin
+        compileOnly("org.spongepowered:mixin:${project.property("dependencies.mixin_version")}")
+        compileOnly("org.ow2.asm:asm-debug-all:${project.property("dependencies.asm_debug_version")}")
+
+        // Lombok
+        compileOnly("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
+        annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
+
+        // Other
+        compileOnly("com.google.guava:guava:${project.property("dependencies.guava_version")}")
+        compileOnly("org.jetbrains:annotations:${project.property("dependencies.jetbrains_annotations_version")}")
+        compileOnly("org.apache.logging.log4j:log4j-api:${project.property("dependencies.log4j_version")}")
+
+        // Shadow library
+        shade("org.semver4j:semver4j:${project.property("dependencies.semver4j_version")}") {
+            transitive(false)
+        }
+    }
+
+    base {
+        setArchivesName("${project.parent.property("mod.archives_base_name")}-${project.name}")
+        group("${project.property("mod.maven_group")}")
+        version(project.getModVersion(project.parent))
+    }
+
+    java {
+        sourceCompatibility(JavaVersion.VERSION_1_8)
+        targetCompatibility(JavaVersion.VERSION_1_8)
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    jar {
+        dependsOn(tasks.shadowJar)
+        setArchiveClassifier("slim")
+    }
+
+    shadowJar {
+        setArchiveClassifier(null)
+        setConfigurations([project.configurations.shade, project.configurations.shadeOnly])
+        relocate("org.semver4j", "${project.property("mod.maven_group")}.libs.org.semver4j")
+        exclude("META-INF/maven/**/*")
+    }
+
+    signing {
+        String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getEnv().SIGNING_PGP_KEY)
+        String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getEnv().SIGNING_PGP_PASSWORD)
+
+        required {
+            signingKey
+        }
+
+        useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
+        sign(publishing.publications)
+    }
+
+    publishing {
+        publications { PublicationContainer publications ->
+            register("release", MavenPublication) { MavenPublication publication ->
+                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
+                from(components.java as SoftwareComponent)
+                version("${project.version}")
+                alias(false)
+
+                project.addPomMetadataInformation(this.project, publication)
+            }
+
+            register("snapshot", MavenPublication) { MavenPublication publication ->
+                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
+                from(components.java as SoftwareComponent)
+                version("${project.property("mod.version")}-SNAPSHOT")
+                alias(true)
+
+                project.addPomMetadataInformation(this.project, publication)
+            }
+        }
+
+        repositories { RepositoryHandler repositoryHandler ->
+            mavenLocal {
+                name("mavenLocal")
+            }
+
+            maven {
+                name("projectLocalSnapshot")
+                url("${rootDir}/publish/snapshot")
+            }
+
+            maven {
+                name("projectLocalRelease")
+                url("${rootDir}/publish/release")
+            }
+
+            maven {
+                name("mavenCentralSnapshot")
+                url("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+
+                project.credentialsMavenCentral(it)
+            }
+
+            maven {
+                name("mavenCentralRelease")
+                url("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+                project.credentialsMavenCentral(it)
+            }
+        }
+    }
+
+    // Solutions from: https://youtrack.jetbrains.com/issue/KT-46466
+    TaskCollection<Sign> signingTasks = tasks.withType(Sign)
+    tasks.withType(AbstractPublishToMaven).configureEach {
+        dependsOn(signingTasks)
+    }
+
+    tasks.withType(PublishToMavenRepository).configureEach {
+        Provider<Boolean> predicate = provider {
+            repository == publishing.repositories.mavenLocal ||
+                    (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
+                    (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
+                    (repository == publishing.repositories.mavenCentralSnapshot && publication == publishing.publications.snapshot && project.isMavenCentralCredentialsExist()) ||
+                    (repository == publishing.repositories.mavenCentralRelease && publication == publishing.publications.release && project.isMavenCentralCredentialsExist())
+        }
+
+        onlyIf {
+            predicate.get()
+        }
+    }
+
+    tasks.withType(Javadoc).configureEach { Javadoc task ->
+        task.options.encoding("UTF-8")
+        (task.options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
+    }
+
+    tasks.withType(JavaCompile).configureEach { JavaCompile task ->
+        task.options.encoding("UTF-8")
+    }
+
+    if (project.name != "common") {
+        dependencies {
+            shade(project(":magiclib-core:common"))
+        }
+
+        tasks.withType(Javadoc).configureEach { Javadoc task ->
+            task.classpath += project(":magiclib-core:common").configurations.compileClasspath
+            task.source(project(":magiclib-core:common").sourceSets.main.java)
+        }
+
+        tasks.named("sourcesJar") { Jar task ->
+            task.from(project(":magiclib-core:common").sourceSets.main.allSource)
+        }
+    }
+}

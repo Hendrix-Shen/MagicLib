@@ -1,0 +1,34 @@
+repositories {
+    maven {
+        name("Forge")
+        url("https://maven.minecraftforge.net")
+    }
+}
+
+dependencies {
+    compileOnly("net.minecraftforge:forge:${project.forge_version}:universal")
+    compileOnly("net.minecraftforge:forge:${project.forge_version}:launcher")
+    compileOnly("net.minecraftforge:forgespi:${project.forgespi_version}")
+}
+
+processResources {
+    filesMatching("META-INF/mods.toml") {
+        expand([
+                "mod_description": project.parent.property("mod.description"),
+                "mod_homepage"   : project.parent.property("mod.homepage"),
+                "mod_id"         : project.parent.property("mod.id").replaceAll("-", "_"),
+                "mod_license"    : project.parent.property("mod.license"),
+                "mod_name"       : project.parent.property("mod.name"),
+                "mod_version"    : project.version,
+        ])
+    }
+
+    from("${rootDir}/LICENSE")
+    from("${rootDir}/icon.png")
+}
+
+tasks.withType(Jar).configureEach {
+    manifest.attributes(
+            "MixinConfigs": "magiclib-core-bootstrap.mixins.json"
+    )
+}
