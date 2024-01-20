@@ -1,5 +1,0 @@
-com.mojang.math.Matrix4f org.joml.Matrix4f
-com.mojang.math.Quaternion org.joml.Quaternionf
-com.mojang.math.Vector3f org.joml.Vector3f
-com.mojang.math.Vector4f org.joml.Vector4f
-net.minecraft.client.gui.components.Widget net.minecraft.client.gui.components.Renderable

@@ -1,38 +1,11 @@
 plugins {
-    id("fabric-loom").version("1.4-SNAPSHOT").apply(false)
     id("maven-publish")
+
     id("org.ajoberstar.grgit").version("5.2.1")
-    id("signing")
-    id("com.replaymod.preprocess").version("16a0d7b710")
-}
-
-preprocess {
-    def mc1144 = createNode("1.14.4", 1_14_04, "mojang")
-    def mc1152 = createNode("1.15.2", 1_15_02, "mojang")
-    def mc1165 = createNode("1.16.5", 1_16_05, "mojang")
-    def mc1171 = createNode("1.17.1", 1_17_01, "mojang")
-    def mc1182 = createNode("1.18.2", 1_18_02, "mojang")
-    def mc1192 = createNode("1.19.2", 1_19_02, "mojang")
-    def mc1193 = createNode("1.19.3", 1_19_03, "mojang")
-    def mc1194 = createNode("1.19.4", 1_19_04, "mojang")
-    def mc1201 = createNode("1.20.1", 1_20_01, "mojang")
-    def mc1202 = createNode("1.20.2", 1_20_02, "mojang")
-    def mc1204 = createNode("1.20.4", 1_20_04, "mojang")
-
-    mc1144.link(mc1152, file("versions/mapping-1.14.4-1.15.2.txt"))
-    mc1152.link(mc1165, file("versions/mapping-1.15.2-1.16.5.txt"))
-    mc1165.link(mc1171, file("versions/mapping-1.16.5-1.17.1.txt"))
-    mc1171.link(mc1182, file("versions/mapping-1.17.1-1.18.2.txt"))
-    mc1182.link(mc1192, file("versions/mapping-1.18.2-1.19.2.txt"))
-    mc1192.link(mc1193, file("versions/mapping-1.19.2-1.19.3.txt"))
-    mc1193.link(mc1194, file("versions/mapping-1.19.3-1.19.4.txt"))
-    mc1194.link(mc1201, file("versions/mapping-1.19.4-1.20.1.txt"))
-    mc1201.link(mc1202, file("versions/mapping-1.20.1-1.20.2.txt"))
-    mc1202.link(mc1204, file("versions/mapping-1.20.2-1.20.4.txt"))
 }
 
 ext {
-    Map<String, String> environmentMap = System.getenv()
+    Map env = System.getenv()
     File localPropsFile = file("${rootDir}/local.properties")
 
     if (localPropsFile.exists()) {
@@ -43,49 +16,8 @@ ext {
         }
     }
 
-    getVersionGit = { List paths ->
-        if (grgit == null) {
-            return "nogit"
-        }
-
-        List latestCommits = paths.isEmpty() ? grgit.log(maxCommits: 1) : grgit.log(paths: paths, maxCommits: 1)
-        return latestCommits.isEmpty() ? "uncommited" : "${latestCommits.get(0).id.substring(0, 7)}"
-    }
-
-    getBuildNumber = {
-        return environmentMap.GITHUB_RUN_NUMBER ? environmentMap.GITHUB_RUN_NUMBER : Integer.MAX_VALUE
-    }
-
-    getVersionType = {
-        switch (getOrDefault("ow.build.environment.buildType", environmentMap.BUILD_TYPE)) {
-            case "RELEASE":
-                return "stable"
-            case "BETA":
-                return "beta"
-            default:
-                return "dev"
-        }
-    }
-
-    getVersionPatch = { List paths ->
-        if (grgit == null) {
-            return 0
-        }
-
-        List latestCommits = paths.isEmpty() ? grgit.log() : grgit.log(paths: paths)
-        return latestCommits.size()
-    }
-
-    getMavenArtifactVersion = {
-        return project.getVersionType() == "stable" ? "${project.mod_version}.${project.getVersionPatch([])}" : project.version
-    }
-
-    getENV = {
-        return environmentMap
-    }
-
-    isCIEnvironment = {
-        return environmentMap.GITHUB_RUN_NUMBER
+    getEnv = {
+        return env
     }
 
     getOrDefault = { String key, String defaultValue ->
@@ -93,69 +25,89 @@ ext {
         (value = project.findProperty(key)) && !value.isEmpty() ? value : defaultValue
     }
 
-    String mavenCentral_username = project.getOrDefault("secrets.mavenCentral.username", project.getENV().MAVEN_CENTRAL_USERNAME)
-    String mavenCentral_password = project.getOrDefault("secrets.mavenCentral.password", project.getENV().MAVEN_CENTRAL_PASSWORD)
+    isGithubCI = {
+        return env.get("GITHUB_ACTION") != null
+    }
+
+    getVersionGit = { List paths ->
+        if (grgit == null || grgit.head() == null) {
+            return "nogit"
+        }
+
+        List latestCommits = paths.isEmpty() ? grgit.log(maxCommits: 1) : grgit.log(paths: paths, maxCommits: 1)
+        return latestCommits.isEmpty() ? "uncommited" : "${latestCommits.get(0).id.substring(0, 7)}"
+    }
+
+    getVersionPatch = { List paths ->
+        if (grgit == null || grgit.head() == null) {
+            return 0
+        }
+
+        List latestCommits = paths.isEmpty() ? grgit.log() : grgit.log(paths: paths)
+        return latestCommits.size()
+    }
+
+    getModVersion = { Project proj ->
+        return "${proj.property("mod.version")}.${getVersionPatch([proj.projectDir.name])}+${getVersionGit([proj.projectDir.name])}"
+    }
+
+//    getMavenArtifactVersion = {
+//        return project.getVersionType() == "stable" ? "${project.mod_version}.${project.getVersionPatch([])}" : project.version
+//    }
+
 
     addPomMetadataInformation = { Project project, MavenPublication publication ->
         publication.pom {
-            name.set("${project.mod_name}")
-            description.set("${project.mod_description}")
-            url.set("${project.mod_sources}")
+            name.set("${project.property("mod.archives_base_name")}")
+            description.set("${project.property("mod.description")}")
+            url.set("${project.property("mod.homepage")}")
 
             licenses {
                 license {
-                    name.set("${project.mod_license}")
-                    url.set("${project.mod_license_url}")
+                    name.set("${project.property("mod.license")}")
+                    url.set("${project.property("mod.license_url")}")
                 }
             }
 
             developers {
                 developer {
-                    id.set("${project.author_id}")
-                    name.set("${project.author_name}")
-                    email.set("${project.author_email}")
+                    id.set("Hendrix-Shen")
+                    name.set("Hendrix-Shen")
+                    email.set("HendrixShen@hendrixshen.top")
+                }
+
+                developer {
+                    id.set("plusls")
+                    name.set("plusls")
+                    email.set("plusls@qq.com")
                 }
             }
 
             scm {
-                connection.set("scm:git:${project.mod_sources}.git")
-                developerConnection.set("scm:git:${project.mod_sources.replace("https", "ssh")}.git")
-                url.set("${project.mod_sources}")
+                connection.set("scm:git:${project.property("mod.sources")}.git")
+                developerConnection.set("scm:git:${project.property("mod.sources").replace("https", "ssh")}.git")
+                url.set("${project.property("mod.sources")}")
             }
         }
     }
+
+    String mavenCentral_username = project.getOrDefault("secrets.mavenCentral.username", project.getEnv().MAVEN_CENTRAL_USERNAME)
+    String mavenCentral_password = project.getOrDefault("secrets.mavenCentral.password", project.getEnv().MAVEN_CENTRAL_PASSWORD)
 
     isMavenCentralCredentialsExist = {
         return mavenCentral_username && mavenCentral_password
     }
 
-    credentialsMavenCentral = { MavenArtifactRepository maven ->
-        maven.credentials {
+    credentialsMavenCentral = { MavenArtifactRepository mavenArtifactRepository ->
+        mavenArtifactRepository.credentials { PasswordCredentials passwordCredentials ->
             username(mavenCentral_username)
             password(mavenCentral_password)
-        }
-    }
-
-    getModVersion = {
-        return "${project.mod_version}.${getVersionPatch([])}+${getVersionGit([])}-${getVersionType()}"
-    }
-}
-
-setVersion(project.getModVersion())
-
-tasks.register("cleanPreprocessSources") {
-    it.group("${project.mod_id}")
-
-    doFirst {
-        subprojects {
-            def path = project.projectDir.toPath().resolve("build/preprocessed")
-            path.toFile().deleteDir()
         }
     }
 }
 
 tasks.register("genLocalProperties") {
-    it.group("${project.mod_id}")
+    it.group("${project.property("mod.id")}")
 
     doFirst {
         File localPropsFile = file("${rootDir}/local.properties")
@@ -178,22 +130,6 @@ tasks.register("genLocalProperties") {
             bufferedWriter.close()
 
             project.getLogger().info("local.properties generated successfully!")
-        }
-    }
-}
-
-subprojects {
-    tasks.withType(PublishToMavenRepository).configureEach {
-        def predicate = provider {
-            repository == publishing.repositories.mavenLocal ||
-            (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
-                    (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
-                    (repository == publishing.repositories.mavenCentralSnapshot && publication == publishing.publications.snapshot && project.isMavenCentralCredentialsExist()) ||
-                    (repository == publishing.repositories.mavenCentralRelease && publication == publishing.publications.release && project.isMavenCentralCredentialsExist())
-        }
-
-        onlyIf {
-            predicate.get()
         }
     }
 }
