@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 pluginManagement {
     repositories {
         mavenLocal()
@@ -7,6 +9,11 @@ pluginManagement {
         maven {
             name("Fabric")
             url("https://maven.fabricmc.net")
+        }
+
+        maven {
+            name("Architectury")
+            url("https://maven.architectury.dev/")
         }
 
         maven {
@@ -24,6 +31,17 @@ pluginManagement {
             url("https://jitpack.io")
         }
     }
+
+    resolutionStrategy {
+        eachPlugin {
+            switch (requested.id.id) {
+                case "com.replaymod.preprocess": {
+                    useModule("com.github.Fallen-Breath:preprocessor:${requested.version}")
+                    break
+                }
+            }
+        }
+    }
 }
 
 include("magiclib-core")
@@ -31,3 +49,20 @@ include("magiclib-core:common")
 include("magiclib-core:fabric")
 include("magiclib-core:forge")
 include("magiclib-core:neoforge")
+include("magiclib-minecraft-api")
+include("magiclib-minecraft-api:common")
+
+def settings = new JsonSlurper().parseText(file("settings.json").text)
+
+for (String module_name: settings.projects.keySet()) {
+    String root_node_name = settings.projects.get(module_name).get(0)
+
+    for(String v: settings.projects.get(module_name)) {
+        String project_name = "${module_name}:${v}"
+        include("${project_name}")
+
+        ProjectDescriptor proj = project(":${project_name}")
+        proj.setProjectDir(file("${module_name}/versions/${v}"))
+        proj.setBuildFileName("../${root_node_name}/build.gradle")
+    }
+}

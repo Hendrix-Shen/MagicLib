@@ -1,0 +1,131 @@
+plugins {
+    id("java")
+    id("java-library")
+    id("signing")
+
+    id("com.github.johnrengelman.shadow").version("8.1.1")
+}
+
+apply(plugin: "fabric-loom")
+apply(plugin: "com.replaymod.preprocess")
+
+
+int mcVersion = 0
+evaluationDependsOn(":magiclib-minecraft-api:common")
+
+preprocess {
+    mcVersion = vars.get().get("MC")
+}
+
+repositories {
+}
+
+configurations {
+    register("shade")
+    register("shadeOnly")
+
+    compileOnly.extendsFrom(shade)
+}
+
+dependencies {
+    minecraft("com.mojang:minecraft:${project.property("dependencies.minecraft_version")}")
+    mappings(loom.officialMojangMappings())
+    modApi("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
+
+    api(project(path: ":magiclib-core:fabric", configuration: "shadow"))
+    shade(project(":magiclib-minecraft-api:common")) {
+        transitive(false)
+    }
+}
+
+loom {
+    runConfigs.configureEach {
+        // Dump modified classes automatically.
+        property("mixin.debug.export", "true")
+    }
+
+    runConfigs.named("client") {
+        programArgs([
+                "--width",
+                "1920",
+                "--height",
+                "1080",
+        ])
+        runDir("run/client")
+    }
+
+    runConfigs.named("server") {
+        runDir("run/server")
+    }
+
+    runs {
+        mixinAuditClient {
+            inherit(client)
+            vmArgs("-Dmagiclib.mixin_audit=true")
+            ideConfigGenerated(false)
+            runDir("run/client")
+        }
+
+        mixinAuditServer {
+            inherit(server)
+            vmArgs("-Dmagiclib.mixin_audit=true")
+            ideConfigGenerated(false)
+            runDir("run/server")
+        }
+    }
+}
+
+base {
+    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}")
+}
+
+java {
+    sourceCompatibility(JavaVersion.VERSION_1_8)
+    targetCompatibility(JavaVersion.VERSION_1_8)
+    withSourcesJar()
+    withJavadocJar()
+}
+
+shadowJar {
+    setArchiveClassifier("dev-shadow")
+    setDestinationDirectory(project.getLayout().getBuildDirectory().map(directory -> directory.dir("devlibs")))
+    setConfigurations([project.configurations.shade, project.configurations.shadeOnly])
+}
+
+remapJar {
+    setInputFile(tasks.shadowJar.archiveFile)
+    dependsOn(tasks.shadowJar)
+}
+
+sourcesJar {
+    from(project(":magiclib-minecraft-api:common").sourceSets.main.allSource)
+}
+
+processResources {
+    filesMatching("fabric.mod.json") {
+        expand([
+                "mod_description"     : project.parent.property("mod.description"),
+                "mod_homepage"        : project.parent.property("mod.homepage"),
+                "mod_id"              : project.parent.property("mod.id"),
+                "mod_license"         : project.parent.property("mod.license"),
+                "mod_name"            : project.parent.property("mod.name"),
+                "mod_sources"         : project.parent.property("mod.sources"),
+                "mod_version"         : project.version
+        ])
+    }
+
+    from("${rootDir}/LICENSE")
+    from("${rootDir}/icon.png")
+    into("assets/${project.parent.property("mod.id")}")
+}
+
+tasks.withType(Javadoc).configureEach { Javadoc task ->
+    task.options.encoding("UTF-8")
+    (task.options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
+    task.classpath += project(":magiclib-minecraft-api:common").configurations.compileClasspath
+    task.source(project(":magiclib-minecraft-api:common").sourceSets.main.java)
+}
+
+tasks.withType(JavaCompile).configureEach { JavaCompile task ->
+    task.options.encoding("UTF-8")
+}
