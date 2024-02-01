@@ -201,7 +201,7 @@ public class ReflectionUtil {
     public static <S, T> ValueContainer<T> invokeDeclared(@NotNull Class<?> cls, String methodName, S instance,
                                                           Class<?>[] type, Object... args) {
         try {
-            for (Method method: cls.getDeclaredMethods()) {
+            for (Method method : cls.getDeclaredMethods()) {
                 if (methodName.equals(method.getName()) && Arrays.equals(type, method.getParameterTypes())) {
                     method.setAccessible(true);
                     @SuppressWarnings("unchecked")
@@ -219,7 +219,7 @@ public class ReflectionUtil {
     public static <S, T> ValueContainer<T> invoke(@NotNull Class<?> cls, String methodName, S instance,
                                                   Class<?>[] type, Object... args) {
         try {
-            for (Method method: cls.getMethods()) {
+            for (Method method : cls.getMethods()) {
                 if (methodName.equals(method.getName()) && Arrays.equals(type, method.getParameterTypes())) {
                     method.setAccessible(true);
                     @SuppressWarnings("unchecked")

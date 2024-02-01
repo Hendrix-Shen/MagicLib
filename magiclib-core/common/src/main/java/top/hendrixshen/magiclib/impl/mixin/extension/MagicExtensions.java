@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.impl.mixin.extension;
 
 import org.jetbrains.annotations.ApiStatus;
+import top.hendrixshen.magiclib.impl.mixin.extension.jikuTsuiho.EraserExtension;
 import top.hendrixshen.magiclib.util.mixin.MixinInternals;
 
 public class MagicExtensions {

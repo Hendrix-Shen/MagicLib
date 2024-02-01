@@ -6,11 +6,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import top.hendrixshen.magiclib.api.dependency.DistType;
-import top.hendrixshen.magiclib.api.platform.IPlatform;
+import top.hendrixshen.magiclib.api.platform.Platform;
 
-public class ForgePlatformImpl implements IPlatform {
+public class ForgePlatformImpl implements Platform {
     @Getter(lazy = true)
-    private static final IPlatform instance = new ForgePlatformImpl();
+    private static final Platform instance = new ForgePlatformImpl();
 
     public final static ImmutableBiMap<DistType, Dist> distTypeMappings = ImmutableBiMap.of(
             DistType.CLIENT, Dist.CLIENT,
@@ -46,7 +46,7 @@ public class ForgePlatformImpl implements IPlatform {
 
     @Override
     public String getModName(String modIdentifier) {
-        for (ModInfo modInfo: FMLLoader.getLoadingModList().getMods()) {
+        for (ModInfo modInfo : FMLLoader.getLoadingModList().getMods()) {
             if (modInfo.getModId().equals(modIdentifier)) {
                 return modInfo.getDisplayName();
             }
@@ -57,7 +57,7 @@ public class ForgePlatformImpl implements IPlatform {
 
     @Override
     public String getModVersion(String modIdentifier) {
-        for (ModInfo modInfo: FMLLoader.getLoadingModList().getMods()) {
+        for (ModInfo modInfo : FMLLoader.getLoadingModList().getMods()) {
             if (modInfo.getModId().equals(modIdentifier)) {
                 return modInfo.getDisplayName();
             }

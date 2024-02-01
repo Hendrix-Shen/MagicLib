@@ -1,8 +1,11 @@
-package top.hendrixshen.magiclib.api.mixin;
+package top.hendrixshen.magiclib.impl.mixin;
 
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyCheckException;
+import top.hendrixshen.magiclib.api.mixin.EmptyMixinPlugin;
+import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyChecker;
+import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyCheckers;
 
 import java.util.Optional;
 

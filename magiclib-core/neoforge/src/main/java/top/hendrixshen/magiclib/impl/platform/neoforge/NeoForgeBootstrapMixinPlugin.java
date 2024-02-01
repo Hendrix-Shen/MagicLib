@@ -1,7 +1,7 @@
 package top.hendrixshen.magiclib.impl.platform.neoforge;
 
-import top.hendrixshen.magiclib.entrypoint.core.MagicLibNeoForge;
 import top.hendrixshen.magiclib.api.mixin.EmptyMixinPlugin;
+import top.hendrixshen.magiclib.entrypoint.core.MagicLibNeoForge;
 
 public class NeoForgeBootstrapMixinPlugin extends EmptyMixinPlugin {
     @Override

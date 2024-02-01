@@ -4,18 +4,25 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * The main decorator for dependency checking, the classes decorated with this annotation will perform these
- * dependencies in our MixinPlugin or ConfigManager etc.
+ * Dependencies annotation.
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dependencies {
     /**
-     * All conditions satisfied, test passed
+     * All conditions satisfied, test passed.
+     * <p>
+     * The dependencies located in this list are logical or.
+     *
+     * @return True if all conditions are satisfied, otherwise false.
      */
     Dependency[] require() default {};
 
     /**
-     * Any condition is satisfied, the test fails
+     * Any conditions satisfied, test fails.
+     * <p>
+     * The dependencies located in this list are logical or.
+     *
+     * @return True if none of the conditions are satisfied, otherwise false.
      */
     Dependency[] conflict() default {};
 }

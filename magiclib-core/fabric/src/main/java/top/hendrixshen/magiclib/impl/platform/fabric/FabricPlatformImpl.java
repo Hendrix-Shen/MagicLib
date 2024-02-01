@@ -7,13 +7,13 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.dependency.DistType;
-import top.hendrixshen.magiclib.api.platform.IPlatform;
+import top.hendrixshen.magiclib.api.platform.Platform;
 
 import java.util.Optional;
 
-public class FabricPlatformImpl implements IPlatform {
+public class FabricPlatformImpl implements Platform {
     @Getter(lazy = true)
-    private static final IPlatform instance = new FabricPlatformImpl();
+    private static final Platform instance = new FabricPlatformImpl();
     public final static ImmutableBiMap<DistType, EnvType> distTypeMappings = ImmutableBiMap.of(
             DistType.CLIENT, EnvType.CLIENT,
             DistType.SERVER, EnvType.SERVER

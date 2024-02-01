@@ -1,8 +1,23 @@
 package top.hendrixshen.magiclib.api.dependency;
 
 public enum DependencyType {
+    /**
+     * Test if the current environment satisfies the condition.
+     * (see {@link DistType}).
+     */
     DIST,
-    MIXIN,
+    /**
+     * Test if the mod satisfies the condition.
+     */
     MOD_ID,
-    PREDICATE
+    /**
+     * Test if the predicate satisfies the condition.
+     * (see {@link top.hendrixshen.magiclib.util.collect.SimplePredicate SimplePredicate}).
+     */
+    PREDICATE,
+    ;
+
+    public boolean matches(DependencyType type) {
+        return type == this;
+    }
 }

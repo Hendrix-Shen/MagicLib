@@ -6,11 +6,11 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.moddiscovery.ModInfo;
 import top.hendrixshen.magiclib.api.dependency.DistType;
-import top.hendrixshen.magiclib.api.platform.IPlatform;
+import top.hendrixshen.magiclib.api.platform.Platform;
 
-public class NeoForgePlatformImpl implements IPlatform {
+public class NeoForgePlatformImpl implements Platform {
     @Getter(lazy = true)
-    private static final IPlatform instance = new NeoForgePlatformImpl();
+    private static final Platform instance = new NeoForgePlatformImpl();
 
     public final static ImmutableBiMap<DistType, Dist> sideTypeMappings = ImmutableBiMap.of(
             DistType.CLIENT, Dist.CLIENT,
@@ -46,7 +46,7 @@ public class NeoForgePlatformImpl implements IPlatform {
 
     @Override
     public String getModName(String modIdentifier) {
-        for (ModInfo modInfo: FMLLoader.getLoadingModList().getMods()) {
+        for (ModInfo modInfo : FMLLoader.getLoadingModList().getMods()) {
             if (modInfo.getModId().equals(modIdentifier)) {
                 return modInfo.getDisplayName();
             }
@@ -57,7 +57,7 @@ public class NeoForgePlatformImpl implements IPlatform {
 
     @Override
     public String getModVersion(String modIdentifier) {
-        for (ModInfo modInfo: FMLLoader.getLoadingModList().getMods()) {
+        for (ModInfo modInfo : FMLLoader.getLoadingModList().getMods()) {
             if (modInfo.getModId().equals(modIdentifier)) {
                 return modInfo.getDisplayName();
             }

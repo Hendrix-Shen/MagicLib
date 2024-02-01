@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ImmutablePair<L, R> extends Pair<L, R> {
-    private static final long serialVersionUID = 2483421876210973485L;
     private static final ImmutablePair<?, ?>[] EMPTY_ARRAY = {};
     @SuppressWarnings("rawtypes")
     private static final ImmutablePair NULL = new ImmutablePair<>(null, null);
@@ -17,7 +16,8 @@ public class ImmutablePair<L, R> extends Pair<L, R> {
 
     @Contract("_, _ -> new")
     public static <L, R> @NotNull Pair<L, R> of(L left, R right) {
-        return new ImmutablePair<>(Objects.requireNonNull(left), Objects.requireNonNull(right));
+        return new ImmutablePair<>(Objects.requireNonNull(left, "left"),
+                Objects.requireNonNull(right, "right"));
     }
 
     @Contract("_ -> new")

@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MutablePair<L, R> extends Pair<L, R> {
-    private static final long serialVersionUID = 2002489358806333911L;
     private static final MutablePair<?, ?>[] EMPTY_ARRAY = {};
     @SuppressWarnings("rawtypes")
     private static final MutablePair NULL = new MutablePair<>(null, null);

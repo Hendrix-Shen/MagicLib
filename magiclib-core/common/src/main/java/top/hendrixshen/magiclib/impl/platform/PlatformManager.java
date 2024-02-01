@@ -1,15 +1,16 @@
-package top.hendrixshen.magiclib.api.platform;
+package top.hendrixshen.magiclib.impl.platform;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.platform.Platform;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class PlatformManager {
     @Getter
     private final MagicLib magicLib;
-    private IPlatform currentPlatform;
+    private Platform currentPlatform;
     private final AtomicBoolean initialized = new AtomicBoolean();
 
     public PlatformManager(MagicLib magicLib) {
@@ -18,7 +19,7 @@ public final class PlatformManager {
         this.initialized.set(true);
     }
 
-    public void register(IPlatform platform) {
+    public void register(Platform platform) {
         Preconditions.checkNotNull(platform);
         this.currentPlatform = platform;
         this.initialized.set(true);
@@ -29,7 +30,7 @@ public final class PlatformManager {
         this.initialized.set(false);
     }
 
-    public IPlatform getCurrentPlatform() {
+    public Platform getCurrentPlatform() {
         if (this.initialized()) {
             return this.currentPlatform;
         }

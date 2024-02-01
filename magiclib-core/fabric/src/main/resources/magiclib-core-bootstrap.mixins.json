@@ -1,5 +1,5 @@
 {
   "required": true,
-  "package": "top.hendrixshen.magiclib.mixins",
+  "package": "top.hendrixshen.magiclib.impl.platform.fabric",
   "plugin": "top.hendrixshen.magiclib.impl.platform.fabric.FabricBootstrapMixinPlugin"
 }

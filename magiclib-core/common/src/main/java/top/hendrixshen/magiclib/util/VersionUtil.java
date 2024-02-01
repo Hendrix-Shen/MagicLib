@@ -2,7 +2,7 @@ package top.hendrixshen.magiclib.util;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.semver4j.*;
+import org.semver4j.Semver;
 import top.hendrixshen.magiclib.MagicLib;
 
 import java.util.Collection;

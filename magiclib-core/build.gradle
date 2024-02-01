@@ -164,6 +164,8 @@ subprojects {
     }
 
     tasks.withType(Javadoc).configureEach { Javadoc task ->
+        include("**/api/**")
+
         task.options.encoding("UTF-8")
         (task.options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
     }

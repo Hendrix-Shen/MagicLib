@@ -2,7 +2,7 @@ package top.hendrixshen.magiclib.api.platform;
 
 import top.hendrixshen.magiclib.api.dependency.DistType;
 
-public interface IPlatform {
+public interface Platform {
     String getPlatformName();
 
     DistType getCurrentDistType();
@@ -14,7 +14,6 @@ public interface IPlatform {
     boolean isDevelopmentEnvironment();
 
     String getModName(String modIdentifier);
-
 
     String getModVersion(String modIdentifier);
 }

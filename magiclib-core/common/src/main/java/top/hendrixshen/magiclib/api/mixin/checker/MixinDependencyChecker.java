@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.api.mixin;
+package top.hendrixshen.magiclib.api.mixin.checker;
 
 public interface MixinDependencyChecker {
     boolean check(String targetClassName, String mixinClassName);

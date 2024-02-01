@@ -1,36 +1,38 @@
-package top.hendrixshen.magiclib.impl.mixin;
+package top.hendrixshen.magiclib.impl.mixin.checker;
 
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.spongepowered.asm.service.MixinService;
 import org.spongepowered.asm.util.Annotations;
-import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyCheckException;
-import top.hendrixshen.magiclib.api.mixin.MixinDependencyChecker;
-import top.hendrixshen.magiclib.api.mixin.MixinDependencyCheckFailureCallback;
 import top.hendrixshen.magiclib.api.mixin.annotation.MagicMixinConfig;
+import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyCheckFailureCallback;
+import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyChecker;
 import top.hendrixshen.magiclib.impl.dependency.DependenciesContainer;
+import top.hendrixshen.magiclib.util.mixin.MixinUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SimpleMixinChecker implements MixinDependencyChecker {
-    private MixinDependencyCheckFailureCallback failureCallback;
     public static final String OR = "Or:";
+
+    private MixinDependencyCheckFailureCallback failureCallback;
+
+    private static void checkNextLine(@NotNull List<String> list) {
+        if (!list.isEmpty()) {
+            list.add("\n");
+        }
+    }
 
     @Override
     public boolean check(String targetClassName, String mixinClassName) {
-        ClassNode targetClassNode;
-        ClassNode mixinClassNode;
+        ClassNode targetClassNode = MixinUtil.getClassNode(targetClassName);
+        ClassNode mixinClassNode = MixinUtil.getClassNode(mixinClassName);
 
-        try {
-            targetClassNode = MixinService.getService().getBytecodeProvider().getClassNode(targetClassName);
-            mixinClassNode = MixinService.getService().getBytecodeProvider().getClassNode(mixinClassName);
-        } catch (Exception e) {
-            MagicLib.getLogger().throwing(e);
-            return true;
+        if (targetClassNode == null || mixinClassNode == null) {
+            return false;
         }
 
         AnnotationNode mixinConfigNode = Annotations.getVisible(mixinClassNode, MagicMixinConfig.class);
@@ -75,7 +77,7 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
             ret = conflictSatisfied && requireSatisfied && ret;
         }
 
-        for (String s: resultList) {
+        for (String s : resultList) {
             result.append(!first && !s.equals(SimpleMixinChecker.OR) ? "\t" + s : s);
         }
 
@@ -86,20 +88,14 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
         return ret;
     }
 
-    private static void checkNextLine(@NotNull List<String> list) {
-        if (!list.isEmpty()) {
-            list.add("\n");
-        }
+    @Override
+    public void setCheckFailureCallback(MixinDependencyCheckFailureCallback callback) {
+        this.failureCallback = callback;
     }
 
     private void onCheckFailure(String targetClassName, String mixinClassName, DependencyCheckException result) {
         if (this.failureCallback != null) {
             this.failureCallback.callback(targetClassName, mixinClassName, result);
         }
-    }
-
-    @Override
-    public void setCheckFailureCallback(MixinDependencyCheckFailureCallback callback) {
-        this.failureCallback = callback;
     }
 }

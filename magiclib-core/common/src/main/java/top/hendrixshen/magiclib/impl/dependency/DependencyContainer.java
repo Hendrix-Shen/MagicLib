@@ -3,19 +3,20 @@ package top.hendrixshen.magiclib.impl.dependency;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.spongepowered.asm.util.Annotations;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.dependency.*;
+import top.hendrixshen.magiclib.api.dependency.DependencyType;
+import top.hendrixshen.magiclib.api.dependency.DistType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
-import top.hendrixshen.magiclib.api.platform.IPlatform;
-import top.hendrixshen.magiclib.api.dependency.SimplePredicate;
+import top.hendrixshen.magiclib.api.platform.Platform;
 import top.hendrixshen.magiclib.util.VersionUtil;
+import top.hendrixshen.magiclib.util.collect.SimplePredicate;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class DependencyContainer<T> {
@@ -23,13 +24,12 @@ public class DependencyContainer<T> {
     private final DependencyType dependencyType;
     private final DistType distType;
     private final List<String> versionPredicates;
-    @Nullable
     private final SimplePredicate<T> predicate;
     private final boolean optional;
     private final T obj;
 
     private DependencyContainer(String value, DependencyType dependencyType, DistType distType,
-                                List<String> versionPredicates, @Nullable SimplePredicate<T> predicate,
+                                List<String> versionPredicates, SimplePredicate<T> predicate,
                                 boolean optional, T obj) {
         this.value = value;
         this.dependencyType = dependencyType;
@@ -49,14 +49,16 @@ public class DependencyContainer<T> {
                 Class<?> clazz = Class.forName(dependency.predicate().getName());
 
                 if (clazz.isInterface()) {
-                    MagicLib.getLogger().error("Predicate class {} is a interface, excepted implementation class.",
-                            clazz.getName());
+                    throw new IllegalStateException(String.format("Predicate class %s is a interface, excepted implementation class.",
+                            clazz.getName()));
                 } else {
                     predicate = (SimplePredicate<T>) clazz.getConstructor().newInstance();
                 }
+            } catch (IllegalStateException e) {
+                throw e;
             } catch (Exception e) {
-                MagicLib.getLogger().error("Failed to instantiate a Predicate from class {}: {}",
-                        dependency.predicate().getName(), e);
+                throw new IllegalStateException(String.format("Failed to instantiate a Predicate from class %s: %s",
+                        dependency.predicate().getName(), e));
             }
         }
 
@@ -66,25 +68,29 @@ public class DependencyContainer<T> {
 
     @SuppressWarnings("unchecked")
     public static <T> @NotNull DependencyContainer<T> of(AnnotationNode annotationNode, T obj) {
-        Type type = Annotations.getValue(annotationNode, "predicate");
         SimplePredicate<T> predicate = null;
         DependencyType dependencyType = Annotations.getValue(annotationNode, "dependencyType",
                 DependencyType.class, DependencyType.MOD_ID);
 
         if (dependencyType == DependencyType.PREDICATE) {
+            Type type = Annotations.getValue(annotationNode, "predicate");
+            Objects.requireNonNull(type,
+                    "Dependency type is set to PREDICATE mode, which requires the predicate field to be specified!");
+
             try {
                 Class<?> clazz = Class.forName(type.getClassName());
 
                 if (clazz.isInterface()) {
-                    MagicLib.getLogger()
-                            .error("Predicate class {} is a interface, excepted implementation class.",
-                                    clazz.getName());
+                    throw new IllegalStateException(String.format("Predicate class %s is a interface, excepted implementation class.",
+                            clazz.getName()));
                 } else {
                     predicate = (SimplePredicate<T>) clazz.getConstructor().newInstance();
                 }
+            } catch (IllegalStateException e) {
+                throw e;
             } catch (Exception e) {
-                MagicLib.getLogger().error("Failed to instantiate a Predicate from class {}: {}",
-                        type.getClassName(), e);
+                throw new IllegalStateException(String.format("Failed to instantiate a Predicate from class %s",
+                        type.getClassName()), e);
             }
         }
 
@@ -100,7 +106,7 @@ public class DependencyContainer<T> {
     }
 
     public ValueContainer<DependencyCheckResult> check() {
-        IPlatform platform = MagicLib.getInstance().getPlatformManage().getCurrentPlatform();
+        Platform platform = MagicLib.getInstance().getPlatformManage().getCurrentPlatform();
 
         switch (this.dependencyType) {
             case DIST:
@@ -113,11 +119,10 @@ public class DependencyContainer<T> {
 
                 return ValueContainer.of(new DependencyCheckResult(false, String.format(
                         "Running on unexpected side, expected %s, but found %s.", this.distType, currentdistType)));
-            case MIXIN:
-
-
-                break;
             case MOD_ID:
+                Objects.requireNonNull(this.value,
+                        "Dependency type is set to MOD_ID mode and requires mod id as value");
+
                 if (!platform.isModLoaded(this.value) && !this.optional) {
                     return ValueContainer.of(new DependencyCheckResult(false, String.format(
                             "Mod %s not found. Requires %s!", this.value,
@@ -137,11 +142,9 @@ public class DependencyContainer<T> {
                         "Conflicted Mod %s (%s)@%s detected.",
                         platform.getModName(this.value), this.value, loadedVersion)));
             case PREDICATE:
-                if (this.predicate != null) {
-                    boolean testResult = this.predicate.test(this.obj);
-                    return ValueContainer.of(new DependencyCheckResult(testResult, String.format(
-                            "Predicate test result = %s", testResult)));
-                }
+                boolean testResult = this.predicate.test(this.obj);
+                return ValueContainer.of(new DependencyCheckResult(testResult, String.format(
+                        "Predicate %s test result = %s", this.predicate.getClass().getName(), testResult)));
         }
 
         return ValueContainer.empty();

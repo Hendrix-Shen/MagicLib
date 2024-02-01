@@ -4,7 +4,6 @@ import lombok.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -16,12 +15,11 @@ import java.util.stream.Stream;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ValueContainer<T> implements Serializable {
+public class ValueContainer<T> {
     /**
      * Common instance for {@code empty()}.
      */
     private static final ValueContainer<?> EMPTY = new ValueContainer<>(null, false, null);
-    private static final long serialVersionUID = -6457485528417039883L;
 
     private final T value;
     @Getter
@@ -48,12 +46,19 @@ public class ValueContainer<T> implements Serializable {
         return new ValueContainer<>(null, false, exception);
     }
 
+    @SneakyThrows
+    @SuppressWarnings("Condition")
     public T get() {
-        if (!this.exist) {
-            throw new RuntimeException("Value not exists");
+        if (this.exist) {
+            return this.value;
         }
 
-        return this.value;
+        if (this.isException()) {
+            assert this.exception != null;
+            throw this.exception;
+        }
+
+        throw new RuntimeException("No value present");
     }
 
     public boolean isException() {
@@ -85,7 +90,7 @@ public class ValueContainer<T> implements Serializable {
     public ValueContainer<T> filter(Predicate<? super T> predicate) {
         Objects.requireNonNull(predicate);
 
-        if (isPresent()) {
+        if (this.isPresent()) {
             return predicate.test(this.value) ? this : ValueContainer.empty();
         }
 
@@ -146,11 +151,17 @@ public class ValueContainer<T> implements Serializable {
         throw new NoSuchElementException("No value present");
     }
 
+    @SneakyThrows
     public <E extends Throwable> T orElseThrow(Supplier<? extends E> exceptionSupplier) throws E {
-        if (this.isPresent()) {
-            return value;
-        } else {
-            throw exceptionSupplier.get();
+        if (this.exist) {
+            return this.value;
         }
+
+        if (this.isException()) {
+            assert this.exception != null;
+            throw this.exception;
+        }
+
+        throw new RuntimeException("No value present");
     }
 }

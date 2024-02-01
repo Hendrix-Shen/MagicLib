@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.api.mixin;
+package top.hendrixshen.magiclib.api.mixin.checker;
 
 import top.hendrixshen.magiclib.api.dependency.DependencyCheckException;
 

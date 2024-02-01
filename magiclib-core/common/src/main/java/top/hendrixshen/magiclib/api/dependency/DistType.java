@@ -1,8 +1,17 @@
 package top.hendrixshen.magiclib.api.dependency;
 
 public enum DistType {
+    /**
+     * Match any distribution type.
+     */
     ANY,
+    /**
+     * Match client distribution type.
+     */
     CLIENT,
+    /**
+     * Match server distribution type.
+     */
     SERVER,
     ;
 

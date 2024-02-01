@@ -1,8 +1,8 @@
-package top.hendrixshen.magiclib.impl.mixin;
+package top.hendrixshen.magiclib.impl.mixin.checker;
 
 import com.google.common.collect.Maps;
-import top.hendrixshen.magiclib.api.mixin.MixinDependencyChecker;
-import top.hendrixshen.magiclib.api.mixin.MixinDependencyCheckFailureCallback;
+import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyCheckFailureCallback;
+import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyChecker;
 
 import java.util.Map;
 
