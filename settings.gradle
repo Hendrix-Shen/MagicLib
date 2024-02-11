@@ -13,17 +13,17 @@ pluginManagement {
 
         maven {
             name("Architectury")
-            url("https://maven.architectury.dev/")
+            url("https://maven.architectury.dev")
         }
 
         maven {
             name("MinecraftForge")
-            url("https://files.minecraftforge.net/maven/")
+            url("https://files.minecraftforge.net/maven")
         }
 
         maven {
             name("NeoForge")
-            url("https://maven.neoforged.net/releases/")
+            url("https://maven.neoforged.net/releases")
         }
 
         maven {
@@ -52,7 +52,9 @@ include("magiclib-core:neoforge")
 include("magiclib-minecraft-api")
 include("magiclib-minecraft-api:common")
 
-def settings = new JsonSlurper().parseText(file("settings.json").text)
+Map<String, Map<String, List<String>>> settings = file("settings.json").withReader {
+    new JsonSlurper().parse(it) as Map<String, Map<String, List<String>>>
+}
 
 for (String module_name: settings.projects.keySet()) {
     String root_node_name = settings.projects.get(module_name).get(0)

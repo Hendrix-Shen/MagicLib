@@ -6,9 +6,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly("net.neoforged.fancymodloader:core:${project.property("fancymodloader_version")}")
-    compileOnly("net.neoforged.fancymodloader:language-java:${project.property("fancymodloader_version")}")
-    compileOnly("net.neoforged.fancymodloader:loader:${project.property("fancymodloader_version")}")
+    compileOnly("net.neoforged.fancymodloader:core:${project.property("dependencies.fancymodloader_version")}")
+    compileOnly("net.neoforged.fancymodloader:language-java:${project.property("dependencies.fancymodloader_version")}")
+    compileOnly("net.neoforged.fancymodloader:loader:${project.property("dependencies.fancymodloader_version")}")
 }
 
 java {
@@ -25,7 +25,7 @@ processResources {
         expand([
                 "mod_description": project.parent.property("mod.description"),
                 "mod_homepage"   : project.parent.property("mod.homepage"),
-                "mod_id"         : project.parent.property("mod.id").replace("-", "_"),
+                "mod_id"         : project.parent.property("mod.id").toString().replace("-", "_"),
                 "mod_license"    : project.parent.property("mod.license"),
                 "mod_name"       : project.parent.property("mod.name"),
                 "mod_version"    : project.version,
