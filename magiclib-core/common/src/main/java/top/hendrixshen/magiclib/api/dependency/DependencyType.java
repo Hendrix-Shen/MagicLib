@@ -1,5 +1,7 @@
 package top.hendrixshen.magiclib.api.dependency;
 
+import top.hendrixshen.magiclib.api.platform.DistType;
+
 public enum DependencyType {
     /**
      * Test if the current environment satisfies the condition.

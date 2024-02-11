@@ -6,9 +6,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly("net.minecraftforge:forge:${project.forge_version}:universal")
-    compileOnly("net.minecraftforge:forge:${project.forge_version}:launcher")
-    compileOnly("net.minecraftforge:forgespi:${project.forgespi_version}")
+    compileOnly("net.minecraftforge:forge:${project.property("forge_version")}:universal")
+    compileOnly("net.minecraftforge:forge:${project.property("forge_version")}:launcher")
+    compileOnly("net.minecraftforge:forgespi:${project.property("forgespi_version")}")
+    compileOnly("org.apache.maven:maven-artifact:${project.property("maven-artifact_version")}")
 }
 
 processResources {

@@ -6,7 +6,7 @@ import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.impl.mixin.extension.MagicExtensions;
-import top.hendrixshen.magiclib.impl.platform.fabric.FabricPlatformImpl;
+import top.hendrixshen.magiclib.impl.platform.FabricPlatformImpl;
 
 public class MagicLibFabric implements ModInitializer, ClientModInitializer, DedicatedServerModInitializer {
     @Override

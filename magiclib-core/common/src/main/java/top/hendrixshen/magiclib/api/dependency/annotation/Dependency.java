@@ -1,7 +1,7 @@
 package top.hendrixshen.magiclib.api.dependency.annotation;
 
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.DistType;
+import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.util.collect.SimplePredicate;
 
 import java.lang.annotation.Retention;

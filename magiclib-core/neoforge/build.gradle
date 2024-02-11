@@ -6,9 +6,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly("net.neoforged.fancymodloader:core:${project.fancymodloader_version}")
-    compileOnly("net.neoforged.fancymodloader:language-java:${project.fancymodloader_version}")
-    compileOnly("net.neoforged.fancymodloader:loader:${project.fancymodloader_version}")
+    compileOnly("net.neoforged.fancymodloader:core:${project.property("fancymodloader_version")}")
+    compileOnly("net.neoforged.fancymodloader:language-java:${project.property("fancymodloader_version")}")
+    compileOnly("net.neoforged.fancymodloader:loader:${project.property("fancymodloader_version")}")
 }
 
 java {

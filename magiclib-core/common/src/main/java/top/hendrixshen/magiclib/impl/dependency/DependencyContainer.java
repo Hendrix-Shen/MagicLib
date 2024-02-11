@@ -8,7 +8,7 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.spongepowered.asm.util.Annotations;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.DistType;
+import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.platform.Platform;
 import top.hendrixshen.magiclib.util.VersionUtil;

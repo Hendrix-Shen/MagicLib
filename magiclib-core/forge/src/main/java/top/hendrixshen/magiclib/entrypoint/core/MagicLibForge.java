@@ -4,7 +4,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.impl.mixin.extension.MagicExtensions;
-import top.hendrixshen.magiclib.impl.platform.forge.ForgePlatformImpl;
+import top.hendrixshen.magiclib.impl.platform.ForgePlatformImpl;
 
 @Mod("magiclib_core")
 public class MagicLibForge {

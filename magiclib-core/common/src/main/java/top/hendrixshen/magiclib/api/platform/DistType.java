@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.api.dependency;
+package top.hendrixshen.magiclib.api.platform;
 
 public enum DistType {
     /**

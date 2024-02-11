@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.impl.platform.fabric;
+package top.hendrixshen.magiclib.impl.platform;
 
 import top.hendrixshen.magiclib.api.mixin.EmptyMixinPlugin;
 import top.hendrixshen.magiclib.entrypoint.core.MagicLibFabric;
