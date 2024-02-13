@@ -1,7 +1,5 @@
 {
   "required": true,
   "package": "top.hendrixshen.magiclib.mixin.compat.minecraft",
-  "plugin": "top.hendrixshen.magiclib.api.mixin.MagicMixinPlugin",
-  "client": [
-  ]
+  "plugin": "top.hendrixshen.magiclib.impl.mixin.MagicMixinPlugin"
 }
