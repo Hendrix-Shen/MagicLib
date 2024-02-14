@@ -4,5 +4,5 @@ plugins {
 
 yamlang {
     targetSourceSets.set([sourceSets.main])
-    inputDir.set("assets/magic-core/lang")
+    inputDir.set("assets/${project.parent.property("mod.id")}/lang")
 }
