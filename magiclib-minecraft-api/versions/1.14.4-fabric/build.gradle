@@ -14,7 +14,6 @@ boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
 boolean forgeLike = modPlatform == "forge" || modPlatform == "neoforge"
 String modId = fabricLike ? project.parent.property("mod.id") : (project.parent.property("mod.id") as String).replace("-", "_")
 int mcVersion = 0
-evaluationDependsOn(":magiclib-minecraft-api:common")
 
 preprocess {
     mcVersion = vars.get().get("MC")
