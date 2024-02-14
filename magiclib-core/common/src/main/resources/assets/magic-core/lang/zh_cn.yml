@@ -1,0 +1,17 @@
+magiclib:
+  dependency:
+    label:
+      and: "与:"
+      conflict: "冲突:"
+      or: "或:"
+      require: "必要:"
+    result:
+      dist:
+        require: "运行在非预期环境, 预期: %1$s, 实际: %2$s."
+        conflict: "运行在非预期环境 %1$s."
+      mod_id:
+        conflict: "检测到冲突模组 %1$s (%2$s)@%3$s."
+        optional: "检测到模组 %1$s (%2$s). 预期: %3$s, 实际: %4$s!"
+        require: "找不到模组 %1$s. 需要 %2$s!"
+      predicate:
+        message: "谓词 %s 测试结果 = %s"

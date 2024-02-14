@@ -6,6 +6,7 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.util.Annotations;
 import top.hendrixshen.magiclib.api.dependency.DependencyCheckException;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.mixin.annotation.MagicMixinConfig;
 import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyCheckFailureCallback;
 import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyChecker;
@@ -16,14 +17,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SimpleMixinChecker implements MixinDependencyChecker {
-    public static final String OR = "Or:";
-
     private MixinDependencyCheckFailureCallback failureCallback;
 
-    private static void checkNextLine(@NotNull List<String> list) {
-        if (!list.isEmpty()) {
-            list.add("\n");
-        }
+    private void addLine(@NotNull List<String> list, String line) {
+        list.add(line);
+        list.add("\n");
     }
 
     @Override
@@ -41,7 +39,6 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
                 .stream()
                 .map(node -> DependenciesContainer.of(node, targetClassNode))
                 .collect(Collectors.toList());
-        StringBuilder result = new StringBuilder();
         List<String> resultList = Lists.newArrayList();
         boolean ret = true;
         boolean first = true;
@@ -50,36 +47,34 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
             boolean conflictSatisfied = dependenciesContainer.isConflictSatisfied();
             boolean requireSatisfied = dependenciesContainer.isRequireSatisfied();
 
-            if ((!conflictSatisfied || !requireSatisfied) && !resultList.isEmpty()) {
-                SimpleMixinChecker.checkNextLine(resultList);
-                resultList.add(SimpleMixinChecker.OR);
+            if (first) {
                 first = false;
+            } else if (!conflictSatisfied || !requireSatisfied) {
+                this.addLine(resultList, "!" + I18n.tr("magiclib.dependency.label.or"));
             }
 
             if (!conflictSatisfied) {
-                SimpleMixinChecker.checkNextLine(resultList);
-                resultList.add("Conflicts:");
-                dependenciesContainer.checkConflict().forEach(r -> {
-                    resultList.add("\n");
-                    resultList.add(String.format("\t%s", r.getReason()));
-                });
+                this.addLine(resultList, I18n.tr("magiclib.dependency.label.conflict"));
+                dependenciesContainer.checkConflict().forEach(r ->
+                        this.addLine(resultList, String.format("\t%s", r.getReason())));
             }
 
             if (!requireSatisfied) {
-                SimpleMixinChecker.checkNextLine(resultList);
-                resultList.add("Require:");
-                dependenciesContainer.checkRequire().forEach(r -> {
-                    resultList.add("\n");
-                    resultList.add(String.format("\t%s", r.getReason()));
-                });
+                this.addLine(resultList, I18n.tr("magiclib.dependency.label.require"));
+                dependenciesContainer.checkRequire().forEach(r ->
+                        this.addLine(resultList, String.format("\t%s", r.getReason())));
             }
 
             ret = conflictSatisfied && requireSatisfied && ret;
         }
 
-        for (String s : resultList) {
-            result.append(!first && !s.equals(SimpleMixinChecker.OR) ? "\t" + s : s);
+        if (!resultList.isEmpty()) {
+            resultList.remove(resultList.size() - 1);
         }
+
+        String result = resultList.stream()
+                .map(s -> s.startsWith("!") ? s.replaceFirst("^!", "") : "\t" + s)
+                .collect(Collectors.joining());
 
         if (!ret) {
             this.onCheckFailure(targetClassName, mixinClassName, new DependencyCheckException(result.toString()));

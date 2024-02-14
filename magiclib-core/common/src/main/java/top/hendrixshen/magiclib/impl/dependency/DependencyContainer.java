@@ -8,6 +8,7 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.spongepowered.asm.util.Annotations;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.platform.Platform;
@@ -113,38 +114,38 @@ public class DependencyContainer<T> {
                 DistType currentdistType = platform.getCurrentDistType();
 
                 if (this.distType.matches(currentdistType)) {
-                    return ValueContainer.of(new DependencyCheckResult(true, String.format(
-                            "Running on unexpected side %s.", currentdistType)));
+                    return ValueContainer.of(new DependencyCheckResult(false,
+                            I18n.tr("magiclib.dependency.result.dist.conflict", currentdistType)));
                 }
 
-                return ValueContainer.of(new DependencyCheckResult(false, String.format(
-                        "Running on unexpected side, expected %s, but found %s.", this.distType, currentdistType)));
+                return ValueContainer.of(new DependencyCheckResult(false,
+                        I18n.tr("magiclib.dependency.result.dist.require", this.distType, currentdistType)));
             case MOD_ID:
                 Objects.requireNonNull(this.value,
                         "Dependency type is set to MOD_ID mode and requires mod id as value");
 
                 if (!platform.isModLoaded(this.value) && !this.optional) {
-                    return ValueContainer.of(new DependencyCheckResult(false, String.format(
-                            "Mod %s not found. Requires %s!", this.value,
+                    return ValueContainer.of(new DependencyCheckResult(false,
+                            I18n.tr("magiclib.dependency.result.mod_id.require", this.value,
                             this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates)));
                 }
 
                 String loadedVersion = platform.getModVersion(this.value);
 
                 if (!VersionUtil.isVersionSatisfyPredicates(loadedVersion, this.versionPredicates)) {
-                    return ValueContainer.of(new DependencyCheckResult(false, String.format(
-                            "Mod %s (%s) detected. Requires %s, but found %s!",
+                    return ValueContainer.of(new DependencyCheckResult(false,
+                            I18n.tr("magiclib.dependency.result.mod_id.optional",
                             platform.getModName(this.value), this.value,
                             this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates, loadedVersion)));
                 }
 
-                return ValueContainer.of(new DependencyCheckResult(true, String.format(
-                        "Conflicted Mod %s (%s)@%s detected.",
+                return ValueContainer.of(new DependencyCheckResult(true,
+                        I18n.tr("magiclib.dependency.result.mod_id.conflict",
                         platform.getModName(this.value), this.value, loadedVersion)));
             case PREDICATE:
                 boolean testResult = this.predicate.test(this.obj);
-                return ValueContainer.of(new DependencyCheckResult(testResult, String.format(
-                        "Predicate %s test result = %s", this.predicate.getClass().getName(), testResult)));
+                return ValueContainer.of(new DependencyCheckResult(testResult, I18n.tr(
+                        "magiclib.dependency.result.predicate.message", this.predicate.getClass().getName(), testResult)));
         }
 
         return ValueContainer.empty();

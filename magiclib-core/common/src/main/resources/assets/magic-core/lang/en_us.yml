@@ -1,0 +1,17 @@
+magiclib:
+  dependency:
+    label:
+      and: "And:"
+      conflict: "Conflict:"
+      or: "Or:"
+      require: "Require:"
+    result:
+      dist:
+        conflict: "Running on unexpected dist %1$s."
+        require: "Running on unexpected dist, expected %1$s, but found %2$s."
+      mod_id:
+        conflict: "Conflicted Mod %1$s (%2$s)@%3$s detected."
+        optional: "Mod %1$s (%2$s) detected. Requires %3$s, but found %4$s!"
+        require: "Mod %1$s not found. Requires %2$s!."
+      predicate:
+        message: "Predicate %s test result = %s"
