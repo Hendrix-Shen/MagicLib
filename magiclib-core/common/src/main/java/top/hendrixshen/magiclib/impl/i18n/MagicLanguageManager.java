@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.i18n.LanguageProvider;
+import top.hendrixshen.magiclib.impl.i18n.provider.FileLanguageProvider;
 import top.hendrixshen.magiclib.impl.i18n.provider.JarLanguageProvider;
 import top.hendrixshen.magiclib.util.MiscUtil;
 
@@ -28,6 +29,7 @@ public class MagicLanguageManager {
 
     private MagicLanguageManager() {
         this.providers.add(JarLanguageProvider.getInstance());
+        this.providers.add(FileLanguageProvider.getInstance());
         this.providers.forEach(LanguageProvider::init);
         this.init();
     }
@@ -46,9 +48,18 @@ public class MagicLanguageManager {
     }
 
     private @NotNull Map<String, String> getLanguage(String languageCode) {
-        Map<String, String> result = Maps.newConcurrentMap();
-        this.providers.forEach(provider -> result.putAll(provider.getLanguage(languageCode)));
-        this.language.put(languageCode, result);
+        Map<String, String> result = this.language.get(languageCode);
+
+        if (result == null) {
+            result = Maps.newConcurrentMap();
+
+            for (LanguageProvider provider : this.providers) {
+                result.putAll(provider.getLanguage(languageCode));
+            }
+
+            this.language.put(languageCode, result);
+        }
+
         return result;
     }
 
