@@ -12,3 +12,9 @@ ${mod_description}
 logoFile = "icon.png"
 authors = "Hendrix-Shen, Plusls"
 displayURL = "${mod_homepage}"
+
+[[mixins]]
+config = "magiclib-minecraft-api.mixins.json"
+
+[[mixins]]
+config = "magiclib-magic-language.mixins.json"

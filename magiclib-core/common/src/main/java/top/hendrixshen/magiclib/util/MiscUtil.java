@@ -8,4 +8,9 @@ public class MiscUtil {
     public static @NotNull String getSystemLanguageCode() {
         return Locale.getDefault().toString().toLowerCase();
     }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T cast(Object obj) {
+        return (T) obj;
+    }
 }

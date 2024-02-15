@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.i18n.LanguageProvider;
@@ -40,9 +41,10 @@ public class FileLanguageProvider implements LanguageProvider {
                 }
 
                 Path path = Paths.get(resource.toURI());
-                Files.walkFileTree(path, new LanguageFileVisitor(path));
+                Files.walkFileTree(path, new LanguageFileVisitor(path, this.files, false));
             }
-        } catch (IOException | URISyntaxException ignore) {
+        } catch (IOException | URISyntaxException e) {
+            MagicLib.getLogger().error("Failed to load language file.", e);
         }
     }
 
@@ -71,16 +73,19 @@ public class FileLanguageProvider implements LanguageProvider {
                 JsonUtil.loadStringMapFromJson(inputStream, result::put);
                 MagicLib.getLogger().debug("Loaded language file {}.", file);
             } catch (Exception e) {
-                MagicLib.getLogger().error("Failed to load language file {}.", file);
+                MagicLib.getLogger().error("Failed to load language file {}.", file, e);
             }
         });
 
         return result;
     }
 
+    @ApiStatus.Internal
     @AllArgsConstructor
-    private static class LanguageFileVisitor implements FileVisitor<Path> {
+    public static class LanguageFileVisitor implements FileVisitor<Path> {
         private final Path basePath;
+        private final Map<String, List<Path>> files;
+        private final boolean prefix;
 
         @Override
         public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
@@ -89,14 +94,15 @@ public class FileLanguageProvider implements LanguageProvider {
 
         @Override
         public FileVisitResult visitFile(@NotNull Path file, BasicFileAttributes attrs) {
-            String name = "assets/" + this.basePath.relativize(file).toString().replace("\\", "/");
+            String name = (prefix ? "" : "assets/") + this.basePath.relativize(file).toString()
+                    .replace("\\", "/");
             Matcher matcher = FileLanguageProvider.getInstance().languageResourcePattern.matcher(name);
 
             if (!matcher.find()) {
                 return FileVisitResult.CONTINUE;
             }
 
-            FileLanguageProvider.getInstance().files.computeIfAbsent(matcher.group(2), key ->
+            this.files.computeIfAbsent(matcher.group(2), key ->
                     Lists.newArrayList()).add(file);
             return FileVisitResult.CONTINUE;
         }

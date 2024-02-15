@@ -21,7 +21,8 @@ public class MagicLanguageManager {
 
     private final Map<String, String> currentLanguage = new ConcurrentHashMap<>();
     private final Map<String, Map<String, String>> language = Maps.newConcurrentMap();
-    private final List<String> languageOrder = Lists.newArrayList(DEFAULT_CODE);
+    private final List<String> languageOrder = Lists.newArrayList();
+    private final List<String> fallbackLanguage = Lists.newArrayList(DEFAULT_CODE);
     private final List<LanguageProvider> providers = Lists.newArrayList();
 
     @Getter
@@ -36,6 +37,7 @@ public class MagicLanguageManager {
 
     private void init() {
         // Recalculate language load order.
+        this.languageOrder.addAll(this.fallbackLanguage);
         this.languageOrder.remove(this.currentCode);
         this.languageOrder.add(0, this.currentCode);
 
@@ -77,6 +79,7 @@ public class MagicLanguageManager {
     public void reload() {
         this.currentLanguage.clear();
         this.language.clear();
+        this.languageOrder.clear();
         this.providers.forEach(LanguageProvider::reload);
         this.init();
     }

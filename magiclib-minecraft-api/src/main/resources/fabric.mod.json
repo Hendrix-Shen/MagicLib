@@ -40,7 +40,8 @@
     ]
   },
   "mixins": [
-    "magiclib-minecraft-api.mixins.json"
+    "magiclib-minecraft-api.mixins.json",
+    "magiclib-magic-language.mixins.json"
   ],
   "depends": {
   },

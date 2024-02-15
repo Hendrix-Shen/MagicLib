@@ -39,7 +39,8 @@ public class JarLanguageProvider implements LanguageProvider {
                 JarURLConnection connection = (JarURLConnection) resource.openConnection();
                 this.loadFromJar(connection.getJarFile());
             }
-        } catch (IOException ignore) {
+        } catch (IOException e) {
+            MagicLib.getLogger().error("Failed to load language file.", e);
         }
     }
 
@@ -78,7 +79,7 @@ public class JarLanguageProvider implements LanguageProvider {
                 MagicLib.getLogger().debug("Loaded language file {} from {}.", entry.getName(), jar.getName());
             } catch (IOException e) {
                 MagicLib.getLogger().error("Failed to load language file {} from {}.",
-                        entry.getName(), jar.getName());
+                        entry.getName(), jar.getName(), e);
             }
         }
     }

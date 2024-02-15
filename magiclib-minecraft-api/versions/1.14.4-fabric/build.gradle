@@ -18,6 +18,7 @@ int mcVersion = 0
 
 preprocess {
     mcVersion = vars.get().get("MC")
+    vars.put("MC", mcVersion)
     vars.put("FABRIC", modPlatform == "fabric" ? 1 : 0)
     vars.put("FORGE", modPlatform == "forge" ? 1 : 0)
     vars.put("NEO_FORGE", modPlatform == "neoforge" ? 1 : 0)
@@ -37,6 +38,10 @@ dependencies {
     mappings(loom.officialMojangMappings())
     modApi("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
 
+    // Lombok
+    compileOnly("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
+    annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
+
     // Make IDE happy.
     api(project(":magiclib-core:common"))
     api(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow"))
@@ -50,6 +55,15 @@ dependencies {
 
 loom {
     silentMojangMappingsLicense()
+    accessWidenerPath.set(file("src/main/resources/${project.parent.property("mod.id")}.accesswidener"))
+
+    if (modPlatform == "forge") {
+        forge {
+            convertAccessWideners.set(true)
+            mixinConfig("magiclib-minecraft-api.mixins.json")
+            mixinConfig("magiclib-magic-language.mixins.json")
+        }
+    }
 
     runConfigs.configureEach {
         // Dump modified classes automatically.
@@ -94,17 +108,12 @@ base {
 }
 
 java {
-    if (forgeLike) {
-        if (mcVersion > 11701) {
-            sourceCompatibility(JavaVersion.VERSION_17)
-            targetCompatibility(JavaVersion.VERSION_17)
-        } else if (mcVersion > 11605) {
-            sourceCompatibility(JavaVersion.VERSION_16)
-            targetCompatibility(JavaVersion.VERSION_16)
-        } else {
-            sourceCompatibility(JavaVersion.VERSION_1_8)
-            targetCompatibility(JavaVersion.VERSION_1_8)
-        }
+    if (mcVersion > 11701) {
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
+    } else if (mcVersion > 11605) {
+        sourceCompatibility(JavaVersion.VERSION_16)
+        targetCompatibility(JavaVersion.VERSION_16)
     } else {
         sourceCompatibility(JavaVersion.VERSION_1_8)
         targetCompatibility(JavaVersion.VERSION_1_8)
@@ -112,6 +121,16 @@ java {
 
     withSourcesJar()
     withJavadocJar()
+}
+
+remapJar {
+    if (forgeLike) {
+        if (modPlatform == "neoforge") {
+            atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
+        }
+
+        exclude("${project.parent.property("mod.id")}.accesswidener")
+    }
 }
 
 processResources {
@@ -237,14 +256,11 @@ tasks.withType(Javadoc).configureEach { Javadoc task ->
 
 tasks.withType(JavaCompile).configureEach { JavaCompile task ->
     task.options.encoding("UTF-8")
-    if (forgeLike) {
-        if (mcVersion > 11701) {
-            task.options.release.set(17)
-        } else if (mcVersion > 11605) {
-            task.options.release.set(16)
-        } else {
-            task.options.release.set(8)
-        }
+
+    if (mcVersion > 11701) {
+        task.options.release.set(17)
+    } else if (mcVersion > 11605) {
+        task.options.release.set(16)
     } else {
         task.options.release.set(8)
     }
