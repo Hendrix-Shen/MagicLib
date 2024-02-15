@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("java-library")
+    id("maven-publish")
     id("signing")
 
     id("com.github.johnrengelman.shadow").version("8.1.1")
@@ -141,6 +142,90 @@ processResources {
         if (fabricLike) {
             into("assets/${project.parent.property("mod.id")}")
         }
+    }
+}
+
+signing {
+    String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getEnv().SIGNING_PGP_KEY)
+    String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getEnv().SIGNING_PGP_PASSWORD)
+
+    required {
+        signingKey
+    }
+
+    useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
+    sign(publishing.publications)
+}
+
+publishing {
+    publications { PublicationContainer publications ->
+        register("release", MavenPublication) { MavenPublication publication ->
+            artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
+            from(components.java as SoftwareComponent)
+            version("${project.version}")
+            alias(false)
+
+            project.addPomMetadataInformation(this.project, publication)
+        }
+
+        register("snapshot", MavenPublication) { MavenPublication publication ->
+            artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
+            from(components.java as SoftwareComponent)
+            version("${project.parent.property("mod.version")}-SNAPSHOT")
+            alias(true)
+
+            project.addPomMetadataInformation(this.project, publication)
+        }
+    }
+
+    repositories { RepositoryHandler repositoryHandler ->
+        mavenLocal {
+            name("mavenLocal")
+        }
+
+        maven {
+            name("projectLocalSnapshot")
+            url("${rootDir}/publish/snapshot")
+        }
+
+        maven {
+            name("projectLocalRelease")
+            url("${rootDir}/publish/release")
+        }
+
+        maven {
+            name("mavenCentralSnapshot")
+            url("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+
+            project.credentialsMavenCentral(it)
+        }
+
+        maven {
+            name("mavenCentralRelease")
+            url("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+            project.credentialsMavenCentral(it)
+        }
+    }
+}
+
+// Solutions from: https://youtrack.jetbrains.com/issue/KT-46466
+TaskCollection<Sign> signingTasks = tasks.withType(Sign)
+tasks.withType(AbstractPublishToMaven).configureEach {
+    dependsOn(signingTasks)
+}
+
+tasks.withType(PublishToMavenRepository).configureEach {
+    Provider<Boolean> predicate = provider {
+        repository == publishing.repositories.mavenLocal ||
+                (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
+                (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
+                (repository == publishing.repositories.mavenCentralSnapshot && publication == publishing.publications.snapshot && project.isMavenCentralCredentialsExist()) ||
+                (repository == publishing.repositories.mavenCentralRelease && publication == publishing.publications.release && project.isMavenCentralCredentialsExist())
+    }
+
+    onlyIf {
+        predicate.get()
     }
 }
 
