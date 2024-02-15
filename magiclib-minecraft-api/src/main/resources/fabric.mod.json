@@ -30,13 +30,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "top.hendrixshen.magiclib.entrypoint.core.MagicLibFabric"
+      "top.hendrixshen.magiclib.entrypoint.minecraft.MagicLibFabric"
     ],
     "client": [
-      "top.hendrixshen.magiclib.entrypoint.core.MagicLibFabric"
+      "top.hendrixshen.magiclib.entrypoint.minecraft.MagicLibFabric"
     ],
     "modmenu": [
-      "top.hendrixshen.magiclib.entrypoint.core.MagicLibFabric"
+      "top.hendrixshen.magiclib.entrypoint.minecraft.MagicLibFabric"
     ]
   },
   "mixins": [
