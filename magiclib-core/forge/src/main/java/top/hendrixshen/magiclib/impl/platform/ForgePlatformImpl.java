@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class ForgePlatformImpl implements Platform {
     @Getter(lazy = true)
     private static final Platform instance = new ForgePlatformImpl();
-    public static final  ImmutableBiMap<DistType, Dist> distTypeMappings = ImmutableBiMap.of(
+    public static final ImmutableBiMap<DistType, Dist> distTypeMappings = ImmutableBiMap.of(
             DistType.CLIENT, Dist.CLIENT,
             DistType.SERVER, Dist.DEDICATED_SERVER
     );

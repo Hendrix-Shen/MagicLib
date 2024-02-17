@@ -8,9 +8,9 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.spongepowered.asm.util.Annotations;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.platform.DistType;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.platform.Platform;
 import top.hendrixshen.magiclib.util.VersionUtil;
 import top.hendrixshen.magiclib.util.collect.SimplePredicate;
@@ -127,7 +127,7 @@ public class DependencyContainer<T> {
                 if (!platform.isModLoaded(this.value) && !this.optional) {
                     return ValueContainer.of(new DependencyCheckResult(false,
                             I18n.tr("magiclib.dependency.result.mod_id.require", this.value,
-                            this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates)));
+                                    this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates)));
                 }
 
                 String loadedVersion = platform.getModVersion(this.value);
@@ -135,13 +135,13 @@ public class DependencyContainer<T> {
                 if (!VersionUtil.isVersionSatisfyPredicates(loadedVersion, this.versionPredicates)) {
                     return ValueContainer.of(new DependencyCheckResult(false,
                             I18n.tr("magiclib.dependency.result.mod_id.optional",
-                            platform.getModName(this.value), this.value,
-                            this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates, loadedVersion)));
+                                    platform.getModName(this.value), this.value,
+                                    this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates, loadedVersion)));
                 }
 
                 return ValueContainer.of(new DependencyCheckResult(true,
                         I18n.tr("magiclib.dependency.result.mod_id.conflict",
-                        platform.getModName(this.value), this.value, loadedVersion)));
+                                platform.getModName(this.value), this.value, loadedVersion)));
             case PREDICATE:
                 boolean testResult = this.predicate.test(this.obj);
                 return ValueContainer.of(new DependencyCheckResult(testResult, I18n.tr(

@@ -89,7 +89,7 @@ public class FabricPlatformImpl implements Platform {
 
     @Override
     public Collection<ModContainerAdapter> getMods() {
-        for (ModContainer container: FabricLoader.getInstance().getAllMods()) {
+        for (ModContainer container : FabricLoader.getInstance().getAllMods()) {
             this.getMod(container.getMetadata().getId());
         }
 
