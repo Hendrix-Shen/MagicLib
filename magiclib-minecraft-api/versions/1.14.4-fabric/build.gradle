@@ -60,8 +60,9 @@ loom {
     if (modPlatform == "forge") {
         forge {
             convertAccessWideners.set(true)
-            mixinConfig("magiclib-minecraft-api.mixins.json")
+            mixinConfig("magiclib-event-minecraft.mixins.json")
             mixinConfig("magiclib-magic-language.mixins.json")
+            mixinConfig("magiclib-minecraft-api.mixins.json")
         }
     }
 
