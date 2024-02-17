@@ -9,6 +9,7 @@ import net.fabricmc.loader.api.ModContainer;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.impl.platform.adapter.FabricModContainer;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
@@ -50,8 +51,8 @@ public class FabricPlatformImpl implements Platform {
     }
 
     @Override
-    public @NotNull String getPlatformName() {
-        return "fabric";
+    public PlatformType getPlatformType() {
+        return PlatformType.FABRIC;
     }
 
     @Override

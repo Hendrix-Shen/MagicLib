@@ -13,7 +13,11 @@ public interface Platform {
 
     Path getModsFolder();
 
-    String getPlatformName();
+    PlatformType getPlatformType();
+
+    default String getPlatformName() {
+        return this.getPlatformType().getName();
+    }
 
     DistType getCurrentDistType();
 

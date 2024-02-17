@@ -10,6 +10,7 @@ import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforgespi.language.IModInfo;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.impl.platform.adapter.NeoForgeModContainer;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
@@ -48,8 +49,8 @@ public class NeoForgePlatformImpl implements Platform {
     }
 
     @Override
-    public String getPlatformName() {
-        return "neoforge";
+    public PlatformType getPlatformType() {
+        return PlatformType.NEOFORGE;
     }
 
     @Override

@@ -11,6 +11,7 @@ import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import net.minecraftforge.forgespi.language.IModInfo;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.impl.platform.adapter.ForgeModContainer;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
@@ -49,8 +50,8 @@ public class ForgePlatformImpl implements Platform {
     }
 
     @Override
-    public String getPlatformName() {
-        return "forge";
+    public PlatformType getPlatformType() {
+        return PlatformType.FORGE;
     }
 
     @Override
