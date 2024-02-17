@@ -6,7 +6,6 @@ import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
 import top.hendrixshen.magiclib.api.platform.PlatformType;

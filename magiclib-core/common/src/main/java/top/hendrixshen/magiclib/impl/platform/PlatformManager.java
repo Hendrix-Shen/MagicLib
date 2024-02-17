@@ -16,7 +16,6 @@ public final class PlatformManager {
     public PlatformManager(MagicLib magicLib) {
         Preconditions.checkNotNull(magicLib);
         this.magicLib = magicLib;
-        this.initialized.set(true);
     }
 
     public void register(Platform platform) {
