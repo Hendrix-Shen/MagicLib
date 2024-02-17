@@ -266,3 +266,15 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
         task.options.release.set(8)
     }
 }
+
+[
+ "runClient"          , "runServer",
+ "runMixinAuditClient", "runMixinAuditServer",
+ "preprocessCode"     , "preprocessResources",
+ "preprocessTestCode" , "preprocessTestResources"].forEach { taskName ->
+    if (tasks.getNames().contains(taskName)) {
+        tasks.named(taskName) {
+            it.group("${project.property("mod.id")}")
+        }
+    }
+}
