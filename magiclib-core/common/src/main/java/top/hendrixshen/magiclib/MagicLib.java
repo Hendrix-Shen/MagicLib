@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import top.hendrixshen.magiclib.impl.i18n.MagicLanguageManager;
 import top.hendrixshen.magiclib.impl.platform.PlatformManager;
 
 @Getter
@@ -15,5 +16,9 @@ public final class MagicLib {
     private final PlatformManager platformManage = new PlatformManager(this);
 
     private MagicLib() {
+    }
+
+    public MagicLanguageManager getLanguageManager() {
+        return MagicLanguageManager.getInstance();
     }
 }

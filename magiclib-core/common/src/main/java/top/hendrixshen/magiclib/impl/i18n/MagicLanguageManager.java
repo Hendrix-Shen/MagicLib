@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.i18n.LanguageProvider;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.i18n.provider.FileLanguageProvider;
 import top.hendrixshen.magiclib.impl.i18n.provider.JarLanguageProvider;
 import top.hendrixshen.magiclib.util.MiscUtil;
@@ -29,7 +31,11 @@ public class MagicLanguageManager {
     private String currentCode = MiscUtil.getSystemLanguageCode();
 
     private MagicLanguageManager() {
-        this.providers.add(JarLanguageProvider.getInstance());
+        if (MagicLib.getInstance().getPlatformManage().getCurrentPlatform().getPlatformType()
+                .matches(PlatformType.FABRIC_LIKE)) {
+            this.providers.add(JarLanguageProvider.getInstance());
+        }
+
         this.providers.add(FileLanguageProvider.getInstance());
         this.providers.forEach(LanguageProvider::init);
         this.init();
