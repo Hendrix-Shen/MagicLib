@@ -1,7 +1,7 @@
 plugins {
     id("maven-publish")
 
-    id("org.ajoberstar.grgit").version("5.2.1")
+    id("org.ajoberstar.grgit").version("5.2.2")
 }
 
 ext {
@@ -54,7 +54,6 @@ ext {
 //    getMavenArtifactVersion = {
 //        return project.getVersionType() == "stable" ? "${project.mod_version}.${project.getVersionPatch([])}" : project.version
 //    }
-
 
     addPomMetadataInformation = { Project project, MavenPublication publication ->
         publication.pom {
