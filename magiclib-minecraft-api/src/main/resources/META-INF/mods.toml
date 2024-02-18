@@ -14,10 +14,4 @@ authors = "Hendrix-Shen, Plusls"
 displayURL = "${mod_homepage}"
 
 [[mixins]]
-config = "magiclib-event-minecraft.mixins.json"
-
-[[mixins]]
-config = "magiclib-magic-language.mixins.json"
-
-[[mixins]]
 config = "magiclib-minecraft-api.mixins.json"

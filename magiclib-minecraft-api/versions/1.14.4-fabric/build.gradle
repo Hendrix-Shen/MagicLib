@@ -60,8 +60,6 @@ loom {
     if (modPlatform == "forge") {
         forge {
             convertAccessWideners.set(true)
-            mixinConfig("magiclib-event-minecraft.mixins.json")
-            mixinConfig("magiclib-magic-language.mixins.json")
             mixinConfig("magiclib-minecraft-api.mixins.json")
         }
     }
@@ -88,14 +86,14 @@ loom {
     runs {
         mixinAuditClient {
             inherit(client)
-            vmArgs("-Dmagiclib.mixin_audit=true")
+            vmArgs("-Dmagiclib.mixinAuditor.enable=true")
             ideConfigGenerated(false)
             runDir("run/client")
         }
 
         mixinAuditServer {
             inherit(server)
-            vmArgs("-Dmagiclib.mixin_audit=true")
+            vmArgs("-Dmagiclib.mixinAuditor.enable=true")
             ideConfigGenerated(false)
             runDir("run/server")
         }

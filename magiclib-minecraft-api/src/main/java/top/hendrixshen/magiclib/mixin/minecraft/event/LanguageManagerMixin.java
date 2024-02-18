@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.event.minecraft;
+package top.hendrixshen.magiclib.mixin.minecraft.event;
 
 import net.minecraft.client.resources.language.Language;
 import net.minecraft.client.resources.language.LanguageManager;
@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.impl.event.EventManager;
-import top.hendrixshen.magiclib.impl.event.minecraft.LanguageReloadEvent;
-import top.hendrixshen.magiclib.impl.event.minecraft.LanguageSelectEvent;
+import top.hendrixshen.magiclib.impl.event.minecraft.LanguageManagerEvent.LanguageReloadEvent;
+import top.hendrixshen.magiclib.impl.event.minecraft.LanguageManagerEvent.LanguageSelectEvent;
 
 @Mixin(LanguageManager.class)
 public class LanguageManagerMixin {

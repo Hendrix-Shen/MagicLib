@@ -1,10 +1,22 @@
 {
   "required": true,
-  "package": "top.hendrixshen.magiclib.mixin.compat.minecraft",
+  "package": "top.hendrixshen.magiclib.mixin.minecraft",
   "plugin": "top.hendrixshen.magiclib.impl.mixin.MagicMixinPlugin",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "event.LanguageManagerMixin",
+    "event.MinecraftMixin"
+  ],
+  "mixins": [
+    "language.AbstractResourcePackMixin",
+    "language.FilePackResourcesMixin",
+    "language.PathPackResourcesMixin"
+  ],
+  "server": [
+    "event.DedicatedServerMixin"
+  ]
 }

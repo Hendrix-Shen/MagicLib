@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.language;
+package top.hendrixshen.magiclib.mixin.minecraft.language;
 
 import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.api.preprocess.DummyClass;

@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.language;
+package top.hendrixshen.magiclib.mixin.minecraft.language;
 
 import net.minecraft.server.packs.PathPackResources;
 import org.spongepowered.asm.mixin.Final;

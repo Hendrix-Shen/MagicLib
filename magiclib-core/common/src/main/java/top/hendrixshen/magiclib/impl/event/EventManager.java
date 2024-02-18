@@ -46,7 +46,6 @@ public class EventManager {
             List<L> listenersCopy = Lists.newArrayList(listeners);
             listenersCopy.removeIf(Objects::isNull);
             event.dispatch(listenersCopy);
-            throw new RuntimeException("Test broken");
         } catch (Throwable t) {
             throw new RuntimeException("Exception occurs while delegating events.\n  Event class: " +
                     event.getClass().getName(), t);

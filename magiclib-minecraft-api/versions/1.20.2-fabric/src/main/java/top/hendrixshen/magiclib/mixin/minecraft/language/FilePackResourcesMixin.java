@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.mixin.language;
+package top.hendrixshen.magiclib.mixin.minecraft.language;
 
 import net.minecraft.server.packs.FilePackResources;
 import org.spongepowered.asm.mixin.Final;
@@ -12,10 +12,10 @@ import java.io.File;
 public class FilePackResourcesMixin implements PackAccessor {
     @Final
     @Shadow
-    private File file;
+    private FilePackResources.SharedZipFileAccess zipFileAccess;
 
     @Override
     public File magiclib$getFile() {
-        return this.file;
+        return this.zipFileAccess.file;
     }
 }
