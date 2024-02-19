@@ -90,11 +90,19 @@ public class MagicLanguageManager {
         this.init();
     }
 
-    public void setCurrentCode(String code) {
-        if (!this.currentCode.equals(code)) {
-            this.currentCode = code;
+    /**
+     * Set current language code.
+     *
+     * @return True if language code updated.
+     */
+    public boolean setCurrentCode(String code) {
+        if (!this.currentCode.equalsIgnoreCase(code)) {
+            this.currentCode = code.toLowerCase();
             this.reload();
+            return true;
         }
+
+        return false;
     }
 
     public void setLanguageOrder(List<String> languageOrder) {

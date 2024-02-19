@@ -25,16 +25,19 @@ public class MinecraftLanguageManager implements LanguageManagerListener, Minecr
 
     @Override
     public void postLanguageReload() {
-        MagicLanguageManager.getInstance().reload();
+        if (!MagicLib.getInstance().getLanguageManager().setCurrentCode(Minecraft.getInstance().options.languageCode)) {
+            MagicLib.getInstance().getLanguageManager().reload();
+        }
     }
 
     @Override
     public void postLanguageSelect() {
-        MagicLanguageManager.getInstance().setCurrentCode(Minecraft.getInstance().options.languageCode);
+        // NO-OP
     }
 
     @Override
     public void postInit() {
+        MagicLanguageManager.getInstance().setCurrentCode(Minecraft.getInstance().options.languageCode);
         MagicLanguageManager.getInstance().registerLanguageProvider(ResourceLanguageProvider.getInstance());
     }
 }
