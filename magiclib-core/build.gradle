@@ -37,7 +37,13 @@ subprojects {
     dependencies {
         // Mixin
         compileOnly("org.spongepowered:mixin:${project.property("dependencies.mixin_version")}")
-        compileOnly("org.ow2.asm:asm-debug-all:${project.property("dependencies.asm_debug_version")}")
+
+        // ASM
+        compileOnly("org.ow2.asm:asm:${project.property("dependencies.asm_version")}")
+        compileOnly("org.ow2.asm:asm-analysis:${project.property("dependencies.asm_version")}")
+        compileOnly("org.ow2.asm:asm-commons:${project.property("dependencies.asm_version")}")
+        compileOnly("org.ow2.asm:asm-tree:${project.property("dependencies.asm_version")}")
+        compileOnly("org.ow2.asm:asm-util:${project.property("dependencies.asm_version")}")
 
         // Lombok
         compileOnly("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")

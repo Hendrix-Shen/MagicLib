@@ -9,6 +9,7 @@ import org.spongepowered.asm.service.MixinService;
 import top.hendrixshen.magiclib.MagicLib;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,5 +68,10 @@ public class MixinUtil {
         }
 
         return ret;
+    }
+
+    public static boolean containsMethodNode(@NotNull Collection<MethodNode> methodNodes, String name, String desc) {
+        return methodNodes.stream()
+                .anyMatch(methodNode -> methodNode.name.equals(name) && methodNode.desc.equals(desc));
     }
 }

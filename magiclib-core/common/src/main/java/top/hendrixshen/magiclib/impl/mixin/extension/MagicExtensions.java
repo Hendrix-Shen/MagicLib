@@ -9,5 +9,6 @@ public class MagicExtensions {
     public static void init() {
         MixinInternals.registerExtension(new AnnotationRestorerExtension());
         MixinInternals.registerExtension(new EraserExtension());
+        MixinInternals.registerExtension(new MagicInitExtension());
     }
 }

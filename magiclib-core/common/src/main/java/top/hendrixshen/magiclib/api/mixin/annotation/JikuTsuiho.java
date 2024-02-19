@@ -5,8 +5,8 @@ import java.lang.annotation.*;
 /**
  * 時空追放.
  */
-@Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.CLASS)
+@Target({ElementType.FIELD, ElementType.METHOD})
 public @interface JikuTsuiho {
     /**
      * Mixin class name.
