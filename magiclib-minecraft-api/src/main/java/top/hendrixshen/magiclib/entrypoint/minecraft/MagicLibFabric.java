@@ -1,7 +1,6 @@
 //#if FABRIC
 package top.hendrixshen.magiclib.entrypoint.minecraft;
 
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
