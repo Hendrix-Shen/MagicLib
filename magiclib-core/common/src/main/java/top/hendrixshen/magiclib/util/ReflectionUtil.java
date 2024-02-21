@@ -9,26 +9,24 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class ReflectionUtil {
-    public static <T> @NotNull ValueContainer<Class<T>> getClass(String className) {
+    public static @NotNull ValueContainer<Class<?>> getClass(String className) {
         try {
-            @SuppressWarnings("unchecked")
-            ValueContainer<Class<T>> container = ValueContainer.of((Class<T>) Class.forName(className));
-            return container;
+            return ValueContainer.of(Class.forName(className));
         } catch (ClassNotFoundException e) {
             return ValueContainer.exception(e);
         }
     }
 
-    public static <T> @NotNull ValueContainer<Class<T>> getClass(@NotNull Class<T> clazz) {
+    public static @NotNull ValueContainer<Class<?>> getClass(@NotNull Class<?> clazz) {
         return ValueContainer.of(clazz);
     }
 
     public static <T> @NotNull ValueContainer<T> newInstance(String className, Class<?>[] type, Object... args) {
-        ValueContainer<Class<T>> clazz = ReflectionUtil.getClass(className);
+        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
         return ReflectionUtil.newInstance(clazz, type, args);
     }
 
-    public static <T> @NotNull ValueContainer<T> newInstance(@NotNull ValueContainer<Class<T>> classContainer,
+    public static <T> @NotNull ValueContainer<T> newInstance(@NotNull ValueContainer<Class<?>> classContainer,
                                                              Class<?>[] type, Object... args) {
         if (classContainer.isException()) {
             return ReflectionUtil.newInstance(classContainer.get(), type, args);
@@ -58,8 +56,8 @@ public class ReflectionUtil {
         return ReflectionUtil.getDeclaredFieldValue(className, fieldName, null);
     }
 
-    public static <R, T> ValueContainer<T> getStaticFieldValue(@NotNull ValueContainer<Class<R>> classContainer,
-                                                               String fieldName) {
+    public static <T> ValueContainer<T> getStaticFieldValue(@NotNull ValueContainer<Class<?>> classContainer,
+                                                            String fieldName) {
         return ReflectionUtil.getDeclaredFieldValue(classContainer, fieldName, null);
     }
 
@@ -67,14 +65,14 @@ public class ReflectionUtil {
         return ReflectionUtil.getDeclaredFieldValue(clazz, fieldName, null);
     }
 
-    public static <R, T> @NotNull ValueContainer<Boolean> setStaticFieldValue(String className, String fieldName,
-                                                                              T value) {
-        ValueContainer<Class<R>> clazz = ReflectionUtil.getClass(className);
+    public static @NotNull ValueContainer<Boolean> setStaticFieldValue(String className, String fieldName,
+                                                                       Object value) {
+        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
         return ReflectionUtil.setDeclaredFieldValue(clazz, fieldName, null, value);
     }
 
-    public static <R, T> ValueContainer<Boolean> setStaticFieldValue(@NotNull ValueContainer<Class<R>> classContainer,
-                                                                     String fieldName, T value) {
+    public static ValueContainer<Boolean> setStaticFieldValue(@NotNull ValueContainer<Class<?>> classContainer,
+                                                              String fieldName, Object value) {
         if (classContainer.isException()) {
             return ValueContainer.exception(classContainer.getException());
         }
@@ -82,17 +80,17 @@ public class ReflectionUtil {
         return ReflectionUtil.setDeclaredFieldValue(classContainer.get(), fieldName, null, value);
     }
 
-    public static <T> ValueContainer<Boolean> setStaticFieldValue(@NotNull Class<T> cls, String fieldName, T value) {
+    public static ValueContainer<Boolean> setStaticFieldValue(@NotNull Class<?> cls, String fieldName, Object value) {
         return ReflectionUtil.setDeclaredFieldValue(cls, fieldName, null, value);
     }
 
-    public static <R, S, T> ValueContainer<T> getDeclaredFieldValue(String className, String fieldName, S instance) {
-        ValueContainer<Class<R>> clazz = ReflectionUtil.getClass(className);
+    public static <T> ValueContainer<T> getDeclaredFieldValue(String className, String fieldName, Object instance) {
+        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
         return ReflectionUtil.getDeclaredFieldValue(clazz, fieldName, instance);
     }
 
-    public static <R, S, T> ValueContainer<T> getDeclaredFieldValue(@NotNull ValueContainer<Class<R>> classContainer,
-                                                                    String fieldName, S instance) {
+    public static <T> ValueContainer<T> getDeclaredFieldValue(@NotNull ValueContainer<Class<?>> classContainer,
+                                                              String fieldName, Object instance) {
         if (classContainer.isException()) {
             return ValueContainer.exception(classContainer.getException());
         }
@@ -100,8 +98,8 @@ public class ReflectionUtil {
         return ReflectionUtil.getDeclaredFieldValue(classContainer.get(), fieldName, instance);
     }
 
-    public static <R, S, T> ValueContainer<T> getDeclaredFieldValue(@NotNull Class<R> clazz, String fieldName,
-                                                                    S instance) {
+    public static <T> ValueContainer<T> getDeclaredFieldValue(@NotNull Class<?> clazz, String fieldName,
+                                                              Object instance) {
         try {
             Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
@@ -113,14 +111,14 @@ public class ReflectionUtil {
         }
     }
 
-    public static <R, S, T> @NotNull ValueContainer<Boolean> setDeclaredFieldValue(String className, String fieldName,
-                                                                                   S instance, T value) {
-        ValueContainer<Class<R>> clazz = ReflectionUtil.getClass(className);
+    public static @NotNull ValueContainer<Boolean> setDeclaredFieldValue(String className, String fieldName,
+                                                                         Object instance, Object value) {
+        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
         return ReflectionUtil.setDeclaredFieldValue(clazz, fieldName, instance, value);
     }
 
-    public static <R, S, T> @NotNull ValueContainer<Boolean> setDeclaredFieldValue(
-            @NotNull ValueContainer<Class<R>> classContainer, String fieldName, S instance, T value) {
+    public static @NotNull ValueContainer<Boolean> setDeclaredFieldValue(
+            @NotNull ValueContainer<Class<?>> classContainer, String fieldName, Object instance, Object value) {
         if (classContainer.isException()) {
             return ValueContainer.exception(classContainer.getException());
         }
@@ -128,8 +126,8 @@ public class ReflectionUtil {
         return ReflectionUtil.setDeclaredFieldValue(classContainer.get(), fieldName, instance, value);
     }
 
-    public static <R, S, T> ValueContainer<Boolean> setDeclaredFieldValue(@NotNull Class<R> clazz, String fieldName,
-                                                                          S instance, T value) {
+    public static ValueContainer<Boolean> setDeclaredFieldValue(@NotNull Class<?> clazz, String fieldName,
+                                                                Object instance, Object value) {
         try {
             Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
@@ -140,13 +138,13 @@ public class ReflectionUtil {
         }
     }
 
-    public static <R, S, T> ValueContainer<T> getFieldValue(String className, String fieldName, S instance) {
-        ValueContainer<Class<R>> clazz = ReflectionUtil.getClass(className);
+    public static <T> ValueContainer<T> getFieldValue(String className, String fieldName, Object instance) {
+        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
         return ReflectionUtil.getFieldValue(clazz, fieldName, instance);
     }
 
-    public static <R, S, T> ValueContainer<T> getFieldValue(@NotNull ValueContainer<Class<R>> classContainer,
-                                                            String fieldName, S instance) {
+    public static <T> ValueContainer<T> getFieldValue(@NotNull ValueContainer<Class<?>> classContainer,
+                                                      String fieldName, Object instance) {
         if (classContainer.isException()) {
             return ValueContainer.exception(classContainer.getException());
         }
@@ -154,7 +152,7 @@ public class ReflectionUtil {
         return ReflectionUtil.getFieldValue(classContainer.get(), fieldName, instance);
     }
 
-    public static <R, S, T> ValueContainer<T> getFieldValue(@NotNull Class<R> cls, String fieldName, S instance) {
+    public static <T> ValueContainer<T> getFieldValue(@NotNull Class<?> cls, String fieldName, Object instance) {
         try {
             Field field = cls.getField(fieldName);
             field.setAccessible(true);
@@ -166,14 +164,14 @@ public class ReflectionUtil {
         }
     }
 
-    public static <R, S, T> @NotNull ValueContainer<Boolean> setFieldValue(String className, String fieldName,
-                                                                           S instance, T value) {
-        ValueContainer<Class<R>> clazz = ReflectionUtil.getClass(className);
+    public static @NotNull ValueContainer<Boolean> setFieldValue(String className, String fieldName,
+                                                                 Object instance, Object value) {
+        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
         return ReflectionUtil.setFieldValue(clazz, fieldName, instance, value);
     }
 
-    public static <R, S, T> @NotNull ValueContainer<Boolean> setFieldValue(
-            @NotNull ValueContainer<Class<R>> classContainer, String fieldName, S instance, T value) {
+    public static @NotNull ValueContainer<Boolean> setFieldValue(
+            @NotNull ValueContainer<Class<?>> classContainer, String fieldName, Object instance, Object value) {
         if (classContainer.isException()) {
             return ValueContainer.exception(classContainer.getException());
         }
@@ -181,8 +179,8 @@ public class ReflectionUtil {
         return ReflectionUtil.setFieldValue(classContainer.get(), fieldName, instance, value);
     }
 
-    public static <R, S, T> ValueContainer<Boolean> setFieldValue(@NotNull Class<R> clazz, String fieldName,
-                                                                  S instance, T value) {
+    public static ValueContainer<Boolean> setFieldValue(@NotNull Class<?> clazz, String fieldName,
+                                                        Object instance, Object value) {
         try {
             Field field = clazz.getField(fieldName);
             field.setAccessible(true);
@@ -198,8 +196,8 @@ public class ReflectionUtil {
         return ReflectionUtil.invokeDeclared(cls, methodName, null, type, args);
     }
 
-    public static <S, T> ValueContainer<T> invokeDeclared(@NotNull Class<?> cls, String methodName, S instance,
-                                                          Class<?>[] type, Object... args) {
+    public static <T> ValueContainer<T> invokeDeclared(@NotNull Class<?> cls, String methodName, Object instance,
+                                                       Class<?>[] type, Object... args) {
         try {
             for (Method method : cls.getDeclaredMethods()) {
                 if (methodName.equals(method.getName()) && Arrays.equals(type, method.getParameterTypes())) {
@@ -216,8 +214,8 @@ public class ReflectionUtil {
         }
     }
 
-    public static <S, T> ValueContainer<T> invoke(@NotNull Class<?> cls, String methodName, S instance,
-                                                  Class<?>[] type, Object... args) {
+    public static <T> ValueContainer<T> invoke(@NotNull Class<?> cls, String methodName, Object instance,
+                                               Class<?>[] type, Object... args) {
         try {
             for (Method method : cls.getMethods()) {
                 if (methodName.equals(method.getName()) && Arrays.equals(type, method.getParameterTypes())) {
