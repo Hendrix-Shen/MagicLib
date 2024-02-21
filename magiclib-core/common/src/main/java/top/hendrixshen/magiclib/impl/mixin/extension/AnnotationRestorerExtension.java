@@ -3,7 +3,7 @@ package top.hendrixshen.magiclib.impl.mixin.extension;
 import com.google.common.collect.Sets;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.transformer.ext.ITargetClassContext;
-import top.hendrixshen.magiclib.api.mixin.annotation.MagicMixinConfig;
+import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.mixin.extension.EmptyExtension;
 import top.hendrixshen.magiclib.impl.mixin.AnnotationRestorer;
 
@@ -22,7 +22,7 @@ public final class AnnotationRestorerExtension extends EmptyExtension {
     }
 
     public AnnotationRestorerExtension() {
-        AnnotationRestorerExtension.register(MagicMixinConfig.class);
+        AnnotationRestorerExtension.register(CompositeDependencies.class);
     }
 
     @Override

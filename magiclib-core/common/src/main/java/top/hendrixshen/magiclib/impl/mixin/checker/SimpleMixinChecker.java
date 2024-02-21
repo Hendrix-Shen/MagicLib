@@ -6,8 +6,8 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.util.Annotations;
 import top.hendrixshen.magiclib.api.dependency.DependencyCheckException;
+import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.i18n.I18n;
-import top.hendrixshen.magiclib.api.mixin.annotation.MagicMixinConfig;
 import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyCheckFailureCallback;
 import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyChecker;
 import top.hendrixshen.magiclib.impl.dependency.DependenciesContainer;
@@ -33,7 +33,7 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
             return false;
         }
 
-        AnnotationNode mixinConfigNode = Annotations.getVisible(mixinClassNode, MagicMixinConfig.class);
+        AnnotationNode mixinConfigNode = Annotations.getVisible(mixinClassNode, CompositeDependencies.class);
         List<AnnotationNode> nodes = Annotations.getValue(mixinConfigNode, "dependencies", true);
         List<DependenciesContainer<ClassNode>> dependencies = nodes
                 .stream()
@@ -77,7 +77,7 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
                 .collect(Collectors.joining());
 
         if (!ret) {
-            this.onCheckFailure(targetClassName, mixinClassName, new DependencyCheckException(result.toString()));
+            this.onCheckFailure(targetClassName, mixinClassName, new DependencyCheckException(result));
         }
 
         return ret;
