@@ -4,15 +4,18 @@ import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
+import top.hendrixshen.magiclib.api.platform.adapter.ModEntryPointAdapter;
 import top.hendrixshen.magiclib.api.platform.adapter.ModMetaDataAdapter;
 
 import java.util.NoSuchElementException;
 
 public class ForgeModContainer implements ModContainerAdapter {
     private final ModContainer modContainer;
+    private final ModEntryPointAdapter modEntryPoint;
 
     private ForgeModContainer(ModContainer modContainer) {
         this.modContainer = modContainer;
+        this.modEntryPoint = new ForgeModEntryPoint(this);
     }
 
     public static @NotNull ModContainerAdapter of(String id) {
@@ -32,5 +35,10 @@ public class ForgeModContainer implements ModContainerAdapter {
     @Override
     public ModMetaDataAdapter getModMetaData() {
         return new ForgeModMetaData(this.modContainer.getModInfo());
+    }
+
+    @Override
+    public ModEntryPointAdapter getModEntryPoint() {
+        return this.modEntryPoint;
     }
 }

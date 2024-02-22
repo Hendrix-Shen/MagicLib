@@ -4,15 +4,18 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
+import top.hendrixshen.magiclib.api.platform.adapter.ModEntryPointAdapter;
 import top.hendrixshen.magiclib.api.platform.adapter.ModMetaDataAdapter;
 
 import java.util.NoSuchElementException;
 
 public class NeoForgeModContainer implements ModContainerAdapter {
     private final ModContainer modContainer;
+    private final ModEntryPointAdapter modEntryPoint;
 
     private NeoForgeModContainer(ModContainer modContainer) {
         this.modContainer = modContainer;
+        this.modEntryPoint = new NeoForgeModEntryPoint(this);
     }
 
     public static @NotNull ModContainerAdapter of(String id) {
@@ -32,5 +35,10 @@ public class NeoForgeModContainer implements ModContainerAdapter {
     @Override
     public ModMetaDataAdapter getModMetaData() {
         return new NeoForgeModMetaData(this.modContainer.getModInfo());
+    }
+
+    @Override
+    public ModEntryPointAdapter getModEntryPoint() {
+        return this.modEntryPoint;
     }
 }
