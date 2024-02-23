@@ -60,12 +60,17 @@ public class FabricPlatformImpl implements Platform {
     }
 
     @Override
-    public boolean matchesDist(DistType side) {
-        return this.getCurrentDistType().matches(side);
+    public boolean matchesDist(DistType distType) {
+        return this.getCurrentDistType().matches(distType);
     }
 
     @Override
     public boolean isModLoaded(String modIdentifier) {
+        return FabricLoader.getInstance().isModLoaded(modIdentifier);
+    }
+
+    @Override
+    public boolean isModExist(String modIdentifier) {
         return FabricLoader.getInstance().isModLoaded(modIdentifier);
     }
 

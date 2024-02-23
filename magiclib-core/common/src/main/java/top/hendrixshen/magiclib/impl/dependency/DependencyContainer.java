@@ -124,7 +124,7 @@ public class DependencyContainer<T> {
                 Objects.requireNonNull(this.value,
                         "Dependency type is set to MOD_ID mode and requires mod id as value");
 
-                if (!platform.isModLoaded(this.value) && !this.optional) {
+                if (!platform.isModExist(this.value) && !this.optional) {
                     return ValueContainer.of(new DependencyCheckResult(false,
                             I18n.tr("magiclib.dependency.result.mod_id.require", this.value,
                                     this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates)));

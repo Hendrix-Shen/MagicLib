@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class NeoForgePlatformImpl implements Platform {
     @Getter(lazy = true)
     private static final Platform instance = new NeoForgePlatformImpl();
-    public static final ImmutableBiMap<DistType, Dist> sideTypeMappings = ImmutableBiMap.of(
+    public static final ImmutableBiMap<DistType, Dist> distTypeMappings = ImmutableBiMap.of(
             DistType.CLIENT, Dist.CLIENT,
             DistType.SERVER, Dist.DEDICATED_SERVER
     );
@@ -61,13 +61,22 @@ public class NeoForgePlatformImpl implements Platform {
     }
 
     @Override
-    public boolean matchesDist(DistType side) {
-        return this.getCurrentDistType().matches(side);
+    public boolean matchesDist(DistType distType) {
+        return this.getCurrentDistType().matches(distType);
     }
 
     @Override
     public boolean isModLoaded(String modIdentifier) {
         return ModList.get().isLoaded(modIdentifier);
+    }
+
+    @Override
+    public boolean isModExist(String modIdentifier) {
+        return ValueContainer.ofNullable(NeoForgeModList.getInstance().getMods())
+                .orElse(NeoForgeLoadingModList.getInstance().getMods())
+                .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
+                .stream()
+                .anyMatch(iModInfo -> iModInfo.getModId().equals(modIdentifier));
     }
 
     @Override
@@ -112,10 +121,10 @@ public class NeoForgePlatformImpl implements Platform {
     }
 
     public DistType getDistType(Dist envType) {
-        return NeoForgePlatformImpl.sideTypeMappings.inverse().get(envType);
+        return NeoForgePlatformImpl.distTypeMappings.inverse().get(envType);
     }
 
     public Dist getDist(DistType sideType) {
-        return NeoForgePlatformImpl.sideTypeMappings.get(sideType);
+        return NeoForgePlatformImpl.distTypeMappings.get(sideType);
     }
 }

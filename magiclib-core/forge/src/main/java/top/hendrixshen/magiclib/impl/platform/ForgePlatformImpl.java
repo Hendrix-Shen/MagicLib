@@ -62,13 +62,22 @@ public class ForgePlatformImpl implements Platform {
     }
 
     @Override
-    public boolean matchesDist(DistType side) {
-        return this.getCurrentDistType().matches(side);
+    public boolean matchesDist(DistType distType) {
+        return this.getCurrentDistType().matches(distType);
     }
 
     @Override
     public boolean isModLoaded(String modIdentifier) {
         return ModList.get().isLoaded(modIdentifier);
+    }
+
+    @Override
+    public boolean isModExist(String modIdentifier) {
+        return ValueContainer.ofNullable(ForgeModList.getInstance().getMods())
+                .orElse(ForgeLoadingModList.getInstance().getMods())
+                .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
+                .stream()
+                .anyMatch(modInfo -> modInfo.getModId().equals(modIdentifier));
     }
 
     @Override

@@ -21,9 +21,11 @@ public interface Platform {
 
     DistType getCurrentDistType();
 
-    boolean matchesDist(DistType side);
+    boolean matchesDist(DistType distType);
 
     boolean isModLoaded(String modIdentifier);
+
+    boolean isModExist(String modIdentifier);
 
     boolean isDevelopmentEnvironment();
 
