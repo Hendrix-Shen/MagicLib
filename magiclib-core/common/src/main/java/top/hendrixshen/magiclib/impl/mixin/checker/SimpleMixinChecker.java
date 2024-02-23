@@ -42,6 +42,7 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
         List<String> resultList = Lists.newArrayList();
         boolean ret = true;
         boolean first = true;
+        int counter = 0;
 
         for (DependenciesContainer<ClassNode> dependenciesContainer : dependencies) {
             boolean conflictSatisfied = dependenciesContainer.isConflictSatisfied();
@@ -49,20 +50,22 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
 
             if (first) {
                 first = false;
+                counter++;
             } else if (!conflictSatisfied || !requireSatisfied) {
                 this.addLine(resultList, "!" + I18n.tr("magiclib.dependency.label.or"));
+                counter++;
             }
 
             if (!conflictSatisfied) {
                 this.addLine(resultList, I18n.tr("magiclib.dependency.label.conflict"));
                 dependenciesContainer.checkConflict().forEach(r ->
-                        this.addLine(resultList, String.format("\t%s", r.getReason())));
+                        this.addLine(resultList, "\t" + r.getReason()));
             }
 
             if (!requireSatisfied) {
                 this.addLine(resultList, I18n.tr("magiclib.dependency.label.require"));
                 dependenciesContainer.checkRequire().forEach(r ->
-                        this.addLine(resultList, String.format("\t%s", r.getReason())));
+                        this.addLine(resultList, "\t" + r.getReason()));
             }
 
             ret = conflictSatisfied && requireSatisfied && ret;
@@ -72,12 +75,18 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
             resultList.remove(resultList.size() - 1);
         }
 
-        String result = resultList.stream()
-                .map(s -> s.startsWith("!") ? s.replaceFirst("^!", "") : "\t" + s)
-                .collect(Collectors.joining());
+        String result;
+
+        if (counter > 1) {
+            result = resultList.stream()
+                    .map(s -> s.startsWith("!") ? s.replaceFirst("^!", "") : "\t" + s)
+                    .collect(Collectors.joining());
+        } else {
+            result = String.join("", resultList);
+        }
 
         if (!ret) {
-            this.onCheckFailure(targetClassName, mixinClassName, new DependencyCheckException(result));
+            this.onCheckFailure(targetClassName, mixinClassName, new DependencyCheckException("\n" + result));
         }
 
         return ret;

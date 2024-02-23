@@ -114,7 +114,7 @@ public class DependencyContainer<T> {
                 DistType currentdistType = platform.getCurrentDistType();
 
                 if (this.distType.matches(currentdistType)) {
-                    return ValueContainer.of(new DependencyCheckResult(false,
+                    return ValueContainer.of(new DependencyCheckResult(true,
                             I18n.tr("magiclib.dependency.result.dist.conflict", currentdistType)));
                 }
 
