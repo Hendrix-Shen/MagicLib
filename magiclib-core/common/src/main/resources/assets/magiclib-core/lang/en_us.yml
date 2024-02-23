@@ -1,3 +1,13 @@
+fabric:
+  gui:
+    button:
+      copyError: "Copy error"
+      exit: "Exit"
+    error:
+      header: "Failed to launch!"
+      missingException: "No further details available"
+    tab:
+      crash: "Crash"
 magiclib:
   dependency:
     label:

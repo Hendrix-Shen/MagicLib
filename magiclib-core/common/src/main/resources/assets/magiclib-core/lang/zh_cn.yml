@@ -1,3 +1,13 @@
+fabric:
+  gui:
+    button:
+      copyError: "复制异常"
+      exit: "退出"
+    error:
+      header: "启动失败!"
+      missingException: "没有更多信息"
+    tab:
+      crash: "崩溃"
 magiclib:
   dependency:
     label:
