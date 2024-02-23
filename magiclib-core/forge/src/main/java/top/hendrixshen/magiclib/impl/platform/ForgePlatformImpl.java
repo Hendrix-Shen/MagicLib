@@ -13,7 +13,9 @@ import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
+import top.hendrixshen.magiclib.impl.platform.adapter.ForgeLoadingModList;
 import top.hendrixshen.magiclib.impl.platform.adapter.ForgeModContainer;
+import top.hendrixshen.magiclib.impl.platform.adapter.ForgeModList;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.nio.file.Path;
@@ -98,7 +100,10 @@ public class ForgePlatformImpl implements Platform {
 
     @Override
     public Collection<String> getModIds() {
-        return ModList.get().getMods().stream()
+        return ValueContainer.ofNullable(ForgeModList.getInstance().getMods())
+                .orElse(ForgeLoadingModList.getInstance().getMods())
+                .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
+                .stream()
                 .map(ModInfo::getModId)
                 .collect(Collectors.toList());
     }

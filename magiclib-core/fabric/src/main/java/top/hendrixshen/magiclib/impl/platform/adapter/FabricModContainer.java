@@ -18,8 +18,8 @@ public class FabricModContainer implements ModContainerAdapter {
         this.modEntryPoint = new FabricModEntryPoint(this);
     }
 
-    public static @NotNull ModContainerAdapter of(String id) {
-        ModContainer modContainer = FabricLoader.getInstance().getModContainer(id)
+    public static @NotNull ModContainerAdapter of(String modIdentifier) {
+        ModContainer modContainer = FabricLoader.getInstance().getModContainer(modIdentifier)
                 .orElseThrow(() -> new NoSuchElementException("No value present"));
         return new FabricModContainer(modContainer);
     }

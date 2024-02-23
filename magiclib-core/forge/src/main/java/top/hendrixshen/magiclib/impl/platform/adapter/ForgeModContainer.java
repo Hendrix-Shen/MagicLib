@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.api.platform.adapter.ModEntryPointAdapter;
 import top.hendrixshen.magiclib.api.platform.adapter.ModMetaDataAdapter;
+import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.util.NoSuchElementException;
 
@@ -18,8 +19,8 @@ public class ForgeModContainer implements ModContainerAdapter {
         this.modEntryPoint = new ForgeModEntryPoint(this);
     }
 
-    public static @NotNull ModContainerAdapter of(String id) {
-        ModContainer modContainer = ModList.get().getModContainerById(id)
+    public static @NotNull ModContainerAdapter of(String modIdentifier) {
+        ModContainer modContainer = ModList.get().getModContainerById(modIdentifier)
                 .orElseThrow(() -> new NoSuchElementException("No value present"));
         return new ForgeModContainer(modContainer);
     }

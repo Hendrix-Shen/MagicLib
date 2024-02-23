@@ -2,7 +2,6 @@ package top.hendrixshen.magiclib.impl.platform.adapter;
 
 import com.google.common.collect.Lists;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.loading.moddiscovery.ModInfo;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -22,7 +21,7 @@ public class NeoForgeModEntryPoint implements ModEntryPointAdapter {
     private final List<ClassNode> entryPoints;
 
     public NeoForgeModEntryPoint(@NotNull NeoForgeModContainer container) {
-        this.entryPoints = ((ModInfo) container.get().getModInfo()).getOwningFile()
+        this.entryPoints = container.get().getModInfo().getOwningFile()
                 .getFile()
                 .getScanResult()
                 .getClasses()

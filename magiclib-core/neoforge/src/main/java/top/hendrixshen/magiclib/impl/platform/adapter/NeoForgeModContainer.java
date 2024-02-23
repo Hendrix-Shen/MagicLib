@@ -18,8 +18,8 @@ public class NeoForgeModContainer implements ModContainerAdapter {
         this.modEntryPoint = new NeoForgeModEntryPoint(this);
     }
 
-    public static @NotNull ModContainerAdapter of(String id) {
-        ModContainer modContainer = ModList.get().getModContainerById(id)
+    public static @NotNull ModContainerAdapter of(String modIdentifier) {
+        ModContainer modContainer = ModList.get().getModContainerById(modIdentifier)
                 .orElseThrow(() -> new NoSuchElementException("No value present"));
         return new NeoForgeModContainer(modContainer);
     }

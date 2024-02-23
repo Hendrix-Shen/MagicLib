@@ -12,7 +12,9 @@ import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
+import top.hendrixshen.magiclib.impl.platform.adapter.NeoForgeLoadingModList;
 import top.hendrixshen.magiclib.impl.platform.adapter.NeoForgeModContainer;
+import top.hendrixshen.magiclib.impl.platform.adapter.NeoForgeModList;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.nio.file.Path;
@@ -97,7 +99,10 @@ public class NeoForgePlatformImpl implements Platform {
 
     @Override
     public Collection<String> getModIds() {
-        return ModList.get().getMods().stream()
+        return ValueContainer.ofNullable(NeoForgeModList.getInstance().getMods())
+                .orElse(NeoForgeLoadingModList.getInstance().getMods())
+                .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
+                .stream()
                 .map(IModInfo::getModId)
                 .collect(Collectors.toList());
     }
