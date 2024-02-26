@@ -38,6 +38,9 @@
     "server": [
       "top.hendrixshen.magiclib.entrypoint.core.MagicLibFabric"
     ],
+    "preLaunch": [
+      "top.hendrixshen.magiclib.entrypoint.core.MagicLibFabricPreLunch"
+    ],
     "modmenu": [
     ]
   },

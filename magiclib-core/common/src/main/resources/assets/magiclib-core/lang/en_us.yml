@@ -10,8 +10,14 @@ fabric:
       crash: "Crash"
 magiclib:
   dependency:
+    checker:
+      entrypoint:
+        title: "Mod %1$s (%2$s)@%3$s Dependency check not satisfied!"
+      mixin:
+        title: "Mixin %1$s Dependency check not satisfied! Can't apply to %2$s"
     label:
       and: "And:"
+      composite: "Composite dependency:"
       conflict: "Conflict:"
       or: "Or:"
       require: "Require:"

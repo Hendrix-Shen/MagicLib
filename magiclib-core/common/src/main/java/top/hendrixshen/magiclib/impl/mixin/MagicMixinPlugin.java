@@ -27,9 +27,9 @@ public class MagicMixinPlugin extends EmptyMixinPlugin {
 
     private void onCheckFailed(String targetClassName, String mixinClassName, DependencyCheckException reason) {
         if (MixinEnvironment.getCurrentEnvironment().getOption(MixinEnvironment.Option.DEBUG_EXPORT)) {
-            MagicLib.getLogger().warn("{}: \nMixin {} can't apply to {} because: {}",
+            MagicLib.getLogger().warn("{}: \n{}",
                     Optional.ofNullable(reason.getCause()).orElse(reason).getClass().getSimpleName(),
-                    mixinClassName, targetClassName, reason.getMessage());
+                    reason.getMessage());
         }
     }
 }
