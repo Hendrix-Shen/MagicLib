@@ -42,7 +42,7 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
                 .collect(Collectors.toList());
 
         if (dependencies.stream().allMatch(DependenciesContainer::isSatisfied)) {
-            return false;
+            return true;
         }
 
         InfoNode rootNode = new InfoNode(null, I18n.tr("magiclib.dependency.checker.mixin.title",
