@@ -12,6 +12,7 @@
     "event.MinecraftMixin"
   ],
   "mixins": [
+    "accessor.StyleAccessor",
     "language.AbstractResourcePackMixin",
     "language.FilePackResourcesMixin",
     "language.PathPackResourcesMixin"
