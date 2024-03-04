@@ -2,21 +2,18 @@ package top.hendrixshen.magiclib.api.compat.minecraft.world.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.minecraft.chat.network.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
 import top.hendrixshen.magiclib.impl.compat.minecraft.world.entity.EntityCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
-import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 public interface EntityCompat extends Provider<Entity> {
-    @Contract("_ -> new")
     static @NotNull EntityCompat of(Entity entity) {
         return new EntityCompatImpl(entity);
     }
 
-    ValueContainer<LevelCompat> getLevel();
+    LevelCompat getLevel();
 
     double getX();
 

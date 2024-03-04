@@ -19,14 +19,15 @@ public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCo
     }
 
     @Override
-    public ValueContainer<LevelCompat> getLevel() {
+    public LevelCompat getLevel() {
         return ValueContainer.ofNullable(
                 //#if MC > 11904
                 //$$ this.get().level()
                 //#else
                 this.get().level
                 //#endif
-        ).map(LevelCompat::of);
+        ).map(LevelCompat::of)
+                .orElse(null);
     }
 
     @Override

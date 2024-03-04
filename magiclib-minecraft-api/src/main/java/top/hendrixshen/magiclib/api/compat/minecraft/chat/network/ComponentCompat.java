@@ -1,7 +1,6 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.chat.network;
 
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.impl.compat.minecraft.chat.network.ComponentCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
@@ -12,12 +11,10 @@ import net.minecraft.network.chat.TranslatableComponent;
 //#endif
 
 public interface ComponentCompat extends Provider<Component> {
-    @Contract(pure = true)
     static @NotNull ComponentCompat of(Component component) {
         return new ComponentCompatImpl(component);
     }
 
-    @Contract(value = "_ -> new", pure = true)
     static @NotNull MutableComponentCompat literal(String text) {
         //#if MC > 11802
         //$$ return MutableComponentCompat.of(Component.literal(text));
@@ -26,7 +23,6 @@ public interface ComponentCompat extends Provider<Component> {
         //#endif
     }
 
-    @Contract("_, _ -> new")
     static @NotNull MutableComponentCompat translatable(String text, Object... objects) {
         //#if MC > 11802
         //$$ return MutableComponentCompat.of(Component.translatable(text, objects));
@@ -34,4 +30,6 @@ public interface ComponentCompat extends Provider<Component> {
         return MutableComponentCompat.of(new TranslatableComponent(text, objects));
         //#endif
     }
+
+    StyleCompat getStyle();
 }
