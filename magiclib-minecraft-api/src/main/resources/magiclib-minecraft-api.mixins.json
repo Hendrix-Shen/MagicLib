@@ -11,10 +11,12 @@
     "accessor.Matrix4fAccessor",
     "accessor.QuaternionAccessor",
     "accessor.ScreenAccessor",
+    "accessor.Vector4fAccessor",
     "event.LanguageManagerMixin",
     "event.MinecraftMixin"
   ],
   "mixins": [
+    "accessor.SlotAccessor",
     "accessor.StyleAccessor",
     "language.AbstractResourcePackMixin",
     "language.FilePackResourcesMixin",

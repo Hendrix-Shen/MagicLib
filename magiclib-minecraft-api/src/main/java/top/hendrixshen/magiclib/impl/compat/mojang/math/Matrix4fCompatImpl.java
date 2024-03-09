@@ -10,6 +10,10 @@ import top.hendrixshen.magiclib.api.compat.mojang.math.Matrix4fCompat;
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.Matrix4fAccessor;
 import top.hendrixshen.magiclib.util.MiscUtil;
 
+//#if MC < 11502
+import org.jetbrains.annotations.ApiStatus;
+//#endif
+
 @Environment(EnvType.CLIENT)
 public class Matrix4fCompatImpl extends AbstractCompat<Matrix4f> implements Matrix4fCompat {
     public Matrix4fCompatImpl(@NotNull Matrix4f type) {
@@ -131,10 +135,12 @@ public class Matrix4fCompatImpl extends AbstractCompat<Matrix4f> implements Matr
     }
 
     //#if MC < 11500
-    private float get(int l, int c) {
+    @ApiStatus.Internal
+    public float get(int l, int c) {
         return ((Matrix4fAccessor) MiscUtil.cast(this.get())).magiclib$getValues()[l + 4 * c];
     }
 
+    @ApiStatus.Internal
     public void set(int l, int c, float value) {
         this.get().set(l, c, value);
     }
