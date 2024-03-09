@@ -12,13 +12,13 @@ import net.minecraft.network.chat.BaseComponent;
 //#endif
 
 public interface MutableComponentCompat extends ComponentCompat {
-    static @NotNull MutableComponentCompat of(
-            //#if MC > 11502
-            //$$ MutableComponent
-            //#else
-            BaseComponent
-                    //#endif
-                    mutableComponent) {
+    static @NotNull MutableComponentCompat of(@NotNull
+                                              //#if MC > 11502
+                                              //$$ MutableComponent
+                                              //#else
+                                              BaseComponent
+                                                        //#endif
+                                                        mutableComponent) {
         return new MutableComponentCompatImpl(mutableComponent);
     }
 

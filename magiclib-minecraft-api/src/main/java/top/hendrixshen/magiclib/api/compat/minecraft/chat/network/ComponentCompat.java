@@ -11,7 +11,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 //#endif
 
 public interface ComponentCompat extends Provider<Component> {
-    static @NotNull ComponentCompat of(Component component) {
+    static @NotNull ComponentCompat of(@NotNull Component component) {
         return new ComponentCompatImpl(component);
     }
 

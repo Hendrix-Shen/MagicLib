@@ -10,7 +10,7 @@ import top.hendrixshen.magiclib.impl.compat.minecraft.chat.network.StyleCompatIm
 import top.hendrixshen.magiclib.util.collect.Provider;
 
 public interface StyleCompat extends Provider<Style> {
-    static @NotNull StyleCompat of(Style style) {
+    static @NotNull StyleCompat of(@NotNull Style style) {
         return new StyleCompatImpl(style);
     }
 

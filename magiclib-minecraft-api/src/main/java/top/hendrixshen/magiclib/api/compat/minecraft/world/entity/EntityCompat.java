@@ -9,7 +9,7 @@ import top.hendrixshen.magiclib.impl.compat.minecraft.world.entity.EntityCompatI
 import top.hendrixshen.magiclib.util.collect.Provider;
 
 public interface EntityCompat extends Provider<Entity> {
-    static @NotNull EntityCompat of(Entity entity) {
+    static @NotNull EntityCompat of(@NotNull Entity entity) {
         return new EntityCompatImpl(entity);
     }
 

@@ -18,4 +18,9 @@ public abstract class AbstractCompat<T> implements Provider<T> {
     public @NotNull T get() {
         return this.type;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getName() + "(" + this.get() + ")";
+    }
 }

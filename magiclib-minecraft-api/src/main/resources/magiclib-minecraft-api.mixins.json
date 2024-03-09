@@ -8,6 +8,9 @@
     "defaultRequire": 1
   },
   "client": [
+    "accessor.Matrix4fAccessor",
+    "accessor.QuaternionAccessor",
+    "accessor.ScreenAccessor",
     "event.LanguageManagerMixin",
     "event.MinecraftMixin"
   ],
