@@ -16,11 +16,13 @@
     "event.MinecraftMixin"
   ],
   "mixins": [
+    "accessor.ServerboundClientInformationPacketAccessor",
     "accessor.SlotAccessor",
     "accessor.StyleAccessor",
-    "language.AbstractResourcePackMixin",
-    "language.FilePackResourcesMixin",
-    "language.PathPackResourcesMixin"
+    "i18n.AbstractResourcePackMixin",
+    "i18n.FilePackResourcesMixin",
+    "i18n.PathPackResourcesMixin",
+    "i18n.ServerPlayerMixin"
   ],
   "server": [
     "event.DedicatedServerMixin"

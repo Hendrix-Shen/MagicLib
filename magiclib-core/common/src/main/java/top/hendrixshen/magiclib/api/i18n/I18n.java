@@ -54,5 +54,4 @@ public class I18n {
     public static boolean exists(String code, String key) {
         return MagicLanguageManager.getInstance().exists(code, key);
     }
-
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.repository.UnopenedPack;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.fake.language.PackAccessor;
+import top.hendrixshen.magiclib.api.fake.i18n.PackAccessor;
 import top.hendrixshen.magiclib.api.i18n.LanguageProvider;
 import top.hendrixshen.magiclib.impl.i18n.provider.FileLanguageProvider;
 import top.hendrixshen.magiclib.util.JsonUtil;
