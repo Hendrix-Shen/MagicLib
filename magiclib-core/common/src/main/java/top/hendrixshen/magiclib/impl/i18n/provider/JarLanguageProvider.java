@@ -77,9 +77,8 @@ public class JarLanguageProvider implements LanguageProvider {
             try (InputStream inputStream = jar.getInputStream(entry);) {
                 JsonUtil.loadStringMapFromJson(inputStream, language::put);
                 MagicLib.getLogger().debug("Loaded language file {} from {}.", entry.getName(), jar.getName());
-            } catch (IOException e) {
-                MagicLib.getLogger().error("Failed to load language file {} from {}.",
-                        entry.getName(), jar.getName(), e);
+            } catch (Exception e) {
+                MagicLib.getLogger().error("Failed to load language file {} from {}.", entry.getName(), jar.getName(), e);
             }
         }
     }
