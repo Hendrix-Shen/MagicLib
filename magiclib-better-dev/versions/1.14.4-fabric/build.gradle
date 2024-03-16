@@ -12,8 +12,7 @@ String modPlatform = loom.platform.get().toString().toLowerCase()
 boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
 boolean forgeLike = modPlatform == "forge" || modPlatform == "neoforge"
 String modId = fabricLike ? project.parent.property("mod.id") : (project.parent.property("mod.id") as String).replace("-", "_")
-String projectName = project.name.replace("mc-api-", "")
-Project betterDev = evaluationDependsOn(":magiclib-better-dev:better-dev-${projectName}")
+String projectName = project.name.replace("better-dev-", "")
 int mcVersion = 0
 
 preprocess {
@@ -51,7 +50,6 @@ repositories {
             includeGroup("maven.modrinth")
         }
     }
-
     maven {
         name("Jitpack Maven")
         url("https://jitpack.io")
@@ -63,6 +61,25 @@ repositories {
 
     mavenCentral()
 }
+
+// Module, Property prefix, Resolve condition, Transitive dependencies.
+def apiDependencies = [
+        ["maven.modrinth:modmenu"            , "modmenu", modPlatform == "fabric", false],
+        ["net.fabricmc.fabric-api:fabric-api", "fabric" , modPlatform == "fabric", true],
+]
+
+// Module, Property prefix, Resolve condition, Transitive dependencies.
+def runtimeDependencies = [
+        ["curse.maven:auto-config-updated-api-373261", "auto_config_updated_api", fabricLike && mcVersion < 11600, false],
+        ["curse.maven:lazy-dfu-forge-460819"         , "lazydfu"                , forgeLike  && mcVersion < 11904, false],
+        ["curse.maven:smooth-boot-415758"            , "smoothboot"             , fabricLike && mcVersion < 12000, false],
+        ["maven.modrinth:cloth-config"               , "cloth_config"           , fabricLike && mcVersion < 11600, false],
+        ["maven.modrinth:in-game-account-switcher"   , "inGameAccountSwitcher"  , fabricLike || mcVersion < 11202, false],
+        ["maven.modrinth:lazydfu"                    , "lazydfu"                , fabricLike                     , false],
+        ["maven.modrinth:imblocker"                  , "imblockerfabric"        , fabricLike && mcVersion < 12002, false],
+        ["maven.modrinth:imblocker-original"         , "imblocker"              , forgeLike  && false            , false],
+        ["maven.modrinth:threadtweak"                , "threadtweak"            , fabricLike && mcVersion > 11904, false],
+]
 
 dependencies {
     minecraft("com.mojang:minecraft:${project.property("dependencies.minecraft_version")}")
@@ -77,14 +94,38 @@ dependencies {
     api(project(":magiclib-core:common"))
     api(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow"))
 
-    // Dont publish better dev dependencies.
-    localRuntime(project(path: betterDev.path, configuration: fabricLike ? "namedElements" : "modRuntimeClasspathMainMapped"))
-    compileOnly(project(path: betterDev.path, configuration: fabricLike ? "namedElements" : "modCompileClasspathMainMapped"))
-
     if (modPlatform == "forge") {
         forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
     } else if (modPlatform == "neoforge") {
         neoForge("net.neoforged:neoforge:${project.property("dependencies.neoforge_version")}")
+    }
+
+    // API
+    apiDependencies.forEach { item ->
+        String dependencyNotation = item[0]
+        String propertyPrefix = item[1]
+        boolean shouldResolve = item[2]
+        boolean shouldTransitive = item[3]
+
+        if (shouldResolve) {
+            modApi("${dependencyNotation}:${project.property("dependencies.api.${propertyPrefix}_version")}") {
+                transitive(shouldTransitive)
+            }
+        }
+    }
+
+    // Runtime Library - Make development environment comfortable.
+    runtimeDependencies.forEach { item ->
+        String dependencyNotation = item[0]
+        String propertyPrefix = item[1]
+        boolean shouldResolve = item[2]
+        boolean shouldTransitive = item[3]
+
+        if (shouldResolve) {
+            modRuntimeOnly("${dependencyNotation}:${project.property("dependencies.runtime.${propertyPrefix}_version")}") {
+                transitive(shouldTransitive)
+            }
+        }
     }
 }
 
@@ -361,7 +402,8 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
         "runClient", "runServer",
         "runMixinAuditClient", "runMixinAuditServer",
         "preprocessCode", "preprocessResources",
-        "preprocessTestCode", "preprocessTestResources"].forEach { taskName ->
+        "preprocessTestCode", "preprocessTestResources"
+].forEach { taskName ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
             it.group("${project.property("mod.id")}")

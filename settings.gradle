@@ -50,20 +50,25 @@ include("magiclib-core:fabric")
 include("magiclib-core:forge")
 include("magiclib-core:neoforge")
 include("magiclib-minecraft-api")
+include("magiclib-better-dev")
 
-Map<String, Map<String, List<String>>> settings = file("settings.json").withReader {
-    new JsonSlurper().parse(it) as Map<String, Map<String, List<String>>>
+Map<String, Map<String, ?>> settings = file("settings.json").withReader {
+    new JsonSlurper().parse(it) as Map<String, Map<String, ?>>
 }
 
 for (String module_name: settings.projects.keySet()) {
-    String root_node_name = settings.projects.get(module_name).get(0)
+    Map<String, ?> project_detail = settings.projects.get(module_name) as Map<String, ?>
+    String prefix = project_detail.get("prefix")
+    List<String> versions = project_detail.get("versions") as List<String>
 
-    for(String v: settings.projects.get(module_name)) {
-        String project_name = "${module_name}:${v}"
+    String root_node_name = versions.get(0)
+
+    for(String ver: versions) {
+        String project_name = "${module_name}:${prefix}-${ver}"
         include("${project_name}")
 
         ProjectDescriptor proj = project(":${project_name}")
-        proj.setProjectDir(file("${module_name}/versions/${v}"))
+        proj.setProjectDir(file("${module_name}/versions/${ver}"))
         proj.setBuildFileName("../${root_node_name}/build.gradle")
     }
 }

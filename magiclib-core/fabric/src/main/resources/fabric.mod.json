@@ -56,7 +56,15 @@
       "badges": [
         "library"
       ],
-      "parent": "magiclib"
+      "parent": {
+        "id": "${root_mod_id}",
+        "name": "${root_mod_name}",
+        "description": "${root_mod_description}",
+        "icon": "assets/${mod_id}/icon.png",
+        "badges": [
+          "library"
+        ]
+      }
     }
   }
 }

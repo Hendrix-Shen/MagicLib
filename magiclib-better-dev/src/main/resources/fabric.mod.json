@@ -30,17 +30,17 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "top.hendrixshen.magiclib.entrypoint.minecraft.MagicLibFabric"
+      "top.hendrixshen.magiclib.entrypoint.dev.MagicLibFabric"
     ],
     "client": [
-      "top.hendrixshen.magiclib.entrypoint.minecraft.MagicLibFabric"
+      "top.hendrixshen.magiclib.entrypoint.dev.MagicLibFabric"
     ],
     "server": [
-      "top.hendrixshen.magiclib.entrypoint.minecraft.MagicLibFabric"
+      "top.hendrixshen.magiclib.entrypoint.dev.MagicLibFabric"
     ]
   },
   "mixins": [
-    "magiclib-minecraft-api.mixins.json"
+    "magiclib-better-dev.mixins.json"
   ],
   "depends": {
   },
