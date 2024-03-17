@@ -13,5 +13,9 @@
     "dfu.destroy.SchemaMixin",
     "dfu.lazy.DataFixersMixin",
     "dfu.lazy.SharedConstantsMixin"
+  ],
+  "client": [
+    "auth.AccountProfileKeyPairManagerMixin",
+    "auth.MinecraftMixin"
   ]
 }

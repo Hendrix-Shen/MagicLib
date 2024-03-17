@@ -25,6 +25,12 @@ public final class MagicLibProperties {
             Option.InheritType.INDEPENDENT, "trigger", "mod_init");
     public static final Option DEV_QOL = Option.newOption(MagicLibProperties.ROOT,
             Option.InheritType.INDEPENDENT, "devQOL");
+    public static final Option DEV_QOL_AUTH = Option.newOption(MagicLibProperties.DEV_QOL,
+            Option.InheritType.INHERIT, "auth");
+    public static final Option DEV_QOL_AUTH_EMPTY_KEY = Option.newOption(MagicLibProperties.DEV_QOL_AUTH,
+            Option.InheritType.INHERIT, "emptyKey");
+    public static final Option DEV_QOL_AUTH_SILENT_VERIFY_ERROR = Option.newOption(MagicLibProperties.DEV_QOL_AUTH,
+            Option.InheritType.INHERIT, "silentVerify");
     public static final Option DEV_QOL_CHUNK = Option.newOption(MagicLibProperties.DEV_QOL,
             Option.InheritType.INHERIT, "chunk");
     public static final Option DEV_QOL_DFU = Option.newOption(MagicLibProperties.DEV_QOL,

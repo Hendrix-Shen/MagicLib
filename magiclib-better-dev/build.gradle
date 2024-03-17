@@ -23,7 +23,7 @@ preprocess {
     Node mc_12004_fabric = createNode("better-dev-1.20.4-fabric", 1_20_04, "mojang")
 
     mc_11404_fabric.link(mc_11502_fabric, null)
-    mc_11502_fabric.link(mc_11605_fabric, null)
+    mc_11502_fabric.link(mc_11605_fabric, file("versions/mapping-fabric-1.15.2-1.16.5.txt"))
     mc_11605_fabric.link(mc_11701_fabric, null)
     mc_11701_fabric.link(mc_11802_fabric, null)
     mc_11802_fabric.link(mc_11902_fabric, null)
