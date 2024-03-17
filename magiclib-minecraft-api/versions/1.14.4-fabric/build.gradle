@@ -78,8 +78,13 @@ dependencies {
     api(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow"))
 
     // Dont publish better dev dependencies.
-    localRuntime(project(path: betterDev.path, configuration: fabricLike ? "namedElements" : "modRuntimeClasspathMainMapped"))
-    compileOnly(project(path: betterDev.path, configuration: fabricLike ? "namedElements" : "modCompileClasspathMainMapped"))
+    compileOnly(project(path: betterDev.path, configuration: "namedElements"))
+    localRuntime(project(path: betterDev.path, configuration: "namedElements"))
+
+    if (forgeLike) {
+        compileOnly(project(path: betterDev.path, configuration: "modCompileClasspathMainMapped"))
+        localRuntime(project(path: betterDev.path, configuration: "modRuntimeClasspathMainMapped"))
+    }
 
     if (modPlatform == "forge") {
         forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
