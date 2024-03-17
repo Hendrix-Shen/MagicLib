@@ -18,6 +18,7 @@ public final class MagicLib {
     private final PlatformManager platformManage = new PlatformManager(this);
 
     private MagicLib() {
+        MagicLibProperties.printDetail();
     }
 
     public MagicLanguageManager getLanguageManager() {
