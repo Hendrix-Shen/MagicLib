@@ -25,6 +25,8 @@ public final class MagicLibProperties {
             Option.InheritType.INDEPENDENT, "trigger", "mod_init");
     public static final Option DEV_QOL = Option.newOption(MagicLibProperties.ROOT,
             Option.InheritType.INDEPENDENT, "devQOL");
+    public static final Option DEV_QOL_CHUNK = Option.newOption(MagicLibProperties.DEV_QOL,
+            Option.InheritType.INHERIT, "chunk");
     public static final Option DEV_QOL_DFU = Option.newOption(MagicLibProperties.DEV_QOL,
             Option.InheritType.INHERIT, "dfu");
     public static final Option DEV_QOL_DFU_LAZY = Option.newOption(MagicLibProperties.DEV_QOL_DFU,

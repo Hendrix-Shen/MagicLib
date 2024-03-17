@@ -18,4 +18,11 @@ public class MixinPredicates {
             return MagicLibProperties.DEV_QOL_DFU_LAZY.getBooleanValue();
         }
     }
+
+    public static class ChunkPredicate implements MixinPredicate {
+        @Override
+        public boolean test(ClassNode classNode) {
+            return MagicLibProperties.DEV_QOL_CHUNK.getBooleanValue();
+        }
+    }
 }
