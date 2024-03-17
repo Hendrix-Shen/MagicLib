@@ -50,7 +50,6 @@ public class ServerPlayerMixin implements ServerPlayerLanguage {
         //#else
         this.magiclib$language = serverboundClientInformationPacket.getLanguage().toLowerCase(Locale.ROOT);
         //#endif
-        System.out.println(this.magiclib$language);
     }
 
     @Override
