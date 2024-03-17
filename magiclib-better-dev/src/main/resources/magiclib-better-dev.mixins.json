@@ -6,5 +6,11 @@
   "compatibilityLevel": "JAVA_8",
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "dfu.destroy.DataFixerUpperMixin",
+    "dfu.destroy.SchemaMixin",
+    "dfu.lazy.DataFixersMixin",
+    "dfu.lazy.SharedConstantsMixin"
+  ]
 }
