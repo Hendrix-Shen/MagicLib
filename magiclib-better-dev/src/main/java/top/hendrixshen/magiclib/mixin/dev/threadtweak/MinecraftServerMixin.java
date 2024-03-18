@@ -1,8 +1,5 @@
-package top.hendrixshen.magiclib.mixin.dev.chunk;
+package top.hendrixshen.magiclib.mixin.dev.threadtweak;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.progress.ChunkProgressListener;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,25 +9,38 @@ import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
+import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
+
+//#if MC > 11502
+//$$ import net.minecraft.server.Main;
+//#else
+import net.minecraft.server.MinecraftServer;
+//#endif
 
 @CompositeDependencies(
         @Dependencies(
                 require = @Dependency(
                         dependencyType = DependencyType.PREDICATE,
-                        predicate = MixinPredicates.ChunkPredicate.class
+                        predicate = MixinPredicates.TheadTweakPredicate.class
                 )
         )
 )
-@Mixin(MinecraftServer.class)
+@Mixin(
+        //#if MC > 11502
+        //$$ Main.class
+        //#else
+        MinecraftServer.class
+        //#endif
+)
 public class MinecraftServerMixin {
     @Inject(
-            method = "prepareLevels",
+            method = "main",
             at = @At(
                     value = "HEAD"
             ),
-            cancellable = true
+            remap = false
     )
-    private void onPrepareLevels(ChunkProgressListener chunkProgressListener, @NotNull CallbackInfo ci) {
-        ci.cancel();
+    private static void onMain(String[] strings, CallbackInfo ci) {
+        Thread.currentThread().setPriority(ThreadTweaker.getGamePriority());
     }
 }

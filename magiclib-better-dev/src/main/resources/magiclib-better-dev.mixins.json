@@ -8,14 +8,20 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "accessor.UtilAccessor",
     "chunk.MinecraftServerMixin",
     "dfu.destroy.DataFixerUpperMixin",
     "dfu.destroy.SchemaMixin",
     "dfu.lazy.DataFixersMixin",
-    "dfu.lazy.SharedConstantsMixin"
+    "dfu.lazy.SharedConstantsMixin",
+    "threadtweak.DataFixersMixin",
+    "threadtweak.MinecraftServerMixin",
+    "threadtweak.UtilMixin"
   ],
   "client": [
     "auth.AccountProfileKeyPairManagerMixin",
-    "auth.MinecraftMixin"
+    "auth.MinecraftMixin",
+    "threadtweak.ClientMainMixin",
+    "threadtweak.IntegratedServerMixin"
   ]
 }

@@ -70,13 +70,9 @@ def apiDependencies = [
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def runtimeDependencies = [
-        ["curse.maven:auto-config-updated-api-373261", "auto_config_updated_api", fabricLike && mcVersion < 11600, false],
-        ["curse.maven:smooth-boot-415758"            , "smoothboot"             , fabricLike && mcVersion < 12000, false],
-        ["maven.modrinth:cloth-config"               , "cloth_config"           , fabricLike && mcVersion < 11600, false],
-        ["maven.modrinth:in-game-account-switcher"   , "inGameAccountSwitcher"  , fabricLike || mcVersion < 11202, false],
-        ["maven.modrinth:imblocker"                  , "imblockerfabric"        , fabricLike && mcVersion < 12002, false],
-        ["maven.modrinth:imblocker-original"         , "imblocker"              , forgeLike  && false            , false],
-        ["maven.modrinth:threadtweak"                , "threadtweak"            , fabricLike && mcVersion > 11904, false],
+        ["maven.modrinth:in-game-account-switcher", "inGameAccountSwitcher", fabricLike || mcVersion < 11202, false],
+        ["maven.modrinth:imblocker"               , "imblockerfabric"      , fabricLike && mcVersion < 12002, false],
+        ["maven.modrinth:imblocker-original"      , "imblocker"            , forgeLike  && false            , false],
 ]
 
 dependencies {

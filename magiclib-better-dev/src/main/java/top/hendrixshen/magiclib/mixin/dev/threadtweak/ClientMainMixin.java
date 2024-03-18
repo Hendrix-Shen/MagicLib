@@ -1,43 +1,38 @@
-package top.hendrixshen.magiclib.mixin.dev.auth;
+package top.hendrixshen.magiclib.mixin.dev.threadtweak;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.multiplayer.AccountProfileKeyPairManager;
-import net.minecraft.world.entity.player.ProfileKeyPair;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.client.main.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
-
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
 
 @CompositeDependencies(
         @Dependencies(
                 require = @Dependency(
                         dependencyType = DependencyType.PREDICATE,
-                        predicate = MixinPredicates.PredicatePredicate.class
+                        predicate = MixinPredicates.TheadTweakPredicate.class
                 )
         )
 )
 @Environment(EnvType.CLIENT)
-@Mixin(AccountProfileKeyPairManager.class)
-public class AccountProfileKeyPairManagerMixin {
+@Mixin(Main.class)
+public class ClientMainMixin {
     @Inject(
-            method = "prepareKeyPair",
+            method = "main",
             at = @At(
                     value = "HEAD"
             ),
-            cancellable = true
+            remap = false
     )
-    private void onPrepareKeyPair(@NotNull CallbackInfoReturnable<CompletableFuture<Optional<ProfileKeyPair>>> cir) {
-        cir.setReturnValue(CompletableFuture.completedFuture(Optional.empty()));
-
+    private static void onMain(String[] strings, CallbackInfo ci) {
+        Thread.currentThread().setPriority(ThreadTweaker.getGamePriority());
     }
 }

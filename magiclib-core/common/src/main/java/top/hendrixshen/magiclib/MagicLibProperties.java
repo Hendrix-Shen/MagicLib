@@ -39,6 +39,33 @@ public final class MagicLibProperties {
             Option.InheritType.INHERIT, "lazy");
     public static final Option DEV_QOL_DFU_BREAK = Option.newOption(MagicLibProperties.DEV_QOL_DFU,
             Option.InheritType.INDEPENDENT, "destroy");
+    public static final Option DEV_QOL_THREAD_TWEAK = Option.newOption(MagicLibProperties.DEV_QOL,
+            Option.InheritType.INHERIT, "threadTweak");
+    public static final Option DEV_QOL_THREAD_TWEAK_COUNT = Option.newOption(MagicLibProperties.DEV_QOL_THREAD_TWEAK,
+            Option.InheritType.INDEPENDENT, "count");
+    public static final Option DEV_QOL_THREAD_TWEAK_COUNT_BOOTSTRAP = Option.newOption(
+            MagicLibProperties.DEV_QOL_THREAD_TWEAK_COUNT, Option.InheritType.INHERIT,
+            "bootstrap", "1");
+    public static final Option DEV_QOL_THREAD_TWEAK_COUNT_MAIN = Option.newOption(
+            MagicLibProperties.DEV_QOL_THREAD_TWEAK_COUNT, Option.InheritType.INHERIT,
+            "main", String.valueOf(MagicLibProperties.getMaxBackgroundThreads()));
+    public static final Option DEV_QOL_THREAD_TWEAK_PRIORITY = Option.newOption(MagicLibProperties.DEV_QOL_THREAD_TWEAK,
+            Option.InheritType.INDEPENDENT, "priority");
+    public static final Option DEV_QOL_THREAD_TWEAK_PRIORITY_BOOTSTRAP = Option.newOption(
+            MagicLibProperties.DEV_QOL_THREAD_TWEAK_PRIORITY, Option.InheritType.INDEPENDENT,
+            "bootstrap", "1");
+    public static final Option DEV_QOL_THREAD_TWEAK_PRIORITY_GAME = Option.newOption(
+            MagicLibProperties.DEV_QOL_THREAD_TWEAK_PRIORITY, Option.InheritType.INDEPENDENT,
+            "game", "5");
+    public static final Option DEV_QOL_THREAD_TWEAK_PRIORITY_INTEGRATED_SERVER = Option.newOption(
+            MagicLibProperties.DEV_QOL_THREAD_TWEAK_PRIORITY, Option.InheritType.INDEPENDENT,
+            "integratedServer", "5");
+    public static final Option DEV_QOL_THREAD_TWEAK_PRIORITY_IO = Option.newOption(
+            MagicLibProperties.DEV_QOL_THREAD_TWEAK_PRIORITY, Option.InheritType.INDEPENDENT,
+            "io", "1");
+    public static final Option DEV_QOL_THREAD_TWEAK_PRIORITY_MAIN = Option.newOption(
+            MagicLibProperties.DEV_QOL_THREAD_TWEAK_PRIORITY, Option.InheritType.INDEPENDENT,
+            "main", "1");
 
     @ApiStatus.Internal
     public static void printDetail() {
@@ -59,5 +86,26 @@ public final class MagicLibProperties {
                     MagicLib.getLogger().warn("{}{}: {}", indent.toString(),
                             option.getProperty(), option);
                 });
+    }
+
+
+    public static int getMaxBackgroundThreads() {
+        String string = System.getProperty("max.bg.threads");
+
+        if (string == null) {
+            return 255;
+        }
+
+        try {
+            int i = Integer.parseInt(string);
+
+            if (i < 1) {
+                return 1;
+            }
+
+            return Math.min(i, 255);
+        } catch (NumberFormatException e) {
+            return 255;
+        }
     }
 }

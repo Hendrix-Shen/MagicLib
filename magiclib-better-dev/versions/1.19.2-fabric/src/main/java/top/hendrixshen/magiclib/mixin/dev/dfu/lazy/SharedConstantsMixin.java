@@ -10,7 +10,7 @@ import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
-import top.hendrixshen.magiclib.impl.dev.dfu.lazy.MixinPredicates;
+import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 
 @CompositeDependencies(
         @Dependencies(

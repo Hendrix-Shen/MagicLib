@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.impl.dev.dfu.lazy;
+package top.hendrixshen.magiclib.impl.dev;
 
 import org.objectweb.asm.tree.ClassNode;
 import top.hendrixshen.magiclib.MagicLibProperties;
@@ -37,6 +37,13 @@ public class MixinPredicates {
         @Override
         public boolean test(ClassNode classNode) {
             return MagicLibProperties.DEV_QOL_DFU_LAZY.getBooleanValue();
+        }
+    }
+
+    public static class TheadTweakPredicate implements MixinPredicate {
+        @Override
+        public boolean test(ClassNode classNode) {
+            return MagicLibProperties.DEV_QOL_THREAD_TWEAK.getBooleanValue();
         }
     }
 }
