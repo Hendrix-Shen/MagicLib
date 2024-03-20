@@ -1,6 +1,8 @@
 package top.hendrixshen.magiclib.impl.i18n.provider;
 
 import com.google.common.collect.Maps;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,6 +66,7 @@ public class JarLanguageProvider implements LanguageProvider {
         return this.languageMap.computeIfAbsent(languageCode.toLowerCase(), key -> Maps.newConcurrentMap());
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void loadFromJar(@NotNull JarFile jar) {
         for (JarEntry entry : Collections.list(jar.entries())) {
             Matcher matcher = languageResourcePattern.matcher(entry.getName());
@@ -78,7 +81,14 @@ public class JarLanguageProvider implements LanguageProvider {
                 JsonUtil.loadStringMapFromJson(inputStream, language::put);
                 MagicLib.getLogger().debug("Loaded language file {} from {}.", entry.getName(), jar.getName());
             } catch (Exception e) {
-                MagicLib.getLogger().error("Failed to load language file {} from {}.", entry.getName(), jar.getName(), e);
+                if (e instanceof JsonSyntaxException && e.getCause() instanceof MalformedJsonException) {
+                    MagicLib.getLogger().error("Failed to load language file {} from {}.",
+                            entry.getName(), jar.getName(), e.getCause());
+                    continue;
+                }
+
+                MagicLib.getLogger().error("Failed to load language file {} from {}.",
+                        entry.getName(), jar.getName(), e);
             }
         }
     }
