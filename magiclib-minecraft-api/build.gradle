@@ -24,7 +24,7 @@ preprocess {
 
     mc_11404_fabric.link(mc_11502_fabric, null)
     mc_11502_fabric.link(mc_11605_fabric, null)
-    mc_11605_fabric.link(mc_11701_fabric, null)
+    mc_11605_fabric.link(mc_11701_fabric, file("versions/mapping-fabric-1.16.5-1.17.1.txt"))
     mc_11701_fabric.link(mc_11802_fabric, null)
     mc_11802_fabric.link(mc_11902_fabric, null)
     mc_11902_fabric.link(mc_11903_fabric, file("versions/mapping-fabric-1.19.2-1.19.3.txt"))
