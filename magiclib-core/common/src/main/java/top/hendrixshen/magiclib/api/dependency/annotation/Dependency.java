@@ -6,6 +6,7 @@ import top.hendrixshen.magiclib.util.collect.SimplePredicate;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * <p>
@@ -20,6 +21,7 @@ import java.lang.annotation.RetentionPolicy;
  * for the annotated class.
  * </p>
  */
+@Target({ /* No targets allowed */ })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dependency {
     /**

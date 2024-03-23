@@ -2,10 +2,12 @@ package top.hendrixshen.magiclib.api.dependency.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Dependencies annotation.
  */
+@Target({ /* No targets allowed */ })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dependencies {
     /**
