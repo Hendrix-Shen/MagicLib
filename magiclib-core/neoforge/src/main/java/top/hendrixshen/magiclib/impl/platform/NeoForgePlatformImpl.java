@@ -8,6 +8,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforgespi.language.IModInfo;
+import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
@@ -114,6 +115,21 @@ public class NeoForgePlatformImpl implements Platform {
                 .stream()
                 .map(IModInfo::getModId)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getNamedMappingName() {
+        String name = MagicLibProperties.DEV_MAPPING_NAME.getStringValue();
+
+        if (name != null) {
+            return name;
+        }
+
+        if (!this.isDevelopmentEnvironment()) {
+            return null;
+        }
+
+        return "mojang";
     }
 
     public Dist getCurrentEnvType() {

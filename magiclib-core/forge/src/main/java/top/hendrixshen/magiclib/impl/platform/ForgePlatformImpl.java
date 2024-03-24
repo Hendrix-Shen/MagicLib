@@ -9,6 +9,7 @@ import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import net.minecraftforge.forgespi.language.IModInfo;
+import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
@@ -115,6 +116,21 @@ public class ForgePlatformImpl implements Platform {
                 .stream()
                 .map(ModInfo::getModId)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getNamedMappingName() {
+        String name = MagicLibProperties.DEV_MAPPING_NAME.getStringValue();
+
+        if (name != null) {
+            return name;
+        }
+
+        if (!this.isDevelopmentEnvironment()) {
+            return null;
+        }
+
+        return "mojang";
     }
 
     public Dist getCurrentEnvType() {

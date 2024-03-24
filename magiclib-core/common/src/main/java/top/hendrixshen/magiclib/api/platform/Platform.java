@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.api.platform;
 
+import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
@@ -129,5 +130,24 @@ public interface Platform {
      * @return A collection of all <b>loaded</b> mod identifiers.
      */
     Collection<String> getModIds();
-}
 
+    /**
+     * Get the named mapping name.
+     *
+     * <p>
+     * <b>Note that the return value of this method is not accurate and is only used for development environments.</b>
+     *
+     * <p>
+     * When the system property <b>magiclib.dev.mapping.name</b> is defined, the defined value is returned in preference.
+     *
+     * <p>
+     * In fabric-like, implemented a simple automated detection method.
+     *
+     * <p>
+     * In forge-like, always returns mojang.
+     *
+     * @return The named mapping name.
+     */
+    @ApiStatus.Experimental
+    String getNamedMappingName();
+}

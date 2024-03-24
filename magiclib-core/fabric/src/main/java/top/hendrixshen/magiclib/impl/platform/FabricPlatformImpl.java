@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
@@ -106,6 +107,29 @@ public class FabricPlatformImpl implements Platform {
         return FabricLoader.getInstance().getAllMods().stream()
                 .map(mod -> mod.getMetadata().getId())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getNamedMappingName() {
+        String name = MagicLibProperties.DEV_MAPPING_NAME.getStringValue();
+
+        if (name != null) {
+            return name;
+        }
+
+        String className = FabricLoader.getInstance().getMappingResolver()
+                .mapClassName("intermediary", "net.minecraft.class_310");
+
+        switch (className) {
+            case "net.minecraft.client.Minecraft":
+                return "mojang";
+            case "net.minecraft.client.MinecraftClient":
+                return "yarn";
+            case "net.minecraft.class_310":
+                return null;
+            default:
+                return "unknown";
+        }
     }
 
     public EnvType getCurrentEnvType() {

@@ -23,8 +23,14 @@ public final class MagicLibProperties {
             Option.InheritType.INDEPENDENT, "failCode", String.valueOf(MixinAuditor.DEFAULT_FAIL_CODE));
     public static final Option MIXIN_AUDITOR_TRIGGER = Option.newOption(MagicLibProperties.MIXIN_AUDITOR,
             Option.InheritType.INDEPENDENT, "trigger", "mod_init");
-    public static final Option DEV_QOL = Option.newOption(MagicLibProperties.ROOT,
-            Option.InheritType.INDEPENDENT, "devQOL");
+    public static final Option DEV = Option.newOption(MagicLibProperties.ROOT,
+            Option.InheritType.INDEPENDENT, "dev");
+    public static final Option DEV_MAPPING = Option.newOption(MagicLibProperties.DEV,
+            Option.InheritType.INDEPENDENT, "mapping", null);
+    public static final Option DEV_MAPPING_NAME = Option.newOption(MagicLibProperties.DEV_MAPPING,
+            Option.InheritType.INDEPENDENT, "name", null);
+    public static final Option DEV_QOL = Option.newOption(MagicLibProperties.DEV,
+            Option.InheritType.INDEPENDENT, "qol");
     public static final Option DEV_QOL_AUTH = Option.newOption(MagicLibProperties.DEV_QOL,
             Option.InheritType.INHERIT, "auth");
     public static final Option DEV_QOL_AUTH_EMPTY_KEY = Option.newOption(MagicLibProperties.DEV_QOL_AUTH,
