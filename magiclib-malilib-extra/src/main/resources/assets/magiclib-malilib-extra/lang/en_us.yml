@@ -1,0 +1,22 @@
+magiclib:
+  config:
+    category:
+      all:
+        name: All
+    gui:
+      bottom_line:
+        stat: "Total: %1$s (Available: %2$s + Unavailable: %3$s), Modified: %4$s"
+      element:
+        config_button_boolean_switch:
+          enabled: Enabled
+          disabled: Disabled
+        config_button_option_list_hovering:
+          title: "Available values:"
+      trigger_button:
+        text: Trigger
+        hover: |
+          Click to trigger %1$s once
+          §7§oThis will simulate hotkey pressed and released in order.§r
+    message:
+      option_list_hotkeyed:
+        cycled_message: Cycled option %1$s to %2$s

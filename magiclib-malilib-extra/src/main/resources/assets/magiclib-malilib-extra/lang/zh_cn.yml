@@ -1,0 +1,22 @@
+magiclib:
+  config:
+    category:
+      all:
+        name: 全部
+    gui:
+      bottom_line:
+        stat: "总计: %1$s (可用: %2$s + 不可用: %3$s), 已修改: %4$s"
+      element:
+        config_button_boolean_switch:
+          enabled: 已启用
+          disabled: 已禁用
+        config_button_option_list_hovering:
+          title: "可用值列表:"
+      trigger_button:
+        text: 触发
+        hover: |
+          点击以触发一次 %1$s
+          §7§o这将依次模拟热键按下与松开操作.§r
+    message:
+      option_list_hotkeyed:
+        cycled_message: 已将选项 %1$s 切换至 %2$s

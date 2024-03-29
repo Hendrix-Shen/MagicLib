@@ -20,6 +20,24 @@
         "1.20.2-neoforge"
       ]
     },
+    "magiclib-malilib-extra": {
+      "prefix": "malilib",
+      "versions": [
+        "1.14.4-fabric",
+        "1.15.2-fabric",
+        "1.16.5-fabric",
+        "1.17.1-fabric",
+        "1.18.2-fabric",
+        "1.19.2-fabric",
+        "1.19.3-fabric",
+        "1.19.4-fabric",
+        "1.20.1-fabric",
+        "1.20.2-fabric",
+        "1.20.4-fabric",
+
+        "1.17.1-forge"
+      ]
+    },
     "magiclib-minecraft-api": {
       "prefix": "mc-api",
       "versions": [

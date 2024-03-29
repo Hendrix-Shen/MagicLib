@@ -162,6 +162,6 @@ public class ValueContainer<T> {
             throw this.exception;
         }
 
-        throw new RuntimeException("No value present");
+        throw exceptionSupplier.get();
     }
 }

@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "top.hendrixshen.magiclib.mixin.malilib",
+  "plugin": "top.hendrixshen.magiclib.impl.mixin.MagicMixinPlugin",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "accessor.KeybindMultiAccessor",
+    "accessor.WidgetListConfigOptionsAccessor",
+    "config.MagicConfigBooleanHotkeyedMixin",
+    "dev.GuiTextFieldGenericMixin",
+    "element.ConfigButtonOptionListMixin",
+    "panel.WidgetConfigOptionMixin"
+  ]
+}

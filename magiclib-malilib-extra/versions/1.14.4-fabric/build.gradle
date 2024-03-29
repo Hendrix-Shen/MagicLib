@@ -13,7 +13,9 @@ String modPlatform = loom.platform.get().toString().toLowerCase()
 boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
 boolean forgeLike = modPlatform == "forge" || modPlatform == "neoforge"
 String modId = fabricLike ? project.parent.property("mod.id") : (project.parent.property("mod.id") as String).replace("-", "_")
-String projectName = project.name.replace("better-dev-", "")
+String projectName = project.name.replace("malilib-", "")
+Project betterDev = evaluationDependsOn(":magiclib-better-dev:better-dev-${projectName}")
+Project mcAPI = evaluationDependsOn(":magiclib-minecraft-api:mc-api-${projectName}")
 int mcVersion = 0
 
 preprocess {
@@ -51,6 +53,7 @@ repositories {
             includeGroup("maven.modrinth")
         }
     }
+
     maven {
         name("Jitpack Maven")
         url("https://jitpack.io")
@@ -65,15 +68,12 @@ repositories {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["maven.modrinth:modmenu"            , "modmenu", modPlatform == "fabric", false],
-        ["net.fabricmc.fabric-api:fabric-api", "fabric" , modPlatform == "fabric", true],
+        ["maven.modrinth:malilib", "malilib", fabricLike, false],
+        ["maven.modrinth:mafglib", "malilib", forgeLike , false],
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def runtimeDependencies = [
-        ["maven.modrinth:in-game-account-switcher", "inGameAccountSwitcher", fabricLike || mcVersion < 11202, false],
-        ["maven.modrinth:imblocker"               , "imblockerfabric"      , fabricLike && mcVersion < 12002, false],
-        ["maven.modrinth:imblocker-original"      , "imblocker"            , forgeLike  && false            , false],
 ]
 
 dependencies {
@@ -88,6 +88,18 @@ dependencies {
     // Make IDE happy.
     api(project(":magiclib-core:common"))
     api(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow"))
+
+    // MC-API
+    api(project(path: mcAPI.path, configuration: "namedElements"))
+
+    // Dont publish better dev dependencies.
+    compileOnly(project(path: betterDev.path, configuration: "namedElements"))
+    localRuntime(project(path: betterDev.path, configuration: "namedElements"))
+
+    if (forgeLike) {
+        compileOnly(project(path: betterDev.path, configuration: "modCompileClasspathMainMapped"))
+        localRuntime(project(path: betterDev.path, configuration: "modRuntimeClasspathMainMapped"))
+    }
 
     if (modPlatform == "forge") {
         forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
@@ -408,8 +420,7 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
         "runClient", "runServer",
         "runMixinAuditClient", "runMixinAuditServer",
         "preprocessCode", "preprocessResources",
-        "preprocessTestCode", "preprocessTestResources"
-].forEach { taskName ->
+        "preprocessTestCode", "preprocessTestResources"].forEach { taskName ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
             it.group("${project.property("mod.id")}")

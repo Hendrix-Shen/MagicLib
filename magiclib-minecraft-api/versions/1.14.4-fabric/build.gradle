@@ -7,6 +7,7 @@ plugins {
 
 apply(plugin: "dev.architectury.loom")
 apply(plugin: "com.replaymod.preprocess")
+apply(plugin: "me.fallenbreath.yamlang")
 
 String modPlatform = loom.platform.get().toString().toLowerCase()
 boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
@@ -163,7 +164,7 @@ loom {
                             writer.writeLine("fov:1.0")
                             writer.writeLine("gamma:16.0")
                             writer.writeLine("guiScale:3")
-                            writer.writeLine("lang:${Locale.getDefault().toString()}")
+                            writer.writeLine("lang:${Locale.getDefault().toString().toLowerCase()}")
                             writer.writeLine("maxFps:260")
                             writer.writeLine("renderDistance:10")
                             writer.writeLine("soundCategory_master:0.0")
@@ -264,6 +265,11 @@ processResources {
             into("assets/${project.parent.property("mod.id")}")
         }
     }
+}
+
+yamlang {
+    targetSourceSets.set([sourceSets.main])
+    inputDir.set("assets/${project.parent.property("mod.id")}/lang")
 }
 
 signing {
