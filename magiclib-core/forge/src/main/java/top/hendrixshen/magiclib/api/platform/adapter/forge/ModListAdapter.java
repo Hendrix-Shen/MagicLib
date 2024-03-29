@@ -10,4 +10,6 @@ public interface ModListAdapter {
     ValueContainer<Collection<ModFileInfo>> getModFiles();
 
     ValueContainer<Collection<ModInfo>> getMods();
+
+    ValueContainer<ModFileInfo> getModFileById(String identifier);
 }

@@ -15,11 +15,17 @@ public class ForgeLoadingModList implements ModListAdapter {
 
     @Override
     public ValueContainer<Collection<ModFileInfo>> getModFiles() {
-        return ValueContainer.of(LoadingModList.get()).map(LoadingModList::getModFiles);
+        return ValueContainer.ofNullable(LoadingModList.get()).map(LoadingModList::getModFiles);
     }
 
     @Override
     public ValueContainer<Collection<ModInfo>> getMods() {
-        return ValueContainer.of(LoadingModList.get()).map(LoadingModList::getMods);
+        return ValueContainer.ofNullable(LoadingModList.get()).map(LoadingModList::getMods);
+    }
+
+    @Override
+    public ValueContainer<ModFileInfo> getModFileById(String identifier) {
+        return ValueContainer.ofNullable(LoadingModList.get())
+                .map(loadingModList -> loadingModList.getModFileById(identifier));
     }
 }

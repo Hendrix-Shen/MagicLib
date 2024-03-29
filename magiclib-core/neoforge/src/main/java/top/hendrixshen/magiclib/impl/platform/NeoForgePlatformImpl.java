@@ -73,11 +73,7 @@ public class NeoForgePlatformImpl implements Platform {
 
     @Override
     public boolean isModExist(String modIdentifier) {
-        return ValueContainer.ofNullable(NeoForgeModList.getInstance().getMods())
-                .orElse(NeoForgeLoadingModList.getInstance().getMods())
-                .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
-                .stream()
-                .anyMatch(iModInfo -> iModInfo.getModId().equals(modIdentifier));
+        return NeoForgeLoadingModList.getInstance().getModFileById(modIdentifier).isPresent();
     }
 
     @Override

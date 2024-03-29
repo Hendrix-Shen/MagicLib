@@ -22,4 +22,9 @@ public class ForgeModList implements ModListAdapter {
     public ValueContainer<Collection<ModInfo>> getMods() {
         return ValueContainer.ofNullable(ModList.get()).map(ModList::getMods);
     }
+
+    @Override
+    public ValueContainer<ModFileInfo> getModFileById(String identifier) {
+        return ValueContainer.ofNullable(ModList.get()).map(modList -> modList.getModFileById(identifier));
+    }
 }

@@ -7,6 +7,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import net.minecraftforge.forgespi.language.IModInfo;
 import top.hendrixshen.magiclib.MagicLibProperties;
@@ -74,11 +75,9 @@ public class ForgePlatformImpl implements Platform {
 
     @Override
     public boolean isModExist(String modIdentifier) {
-        return ValueContainer.ofNullable(ForgeModList.getInstance().getMods())
-                .orElse(ForgeLoadingModList.getInstance().getMods())
-                .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
-                .stream()
-                .anyMatch(modInfo -> modInfo.getModId().equals(modIdentifier));
+        return ForgeLoadingModList.getInstance()
+                .getModFileById(modIdentifier)
+                .isPresent();
     }
 
     @Override
