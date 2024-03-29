@@ -3,7 +3,6 @@ package top.hendrixshen.magiclib.impl.malilib.config;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.util.JsonUtils;
@@ -24,12 +23,12 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 //#if MC < 11800
-//$$ import com.google.gson.JsonParser;
-//$$ import top.hendrixshen.magiclib.MagicLib;
-//$$
-//$$ import java.io.IOException;
-//$$ import java.nio.file.Files;
-//$$ import java.nio.file.StandardCopyOption;
+import com.google.gson.JsonParser;
+import top.hendrixshen.magiclib.MagicLib;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 //#endif
 
 public class MagicConfigHandler implements IConfigHandler {
@@ -40,6 +39,7 @@ public class MagicConfigHandler implements IConfigHandler {
     private final File configFile;
     private JsonObject loadedJson = new JsonObject();
     private final Map<String, JsonSaveAble> internalDataSavers = Maps.newHashMap();
+    @Getter
     private final GlobalConfig globalConfig = new GlobalConfig();
 
     @Setter
@@ -61,7 +61,6 @@ public class MagicConfigHandler implements IConfigHandler {
         this.configManager = configManager;
         this.internalDataSavers.put("global", this.globalConfig);
         this.internalDataSavers.put("config_gui", this.configManager.getGuiSetting());
-        ConfigManager.getInstance().registerConfigHandler(this.identifier, this);
     }
 
     public void loadConfig(JsonObject root) {
