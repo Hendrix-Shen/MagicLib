@@ -1,20 +1,20 @@
 fabric:
   gui:
     button:
-      copyError: "复制异常"
-      exit: "退出"
+      copyError: 复制异常
+      exit: 退出
     error:
-      header: "启动失败!"
-      missingException: "没有更多信息"
+      header: 启动失败!
+      missingException: 没有更多信息
     tab:
-      crash: "崩溃"
+      crash: 崩溃
 magiclib:
   dependency:
     checker:
       entrypoint:
-        title: "模组 %1$s (%2$s)@%3$s 依赖检查未满足条件!"
+        title: 模组 %1$s (%2$s)@%3$s 依赖检查未满足条件!
       mixin:
-        title: "Mixin %1$s 依赖检查未满足条件! 无法应用到 %2$s."
+        title: Mixin %1$s 依赖检查未满足条件! 无法应用到 %2$s.
     label:
       and: "与:"
       composite: "复合依赖:"
@@ -24,10 +24,16 @@ magiclib:
     result:
       dist:
         require: "运行在非预期环境, 预期: %1$s, 实际: %2$s."
-        conflict: "运行在非预期环境 %1$s."
+        conflict: 运行在非预期环境 %1$s.
       mod_id:
-        conflict: "检测到冲突模组 %1$s (%2$s)@%3$s."
+        conflict: 检测到冲突模组 %1$s (%2$s)@%3$s.
         optional: "检测到模组 %1$s (%2$s). 预期: %3$s, 实际: %4$s!"
-        require: "找不到模组 %1$s. 需要 %2$s!"
+        require: 找不到模组 %1$s. 需要 %2$s!
       predicate:
-        message: "谓词 %s 测试结果 = %s"
+        message: 谓词 %s 测试结果 = %s
+  misc:
+    version_type:
+      beta: 公共测试版
+      development: 开发版
+      stable: 公共发行版
+      unknown: 未知版本

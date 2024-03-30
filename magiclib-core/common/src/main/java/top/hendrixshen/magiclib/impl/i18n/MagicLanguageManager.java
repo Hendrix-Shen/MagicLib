@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.i18n.LanguageProvider;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.i18n.provider.FileLanguageProvider;
@@ -17,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MagicLanguageManager {
-    public static final String DEFAULT_CODE = "en_us";
+    public static final String DEFAULT_CODE = I18n.DEFAULT_CODE;
     @Getter(lazy = true)
     private static final MagicLanguageManager instance = new MagicLanguageManager();
 

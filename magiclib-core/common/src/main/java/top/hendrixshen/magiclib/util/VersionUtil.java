@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.semver4j.Semver;
 import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 
 import java.util.Collection;
 
@@ -24,5 +25,25 @@ public class VersionUtil {
         }
 
         return false;
+    }
+
+    public static @NotNull String getVersionType(@NotNull String version) {
+        return VersionUtil.translateVersionType(version, I18n.DEFAULT_CODE);
+    }
+
+    public static @NotNull String translateVersionType(@NotNull String version) {
+        return VersionUtil.translateVersionType(version, I18n.getCurrentLanguageCode());
+    }
+
+    public static @NotNull String translateVersionType(@NotNull String version, String languageCode) {
+        if (version.endsWith("beta")) {
+            return I18n.trByCode("magiclib.misc.version_type.beta", languageCode);
+        } else if (version.endsWith("dev")) {
+            return I18n.trByCode("magiclib.misc.version_type.development", languageCode);
+        } else if (version.endsWith("stable")) {
+            return I18n.trByCode("magiclib.misc.version_type.stable", languageCode);
+        }
+
+        return I18n.trByCode("magiclib.misc.version_type.unknown", languageCode);
     }
 }

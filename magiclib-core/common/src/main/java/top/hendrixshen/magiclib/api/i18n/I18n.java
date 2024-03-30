@@ -3,6 +3,8 @@ package top.hendrixshen.magiclib.api.i18n;
 import top.hendrixshen.magiclib.impl.i18n.MagicLanguageManager;
 
 public class I18n {
+    public static final String DEFAULT_CODE = "en_us";
+
     /**
      * Get localised raw text.
      *
@@ -53,5 +55,9 @@ public class I18n {
 
     public static boolean exists(String code, String key) {
         return MagicLanguageManager.getInstance().exists(code, key);
+    }
+
+    public static String getCurrentLanguageCode() {
+        return MagicLanguageManager.getInstance().getCurrentCode();
     }
 }
