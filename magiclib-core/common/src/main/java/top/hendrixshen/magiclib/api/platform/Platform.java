@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.api.platform;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
@@ -149,5 +150,6 @@ public interface Platform {
      * @return The named mapping name.
      */
     @ApiStatus.Experimental
+    @Nullable
     String getNamedMappingName();
 }

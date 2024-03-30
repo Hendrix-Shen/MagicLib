@@ -8,6 +8,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforgespi.language.IModInfo;
+import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
@@ -23,7 +24,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class NeoForgePlatformImpl implements Platform {
+public final class NeoForgePlatformImpl implements Platform {
     @Getter(lazy = true)
     private static final Platform instance = new NeoForgePlatformImpl();
     public static final ImmutableBiMap<DistType, Dist> distTypeMappings = ImmutableBiMap.of(
@@ -114,7 +115,7 @@ public class NeoForgePlatformImpl implements Platform {
     }
 
     @Override
-    public String getNamedMappingName() {
+    public @Nullable String getNamedMappingName() {
         String name = MagicLibProperties.DEV_MAPPING_NAME.getStringValue();
 
         if (name != null) {

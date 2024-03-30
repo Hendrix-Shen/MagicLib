@@ -42,8 +42,8 @@ public class BuiltInPredicates {
     public static class MojangMappingMixinPredicate implements MixinPredicate {
         @Override
         public boolean test(ClassNode classNode) {
-            return MagicLib.getInstance().getPlatformManage()
-                    .getCurrentPlatform().getNamedMappingName().equals("mojang");
+            return "mojang".equals(MagicLib.getInstance().getPlatformManage()
+                    .getCurrentPlatform().getNamedMappingName());
         }
     }
 }

@@ -51,7 +51,7 @@
   },
   "custom": {
     "modmenu:api": true,
-    "modmenu:parent": "magiclib",
+    "modmenu:parent": "${root_mod_id}",
     "modmenu": {
       "badges": [
         "library"

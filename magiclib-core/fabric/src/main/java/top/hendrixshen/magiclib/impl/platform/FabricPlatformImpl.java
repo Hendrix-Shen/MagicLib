@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
@@ -19,7 +20,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class FabricPlatformImpl implements Platform {
+public final class FabricPlatformImpl implements Platform {
     @Getter(lazy = true)
     private static final Platform instance = new FabricPlatformImpl();
     public static final ImmutableBiMap<DistType, EnvType> distTypeMappings = ImmutableBiMap.of(
@@ -110,7 +111,7 @@ public class FabricPlatformImpl implements Platform {
     }
 
     @Override
-    public String getNamedMappingName() {
+    public @Nullable String getNamedMappingName() {
         String name = MagicLibProperties.DEV_MAPPING_NAME.getStringValue();
 
         if (name != null) {

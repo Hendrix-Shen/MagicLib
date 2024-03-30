@@ -1,3 +1,8 @@
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.LdcInsnNode
+
 plugins {
     id("java")
     id("java-library")
@@ -242,6 +247,8 @@ processResources {
         if (platforms.contains(modPlatform)) {
             filesMatching(file) {
                 expand([
+                        "minecraft_dependency": project.property("dependencies.minecraft_dependency"),
+                        "minecraft_version_id": (project.property("dependencies.minecraft_version") as String).replace(".", "_"),
                         "mod_description"     : project.parent.property("mod.description"),
                         "mod_homepage"        : project.parent.property("mod.homepage"),
                         "mod_id"              : modId,
@@ -249,7 +256,7 @@ processResources {
                         "mod_name"            : project.parent.property("mod.name"),
                         "mod_sources"         : project.parent.property("mod.sources"),
                         "mod_version"         : project.version,
-                        "root_mod_id"         : rootProject.version,
+                        "root_mod_id"         : rootProject.property("mod.id"),
                         "root_mod_name"       : rootProject.property("mod.name"),
                         "root_mod_description": rootProject.property("mod.description"),
                 ])
@@ -382,6 +389,67 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
             it.group("${project.property("mod.id")}")
+        }
+    }
+}
+
+Map<Object, Object> replaceTokenMap = Map.of(
+        "@MOD_IDENTIFIER@"            , modId,
+        "@MOD_NAME@"                  , rootProject.property("mod.name"),
+        "@MINECRAFT_VERSION_IDENTIFY@", (project.property("dependencies.minecraft_version") as String).replace(".", "_")
+)
+List<Object> replaceTokenFile = List.of(
+        "SharedConstants"
+)
+
+tasks.named("classes") {
+    doLast {
+        File dir = file("build/classes/java")
+
+        dir.eachFileRecurse {
+            String path = it.path.replace(dir.path, "")
+
+            if (path.endsWith(".class") && replaceTokenFile.stream().anyMatch { path.contains(it as String) }) {
+                ClassReader cr = new ClassReader(it.newInputStream().bytes)
+                ClassNode cn = new ClassNode()
+                cr.accept(cn, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG)
+
+                // ReplaceToken in fields
+                cn.fields.each {
+                    if (it.desc == "Ljava/lang/String;" && it.value instanceof String) {
+                        String value = it.value as String
+
+                        replaceTokenMap.each {
+                            value = value.replace(it.key as String, it.value as String)
+                        }
+
+                        it.value = value
+                    }
+                }
+
+                // ReplaceToken in methods
+                cn.methods.each {
+                    it.instructions.each {
+                        if (it instanceof LdcInsnNode) {
+                            LdcInsnNode ldc = it as LdcInsnNode
+
+                            if (ldc.cst instanceof String) {
+                                String value = ldc.cst as String
+
+                                replaceTokenMap.each {
+                                    value = value.replace(it.key as String, it.value as String)
+                                }
+
+                                ldc.cst = value
+                            }
+                        }
+                    }
+                }
+
+                ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES)
+                cn.accept(cw)
+                new FileOutputStream(it).write(cw.toByteArray())
+            }
         }
     }
 }

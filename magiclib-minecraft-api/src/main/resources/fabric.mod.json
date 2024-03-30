@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
+  "id": "${mod_id}-${minecraft_version_id}",
   "name": "${mod_name}",
   "description": "${mod_description}",
   "icon": "assets/${mod_id}/icon.png",
@@ -43,10 +43,11 @@
     "magiclib-minecraft-api.mixins.json"
   ],
   "depends": {
+    "minecraft": "${minecraft_dependency}"
   },
   "custom": {
     "modmenu:api": true,
-    "modmenu:parent": "magiclib",
+    "modmenu:parent": "${root_mod_id}",
     "modmenu": {
       "badges": [
         "library"
