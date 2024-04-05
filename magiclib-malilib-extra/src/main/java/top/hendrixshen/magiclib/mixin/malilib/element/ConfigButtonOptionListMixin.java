@@ -13,6 +13,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.api.malilib.config.gui.ConfigButtonOptionListHovering;
 
+/**
+ * Reference to <a href="https://github.com/Fallen-Breath/TweakerMore">TweakerMore</a>
+ */
 @Mixin(value = ConfigButtonOptionList.class, remap = false)
 public abstract class ConfigButtonOptionListMixin extends ButtonGeneric implements ConfigButtonOptionListHovering {
     @Shadow
@@ -41,9 +44,9 @@ public abstract class ConfigButtonOptionListMixin extends ButtonGeneric implemen
                     value = "TAIL"
             )
     )
-    private void postUpdateDisplayString(CallbackInfo ci) {
+    private void makeSomeValueHovering(CallbackInfo ci) {
         if (this.magiclib$enableValueHovering) {
-            this.setHoverStrings(this.makeHoveringLines(this.config));
+            this.setHoverStrings(this.magiclib$makeHoveringLines(this.config));
         }
     }
 }

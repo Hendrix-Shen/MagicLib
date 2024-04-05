@@ -18,7 +18,7 @@ import java.util.List;
 public interface ConfigButtonOptionListHovering {
     void magiclib$setEnableValueHovering();
 
-    default List<String> makeHoveringLines(@NotNull IConfigOptionList config) {
+    default List<String> magiclib$makeHoveringLines(@NotNull IConfigOptionList config) {
         List<String> lines = Lists.newArrayList();
         IConfigOptionListEntry head = config.getDefaultOptionListValue();
         IConfigOptionListEntry current = config.getOptionListValue();
@@ -30,7 +30,9 @@ public interface ConfigButtonOptionListHovering {
         List<IConfigOptionListEntry> entries = Lists.newArrayList();
         boolean allEnum = true;
 
-        for (IConfigOptionListEntry entry = head; (cnt == 0 || entry != head) && cnt < MAX_ENTRIES && entry != null; entry = entry.cycle(true)) {
+        for (IConfigOptionListEntry entry = head;
+             (cnt == 0 || entry != head) && cnt < MAX_ENTRIES && entry != null;
+             entry = entry.cycle(true)) {
             cnt++;
             entries.add(entry);
             allEnum &= entry instanceof Enum<?>;
