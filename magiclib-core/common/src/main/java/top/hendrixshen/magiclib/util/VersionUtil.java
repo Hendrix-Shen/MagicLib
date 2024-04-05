@@ -37,13 +37,13 @@ public class VersionUtil {
 
     public static @NotNull String translateVersionType(@NotNull String version, String languageCode) {
         if (version.endsWith("beta")) {
-            return I18n.trByCode("magiclib.misc.version_type.beta", languageCode);
+            return I18n.trByCode(languageCode, "magiclib.misc.version_type.beta");
         } else if (version.endsWith("dev")) {
-            return I18n.trByCode("magiclib.misc.version_type.development", languageCode);
+            return I18n.trByCode(languageCode, "magiclib.misc.version_type.development");
         } else if (version.endsWith("stable")) {
-            return I18n.trByCode("magiclib.misc.version_type.stable", languageCode);
+            return I18n.trByCode(languageCode, "magiclib.misc.version_type.stable");
         }
 
-        return I18n.trByCode("magiclib.misc.version_type.unknown", languageCode);
+        return I18n.trByCode(languageCode, "magiclib.misc.version_type.unknown");
     }
 }
