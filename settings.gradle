@@ -44,6 +44,7 @@ pluginManagement {
     }
 }
 
+rootProject.setName(settings.providers.gradleProperty("mod.id").get())
 include("magiclib-core")
 include("magiclib-core:common")
 include("magiclib-core:fabric")
