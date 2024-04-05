@@ -101,7 +101,7 @@ public class ValueContainer<T> {
         Objects.requireNonNull(mapper);
 
         if (this.isPresent()) {
-            return ValueContainer.of(mapper.apply(this.value));
+            return ValueContainer.ofNullable(mapper.apply(this.value));
         }
 
         return ValueContainer.empty();
