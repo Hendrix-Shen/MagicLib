@@ -49,8 +49,6 @@ include("magiclib-core:common")
 include("magiclib-core:fabric")
 include("magiclib-core:forge")
 include("magiclib-core:neoforge")
-include("magiclib-minecraft-api")
-include("magiclib-better-dev")
 
 Map<String, Map<String, ?>> settings = file("settings.json").withReader {
     new JsonSlurper().parse(it) as Map<String, Map<String, ?>>
