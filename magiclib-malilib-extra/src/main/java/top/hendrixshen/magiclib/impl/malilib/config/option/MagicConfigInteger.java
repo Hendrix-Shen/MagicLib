@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.impl.malilib.config.option;
 
+import com.google.gson.JsonElement;
 import fi.dy.masa.malilib.config.options.ConfigInteger;
 import lombok.Getter;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
@@ -26,5 +27,29 @@ public class MagicConfigInteger extends ConfigInteger implements MagicIConfigBas
         super(name, defaultValue, minValue, maxValue, useSlider,
                 String.format("%s.%s.comment", translationPrefix, name));
         this.translationPrefix = translationPrefix;
+    }
+
+    @Override
+    public void setValueFromJsonElement(JsonElement element) {
+        int oldValue = this.getIntegerValue();
+        super.setValueFromJsonElement(element);
+
+        if (oldValue != this.getIntegerValue()) {
+            this.onValueChanged(true);
+        }
+    }
+
+    @Override
+    public void onValueChanged() {
+        this.onValueChanged(false);
+    }
+
+    @Override
+    public void onValueChanged(boolean fromFile) {
+        super.onValueChanged();
+
+        if (!fromFile && this.getMagicContainer().shouldStatisticValueChange()) {
+            this.updateStatisticOnUse();
+        }
     }
 }

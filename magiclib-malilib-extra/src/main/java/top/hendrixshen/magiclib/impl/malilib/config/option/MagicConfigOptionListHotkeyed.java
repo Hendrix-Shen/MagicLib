@@ -47,6 +47,8 @@ public class MagicConfigOptionListHotkeyed extends MagicConfigOptionList impleme
 
     @Override
     public void setValueFromJsonElement(JsonElement element) {
+        IConfigOptionListEntry oldValue = this.getOptionListValue();
+
         try {
             if (element.isJsonObject()) {
                 JsonObject obj = element.getAsJsonObject();
@@ -59,6 +61,10 @@ public class MagicConfigOptionListHotkeyed extends MagicConfigOptionList impleme
         } catch (Exception e) {
             MagicLib.getLogger().warn("Failed to set config value for '{}' from the JSON element '{}'",
                     this.getName(), element, e);
+        }
+
+        if (oldValue != this.getOptionListValue()) {
+            this.onValueChanged(true);
         }
     }
 

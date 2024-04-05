@@ -66,28 +66,120 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
                 ((WidgetListConfigOptionsAccessor) this.parent).magiclib$getParent() instanceof MagicConfigGui;
     }
 
-    @Unique
-    private void magiclib$addHotkeyTogglableButtons(int x, int y, int configWidth, IHotkeyTogglable config) {
-        int booleanBtnWidth = (configWidth - 24) / 2;
-        ButtonGeneric booleanButton = new ConfigButtonBoolean(x, y, booleanBtnWidth, 20, config);
-        this.magiclib$addValueWithKeybindWidgets(x, y, configWidth, config, booleanButton);
+    //#if MC > 11701
+    //$$ @Inject(
+    //$$         method = "addConfigOption",
+    //$$         at = @At(
+    //$$                 value = "INVOKE",
+    //$$                 target = "Lfi/dy/masa/malilib/gui/button/ConfigButtonOptionList;<init>(IIIILfi/dy/masa/malilib/config/IConfigOptionList;)V"
+    //$$         ),
+    //$$         cancellable = true
+    //$$ )
+    //$$ private void customMagicConfigGuiIOptionListHotkeyed(int x, int y, float zLevel, int labelWidth,
+    //$$                                                      int configWidth, IConfigBase config, CallbackInfo ci) {
+    //$$     if (!this.magiclib$isMagicGui()) {
+    //$$         return;
+    //$$     }
+    //$$
+    //$$     if (config instanceof OptionListHotkeyed) {
+    //$$         this.magiclib$addOptionListWithHotkey(x, y, configWidth, (OptionListHotkeyed) config);
+    //$$         ci.cancel();
+    //$$     }
+    //$$ }
+    //$$
+    //$$ @Inject(
+    //$$         method = "addConfigOption",
+    //$$         at = @At(
+    //$$                 value = "INVOKE",
+    //$$                 target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addBooleanAndHotkeyWidgets(IIILfi/dy/masa/malilib/config/IConfigResettable;Lfi/dy/masa/malilib/config/IConfigBoolean;Lfi/dy/masa/malilib/hotkeys/IKeybind;)V"
+    //$$         ),
+    //$$         cancellable = true
+    //$$ )
+    //$$ private void customMagicConfigGuiIHotkeyTogglable(int x, int y, float zLevel, int labelWidth, int configWidth,
+    //$$                                                   IConfigBase config, CallbackInfo ci) {
+    //$$     if (!this.magiclib$isMagicGui()) {
+    //$$         return;
+    //$$     }
+    //$$
+    //$$     if (config instanceof IHotkeyTogglable) {
+    //$$         this.magiclib$addHotkeyTogglableButtons(x, y, configWidth, (IHotkeyTogglable) config);
+    //$$         ci.cancel();
+    //$$     }
+    //$$ }
+    //$$
+    //$$ @Inject(
+    //$$         method = "addHotkeyConfigElements",
+    //$$         at = @At(
+    //$$                 value = "HEAD"
+    //$$         ),
+    //$$         cancellable = true
+    //$$ )
+    //$$ private void customMagicConfigGuiIHotkey(int x, int y, int configWidth, String configName,
+    //$$                                          IHotkey config, CallbackInfo ci) {
+    //$$     if (!this.magiclib$isMagicGui()) {
+    //$$         return;
+    //$$     }
+    //$$
+    //$$     if (config instanceof HotkeyWithSwitch) {
+    //$$         this.magiclib$addHotkeyWithSwitchButtons(x, y, configWidth, (HotkeyWithSwitch) config);
+    //$$         ci.cancel();
+    //$$     } else if ((config).getKeybind() instanceof KeybindMulti) {
+    //$$         this.magiclib$addButtonAndHotkeyWidgets(x, y, configWidth, config);
+    //$$         ci.cancel();
+    //$$     }
+    //$$ }
+    //#else
+    @Inject(
+            method = "addConfigOption",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lfi/dy/masa/malilib/config/ConfigType;BOOLEAN:Lfi/dy/masa/malilib/config/ConfigType;",
+                    ordinal = 0
+            ),
+            cancellable = true
+    )
+    private void customMagicConfigGui(int x, int y, float zLevel, int labelWidth, int configWidth,
+                                      IConfigBase config, CallbackInfo ci) {
+        if (!this.magiclib$isMagicGui() || !(config instanceof IHotkey)) {
+            return;
+        }
+
+        boolean modified = true;
+
+        if (config instanceof IHotkeyTogglable) {
+            this.magiclib$addHotkeyTogglableButtons(x, y, configWidth, (IHotkeyTogglable) config);
+        } else if (config instanceof HotkeyWithSwitch) {
+            this.magiclib$addHotkeyWithSwitchButtons(x, y, configWidth, (HotkeyWithSwitch) config);
+        } else if (config instanceof OptionListHotkeyed) {
+            this.magiclib$addOptionListWithHotkey(x, y, configWidth, (OptionListHotkeyed) config);
+        } else if (((IHotkey) config).getKeybind() instanceof KeybindMulti) {
+            this.magiclib$addButtonAndHotkeyWidgets(x, y, configWidth, (IHotkey) config);
+        } else {
+            modified = false;
+        }
+
+        if (modified) {
+            ci.cancel();
+        }
+    }
+    //#endif
+
+    @Inject(
+            method = "addConfigButtonEntry",
+            at = @At(
+                    value = "HEAD"
+            )
+    )
+    private void enableEnableValueHoveringForConfigButtonOptionList(int xReset, int yReset, IConfigResettable config,
+                                                                    ButtonBase optionButton, CallbackInfo ci) {
+        if (this.magiclib$isMagicGui() && optionButton instanceof ConfigButtonOptionListHovering) {
+            ((ConfigButtonOptionListHovering) optionButton).magiclib$setEnableValueHovering();
+        }
     }
 
-    @Unique
-    private void magiclib$addHotkeyWithSwitchButtons(int x, int y, int configWidth, HotkeyWithSwitch config) {
-        int booleanBtnWidth = (configWidth - 24) / 2;
-        ButtonGeneric booleanButton = new ConfigButtonBooleanSwitch(x, y, booleanBtnWidth, 20, config);
-        this.magiclib$addValueWithKeybindWidgets(x, y, configWidth, config, booleanButton);
-    }
-
-    @Unique
-    private void magiclib$addOptionListWithHotkey(int x, int y, int configWidth, OptionListHotkeyed config) {
-        int optionBtnWidth = (configWidth - 24) / 2;
-        ConfigButtonOptionList optionButton = new ConfigButtonOptionList(x, y, optionBtnWidth, 20, config);
-        ((ConfigButtonOptionListHovering) optionButton).magiclib$setEnableValueHovering();
-        this.magiclib$addValueWithKeybindWidgets(x, y, configWidth, config, optionButton);
-    }
-
+    /**
+     * For regular IHotkey
+     */
     @Unique
     private void magiclib$addButtonAndHotkeyWidgets(int x, int y, int configWidth, @NotNull IHotkey config) {
         IKeybind keybind = config.getKeybind();
@@ -154,7 +246,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
         HotkeyedBooleanResetListener resetListener = new HotkeyedBooleanResetListener(config, valueButton,
                 keybindButton, resetButton, this.host);
         this.host.addKeybindChangeListener(
-                //#if MC >= 11800
+                //#if MC > 11701
                 //$$ resetListener::updateButtons
                 //#else
                 resetListener
@@ -165,14 +257,42 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
         this.addButton(resetButton, resetListener);
     }
 
+    @Unique
+    private void magiclib$addHotkeyTogglableButtons(int x, int y, int configWidth, IHotkeyTogglable config) {
+        int booleanBtnWidth = (configWidth - 24) / 2;
+        ButtonGeneric booleanButton = new ConfigButtonBoolean(x, y, booleanBtnWidth, 20, config);
+        this.magiclib$addValueWithKeybindWidgets(x, y, configWidth, config, booleanButton);
+    }
+
+    @Unique
+    private void magiclib$addHotkeyWithSwitchButtons(int x, int y, int configWidth, HotkeyWithSwitch config) {
+        int booleanBtnWidth = (configWidth - 24) / 2;
+        ButtonGeneric booleanButton = new ConfigButtonBooleanSwitch(x, y, booleanBtnWidth, 20, config);
+        this.magiclib$addValueWithKeybindWidgets(x, y, configWidth, config, booleanButton);
+    }
+
+    @Unique
+    private void magiclib$addOptionListWithHotkey(int x, int y, int configWidth, OptionListHotkeyed config) {
+        int optionBtnWidth = (configWidth - 24) / 2;
+        ConfigButtonOptionList optionButton = new ConfigButtonOptionList(x, y, optionBtnWidth, 20, config);
+        ((ConfigButtonOptionListHovering) optionButton).magiclib$setEnableValueHovering();
+        this.magiclib$addValueWithKeybindWidgets(x, y, configWidth, config, optionButton);
+    }
+
+    /**
+     * Stolen from malilib 1.18 v0.11.4
+     * to make IHotkeyWithSwitch option panel works
+     * and also to make compact ConfigBooleanHotkeyed option panel works in <1.18.
+     * <p>
+     * Compact panel thing starts
+     */
     @Inject(
             method = "<init>",
             at = @At(
                     value = "TAIL"
-            ),
-            remap = false
+            )
     )
-    private void postConstruct(CallbackInfo ci) {
+    private void initInitialState(CallbackInfo ci) {
         if (!this.magiclib$isMagicGui() || this.wrapper.getType() != GuiConfigsBase.ConfigOptionWrapper.Type.CONFIG) {
             return;
         }
@@ -189,125 +309,13 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     }
 
     @Inject(
-            method = "addConfigButtonEntry",
-            at = @At(
-                    "HEAD"
-            ),
-            remap = false
-    )
-    private void preAddConfigButtonEntry(int xReset, int yReset, IConfigResettable config,
-                                         ButtonBase optionButton, CallbackInfo ci) {
-        if (this.magiclib$isMagicGui() && optionButton instanceof ConfigButtonOptionListHovering) {
-            ((ConfigButtonOptionListHovering) optionButton).magiclib$setEnableValueHovering();
-        }
-    }
-
-    //#if MC > 11701
-    //$$ @Inject(
-    //$$         method = "addConfigOption",
-    //$$         at = @At(
-    //$$                 value = "INVOKE",
-    //$$                 target = "Lfi/dy/masa/malilib/gui/button/ConfigButtonOptionList;<init>(IIIILfi/dy/masa/malilib/config/IConfigOptionList;)V"
-    //$$         ),
-    //$$         cancellable = true
-    //$$ )
-    //$$ private void preConfigButtonOptionListInit(int x, int y, float zLevel, int labelWidth,
-    //$$                                            int configWidth, IConfigBase config, CallbackInfo ci) {
-    //$$     if (!this.magiclib$isMagicGui()) {
-    //$$         return;
-    //$$     }
-    //$$
-    //$$     if (config instanceof OptionListHotkeyed) {
-    //$$         this.magiclib$addOptionListWithHotkey(x, y, configWidth, (OptionListHotkeyed) config);
-    //$$         ci.cancel();
-    //$$     }
-    //$$ }
-    //$$
-    //$$ @Inject(
-    //$$         method = "addConfigOption",
-    //$$         at = @At(
-    //$$                 value = "INVOKE",
-    //$$                 target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addBooleanAndHotkeyWidgets(IIILfi/dy/masa/malilib/config/IConfigResettable;Lfi/dy/masa/malilib/config/IConfigBoolean;Lfi/dy/masa/malilib/hotkeys/IKeybind;)V"
-    //$$         ),
-    //$$         cancellable = true
-    //$$ )
-    //$$ private void preGetBooleanConfig(int x, int y, float zLevel, int labelWidth, int configWidth,
-    //$$                                  IConfigBase config, CallbackInfo ci) {
-    //$$     if (!this.magiclib$isMagicGui()) {
-    //$$         return;
-    //$$     }
-    //$$
-    //$$     if (config instanceof IHotkeyTogglable) {
-    //$$         this.magiclib$addHotkeyTogglableButtons(x, y, configWidth, (IHotkeyTogglable) config);
-    //$$         ci.cancel();
-    //$$     }
-    //$$ }
-    //$$
-    //$$ @Inject(
-    //$$         method = "addHotkeyConfigElements",
-    //$$         at = @At(
-    //$$                 value = "HEAD"
-    //$$         ),
-    //$$         cancellable = true
-    //$$ )
-    //$$ private void preAddHotkeyConfigElements(int x, int y, int configWidth, String configName,
-    //$$                                         IHotkey config, CallbackInfo ci) {
-    //$$     if (!this.magiclib$isMagicGui()) {
-    //$$         return;
-    //$$     }
-    //$$
-    //$$     if (config instanceof HotkeyWithSwitch) {
-    //$$         this.magiclib$addHotkeyWithSwitchButtons(x, y, configWidth, (HotkeyWithSwitch) config);
-    //$$         ci.cancel();
-    //$$     } else if ((config).getKeybind() instanceof KeybindMulti) {
-    //$$         this.magiclib$addButtonAndHotkeyWidgets(x, y, configWidth, config);
-    //$$         ci.cancel();
-    //$$     }
-    //$$ }
-    //#else
-    @Inject(
-            method = "addConfigOption",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lfi/dy/masa/malilib/config/ConfigType;BOOLEAN:Lfi/dy/masa/malilib/config/ConfigType;",
-                    ordinal = 0
-            ),
-            cancellable = true
-    )
-    private void preAddConfigButtonEntry(int x, int y, float zLevel, int labelWidth, int configWidth,
-                                         IConfigBase config, CallbackInfo ci) {
-        if (!this.magiclib$isMagicGui() || !(config instanceof IHotkey)) {
-            return;
-        }
-
-        boolean modified = true;
-
-        if (config instanceof IHotkeyTogglable) {
-            this.magiclib$addHotkeyTogglableButtons(x, y, configWidth, (IHotkeyTogglable) config);
-        } else if (config instanceof HotkeyWithSwitch) {
-            this.magiclib$addHotkeyWithSwitchButtons(x, y, configWidth, (HotkeyWithSwitch) config);
-        } else if (config instanceof OptionListHotkeyed) {
-            this.magiclib$addOptionListWithHotkey(x, y, configWidth, (OptionListHotkeyed) config);
-        } else if (((IHotkey) config).getKeybind() instanceof KeybindMulti) {
-            this.magiclib$addButtonAndHotkeyWidgets(x, y, configWidth, (IHotkey) config);
-        } else {
-            modified = false;
-        }
-
-        if (modified) {
-            ci.cancel();
-        }
-    }
-    //#endif
-
-    @Inject(
             method = "wasConfigModified",
             at = @At(
                     value = "RETURN"
             ),
             cancellable = true
     )
-    private void postWasConfigModified(CallbackInfoReturnable<Boolean> cir) {
+    private void specialJudgeCustomConfigBooleanHotkeyed(CallbackInfoReturnable<Boolean> cir) {
         IConfigBase config = this.wrapper.getConfig();
 
         if (!(config instanceof IConfigBoolean) || !(config instanceof IHotkey) ||

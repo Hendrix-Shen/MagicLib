@@ -1,11 +1,9 @@
 magiclib:
   config:
-    category:
-      all:
-        name: 全部
     gui:
       bottom_line:
         stat: "总计: %1$s (可用: %2$s + 不可用: %3$s), 已修改: %4$s"
+      dependencies_footer: "未满足依赖:"
       element:
         config_button_boolean_switch:
           enabled: 已启用
@@ -17,6 +15,95 @@ magiclib:
         hover: |
           点击以触发一次 %1$s
           §7§o这将依次模拟热键按下与松开操作.§r
+      sorting_strategy:
+        label_text: 排序策略
+        alphabet: 字母顺序
+        most_recently_used: 最近使用
+        most_commonly_used: 最常使用
+      statistic:
+        title: "统计信息数据:"
+        entry:
+          lastUsedTime: 上次使用时间
+          useAmount: 使用次数
     message:
       option_list_hotkeyed:
         cycled_message: 已将选项 %1$s 切换至 %2$s
+magiclib_malilib_extra:
+  config:
+    category:
+      all:
+        name: 全部
+      generic:
+        name: 通用
+      debug:
+        name: 调试
+      test:
+        name: 测试
+    gui:
+      title: "魔法类库 - 版本: %1$s (%2$s)"
+    option:
+      # ================================ 通用 ================================
+      openConfigGui:
+        name: 打开魔法类库配置界面
+        comment: 打开魔法类库的配置界面
+      # ================================ 调试 ================================
+      debug:
+        name: 调试模式
+        comment: |
+          魔法类库的调试模式
+          当启用时, 调试用参数配置以及不满足依赖的配置会被显示
+          以及调试相关的功能会被启用.
+      hideUnavailableConfigs:
+        name: 隐藏不可用配置
+        comment: 在配置界面中隐藏因依赖关系不被满足而被禁用的配置.
+      resetAllConfigStatistic:
+        name: 重置所有配置统计数据
+        comment: 重置所有配置的统计数据
+      resetMagicLibConfigStatistic:
+        name: 重置魔法类库所有配置统计数据
+        comment: 重置魔法类库的所有配置的统计数据
+      # ================================ 测试 ================================
+      testConfigBoolean:
+        name: 布尔配置测试
+        comment: ""
+      testConfigBooleanHotkeyed:
+        name: 带热键布尔配置测试
+        comment: ""
+      testConfigColor:
+        name: 颜色配置测试
+        comment: ""
+      testConfigDouble:
+        name: 实数配置测试
+        comment: ""
+      testConfigHotkey:
+        name: 热键配置测试
+        comment: ""
+      testConfigHotkeyWithSwitch:
+        name: 带开关热键测试
+        comment: ""
+      testConfigInteger:
+        name: 整数配置测试
+        comment: ""
+      testConfigOptionList:
+        name: 选项列表配置测试
+        comment: ""
+      testConfigOptionListHotkeyed:
+        name: 带热键选项列表配置测试
+        comment: ""
+      testConfigString:
+        name: 字符串配置测试
+        comment: ""
+      testConfigStringList:
+        name: 字符串列表配置测试
+        comment: ""
+      testDependencies:
+        name: 带依赖配置测试
+        comment: ""
+      testDependenciesComposite:
+        name: 带复合依赖配置测试
+        comment: ""
+      enumTest:
+        value:
+          TEST_A: 枚举测试 A
+          TEST_B: 枚举测试 B
+          TEST_C: 枚举测试 C

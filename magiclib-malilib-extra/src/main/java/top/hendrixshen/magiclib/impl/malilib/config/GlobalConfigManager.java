@@ -2,7 +2,6 @@ package top.hendrixshen.magiclib.impl.malilib.config;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.event.InputEventHandler;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;

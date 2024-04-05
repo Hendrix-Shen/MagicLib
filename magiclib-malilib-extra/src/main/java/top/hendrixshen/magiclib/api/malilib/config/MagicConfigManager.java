@@ -6,13 +6,21 @@ import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.impl.malilib.config.ConfigContainer;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigFactory;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigHotkey;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
-import top.hendrixshen.magiclib.util.serializable.JsonSaveAble;
 
 import java.util.Collection;
 import java.util.List;
 
 public interface MagicConfigManager {
+    static void setHotkeyCallback(@NotNull MagicConfigHotkey configHotkey, Runnable runnable,
+                                  boolean cancelFurtherProcess) {
+        configHotkey.setCallBack((keyAction, iKeybind) -> {
+            runnable.run();
+            return cancelFurtherProcess;
+        });
+    }
+
     String getIdentifier();
 
     MagicConfigFactory getConfigFactory();

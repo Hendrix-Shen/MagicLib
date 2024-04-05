@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
+import top.hendrixshen.magiclib.impl.malilib.config.statistic.ConfigStatisticSaver;
 import top.hendrixshen.magiclib.util.FileUtil;
 import top.hendrixshen.magiclib.util.serializable.JsonSaveAble;
 
@@ -61,6 +62,7 @@ public class MagicConfigHandler implements IConfigHandler {
         this.configManager = configManager;
         this.internalDataSavers.put("global", this.globalConfig);
         this.internalDataSavers.put("config_gui", this.configManager.getGuiSetting());
+        this.internalDataSavers.put("configStatistic", new ConfigStatisticSaver(this.configManager));
     }
 
     public void loadConfig(JsonObject root) {

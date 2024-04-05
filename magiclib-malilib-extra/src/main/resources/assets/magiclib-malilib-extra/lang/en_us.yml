@@ -1,11 +1,9 @@
 magiclib:
   config:
-    category:
-      all:
-        name: All
     gui:
       bottom_line:
         stat: "Total: %1$s (Available: %2$s + Unavailable: %3$s), Modified: %4$s"
+      dependencies_footer: "Unsatisfied dependencies:"
       element:
         config_button_boolean_switch:
           enabled: Enabled
@@ -17,6 +15,97 @@ magiclib:
         hover: |
           Click to trigger %1$s once
           §7§oThis will simulate hotkey pressed and released in order.§r
+      sorting_strategy:
+        label_text: Sorting strategy
+        alphabet: Alphabet
+        most_recently_used: Recently used
+        most_commonly_used: Commonly used
+      statistic:
+        title: "Statistics Data:"
+        entry:
+          lastUsedTime: Last used time
+          useAmount: Use amount
     message:
       option_list_hotkeyed:
         cycled_message: Cycled option %1$s to %2$s
+magiclib_malilib_extra:
+  config:
+    category:
+      all:
+        name: All
+      generic:
+        name: Generic
+      debug:
+        name: Debug
+      test:
+        name: Test
+    gui:
+      title: "MagicLib - Version: %1$s (%2$s)"
+    option:
+      # ================================ Generic ================================
+      openConfigGui:
+        name: openConfigGui
+        comment: ""
+      # ================================ Debug ================================
+      debug:
+        name: debug
+        comment: |
+          Debug mode of MagicLib
+          When enabled, debug parameter configs and configs not satisfied dependencies will be displayed
+          and debugging related functions will be enabled.
+      hideUnavailableConfigs:
+        name: hideAvailableConfigs
+        comment: Hide configs which are unavailable due to dependency relations unsatisfied in the config GUI.
+      resetAllConfigStatistic:
+        name: resetAllConfigStatistic
+        comment: Reset all statistics of configs
+      resetMagicLibConfigStatistic:
+        name: resetMagicLibConfigStatistic
+        comment: Reset statistics of configs of MagicLib
+      # ================================ Test ================================
+      testConfigBoolean:
+        name: testConfigBoolean
+        comment: ""
+      testConfigBooleanHotkeyed:
+        name: testConfigBooleanHotkeyed
+        comment: ""
+      testConfigColor:
+        name: testConfigColor
+        comment: ""
+      testConfigDouble:
+        name: testConfigDouble
+        comment: ""
+      testConfigHotkey:
+        name: testConfigHotkey
+        comment: ""
+      testConfigHotkeyWithSwitch:
+        name: testConfigHotkeyWithSwitch
+        comment: ""
+      testConfigInteger:
+        name: testConfigInteger
+        comment: ""
+      testConfigOptionList:
+        name: testConfigOptionList
+        comment: ""
+      testConfigOptionListHotkeyed:
+        name: testConfigOptionListHotkeyed
+        comment: ""
+      testConfigString:
+        name: testConfigString
+        comment: ""
+      testConfigStringList:
+        name: testConfigStringList
+        comment: ""
+      testDependencies:
+        name: testDependencies
+        comment: ""
+      testDependenciesComposite:
+        name: testDependenciesComposite
+        comment: ""
+      enumTest:
+        value:
+          TEST_A: Enum Test A
+          TEST_B: Enum Test B
+          TEST_C: Enum Test C
+
+

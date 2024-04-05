@@ -10,9 +10,15 @@
   "client": [
     "accessor.KeybindMultiAccessor",
     "accessor.WidgetListConfigOptionsAccessor",
+    "accessor.WidgetSearchBarAccessor",
+    "config.ConfigBaseMixin",
     "config.MagicConfigBooleanHotkeyedMixin",
     "dev.GuiTextFieldGenericMixin",
     "element.ConfigButtonOptionListMixin",
-    "panel.WidgetConfigOptionMixin"
+    "element.WidgetDropDownListMixin",
+    "panel.WidgetConfigOptionMixin",
+    "panel.dropDownListRedraw.WidgetListBaseMixin",
+    "panel.label.WidgetConfigOptionMixin",
+    "panel.searchBar.WidgetListConfigOptionsMixin"
   ]
 }

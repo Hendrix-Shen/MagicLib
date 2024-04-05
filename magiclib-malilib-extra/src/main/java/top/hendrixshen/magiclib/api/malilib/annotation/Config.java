@@ -19,6 +19,12 @@ public @interface Config {
      */
     String category() default Config.defaultCategory;
 
+    boolean debugOnly() default false;
+
+    boolean devOnly() default false;
+
+    Statistic statistic() default @Statistic;
+
     CompositeDependencies compositeDependencies() default @CompositeDependencies();
 
     String defaultCategory = "all";

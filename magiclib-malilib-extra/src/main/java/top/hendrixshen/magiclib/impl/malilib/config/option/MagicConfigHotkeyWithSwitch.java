@@ -49,7 +49,12 @@ public class MagicConfigHotkeyWithSwitch extends MagicConfigHotkey implements Ho
 
     @Override
     public void setEnableState(boolean value) {
+        boolean oldValue = this.enableState;
         this.enableState = value;
+
+        if (this.enableState != oldValue) {
+            this.onValueChanged(false);
+        }
     }
 
     @Override
@@ -59,8 +64,13 @@ public class MagicConfigHotkeyWithSwitch extends MagicConfigHotkey implements Ho
 
     @Override
     public void setValueFromJsonElement(JsonElement element) {
+        boolean oldState = this.getEnableState();
         super.setValueFromJsonElement(element);
         this.readExtraDataFromJson(element);
+
+        if (oldState != this.getEnableState()) {
+            this.onValueChanged(true);
+        }
     }
 
     private void readExtraDataFromJson(JsonElement element) {

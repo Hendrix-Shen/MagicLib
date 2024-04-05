@@ -1,7 +1,6 @@
 package top.hendrixshen.magiclib.api.malilib.config.option;
 
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
-import top.hendrixshen.magiclib.api.i18n.minecraft.I18n;
 import top.hendrixshen.magiclib.util.minecraft.StringUtil;
 
 import java.util.Arrays;

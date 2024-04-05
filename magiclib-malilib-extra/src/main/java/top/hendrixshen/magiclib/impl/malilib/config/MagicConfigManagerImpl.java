@@ -27,7 +27,7 @@ public class MagicConfigManagerImpl implements MagicConfigManager, IKeybindProvi
     @Getter
     private final MagicConfigGui.GuiSetting guiSetting = new MagicConfigGui.GuiSetting();
     private final List<ConfigContainer> CONTAINERS = Lists.newArrayList();
-    private final Set<String> CATEGORIES = Sets.newHashSet(Config.defaultCategory);
+    private final Set<String> CATEGORIES = Sets.newLinkedHashSet();
     private final Map<String, List<ConfigContainer>> CATEGORY_TO_CONTAINERS = Maps.newLinkedHashMap();
     private final Map<MagicIConfigBase, ConfigContainer> CONFIG_TO_CONTAINER = Maps.newLinkedHashMap();
     private final Map<String, ConfigContainer> NAME_TO_CONTAINER = Maps.newLinkedHashMap();
@@ -40,6 +40,7 @@ public class MagicConfigManagerImpl implements MagicConfigManager, IKeybindProvi
     protected MagicConfigManagerImpl(String identifier) {
         this.identifier = identifier;
         this.configFactory = new MagicConfigFactory(identifier);
+        this.CATEGORIES.add(Config.defaultCategory);
     }
 
     @Override
