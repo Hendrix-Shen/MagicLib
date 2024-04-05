@@ -9,7 +9,7 @@ public class SharedConstants {
     @Getter
     private static final String modIdentifier = "@MOD_IDENTIFIER@";
     @Getter
-    private static final String modIdentifierCurrent = "@MOD_IDENTIFIER@-@MINECRAFT_VERSION_IDENTIFY@";
+    private static final String modIdentifierCurrent = "@MOD_IDENTIFIER@_@MINECRAFT_VERSION_IDENTIFY@";
     @Getter
     private static final String modName = "@MOD_NAME@";
     @Getter
@@ -22,6 +22,6 @@ public class SharedConstants {
     private static final String modVersionType = VersionUtil.getVersionType(SharedConstants.modVersion);
 
     public static @NotNull String getTranslatedModVersionType() {
-        return VersionUtil.translateVersionType(SharedConstants.getModVersion());
+        return VersionUtil.translateVersionType(SharedConstants.modVersionType);
     }
 }

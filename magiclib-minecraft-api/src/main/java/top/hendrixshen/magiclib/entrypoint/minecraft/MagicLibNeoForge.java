@@ -6,7 +6,7 @@
 //$$ import top.hendrixshen.magiclib.impl.i18n.minecraft.MinecraftLanguageManager;
 //$$ import top.hendrixshen.magiclib.impl.mixin.audit.minecraft.MinecraftMixinAudit;
 //$$
-//$$ @Mod("magiclib_minecraft_api")
+//$$ @Mod("@MOD_IDENTIFIER@_@MINECRAFT_VERSION_IDENTIFY@")
 //$$ public class MagicLibNeoForge implements ModInitializer {
 //$$     public MagicLibNeoForge() {
 //$$         this.construct();

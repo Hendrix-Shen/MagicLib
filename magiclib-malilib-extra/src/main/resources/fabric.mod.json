@@ -1,10 +1,13 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}-${minecraft_version_id}",
+  "id": "${mod_id}_${minecraft_version_id}",
   "name": "${mod_name}",
   "description": "${mod_description}",
-  "icon": "assets/${mod_id}/icon.png",
+  "icon": "assets/${mod_alias}/icon.png",
   "version": "${mod_version}",
+  "provides": [
+    "${mod_alias}-${minecraft_version_id}"
+  ],
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -39,7 +42,7 @@
       "top.hendrixshen.magiclib.entrypoint.malilib.MagicLibFabric"
     ],
     "modmenu": [
-      "top.hendrixshen.magiclib.test.TestModMenu"
+      "top.hendrixshen.magiclib.game.malilib.ModMenuImpl"
     ]
   },
   "mixins": [
@@ -59,7 +62,7 @@
         "id": "${root_mod_id}",
         "name": "${root_mod_name}",
         "description": "${root_mod_description}",
-        "icon": "assets/${mod_id}/icon.png",
+        "icon": "assets/${mod_alias}/icon.png",
         "badges": [
           "library"
         ]

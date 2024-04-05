@@ -17,7 +17,6 @@ apply(plugin: "me.fallenbreath.yamlang")
 String modPlatform = loom.platform.get().toString().toLowerCase()
 boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
 boolean forgeLike = modPlatform == "forge" || modPlatform == "neoforge"
-String modId = fabricLike ? project.parent.property("mod.id") : (project.parent.property("mod.id") as String).replace("-", "_")
 String projectName = project.name.replace("better-dev-", "")
 int mcVersion = 0
 
@@ -266,6 +265,8 @@ remapJar {
 
         exclude("${project.parent.property("mod.id")}.accesswidener")
     }
+
+    setRemapperIsolation(true)
 }
 
 processResources {
@@ -278,10 +279,11 @@ processResources {
             filesMatching(file) {
                 expand([
                         "minecraft_dependency": project.property("dependencies.minecraft_dependency"),
-                        "minecraft_version_id": (project.property("dependencies.minecraft_version") as String).replace(".", "_"),
+                        "minecraft_version_id": project.property("dependencies.minecraft_version").toString().replace(".", "_"),
+                        "mod_alias"           : project.parent.property("mod.id"),
                         "mod_description"     : project.parent.property("mod.description"),
                         "mod_homepage"        : project.parent.property("mod.homepage"),
-                        "mod_id"              : modId,
+                        "mod_id"              : project.parent.property("mod.id").toString().replace("-", "_"),
                         "mod_license"         : project.parent.property("mod.license"),
                         "mod_name"            : project.parent.property("mod.name"),
                         "mod_sources"         : project.parent.property("mod.sources"),
@@ -425,11 +427,13 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
 }
 
 Map<Object, Object> replaceTokenMap = Map.of(
-        "@MOD_IDENTIFIER@"            , modId,
-        "@MOD_NAME@"                  , rootProject.property("mod.name"),
-        "@MINECRAFT_VERSION_IDENTIFY@", (project.property("dependencies.minecraft_version") as String).replace(".", "_")
+        "@MINECRAFT_VERSION_IDENTIFY@", project.property("dependencies.minecraft_version").toString().replace(".", "_"),
+        "@MOD_IDENTIFIER@"            , project.parent.property("mod.id").toString().replace("-", "_"),
+        "@MOD_NAME@"                  , rootProject.property("mod.name")
 )
 List<Object> replaceTokenFile = List.of(
+        "MagicLibForge",
+        "MagicLibNeoForge",
         "SharedConstants"
 )
 
@@ -472,6 +476,26 @@ tasks.named("classes") {
                                 }
 
                                 ldc.cst = value
+                            }
+                        }
+                    }
+                }
+
+                // ReplaceToken in class visible annotations.
+                if (cn.visibleAnnotations != null) {
+                    cn.visibleAnnotations.forEach {
+                        if (it.values != null) {
+                            // Skip keys
+                            for (int i = 1; i < it.values.size(); i += 2) {
+                                Object value = it.values.get(i)
+
+                                if (value instanceof String) {
+                                    replaceTokenMap.each {
+                                        value = value.replace(it.key as String, it.value as String)
+                                    }
+
+                                    it.values.set(i, value)
+                                }
                             }
                         }
                     }
