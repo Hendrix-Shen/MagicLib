@@ -6,7 +6,7 @@ import top.hendrixshen.magiclib.util.VersionUtil;
 
 public class SharedConstants {
     @Getter
-    private static final String modIdentifier = "magiclib_forge";
+    private static final String modIdentifier = "magiclib_core";
     @Getter
     private static final String modName = MagicLib.getInstance().getPlatformManage().getCurrentPlatform()
             .getModName(SharedConstants.modIdentifier);
@@ -17,6 +17,6 @@ public class SharedConstants {
     private static final String modVersionType = VersionUtil.getVersionType(SharedConstants.modVersion);
 
     public static @NotNull String getTranslatedModVersionType() {
-        return VersionUtil.translateVersionType(SharedConstants.modVersionType);
+        return VersionUtil.translateVersionType(SharedConstants.modVersion);
     }
 }

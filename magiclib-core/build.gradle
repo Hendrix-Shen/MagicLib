@@ -103,7 +103,7 @@ subprojects {
             register("release", MavenPublication) { MavenPublication publication ->
                 artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
                 from(components.java as SoftwareComponent)
-                version("${project.version}")
+                version("${project.getMavenArtifactVersion(this.project)}")
                 alias(false)
 
                 project.addPomMetadataInformation(this.project, publication)

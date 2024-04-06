@@ -29,6 +29,10 @@ ext {
         return env.get("GITHUB_ACTION") != null
     }
 
+    getBuildNumber = {
+        return env.GITHUB_RUN_NUMBER ? env.GITHUB_RUN_NUMBER : 0
+    }
+
     getVersionGit = { List paths ->
         if (grgit == null || grgit.head() == null) {
             return "nogit"
@@ -36,6 +40,17 @@ ext {
 
         List latestCommits = paths.isEmpty() ? grgit.log(maxCommits: 1) : grgit.log(paths: paths, maxCommits: 1)
         return latestCommits.isEmpty() ? "uncommited" : "${latestCommits.get(0).id.substring(0, 7)}"
+    }
+
+    getVersionType = {
+        switch (getOrDefault("ow.build.environment.buildType", env.BUILD_TYPE)) {
+            case "RELEASE":
+                return "stable"
+            case "BETA":
+                return "beta"
+            default:
+                return "dev"
+        }
     }
 
     getVersionPatch = { List paths ->
@@ -47,13 +62,17 @@ ext {
         return latestCommits.size()
     }
 
-    getModVersion = { Project proj ->
+    getVersion = { Project proj ->
         return "${proj.property("mod.version")}.${getVersionPatch([proj.projectDir.name])}+${getVersionGit([proj.projectDir.name])}"
     }
 
-//    getMavenArtifactVersion = {
-//        return project.getVersionType() == "stable" ? "${project.mod_version}.${project.getVersionPatch([])}" : project.version
-//    }
+    getModVersion = { Project proj ->
+        return "${getVersion(proj)}-${getVersionType()}"
+    }
+
+    getMavenArtifactVersion = { Project proj ->
+        return project.getVersionType() == "stable" ? "${getVersion(proj)}" : "${getModVersion(proj)}"
+    }
 
     addPomMetadataInformation = { Project project, MavenPublication publication ->
         publication.pom {

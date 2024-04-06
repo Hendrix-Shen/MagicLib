@@ -22,6 +22,6 @@ public class SharedConstants {
     private static final String modVersionType = VersionUtil.getVersionType(SharedConstants.modVersion);
 
     public static @NotNull String getTranslatedModVersionType() {
-        return VersionUtil.translateVersionType(SharedConstants.modVersionType);
+        return VersionUtil.translateVersionType(SharedConstants.modVersion);
     }
 }
