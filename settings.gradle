@@ -56,8 +56,12 @@ ext {
     }
 
     getOrDefault = { String key, String defaultValue ->
-        String value
-        (value = ext.getProperty(key)) && !value.isEmpty() ? value : defaultValue
+        if (!ext.has(key)) {
+            return defaultValue
+        }
+
+        String value = ext.getProperty(key)
+        return value.isEmpty() ? defaultValue : value
     }
 }
 
