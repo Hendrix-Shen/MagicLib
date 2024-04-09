@@ -296,21 +296,19 @@ signing {
 publishing {
     publications { PublicationContainer publications ->
         register("release", MavenPublication) { MavenPublication publication ->
-            artifactId("${project.parent.property("mod.artifact_name")}-${projectName}")
-            from(components.java as SoftwareComponent)
-            version("${project.getMavenArtifactVersion(this.project)}")
+            artifactId("${this.project.parent.property("mod.artifact_name")}-${projectName}")
+            from(this.project.components.java)
+            version("${this.project.getMavenArtifactVersion(this.project.parent)}")
             alias(false)
-
-            project.addPomMetadataInformation(this.project, publication)
+            this.project.addPomMetadataInformation(this.project.parent, publication)
         }
 
         register("snapshot", MavenPublication) { MavenPublication publication ->
-            artifactId("${project.parent.property("mod.artifact_name")}-${projectName}")
-            from(components.java as SoftwareComponent)
-            version("${project.parent.property("mod.version")}-SNAPSHOT")
+            artifactId("${this.project.parent.property("mod.artifact_name")}-${projectName}")
+            from(this.project.components.java)
+            version("${this.project.parent.property("mod.version")}-SNAPSHOT")
             alias(true)
-
-            project.addPomMetadataInformation(this.project, publication)
+            this.project.addPomMetadataInformation(this.project, publication)
         }
     }
 

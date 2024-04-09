@@ -184,6 +184,12 @@ subprojects {
     if (project.name != "common") {
         dependencies {
             shade(project(":magiclib-core:common"))
+
+            if (Boolean.parseBoolean(project.getOrDefault("ow.build.environment.local", "false") as String)) {
+                runtimeOnly(project(":magiclib-wrapper:fabric:local"))
+            } else {
+                runtimeOnly(project(":magiclib-wrapper:fabric:release"))
+            }
         }
 
         tasks.withType(Javadoc).configureEach { Javadoc task ->

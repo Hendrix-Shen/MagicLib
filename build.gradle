@@ -11,7 +11,7 @@ ext {
     if (localPropsFile.exists()) {
         Properties p = new Properties()
         p.load(new FileInputStream(localPropsFile))
-        p.each { key,  value ->
+        p.each { key, value ->
             ext[key as String] = value
         }
     }
@@ -63,7 +63,7 @@ ext {
     }
 
     getVersion = { Project proj ->
-        return "${proj.property("mod.version")}.${getVersionPatch([proj.projectDir.name])}+${getVersionGit([proj.projectDir.name])}"
+        return "${proj.property("mod.version")}.${getVersionPatch(proj == rootProject ? [] : [proj.projectDir.name])}+${getVersionGit(proj == rootProject ? [] : [proj.projectDir.name])}"
     }
 
     getModVersion = { Project proj ->
@@ -141,6 +141,7 @@ tasks.register("genLocalProperties") {
             bufferedWriter.writeLine("secrets.mavenCentral.password=")
             bufferedWriter.writeLine("")
             bufferedWriter.writeLine("# Overwritten configurations")
+            bufferedWriter.writeLine("ow.build.environment.local=")
             bufferedWriter.writeLine("ow.build.environment.buildType=")
             bufferedWriter.writeLine("ow.game.window.width=")
             bufferedWriter.writeLine("ow.game.window.height=")

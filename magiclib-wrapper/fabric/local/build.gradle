@@ -1,0 +1,35 @@
+plugins {
+    id("java-library")
+}
+
+base {
+    setArchivesName("${project.property("mod.archives_base_name")}")
+    group("${project.property("mod.maven_group")}")
+    version(project.getModVersion(rootProject))
+}
+
+java {
+    sourceCompatibility(JavaVersion.VERSION_1_8)
+    targetCompatibility(JavaVersion.VERSION_1_8)
+    withSourcesJar()
+    withJavadocJar()
+}
+
+processResources {
+    filesMatching("fabric.mod.json") {
+        expand([
+                "mod_description"     : project.property("mod.description"),
+                "mod_homepage"        : project.property("mod.homepage"),
+                "mod_id"              : project.property("mod.id"),
+                "mod_license"         : project.property("mod.license"),
+                "mod_name"            : project.property("mod.name"),
+                "mod_sources"         : project.property("mod.sources"),
+                "mod_version"         : project.version
+        ])
+    }
+
+    from("${rootDir}/LICENSE")
+    from("${rootDir}/icon.png") {
+        into("assets/${project.property("mod.id")}")
+    }
+}

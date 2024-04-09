@@ -44,13 +44,31 @@ pluginManagement {
     }
 }
 
-rootProject.setName(settings.providers.gradleProperty("mod.id").get())
-include("magiclib-core")
-include("magiclib-core:common")
-include("magiclib-core:fabric")
-include("magiclib-core:forge")
-include("magiclib-core:neoforge")
+ext {
+    File localPropsFile = file("${rootDir}/local.properties")
 
+    if (localPropsFile.exists()) {
+        Properties p = new Properties()
+        p.load(new FileInputStream(localPropsFile))
+        p.each { key, value ->
+            ext[key as String] = value
+        }
+    }
+
+    getOrDefault = { String key, String defaultValue ->
+        String value
+        (value = ext.getProperty(key)) && !value.isEmpty() ? value : defaultValue
+    }
+}
+
+rootProject.setName(settings.providers.gradleProperty("mod.id").get())
+
+// Magic Core API
+["common", "fabric", "forge", "neoforge"].forEach {
+    include("magiclib-core:${it}")
+}
+
+// Magic Game API
 Map<String, Map<String, ?>> settings = file("settings.json").withReader {
     new JsonSlurper().parse(it) as Map<String, Map<String, ?>>
 }
@@ -59,7 +77,6 @@ for (String module_name: settings.projects.keySet()) {
     Map<String, ?> project_detail = settings.projects.get(module_name) as Map<String, ?>
     String prefix = project_detail.get("prefix")
     List<String> versions = project_detail.get("versions") as List<String>
-
     String root_node_name = versions.get(0)
 
     for(String ver: versions) {
@@ -70,4 +87,10 @@ for (String module_name: settings.projects.keySet()) {
         proj.setProjectDir(file("${module_name}/versions/${ver}"))
         proj.setBuildFileName("../${root_node_name}/build.gradle")
     }
+}
+
+if (Boolean.parseBoolean(this.getOrDefault("ow.build.environment.local", "false") as String)) {
+    include("magiclib-wrapper:fabric:local")
+} else {
+    include("magiclib-wrapper:fabric:release")
 }

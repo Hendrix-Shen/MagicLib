@@ -1,0 +1,191 @@
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+
+plugins {
+    id("java-library")
+    id("maven-publish")
+    id("signing")
+}
+
+Project coreProject = evaluationDependsOn(":magiclib-core:fabric")
+Map<String, Map<String, ?>> settings = rootProject.file("settings.json").withReader {
+    new JsonSlurper().parse(it) as Map<String, Map<String, ?>>
+}
+
+Set<Project> subProjects = []
+
+for (String module_name : settings.projects.keySet()) {
+    // Do not package dev only module to public release
+    if (module_name == "magiclib-better-dev") {
+        continue
+    }
+
+    Map<String, ?> project_detail = settings.projects.get(module_name) as Map<String, ?>
+    String prefix = project_detail.get("prefix")
+    List<String> versions = project_detail.get("versions") as List<String>
+
+    for (String ver : versions) {
+        if (ver.contains("fabric")) {
+            subProjects.add(evaluationDependsOn(":${module_name}:${prefix}-${ver}"))
+        }
+    }
+}
+
+base {
+    setArchivesName("${project.property("mod.archives_base_name")}")
+    group("${project.property("mod.maven_group")}")
+    version(project.getModVersion(rootProject))
+}
+
+java {
+    sourceCompatibility(JavaVersion.VERSION_1_8)
+    targetCompatibility(JavaVersion.VERSION_1_8)
+    withSourcesJar()
+    withJavadocJar()
+}
+
+jar {
+    dependsOn(subProjects.collect { it.tasks.remapJar })
+    dependsOn(coreProject.tasks.shadowJar)
+
+    doFirst {
+        delete fileTree("build/tmp/submods/META-INF/jars")
+
+        copy {
+            from {
+                coreProject.tasks.shadowJar.outputs.files
+            }
+
+            from {
+                subProjects.collect {
+                    it.tasks.remapJar.outputs.files
+                }
+            }
+
+            into("build/tmp/submods/META-INF/jars")
+        }
+    }
+
+    from("build/tmp/submods")
+}
+
+processResources {
+    filesMatching("fabric.mod.json") {
+        expand([
+                "mod_description": project.property("mod.description"),
+                "mod_homepage"   : project.property("mod.homepage"),
+                "mod_id"         : project.property("mod.id"),
+                "mod_license"    : project.property("mod.license"),
+                "mod_name"       : project.property("mod.name"),
+                "mod_sources"    : project.property("mod.sources"),
+                "mod_version"    : project.version
+        ])
+    }
+
+    doLast {
+        Set<String> mc_condition = []
+        Set<Map<String, String>> jars = [["file": "META-INF/jars/${coreProject.parent.property("mod.archives_base_name")}-fabric-${coreProject.version}.jar"]]
+
+        subProjects.forEach {
+            mc_condition.add("${it.property("dependencies.minecraft_dependency")}")
+            jars.add(["file": "META-INF/jars/${it.parent.property("mod.archives_base_name")}-mc${it.property("dependencies.minecraft_version")}-${it.version}.jar"])
+        }
+
+        File file = file("build/resources/main/fabric.mod.json")
+        JsonSlurper slurper = new JsonSlurper()
+        JsonBuilder builder = new JsonBuilder(slurper.parse(file))
+        builder.content.depends.minecraft = mc_condition
+        builder.content.jars = jars
+
+        file.withWriter {
+            it.append(builder.toPrettyString())
+        }
+    }
+
+    from("${rootDir}/LICENSE")
+    from("${rootDir}/icon.png") {
+        into("assets/${project.property("mod.id")}")
+    }
+}
+
+signing {
+    String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getEnv().SIGNING_PGP_KEY)
+    String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getEnv().SIGNING_PGP_PASSWORD)
+
+    required {
+        signingKey
+    }
+
+    useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
+    sign(publishing.publications)
+}
+
+publishing {
+    publications { PublicationContainer publications ->
+        register("release", MavenPublication) { MavenPublication publication ->
+            artifactId("${this.project.parent.property("mod.artifact_name")}-fabric")
+            from(this.project.components.java)
+            version("${this.project.getMavenArtifactVersion(rootProject)}")
+            alias(false)
+            this.project.addPomMetadataInformation(this.project, publication)
+        }
+
+        register("snapshot", MavenPublication) { MavenPublication publication ->
+            artifactId("${this.project.parent.property("mod.artifact_name")}-fabric")
+            from(this.project.components.java)
+            version("${this.project.property("mod.version")}-SNAPSHOT")
+            alias(true)
+            this.project.addPomMetadataInformation(this.project, publication)
+        }
+    }
+
+    repositories { RepositoryHandler repositoryHandler ->
+        mavenLocal {
+            name("mavenLocal")
+        }
+
+        maven {
+            name("projectLocalSnapshot")
+            url("${rootDir}/publish/snapshot")
+        }
+
+        maven {
+            name("projectLocalRelease")
+            url("${rootDir}/publish/release")
+        }
+
+        maven {
+            name("mavenCentralSnapshot")
+            url("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+
+            project.credentialsMavenCentral(it)
+        }
+
+        maven {
+            name("mavenCentralRelease")
+            url("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+            project.credentialsMavenCentral(it)
+        }
+    }
+}
+
+// Solutions from: https://youtrack.jetbrains.com/issue/KT-46466
+TaskCollection<Sign> signingTasks = tasks.withType(Sign)
+tasks.withType(AbstractPublishToMaven).configureEach {
+    dependsOn(signingTasks)
+}
+
+tasks.withType(PublishToMavenRepository).configureEach {
+    Provider<Boolean> predicate = provider {
+        repository == publishing.repositories.mavenLocal ||
+                (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
+                (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
+                (repository == publishing.repositories.mavenCentralSnapshot && publication == publishing.publications.snapshot && project.isMavenCentralCredentialsExist()) ||
+                (repository == publishing.repositories.mavenCentralRelease && publication == publishing.publications.release && project.isMavenCentralCredentialsExist())
+    }
+
+    onlyIf {
+        predicate.get()
+    }
+}
