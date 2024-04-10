@@ -23,6 +23,10 @@ allprojects {
     }
 }
 
+tasks.withType(AbstractPublishToMaven).configureEach {
+    enabled(false)
+}
+
 subprojects {
     repositories {
         mavenLocal()
