@@ -105,21 +105,21 @@ subprojects {
     publishing {
         publications { PublicationContainer publications ->
             register("release", MavenPublication) { MavenPublication publication ->
-                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
-                from(components.java as SoftwareComponent)
-                version("${project.getMavenArtifactVersion(this.project)}")
+                artifactId("${this.project.parent.property("mod.artifact_name")}-${project.name}")
+                from(this.components.java)
+                version("${this.project.getMavenArtifactVersion(this.project)}")
                 alias(false)
 
-                project.addPomMetadataInformation(this.project, publication)
+                this.project.addPomMetadataInformation(this.project, publication)
             }
 
             register("snapshot", MavenPublication) { MavenPublication publication ->
-                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
-                from(components.java as SoftwareComponent)
-                version("${project.property("mod.version")}-SNAPSHOT")
+                artifactId("${this.project.parent.property("mod.artifact_name")}-${project.name}")
+                from(this.components.java)
+                version("${this.project.property("mod.version")}-SNAPSHOT")
                 alias(true)
 
-                project.addPomMetadataInformation(this.project, publication)
+                this.project.addPomMetadataInformation(this.project, publication)
             }
         }
 

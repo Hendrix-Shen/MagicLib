@@ -236,7 +236,7 @@ loom {
 }
 
 base {
-    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}")
+    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}-${modPlatform}")
     group("${project.property("mod.maven_group")}")
     version(project.getModVersion(project.parent))
 }
@@ -287,7 +287,7 @@ processResources {
                         "mod_license"         : project.parent.property("mod.license"),
                         "mod_name"            : project.parent.property("mod.name"),
                         "mod_sources"         : project.parent.property("mod.sources"),
-                        "mod_version"         : project.version,
+                        "mod_version"         : project.getVersionWithCommitHash(this.project),
                         "root_mod_id"         : rootProject.property("mod.id"),
                         "root_mod_name"       : rootProject.property("mod.name"),
                         "root_mod_description": rootProject.property("mod.description"),

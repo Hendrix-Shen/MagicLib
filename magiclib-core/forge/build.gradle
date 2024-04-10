@@ -20,7 +20,7 @@ processResources {
                 "mod_id"         : project.parent.property("mod.id").toString().replace("-", "_"),
                 "mod_license"    : project.parent.property("mod.license"),
                 "mod_name"       : project.parent.property("mod.name"),
-                "mod_version"    : project.version,
+                "mod_version"    : project.getVersionWithCommitHash(this.project)
         ])
     }
 

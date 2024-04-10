@@ -32,7 +32,7 @@ for (String module_name : settings.projects.keySet()) {
 }
 
 base {
-    setArchivesName("${project.property("mod.archives_base_name")}")
+    setArchivesName("${project.property("mod.archives_base_name")}-fabric")
     group("${project.property("mod.maven_group")}")
     version(project.getModVersion(rootProject))
 }
@@ -78,7 +78,7 @@ processResources {
                 "mod_license"    : project.property("mod.license"),
                 "mod_name"       : project.property("mod.name"),
                 "mod_sources"    : project.property("mod.sources"),
-                "mod_version"    : project.version
+                "mod_version"    : project.getVersionWithCommitHash(rootProject),
         ])
     }
 
@@ -88,7 +88,7 @@ processResources {
 
         subProjects.forEach {
             mc_condition.add("${it.property("dependencies.minecraft_dependency")}")
-            jars.add(["file": "META-INF/jars/${it.parent.property("mod.archives_base_name")}-mc${it.property("dependencies.minecraft_version")}-${it.version}.jar"])
+            jars.add(["file": "META-INF/jars/${it.parent.property("mod.archives_base_name")}-mc${it.property("dependencies.minecraft_version")}-${it.loom.platform.get().toString().toLowerCase()}-${it.version}.jar"])
         }
 
         File file = file("build/resources/main/fabric.mod.json")

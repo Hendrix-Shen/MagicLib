@@ -3,7 +3,7 @@ plugins {
 }
 
 base {
-    setArchivesName("${project.property("mod.archives_base_name")}")
+    setArchivesName("${project.property("mod.archives_base_name")}-fabric")
     group("${project.property("mod.maven_group")}")
     version(project.getModVersion(rootProject))
 }
@@ -24,7 +24,7 @@ processResources {
                 "mod_license"         : project.property("mod.license"),
                 "mod_name"            : project.property("mod.name"),
                 "mod_sources"         : project.property("mod.sources"),
-                "mod_version"         : project.version
+                "mod_version"         : project.getVersionWithCommitHash(this.project),
         ])
     }
 
