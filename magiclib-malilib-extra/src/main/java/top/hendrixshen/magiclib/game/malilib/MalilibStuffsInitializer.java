@@ -26,7 +26,7 @@ public class MalilibStuffsInitializer {
     //#if FORGE_LIKE
     //$$ private static void setupForgeConfigGui() {
     //$$     ForgePlatformCompat.getInstance()
-    //$$             .getMod(SharedConstants.getModIdentifierCurrent())
+    //$$             .getMod(SharedConstants.getModIdentifier())
     //$$             .registerModConfigScreen(screen -> {
     //$$                 ConfigGui gui = new ConfigGui();
     //$$                 gui.setParentGui(screen);

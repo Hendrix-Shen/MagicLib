@@ -12,15 +12,10 @@ public class SharedConstants {
     @Getter
     private static final String modIdentifier = "@MOD_IDENTIFIER@";
     @Getter
-    private static final String modIdentifierCurrent = "@MOD_IDENTIFIER@_@MINECRAFT_VERSION_IDENTIFY@";
-    @Getter
     private static final String modName = "@MOD_NAME@";
     @Getter
-    private static final String modNameCurrent = MagicLib.getInstance().getPlatformManage().getCurrentPlatform()
-            .getModName(SharedConstants.modIdentifierCurrent);
-    @Getter
     private static final String modVersion = MagicLib.getInstance().getPlatformManage().getCurrentPlatform()
-            .getModVersion(SharedConstants.modIdentifierCurrent);
+            .getModVersion(SharedConstants.modIdentifier);
     @Getter
     private static final String modVersionType = VersionUtil.getVersionType(SharedConstants.modVersion);
     @Getter

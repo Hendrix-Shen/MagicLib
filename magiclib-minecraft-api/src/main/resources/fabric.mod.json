@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}_${minecraft_version_id}",
+  "id": "${mod_id}",
   "name": "${mod_name}",
   "description": "${mod_description}",
   "icon": "assets/${mod_alias}/icon.png",
   "version": "${mod_version}",
   "provides": [
-    "${mod_alias}-${minecraft_version_id}"
+    "${mod_alias}"
   ],
   "authors": [
     {
@@ -46,6 +46,7 @@
     "magiclib-minecraft-api.mixins.json"
   ],
   "depends": {
+    "magiclib-core": "*",
     "minecraft": "${minecraft_dependency}"
   },
   "custom": {

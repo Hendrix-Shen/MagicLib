@@ -3,11 +3,8 @@
   "id": "${mod_id}",
   "name": "${mod_name}",
   "description": "${mod_description}",
-  "icon": "assets/${mod_alias}/icon.png",
+  "icon": "assets/${mod_id}/icon.png",
   "version": "${mod_version}",
-  "provides": [
-    "${mod_alias}"
-  ],
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -33,42 +30,22 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "top.hendrixshen.magiclib.entrypoint.malilib.MagicLibFabric"
     ],
     "client": [
-      "top.hendrixshen.magiclib.entrypoint.malilib.MagicLibFabric"
     ],
     "server": [
-      "top.hendrixshen.magiclib.entrypoint.malilib.MagicLibFabric"
-    ],
-    "modmenu": [
-      "top.hendrixshen.magiclib.game.malilib.ModMenuImpl"
     ]
   },
   "mixins": [
-    "magiclib-malilib-extra.mixins.json"
   ],
   "depends": {
-    "magiclib-minecraft-api": "*",
-    "malilib": "*",
-    "minecraft": "${minecraft_dependency}"
   },
   "custom": {
     "modmenu:api": true,
-    "modmenu:parent": "${root_mod_id}",
     "modmenu": {
       "badges": [
         "library"
-      ],
-      "parent": {
-        "id": "${root_mod_id}",
-        "name": "${root_mod_name}",
-        "description": "${root_mod_description}",
-        "icon": "assets/${mod_alias}/icon.png",
-        "badges": [
-          "library"
-        ]
-      }
+      ]
     }
   }
 }

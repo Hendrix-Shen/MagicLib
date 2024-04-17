@@ -3,7 +3,7 @@ loaderVersion = "*"
 license = "${mod_license}"
 
 [[mods]]
-modId = "${mod_id}_${minecraft_version_id}"
+modId = "${mod_id}"
 version = "${mod_version}"
 displayName = "${mod_name}"
 description = '''

@@ -20,7 +20,7 @@ public class ModMenuImpl implements ModMenuApiCompat {
 
     @Override
     public String getModIdCompat() {
-        return SharedConstants.getModIdentifierCurrent();
+        return SharedConstants.getModIdentifier();
     }
 }
 //#endif

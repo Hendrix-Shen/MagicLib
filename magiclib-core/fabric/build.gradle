@@ -19,7 +19,7 @@ processResources {
                 "mod_license"         : project.parent.property("mod.license"),
                 "mod_name"            : project.parent.property("mod.name"),
                 "mod_sources"         : project.parent.property("mod.sources"),
-                "mod_version"         : project.getVersionWithCommitHash(this.project),
+                "mod_version"         : project.getVersionWithCommitHash(this.project.parent),
                 "root_mod_id"         : rootProject.property("mod.id"),
                 "root_mod_name"       : rootProject.property("mod.name"),
                 "root_mod_description": rootProject.property("mod.description")

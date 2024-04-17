@@ -5,7 +5,7 @@
 //$$ import top.hendrixshen.magiclib.api.entrypoint.ModInitializer;
 //$$ import top.hendrixshen.magiclib.game.malilib.MalilibStuffsInitializer;
 //$$
-//$$ @Mod("@MOD_IDENTIFIER@_@MINECRAFT_VERSION_IDENTIFY@")
+//$$ @Mod("@MOD_IDENTIFIER@")
 //$$ public class MagicLibForge implements ModInitializer {
 //$$     public MagicLibForge() {
 //$$         this.construct();

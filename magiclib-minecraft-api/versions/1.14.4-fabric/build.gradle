@@ -101,6 +101,7 @@ dependencies {
 loom {
     silentMojangMappingsLicense()
     accessWidenerPath.set(file("src/main/resources/${project.parent.property("mod.id")}.accesswidener"))
+    enableTransitiveAccessWideners.set(true)
 
     if (modPlatform == "forge") {
         forge {
@@ -249,7 +250,6 @@ processResources {
             filesMatching(file) {
                 expand([
                         "minecraft_dependency": project.property("dependencies.minecraft_dependency"),
-                        "minecraft_version_id": project.property("dependencies.minecraft_version").toString().replace(".", "_"),
                         "mod_alias"           : project.parent.property("mod.id"),
                         "mod_description"     : project.parent.property("mod.description"),
                         "mod_homepage"        : project.parent.property("mod.homepage"),
@@ -257,7 +257,7 @@ processResources {
                         "mod_license"         : project.parent.property("mod.license"),
                         "mod_name"            : project.parent.property("mod.name"),
                         "mod_sources"         : project.parent.property("mod.sources"),
-                        "mod_version"         : project.getVersionWithCommitHash(this.project),
+                        "mod_version"         : project.getVersionWithCommitHash(this.project.parent),
                         "root_mod_id"         : rootProject.property("mod.id"),
                         "root_mod_name"       : rootProject.property("mod.name"),
                         "root_mod_description": rootProject.property("mod.description"),
@@ -394,7 +394,6 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
 }
 
 Map<Object, Object> replaceTokenMap = Map.of(
-        "@MINECRAFT_VERSION_IDENTIFY@", project.property("dependencies.minecraft_version").toString().replace(".", "_"),
         "@MOD_IDENTIFIER@"            , project.parent.property("mod.id").toString().replace("-", "_"),
         "@MOD_NAME@"                  , rootProject.property("mod.name")
 )

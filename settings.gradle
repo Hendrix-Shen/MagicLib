@@ -1,5 +1,8 @@
 import groovy.json.JsonSlurper
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 pluginManagement {
     repositories {
         mavenLocal()
@@ -77,24 +80,32 @@ Map<String, Map<String, ?>> settings = file("settings.json").withReader {
     new JsonSlurper().parse(it) as Map<String, Map<String, ?>>
 }
 
-for (String module_name: settings.projects.keySet()) {
-    Map<String, ?> project_detail = settings.projects.get(module_name) as Map<String, ?>
+Map<String, Set<String>> wrappers = new HashMap<>()
+
+for (String module_name : settings.get("projects").keySet()) {
+    Map<String, ?> project_detail = settings.get("projects").get(module_name) as Map<String, ?>
     String prefix = project_detail.get("prefix")
     List<String> versions = project_detail.get("versions") as List<String>
     String root_node_name = versions.get(0)
 
-    for(String ver: versions) {
+    for (String ver : versions) {
+        Matcher matcher = Pattern.compile("^((?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)(?:_\\w+)*)-(fabric|forge|neoforge|quilt)?\$").matcher(ver)
+
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid submodule name: ${ver}")
+        }
+
         String project_name = "${module_name}:${prefix}-${ver}"
         include("${project_name}")
-
         ProjectDescriptor proj = project(":${project_name}")
         proj.setProjectDir(file("${module_name}/versions/${ver}"))
         proj.setBuildFileName("../${root_node_name}/build.gradle")
+        wrappers.computeIfAbsent(matcher.group(2), key -> new HashSet<>()).add(matcher.group(1))
     }
 }
 
-if (Boolean.parseBoolean(this.getOrDefault("ow.build.environment.local", "false") as String)) {
-    include("magiclib-wrapper:fabric:local")
-} else {
-    include("magiclib-wrapper:fabric:release")
+for (String platform : wrappers.keySet()) {
+    for (String ver : wrappers.get(platform)) {
+        include("magiclib-wrapper:${platform}:${ver}")
+    }
 }

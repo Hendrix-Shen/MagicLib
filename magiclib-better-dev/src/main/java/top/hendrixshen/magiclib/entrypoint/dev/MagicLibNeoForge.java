@@ -4,7 +4,7 @@
 //$$ import net.neoforged.fml.common.Mod;
 //$$ import top.hendrixshen.magiclib.api.entrypoint.ModInitializer;
 //$$
-//$$ @Mod("@MOD_IDENTIFIER@_@MINECRAFT_VERSION_IDENTIFY@")
+//$$ @Mod("@MOD_IDENTIFIER@")
 //$$ public class MagicLibNeoForge implements ModInitializer {
 //$$     public MagicLibNeoForge() {
 //$$         this.construct();
