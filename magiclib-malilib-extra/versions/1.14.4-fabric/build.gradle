@@ -291,6 +291,7 @@ processResources {
         if (platforms.contains(modPlatform)) {
             filesMatching(file) {
                 expand([
+                        "malilib_mod_id"      : mcVersion > 11701 ? "mafglib" : "malilib",
                         "minecraft_dependency": project.property("dependencies.minecraft_dependency"),
                         "mod_alias"           : project.parent.property("mod.id"),
                         "mod_description"     : project.parent.property("mod.description"),
