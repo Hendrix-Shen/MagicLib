@@ -12,3 +12,6 @@ ${mod_description}
 logoFile = "icon.png"
 authors = "Hendrix-Shen, Plusls"
 displayURL = "${mod_homepage}"
+
+[[mixins]]
+config = "magiclib-core-bootstrap.mixins.json"
