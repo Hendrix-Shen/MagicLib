@@ -81,8 +81,10 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
             at = @At(
                     value = "INVOKE",
                     //#if MC > 11502
-                    //$$ target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLcom/mojang/blaze3d/vertex/PoseStack;)V",
-                    //$$ remap = true
+                    //$$ target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLcom/mojang/blaze3d/vertex/PoseStack;)V"
+                    //#if FABRIC_LIKE
+                    //$$ ,remap = true
+                    //#endif
                     //#else
                     target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZ)V"
                     //#endif

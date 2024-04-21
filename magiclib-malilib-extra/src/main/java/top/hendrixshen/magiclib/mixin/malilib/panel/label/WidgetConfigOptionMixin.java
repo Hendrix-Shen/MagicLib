@@ -9,14 +9,21 @@ import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
 
 import java.util.function.Function;
+
+//#if FABRIC_LIKE
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+//#else
+//$$ import org.jetbrains.annotations.Nullable;
+//$$ import org.spongepowered.asm.mixin.injection.Inject;
+//$$ import org.spongepowered.asm.mixin.injection.ModifyArg;
+//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+//#endif
 
 @Mixin(value = WidgetConfigOption.class, remap = false)
 public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
@@ -32,18 +39,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
                 ((WidgetListConfigOptionsAccessor) this.parent).magiclib$getParent() instanceof MagicConfigGui;
     }
 
-    @ModifyArg(
-            method = "addConfigOption",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addLabel(IIIII[Ljava/lang/String;)V"
-            )
-    )
-    private String[] re(String[] strings) {
-        return strings;
-    }
-
-    // FIXME: ModifyArgs broken on Forge 1.17+
+    //#if FABRIC_LIKE
     @ModifyArgs(
             method = "addConfigOption",
             at = @At(
@@ -68,4 +64,47 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
             originalLines[i] = modifier.apply(originalLines[i]);
         }
     }
+    //#else
+    //$$ @Unique
+    //$$ private MagicIConfigBase magiclib$interceptedConfig = null;
+    //$$
+    //$$ @Inject(
+    //$$         method = "addConfigOption",
+    //$$         at = @At(
+    //$$                 value = "INVOKE",
+    //$$                 target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addLabel(IIIII[Ljava/lang/String;)V"
+    //$$         )
+    //$$ )
+    //$$ private void interceptConfig(int x, int y, float zLevel, int labelWidth, int configWidth,
+    //$$                              IConfigBase config, CallbackInfo ci) {
+    //$$     if (!this.magiclib$isMagicGui()) {
+    //$$         return;
+    //$$     }
+    //$$
+    //$$     if (!(config instanceof MagicIConfigBase)) {
+    //$$         return;
+    //$$     }
+    //$$
+    //$$     this.magiclib$interceptedConfig = (MagicIConfigBase) config;
+    //$$ }
+    //$$
+    //$$ @ModifyArg(
+    //$$         method = "addConfigOption",
+    //$$         at = @At(
+    //$$                 value = "INVOKE",
+    //$$                 target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addLabel(IIIII[Ljava/lang/String;)V"
+    //$$         )
+    //$$ )
+    //$$ private String @Nullable [] applyConfigLabelTextModifier(String[] originalLines) {
+    //$$     if (this.magiclib$interceptedConfig != null) {
+    //$$         Function<String, String> modifier = this.magiclib$interceptedConfig.getGuiDisplayLineModifier();
+    //$$
+    //$$         for (int i = 0; i < originalLines.length; i++) {
+    //$$             originalLines[i] = modifier.apply(originalLines[i]);
+    //$$         }
+    //$$     }
+    //$$
+    //$$     return originalLines;
+    //$$ }
+    //#endif
 }
