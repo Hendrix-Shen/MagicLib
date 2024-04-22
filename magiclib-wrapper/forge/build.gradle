@@ -1,0 +1,272 @@
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+import org.apache.groovy.toml.util.TomlConverter
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.apache.groovy:groovy-toml:4.0+")
+    }
+}
+
+plugins {
+    id("java")
+    id("java-library")
+    id("maven-publish")
+    id("signing")
+
+    id("com.github.johnrengelman.shadow").version("${shadow_version}")
+}
+
+allprojects {
+    apply(plugin: "java")
+    apply(plugin: "java-library")
+    apply(plugin: "maven-publish")
+    apply(plugin: "signing")
+
+    apply(plugin: "com.github.johnrengelman.shadow")
+
+    configurations {
+        register("shade")
+        register("shadeOnly")
+
+        compileOnly.extendsFrom(shade)
+    }
+}
+
+tasks.withType(AbstractPublishToMaven).configureEach {
+    enabled(false)
+}
+
+tasks.withType(Jar).configureEach {
+    enabled(false)
+}
+
+tasks.withType(ProcessResources).configureEach {
+    enabled(false)
+}
+
+subprojects {
+    Map<String, Map<String, ?>> settings = rootProject.file("settings.json").withReader {
+        new JsonSlurper().parse(it) as Map<String, Map<String, ?>>
+    }
+
+    Set<Project> submodules = new HashSet<>()
+    Project coreProject = evaluationDependsOn(":magiclib-core:${project.parent.name}")
+
+    for (String module_name : settings.get("projects").keySet()) {
+        Map<String, ?> project_detail = settings.get("projects").get(module_name) as Map<String, ?>
+        String prefix = project_detail.get("prefix")
+        List<String> versions = project_detail.get("versions") as List<String>
+        versions.findAll { it == "${project.name}-${project.parent.name}" }
+                .collect { evaluationDependsOn(":${module_name}:${prefix}-${it}") }
+                .forEach { submodules.add(it) }
+    }
+
+    dependencies {
+        shadeOnly(project(path: coreProject.path, configuration: "shadow")) {
+            transitive(false)
+        }
+
+        submodules.forEach {
+            shadeOnly(it) {
+                transitive(false)
+            }
+        }
+    }
+
+    base {
+        setArchivesName("${project.parent.property("mod.archives_base_name")}-${project.name}")
+        group("${project.parent.property("mod.maven_group")}")
+        version(project.getModVersion(rootProject))
+    }
+
+    java {
+        sourceCompatibility(JavaVersion.VERSION_1_8)
+        targetCompatibility(JavaVersion.VERSION_1_8)
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    jar {
+        enabled(false)
+        dependsOn(tasks.shadowJar)
+    }
+
+    shadowJar {
+        setArchiveClassifier(null)
+        setConfigurations([project.configurations.shade, project.configurations.shadeOnly])
+        exclude("META-INF/maven/**/*")
+
+        manifest.attributes(
+                "MixinConfigs": "magiclib-core-bootstrap.mixins.json,magiclib-minecraft-api.mixins.json,magiclib-malilib-extra.mixins.json"
+        )
+    }
+
+    processResources {
+        dependsOn(coreProject.tasks.processResources)
+
+        from(project.parent.sourceSets.main.resources.srcDirs) {
+            include("META-INF")
+            include("META-INF/mods.toml")
+            expand([
+                    "mod_description": project.property("mod.description"),
+                    "mod_homepage"   : project.property("mod.homepage"),
+                    "mod_id"         : project.property("mod.id"),
+                    "mod_license"    : project.property("mod.license"),
+                    "mod_name"       : project.property("mod.name"),
+                    "mod_sources"    : project.property("mod.sources"),
+                    "mod_version"    : project.getVersionWithCommitHash(rootProject),
+            ])
+        }
+
+        doLast {
+            File toml_file = project.layout.buildDirectory.file("resources/main/META-INF/mods.toml").get().getAsFile()
+            Map<String, ?> toml_map = toml_file.withReader {
+                new JsonSlurper().parse(new StringReader(TomlConverter.convertTomlToJson(it))) as Map<String, ?>
+            }
+
+            Set modules = new HashSet()
+            modules.add(coreProject)
+            modules.addAll(submodules)
+
+            modules.forEach {
+                File subproject_toml_file = it.layout.buildDirectory.file("resources/main/META-INF/mods.toml").get().getAsFile()
+
+                Map<String, ?> submodule_toml_map = subproject_toml_file.withReader {
+                    new JsonSlurper().parse(new StringReader(TomlConverter.convertTomlToJson(it))) as Map<String, ?>
+                }
+
+                submodule_toml_map.removeAll { String key, Object value -> value instanceof String }
+                submodule_toml_map.forEach { String key, Object value ->
+                    if (value instanceof List) {
+                        // mods, mixins
+                        (toml_map.computeIfAbsent(key, _ -> new ArrayList<>()) as List).addAll(value)
+                    } else if (value instanceof Map) {
+                        // dependencies
+                        (toml_map.computeIfAbsent(key, _ -> new HashMap<>()) as Map).putAll(value)
+                    }
+                }
+            }
+
+            toml_file.withWriter {
+                it.append(TomlConverter.convertJsonToToml(new StringReader(new JsonBuilder(toml_map).toString())))
+            }
+        }
+
+        from("${rootDir}/LICENSE")
+        from("${rootDir}/icon.png") {
+            into("assets/${project.property("mod.id")}")
+        }
+    }
+
+    signing {
+        String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getEnv().SIGNING_PGP_KEY)
+        String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getEnv().SIGNING_PGP_PASSWORD)
+
+        required {
+            signingKey
+        }
+
+        useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
+        sign(publishing.publications)
+    }
+
+    publishing {
+        publications { PublicationContainer publications ->
+            register("release", MavenPublication) { MavenPublication publication ->
+                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
+                from(components.java as SoftwareComponent)
+                version("${this.project.getMavenArtifactVersion(rootProject)}")
+                alias(false)
+                this.project.addPomMetadataInformation(this.project, publication)
+
+                pom.withXml { XmlProvider provider ->
+                    Node dependencies = provider.asNode().appendNode("dependencies")
+                    submodules.forEach { Project submodule ->
+                        Node dependency = dependencies.appendNode("dependency")
+                        dependency.appendNode("groupId", submodule.group)
+                        dependency.appendNode("artifactId", "${submodule.parent.property("mod.artifact_name")}-${submodule.name.replace("${(settings.get("projects").get(submodule.parent.name) as Map<String, ?>).get("prefix")}-", "")}")
+                        dependency.appendNode("version", "${this.project.getMavenArtifactVersion(submodule.parent)}")
+                        dependency.appendNode("scope", "compile")
+                    }
+                }
+            }
+
+            register("snapshot", MavenPublication) { MavenPublication publication ->
+                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
+                from(components.java as SoftwareComponent)
+                version("${project.property("mod.version")}-SNAPSHOT")
+                alias(true)
+                project.addPomMetadataInformation(this.project, publication)
+
+                pom.withXml { XmlProvider provider ->
+                    Node dependencies = provider.asNode().appendNode("dependencies")
+                    submodules.forEach { Project submodule ->
+                        Node dependency = dependencies.appendNode("dependency")
+                        dependency.appendNode("groupId", submodule.group)
+                        dependency.appendNode("artifactId", "${submodule.parent.property("mod.artifact_name")}-${submodule.name.replace("${(settings.get("projects").get(submodule.parent.name) as Map<String, ?>).get("prefix")}-", "")}")
+                        dependency.appendNode("version", "${this.project.getMavenArtifactVersion(submodule.parent)}")
+                        dependency.appendNode("scope", "compile")
+                    }
+                }
+            }
+        }
+
+        repositories { RepositoryHandler repositoryHandler ->
+            mavenLocal {
+                name("mavenLocal")
+            }
+
+            maven {
+                name("projectLocalSnapshot")
+                url("${rootDir}/publish/snapshot")
+            }
+
+            maven {
+                name("projectLocalRelease")
+                url("${rootDir}/publish/release")
+            }
+
+            maven {
+                name("mavenCentralSnapshot")
+                url("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+
+                project.credentialsMavenCentral(it)
+            }
+
+            maven {
+                name("mavenCentralRelease")
+                url("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+                project.credentialsMavenCentral(it)
+            }
+        }
+    }
+
+    // Solutions from: https://youtrack.jetbrains.com/issue/KT-46466
+    TaskCollection<Sign> signingTasks = tasks.withType(Sign)
+    tasks.withType(AbstractPublishToMaven).configureEach {
+        dependsOn(signingTasks)
+    }
+
+    tasks.withType(PublishToMavenRepository).configureEach {
+        Provider<Boolean> predicate = provider {
+            repository == publishing.repositories.mavenLocal ||
+                    (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
+                    (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
+                    (repository == publishing.repositories.mavenCentralSnapshot && publication == publishing.publications.snapshot && project.isMavenCentralCredentialsExist()) ||
+                    (repository == publishing.repositories.mavenCentralRelease && publication == publishing.publications.release && project.isMavenCentralCredentialsExist())
+        }
+
+        onlyIf {
+            predicate.get()
+        }
+    }
+}
+
+
+

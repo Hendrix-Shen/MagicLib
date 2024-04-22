@@ -1,0 +1,3 @@
+modLoader = "javafml"
+loaderVersion = "*"
+license = "${mod_license}"
