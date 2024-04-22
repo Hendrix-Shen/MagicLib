@@ -15,11 +15,21 @@ allprojects {
     apply(plugin: "signing")
 }
 
-tasks.withType(AbstractPublishToMaven).configureEach {
-    enabled(false)
+Project coreProject = evaluationDependsOn(":magiclib-core:${project.name}")
+
+jar {
+    delete(project.layout.buildDirectory.file("tmp/submods"))
+
+    copy {
+        from {
+            coreProject.tasks.shadowJar.outputs.files
+        }
+
+        into(project.layout.buildDirectory.file("tmp/submods/publish"))
+    }
 }
 
-tasks.withType(Jar).configureEach {
+tasks.withType(AbstractPublishToMaven).configureEach {
     enabled(false)
 }
 
@@ -33,7 +43,6 @@ subprojects {
     }
 
     Set<Project> submodules = new HashSet<>()
-    Project coreProject = evaluationDependsOn(":magiclib-core:${project.parent.name}")
 
     for (String module_name : settings.get("projects").keySet()) {
         Map<String, ?> project_detail = settings.get("projects").get(module_name) as Map<String, ?>
@@ -44,34 +53,8 @@ subprojects {
                 .forEach { submodules.add(it) }
     }
 
-    repositories {
-        mavenLocal()
-
-        maven {
-            name("Curse Maven")
-            url("https://www.cursemaven.com")
-
-            content {
-                includeGroup("curse.maven")
-            }
-        }
-
-        maven {
-            name("Modrinth Maven")
-            url("https://api.modrinth.com/maven")
-
-            content {
-                includeGroup("maven.modrinth")
-            }
-        }
-
-        maven {
-            name("FabricMC")
-            url("https://maven.fabricmc.net")
-        }
-
-        mavenCentral()
-    }
+    Set<Project> submodules_publish = submodules.findAll { !it.name.contains("better-dev") }
+    Set<Project> submodules_unpublish = submodules.findAll { !(it in submodules_publish) }
 
     base {
         setArchivesName("${project.parent.property("mod.archives_base_name")}-${project.name}")
@@ -88,27 +71,39 @@ subprojects {
 
     jar {
         dependsOn(submodules.collect { it.tasks.remapJar })
-        dependsOn(coreProject.tasks.shadowJar)
+        dependsOn(project.parent.tasks.jar)
 
         doFirst {
-            delete fileTree("build/tmp/submods/META-INF/jars")
+            delete(project.layout.buildDirectory.file("tmp/submods"))
 
             copy {
                 from {
-                    coreProject.tasks.shadowJar.outputs.files
-                }
-
-                from {
-                    submodules.collect {
+                    submodules_publish.collect {
                         it.tasks.remapJar.outputs.files
                     }
                 }
 
-                into("build/tmp/submods/META-INF/jars")
+                into(project.layout.buildDirectory.file("tmp/submods/publish"))
+            }
+
+            copy {
+                from {
+                    submodules_unpublish.collect {
+                        it.tasks.remapJar.outputs.files
+                    }
+                }
+
+                into(project.layout.buildDirectory.file("tmp/submods/unpublish"))
             }
         }
 
-        from("build/tmp/submods")
+        from(project.layout.buildDirectory.file("tmp/submods/publish")) {
+            into("META-INF/jars")
+        }
+
+        from(project.parent.layout.buildDirectory.file("tmp/submods/publish")) {
+            into("META-INF/jars")
+        }
     }
 
     processResources {
@@ -129,12 +124,12 @@ subprojects {
             Set<String> mc_condition = []
             Set<Map<String, String>> jars = [["file": "META-INF/jars/${coreProject.parent.property("mod.archives_base_name")}-fabric-${coreProject.version}.jar"]]
 
-            submodules.forEach {
+            submodules_publish.forEach {
                 mc_condition.add("${it.property("dependencies.minecraft_dependency")}")
                 jars.add(["file": "META-INF/jars/${it.parent.property("mod.archives_base_name")}-mc${it.property("dependencies.minecraft_version")}-${it.loom.platform.get().toString().toLowerCase()}-${it.version}.jar"])
             }
 
-            File file = file("build/resources/main/fabric.mod.json")
+            File file = project.layout.buildDirectory.file("resources/main/fabric.mod.json").get().asFile
             JsonSlurper slurper = new JsonSlurper()
             JsonBuilder builder = new JsonBuilder(slurper.parse(file))
             builder.content.depends.minecraft = mc_condition
@@ -166,7 +161,7 @@ subprojects {
     publishing {
         publications { PublicationContainer publications ->
             register("release", MavenPublication) { MavenPublication publication ->
-                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
+                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}-${project.parent.name}")
                 from(components.java as SoftwareComponent)
                 version("${this.project.getMavenArtifactVersion(rootProject)}")
                 alias(false)
@@ -174,6 +169,12 @@ subprojects {
 
                 pom.withXml { XmlProvider provider ->
                     Node dependencies = provider.asNode().appendNode("dependencies")
+                    Node core_dependency = dependencies.appendNode("dependency")
+                    core_dependency.appendNode("groupId", coreProject.group)
+                    core_dependency.appendNode("artifactId", "${coreProject.parent.property("mod.artifact_name")}-${coreProject.name}")
+                    core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(rootProject)}")
+                    core_dependency.appendNode("scope", "compile")
+
                     submodules.forEach { Project submodule ->
                         Node dependency = dependencies.appendNode("dependency")
                         dependency.appendNode("groupId", submodule.group)
@@ -185,7 +186,7 @@ subprojects {
             }
 
             register("snapshot", MavenPublication) { MavenPublication publication ->
-                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
+                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}-${project.parent.name}")
                 from(components.java as SoftwareComponent)
                 version("${project.property("mod.version")}-SNAPSHOT")
                 alias(true)
@@ -193,6 +194,12 @@ subprojects {
 
                 pom.withXml { XmlProvider provider ->
                     Node dependencies = provider.asNode().appendNode("dependencies")
+                    Node core_dependency = dependencies.appendNode("dependency")
+                    core_dependency.appendNode("groupId", coreProject.group)
+                    core_dependency.appendNode("artifactId", "${coreProject.parent.property("mod.artifact_name")}-${coreProject.name}")
+                    core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(rootProject)}")
+                    core_dependency.appendNode("scope", "compile")
+
                     submodules.forEach { Project submodule ->
                         Node dependency = dependencies.appendNode("dependency")
                         dependency.appendNode("groupId", submodule.group)

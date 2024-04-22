@@ -64,6 +64,8 @@ ext {
                 return "stable"
             case "BETA":
                 return "beta"
+            case "PULL_REQUEST":
+                return "pull_request"
             default:
                 return "dev"
         }
