@@ -1,39 +1,35 @@
 package top.hendrixshen.magiclib.impl.compat.mojang.blaze3d.vertex;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.math.Quaternion;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.mojang.blaze3d.vertex.PoseStackCompat;
 
-//#if MC > 11404
+//#if MC > 11605
 //$$ import com.mojang.blaze3d.vertex.PoseStack;
+//$$ import org.jetbrains.annotations.NotNull;
+//$$ import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 //#endif
 
 @Environment(EnvType.CLIENT)
-public class PoseStackCompatImpl extends AbstractCompat<
-        //#if MC > 11404
-        //$$ PoseStack
-        //#else
-        Object
+public class PoseStackCompatImpl
+        //#if MC > 11605
+        //$$ extends AbstractCompat<PoseStack>
         //#endif
-        > implements PoseStackCompat {
-    public PoseStackCompatImpl(@NotNull
-                               //#if MC > 11404
-                               //$$ PoseStack type
-                               //#else
-                               Object type
-                               //#endif
-
+        implements PoseStackCompat {
+    public PoseStackCompatImpl(
+            //#if MC > 11605
+            //$$ @NotNull PoseStack type
+            //#endif
     ) {
-        super(type);
+        //#if MC > 11605
+        //$$ super(type);
+        //#endif
     }
 
     @Override
     public void translate(double x, double y, double z) {
-        //#if MC > 11404
+        //#if MC > 11605
         //$$ this.get().translate(x, y, z);
         //#else
         GlStateManager.translated(x, y, z);
@@ -42,7 +38,7 @@ public class PoseStackCompatImpl extends AbstractCompat<
 
     @Override
     public void scale(float x, float y, float z) {
-        //#if MC > 11404
+        //#if MC > 11605
         //$$ this.get().scale(x, y, z);
         //#else
         GlStateManager.scaled(x, y, z);
@@ -50,18 +46,8 @@ public class PoseStackCompatImpl extends AbstractCompat<
     }
 
     @Override
-    public void mulPose(@NotNull Quaternion quaternion) {
-        // //#if MC > 11404
-        // //$$ this.get().mulPose(quaternion);
-        // //#else
-        // GlStateManager.rotatef(0, quaternion.i(), quaternion.j(), quaternion.k());
-        // //#endif
-        // TODO
-    }
-
-    @Override
     public void pushPose() {
-        //#if MC > 11404
+        //#if MC > 11605
         //$$ this.get().pushPose();
         //#else
         GlStateManager.pushMatrix();
@@ -70,7 +56,7 @@ public class PoseStackCompatImpl extends AbstractCompat<
 
     @Override
     public void popPose() {
-        //#if MC > 11404
+        //#if MC > 11605
         //$$ this.get().popPose();
         //#else
         GlStateManager.popMatrix();

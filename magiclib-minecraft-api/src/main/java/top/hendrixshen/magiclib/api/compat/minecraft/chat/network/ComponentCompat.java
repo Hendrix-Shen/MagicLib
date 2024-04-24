@@ -16,19 +16,23 @@ public interface ComponentCompat extends Provider<Component> {
     }
 
     static @NotNull MutableComponentCompat literal(String text) {
-        //#if MC > 11802
-        //$$ return MutableComponentCompat.of(Component.literal(text));
-        //#else
-        return MutableComponentCompat.of(new TextComponent(text));
-        //#endif
+        return MutableComponentCompat.of(
+                //#if MC > 11802
+                //$$ Component.literal(text)
+                //#else
+                new TextComponent(text)
+                //#endif
+        );
     }
 
     static @NotNull MutableComponentCompat translatable(String text, Object... objects) {
-        //#if MC > 11802
-        //$$ return MutableComponentCompat.of(Component.translatable(text, objects));
-        //#else
-        return MutableComponentCompat.of(new TranslatableComponent(text, objects));
-        //#endif
+        return MutableComponentCompat.of(
+                //#if MC > 11802
+                //$$ Component.translatable(text, objects)
+                //#else
+                new TranslatableComponent(text, objects)
+                //#endif
+        );
     }
 
     StyleCompat getStyle();
