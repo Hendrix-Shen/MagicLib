@@ -26,17 +26,17 @@ import net.minecraft.server.players.GameProfileCache;
 
 //#if MC > 11502
 //#if MC > 11701
-//$$ import net.minecraft.server.WorldStem;
+import net.minecraft.server.WorldStem;
 //#else
 //$$ import net.minecraft.core.RegistryAccess;
 //$$ import net.minecraft.server.ServerResources;
 //$$ import net.minecraft.world.level.storage.WorldData;
 //#endif
-//$$ import net.minecraft.server.packs.repository.PackRepository;
-//$$ import net.minecraft.world.level.storage.LevelStorageSource;
+import net.minecraft.server.packs.repository.PackRepository;
+import net.minecraft.world.level.storage.LevelStorageSource;
 //#else
-import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import net.minecraft.world.level.LevelSettings;
+//$$ import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+//$$ import net.minecraft.world.level.LevelSettings;
 //#endif
 
 @CompositeDependencies(
@@ -59,26 +59,26 @@ public class IntegratedServerMixin {
     )
     private void onInstanceInit(
             //#if MC > 11502
-            //$$ Thread thread,
+            Thread thread,
             //#endif
             Minecraft minecraft,
             //#if MC > 11502
             //#if MC < 11802
             //$$ RegistryAccess.RegistryHolder registryHolder,
             //#endif
-            //$$ LevelStorageSource.LevelStorageAccess levelStorageAccess,
-            //$$ PackRepository packRepository,
+            LevelStorageSource.LevelStorageAccess levelStorageAccess,
+            PackRepository packRepository,
             //#if MC > 11701
-            //$$ WorldStem worldStem,
+            WorldStem worldStem,
             //#else
             //$$ ServerResources serverResources,
             //$$ WorldData worldData,
             //#endif
             //#else
-            String levelIdName,
-            String levelName,
-            LevelSettings levelSettings,
-            YggdrasilAuthenticationService yggdrasilAuthenticationService,
+            //$$ String levelIdName,
+            //$$ String levelName,
+            //$$ LevelSettings levelSettings,
+            //$$ YggdrasilAuthenticationService yggdrasilAuthenticationService,
             //#endif
             //#if MC > 11802
             //$$ Services services,

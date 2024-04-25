@@ -12,9 +12,9 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
 
 //#if MC > 11502
-//$$ import net.minecraft.server.Main;
+import net.minecraft.server.Main;
 //#else
-import net.minecraft.server.MinecraftServer;
+//$$ import net.minecraft.server.MinecraftServer;
 //#endif
 
 @CompositeDependencies(
@@ -27,9 +27,9 @@ import net.minecraft.server.MinecraftServer;
 )
 @Mixin(
         //#if MC > 11502
-        //$$ Main.class
+        Main.class
         //#else
-        MinecraftServer.class
+        //$$ MinecraftServer.class
         //#endif
 )
 public class MinecraftServerMixin {

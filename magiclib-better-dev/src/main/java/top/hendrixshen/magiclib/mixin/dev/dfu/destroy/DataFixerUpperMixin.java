@@ -2,7 +2,7 @@ package top.hendrixshen.magiclib.mixin.dev.dfu.destroy;
 
 import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixerUpper;
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Dynamic;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

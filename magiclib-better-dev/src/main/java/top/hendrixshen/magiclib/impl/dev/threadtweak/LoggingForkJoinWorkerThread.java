@@ -4,9 +4,9 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinWorkerThread;
 
 //#if MC > 11701
-//$$ import org.slf4j.Logger;
+import org.slf4j.Logger;
 //#else
-import org.apache.logging.log4j.Logger;
+//$$ import org.apache.logging.log4j.Logger;
 //#endif
 
 public class LoggingForkJoinWorkerThread extends ForkJoinWorkerThread {

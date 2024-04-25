@@ -32,11 +32,11 @@ public class UtilMixin {
     //$$ private static boolean magiclib$initDownloadWorker = false;
     //#endif
     //#if MC < 11904
-    //$$ @Unique
-    //$$ private static boolean magiclib$initBootstrapWorker = false;
+    @Unique
+    private static boolean magiclib$initBootstrapWorker = false;
     //#endif
-    //$$ @Unique
-    //$$ private static boolean magiclib$initIoWorker = false;
+    @Unique
+    private static boolean magiclib$initIoWorker = false;
     //#endif
     @Unique
     private static boolean magiclib$initMainWorker = false;
@@ -49,15 +49,15 @@ public class UtilMixin {
     //$$ private static ExecutorService DOWNLOAD_POOL;
     //#endif
     //#if MC < 11904
-    //$$ @Mutable
-    //$$ @Shadow
-    //$$ @Final
-    //$$ private static ExecutorService BOOTSTRAP_EXECUTOR;
+    @Mutable
+    @Shadow
+    @Final
+    private static ExecutorService BOOTSTRAP_EXECUTOR;
     //#endif
-    //$$ @Mutable
-    //$$ @Shadow
-    //$$ @Final
-    //$$ private static ExecutorService IO_POOL;
+    @Mutable
+    @Shadow
+    @Final
+    private static ExecutorService IO_POOL;
     //#endif
     @Mutable
     @Shadow
@@ -65,15 +65,15 @@ public class UtilMixin {
     private static ExecutorService BACKGROUND_EXECUTOR;
 
     //#if MC > 11502
-    //$$ @Shadow
-    //$$ private static native void onThreadException(Thread thread, Throwable throwable);
+    @Shadow
+    private static native void onThreadException(Thread thread, Throwable throwable);
     //#endif
 
     @Inject(
             //#if MC > 11502
-            //$$ method = "backgroundExecutor",
+            method = "backgroundExecutor",
             //#else
-            method = "makeBackgroundExecutor",
+            //$$ method = "makeBackgroundExecutor",
             //#endif
             at = @At(
                     value = "HEAD"
@@ -109,41 +109,41 @@ public class UtilMixin {
     //$$     UtilMixin.magiclib$initDownloadWorker = true;
     //$$ }
     //#endif
-    //$$
+
     //#if MC < 11904
-    //$$ @Inject(
-    //$$         method = "bootstrapExecutor",
-    //$$         at = @At(
-    //$$                 value = "HEAD"
-    //$$         )
-    //$$ )
-    //$$ private static void onBootstrapExecutor(CallbackInfoReturnable<Executor> ci) {
-    //$$     if (UtilMixin.magiclib$initBootstrapWorker) {
-    //$$         return;
-    //$$     }
-    //$$
-    //$$     UtilMixin.BOOTSTRAP_EXECUTOR = ThreadTweaker.replaceForkJoinWorker("Bootstrap",
-    //$$             ThreadTweaker.getBootstrapPriority(), ThreadTweaker.getMainCount());
-    //$$     MagicLib.getLogger().debug("Main worker replaced");
-    //$$     UtilMixin.magiclib$initBootstrapWorker = true;
-    //$$ }
+    @Inject(
+            method = "bootstrapExecutor",
+            at = @At(
+                    value = "HEAD"
+            )
+    )
+    private static void onBootstrapExecutor(CallbackInfoReturnable<Executor> ci) {
+        if (UtilMixin.magiclib$initBootstrapWorker) {
+            return;
+        }
+
+        UtilMixin.BOOTSTRAP_EXECUTOR = ThreadTweaker.replaceForkJoinWorker("Bootstrap",
+                ThreadTweaker.getBootstrapPriority(), ThreadTweaker.getMainCount());
+        MagicLib.getLogger().debug("Main worker replaced");
+        UtilMixin.magiclib$initBootstrapWorker = true;
+    }
     //#endif
-    //$$
-    //$$ @Inject(
-    //$$         method = "ioPool",
-    //$$         at = @At(
-    //$$                 value = "HEAD"
-    //$$         )
-    //$$ )
-    //$$ private static void onIoPool(CallbackInfoReturnable<Executor> cir) {
-    //$$     if (UtilMixin.magiclib$initIoWorker) {
-    //$$         return;
-    //$$     }
-    //$$
-    //$$     UtilMixin.IO_POOL = ThreadTweaker.replaceThreadWorker("IO", ThreadTweaker.getIOPriority(),
-    //$$             UtilMixin::onThreadException);
-    //$$     MagicLib.getLogger().debug("IO worker replaced");
-    //$$     UtilMixin.magiclib$initIoWorker = true;
-    //$$ }
+
+    @Inject(
+            method = "ioPool",
+            at = @At(
+                    value = "HEAD"
+            )
+    )
+    private static void onIoPool(CallbackInfoReturnable<Executor> cir) {
+        if (UtilMixin.magiclib$initIoWorker) {
+            return;
+        }
+
+        UtilMixin.IO_POOL = ThreadTweaker.replaceThreadWorker("IO", ThreadTweaker.getIOPriority(),
+                UtilMixin::onThreadException);
+        MagicLib.getLogger().debug("IO worker replaced");
+        UtilMixin.magiclib$initIoWorker = true;
+    }
     //#endif
 }

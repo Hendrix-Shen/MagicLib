@@ -26,9 +26,9 @@ public class ThreadTweaker {
         AtomicInteger atomicInteger = new AtomicInteger(1);
         return new ForkJoinPool(Mth.clamp(counter, 1, 0x7fff), (forkJoinPool) -> {
             //#if MC > 11502
-            //$$ String workerName = "Worker-" + name + "-" + atomicInteger.getAndIncrement();
+            String workerName = "Worker-" + name + "-" + atomicInteger.getAndIncrement();
             //#else
-            String workerName = "Server-Worker-" + name + "-" + atomicInteger.getAndIncrement();
+            //$$ String workerName = "Server-Worker-" + name + "-" + atomicInteger.getAndIncrement();
             //#endif
             MagicLib.getLogger().debug("Initialized " + workerName);
             ForkJoinWorkerThread forkJoinWorkerThread = new LoggingForkJoinWorkerThread(forkJoinPool,
