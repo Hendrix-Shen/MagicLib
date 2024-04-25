@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
-//$$ import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 /**
@@ -103,7 +103,7 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
             //#if MC > 11904
             //$$ , GuiGraphics poseStackOrGuiGraphics
             //#elseif MC > 11502
-            //$$ , PoseStack poseStackOrGuiGraphics
+            , PoseStack poseStackOrGuiGraphics
             //#endif
     ) {
         super.postRenderHovered(
@@ -111,7 +111,7 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
                 mouseY,
                 selected
                 //#if MC > 11502
-                //$$ , poseStackOrGuiGraphics
+                , poseStackOrGuiGraphics
                 //#endif
         );
 
@@ -119,13 +119,13 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
             RenderUtils.drawHoverText(
                     mouseX, mouseY, Collections.singletonList(this.hoverText.getStringValue())
                     //#if MC > 11502
-                    //$$ , poseStackOrGuiGraphics
+                    , poseStackOrGuiGraphics
                     //#endif
             );
             //#if MC > 11404
-            //$$ RenderUtils.disableDiffuseLighting();
+            RenderUtils.disableDiffuseLighting();
             //#else
-            RenderUtils.disableItemLighting();
+            //$$ RenderUtils.disableItemLighting();
             //#endif
         }
     }

@@ -16,7 +16,7 @@ import top.hendrixshen.magiclib.util.MiscUtil;
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
-//$$ import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 /**
@@ -44,7 +44,7 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
             //#if MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
             //#elseif MC > 11502
-            //$$ PoseStack poseStackOrGuiGraphics,
+            PoseStack poseStackOrGuiGraphics,
             //#endif
             int mouseX,
             int mouseY
@@ -55,7 +55,7 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
             // Render it again to make sure it's on the top but below hovering widgets.
             ((MagicConfigGui) guiConfig).renderDropDownList(
                     //#if MC > 11600
-                    //$$ poseStackOrGuiGraphics,
+                    poseStackOrGuiGraphics,
                     //#endif
                     mouseX,
                     mouseY
@@ -81,18 +81,18 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
             at = @At(
                     value = "INVOKE",
                     //#if MC > 11502
-                    //$$ target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLcom/mojang/blaze3d/vertex/PoseStack;)V"
+                    target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLcom/mojang/blaze3d/vertex/PoseStack;)V"
                     //#if FABRIC_LIKE
-                    //$$ ,remap = true
+                    ,remap = true
                     //#endif
                     //#else
-                    target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZ)V"
+                    //$$ target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZ)V"
                     //#endif
             )
     )
     private void drawMagicConfigGuiDropDownListAgainBeforeHover(
             //#if MC > 11502
-            //$$ PoseStack poseStack,
+            PoseStack poseStack,
             //#endif
             int mouseX,
             int mouseY,
@@ -101,7 +101,7 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
     ) {
         this.magiclib$drawMagicConfigGuiDropDownListAgain(
                 //#if MC > 11502
-                //$$ poseStack,
+                poseStack,
                 //#endif
                 mouseX,
                 mouseY
@@ -119,7 +119,7 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
             //#if MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
             //#elseif MC > 11502
-            //$$ PoseStack poseStackOrGuiGraphics,
+            PoseStack poseStackOrGuiGraphics,
             //#endif
             int mouseX,
             int mouseY,
@@ -128,7 +128,7 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
     ) {
         this.magiclib$drawMagicConfigGuiDropDownListAgain(
                 //#if MC > 11502
-                //$$ poseStackOrGuiGraphics,
+                poseStackOrGuiGraphics,
                 //#endif
                 mouseX,
                 mouseY

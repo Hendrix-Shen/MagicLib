@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
-//$$ import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 public class MagicConfigGui extends GuiConfigsBase {
@@ -256,14 +256,14 @@ public class MagicConfigGui extends GuiConfigsBase {
             //#if MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
             //#elseif MC > 11502
-            //$$ PoseStack poseStackOrGuiGraphics,
+            PoseStack poseStackOrGuiGraphics,
             //#endif
             int mouseX, int mouseY
     ) {
         this.hoveringWidgets.forEach(widget -> widget.render(
                 mouseX, mouseY, widget.isMouseOver(mouseX, mouseY)
                 //#if MC > 11502
-                //$$ , poseStackOrGuiGraphics
+                , poseStackOrGuiGraphics
                 //#endif
         ));
     }
