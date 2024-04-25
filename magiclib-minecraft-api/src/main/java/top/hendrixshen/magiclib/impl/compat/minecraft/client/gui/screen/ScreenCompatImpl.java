@@ -23,20 +23,20 @@ public class ScreenCompatImpl extends AbstractCompat<Screen> implements ScreenCo
         //#if FORGE
         //$$ return this.get().addRenderableWidget((AbstractWidget) guiEventListener);
         //#else
-        //$$ return ((ScreenAccessor) this.get()).magiclib$invokeAddRenderableWidget(guiEventListener);
+        return ((ScreenAccessor) this.get()).magiclib$invokeAddRenderableWidget(guiEventListener);
         //#endif
         //#else
-        return ((ScreenAccessor) this.get()).magiclib$invokeAddButton((AbstractWidget) guiEventListener);
+        //$$ return ((ScreenAccessor) this.get()).magiclib$invokeAddButton((AbstractWidget) guiEventListener);
         //#endif
     }
 
     @Override
     public Widget addRenderableOnly(Widget widget) {
         //#if MC > 11605
-        //$$ return ((ScreenAccessor) this.get()).magiclib$invokeAddRenderableOnly(widget);
+        return ((ScreenAccessor) this.get()).magiclib$invokeAddRenderableOnly(widget);
         //#else
-        ((ScreenAccessor) this.get()).magiclib$getButtons().add((AbstractWidget) widget);
-        return widget;
+        //$$ ((ScreenAccessor) this.get()).magiclib$getButtons().add((AbstractWidget) widget);
+        //$$ return widget;
         //#endif
     }
 
@@ -46,11 +46,11 @@ public class ScreenCompatImpl extends AbstractCompat<Screen> implements ScreenCo
         //#if FORGE
         //$$ return this.get().addWidget((AbstractWidget) guiEventListener);
         //#else
-        //$$ return ((ScreenAccessor) this.get()).magiclib$invokeAddWidget(guiEventListener);
+        return ((ScreenAccessor) this.get()).magiclib$invokeAddWidget(guiEventListener);
         //#endif
         //#else
-        ((ScreenAccessor) this.get()).magiclib$getChildren().add(guiEventListener);
-        return guiEventListener;
+        //$$ ((ScreenAccessor) this.get()).magiclib$getChildren().add(guiEventListener);
+        //$$ return guiEventListener;
         //#endif
 
     }

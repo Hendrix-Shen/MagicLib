@@ -16,9 +16,9 @@ public interface StyleCompat extends Provider<Style> {
 
     static @NotNull Style empty() {
         //#if MC > 11502
-        //$$ return Style.EMPTY;
+        return Style.EMPTY;
         //#else
-        return new Style();
+        //$$ return new Style();
         //#endif
     }
 

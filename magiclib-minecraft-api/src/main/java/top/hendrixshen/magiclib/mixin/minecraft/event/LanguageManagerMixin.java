@@ -1,6 +1,6 @@
 package top.hendrixshen.magiclib.mixin.minecraft.event;
 
-import net.minecraft.client.resources.language.Language;
+import net.minecraft.client.resources.language.LanguageInfo;
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +33,7 @@ public class LanguageManagerMixin {
             //#if MC > 11903
             //$$ String languageCode,
             //#else
-            Language language,
+            LanguageInfo language,
             //#endif
             CallbackInfo ci
     ) {

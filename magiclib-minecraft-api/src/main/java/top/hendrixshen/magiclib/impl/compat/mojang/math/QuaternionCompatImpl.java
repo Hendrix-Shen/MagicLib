@@ -19,29 +19,29 @@ public class QuaternionCompatImpl extends AbstractCompat<Quaternion> implements 
     @Override
     public void mul(float f) {
         //#if MC > 11404
-        //$$ this.get().mul(f);
+        this.get().mul(f);
         //#else
-        float[] v = ((QuaternionAccessor) MiscUtil.cast(this.get())).magiclib$getValues();
-        v[0] *= f;
-        v[1] *= f;
-        v[2] *= f;
-        v[3] *= f;
+        //$$ float[] v = ((QuaternionAccessor) MiscUtil.cast(this.get())).magiclib$getValues();
+        //$$ v[0] *= f;
+        //$$ v[1] *= f;
+        //$$ v[2] *= f;
+        //$$ v[3] *= f;
         //#endif
     }
 
     public void normalize() {
         //#if MC > 11404
-        //$$ this.get().normalize();
+        this.get().normalize();
         //#else
-        Quaternion quaternion = this.get();
-        float k = quaternion.i() * quaternion.i() + quaternion.j() * quaternion.j() +
-                quaternion.k() * quaternion.k() + quaternion.r() * quaternion.r();
-
-        if (k > 1.0E-6F) {
-            this.mul((float) Mth.fastInvSqrt(k));
-        } else {
-            this.mul(0.0F);
-        }
+        //$$ Quaternion quaternion = this.get();
+        //$$ float k = quaternion.i() * quaternion.i() + quaternion.j() * quaternion.j() +
+        //$$         quaternion.k() * quaternion.k() + quaternion.r() * quaternion.r();
+        //$$
+        //$$ if (k > 1.0E-6F) {
+        //$$     this.mul((float) Mth.fastInvSqrt(k));
+        //$$ } else {
+        //$$     this.mul(0.0F);
+        //$$ }
         //#endif
     }
 
@@ -50,9 +50,9 @@ public class QuaternionCompatImpl extends AbstractCompat<Quaternion> implements 
                 //#if MC > 11902
                 //$$ new Quaternionf(this.get())
                 //#elseif MC > 11404
-                //$$ this.get().copy()
+                this.get().copy()
                 //#else
-                new Quaternion(this.get())
+                //$$ new Quaternion(this.get())
                 //#endif
         );
     }

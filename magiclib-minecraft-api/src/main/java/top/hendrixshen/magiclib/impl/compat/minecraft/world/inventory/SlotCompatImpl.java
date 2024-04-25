@@ -14,9 +14,9 @@ public class SlotCompatImpl extends AbstractCompat<Slot> implements SlotCompat {
     @Override
     public int getContainerSlot() {
         //#if MC > 11605
-        //$$ return this.get().getContainerSlot();
+        return this.get().getContainerSlot();
         //#else
-        return ((SlotAccessor) this.get()).magiclib$getSlot();
+        //$$ return ((SlotAccessor) this.get()).magiclib$getSlot();
         //#endif
     }
 }

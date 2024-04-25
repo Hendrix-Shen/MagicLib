@@ -12,9 +12,9 @@ import top.hendrixshen.magiclib.impl.event.minecraft.MinecraftEvent;
 public class MinecraftMixin {
     @Inject(
             //#if MC > 11404
-            //$$ method = "<init>",
+            method = "<init>",
             //#else
-            method = "init",
+            //$$ method = "init",
             //#endif
             at = @At(
                     value = "RETURN"

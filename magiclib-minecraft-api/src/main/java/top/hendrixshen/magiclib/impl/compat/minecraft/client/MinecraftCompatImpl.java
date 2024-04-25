@@ -21,9 +21,9 @@ public class MinecraftCompatImpl extends AbstractCompat<Minecraft> implements Mi
     @Override
     public Window getWindow() {
         //#if MC > 11404
-        //$$ return this.get().getWindow();
+        return this.get().getWindow();
         //#else
-        return this.get().window;
+        //$$ return this.get().window;
         //#endif
     }
 

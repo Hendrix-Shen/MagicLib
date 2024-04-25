@@ -1,65 +1,66 @@
 package top.hendrixshen.magiclib.impl.compat.mojang.blaze3d.vertex;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import top.hendrixshen.magiclib.api.compat.mojang.blaze3d.vertex.PoseStackCompat;
 
 //#if MC > 11605
-//$$ import com.mojang.blaze3d.vertex.PoseStack;
-//$$ import org.jetbrains.annotations.NotNull;
-//$$ import top.hendrixshen.magiclib.api.compat.AbstractCompat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.api.compat.AbstractCompat;
+//#else
+//$$ import com.mojang.blaze3d.systems.RenderSystem;
 //#endif
 
 @Environment(EnvType.CLIENT)
 public class PoseStackCompatImpl
         //#if MC > 11605
-        //$$ extends AbstractCompat<PoseStack>
+        extends AbstractCompat<PoseStack>
         //#endif
         implements PoseStackCompat {
     public PoseStackCompatImpl(
             //#if MC > 11605
-            //$$ @NotNull PoseStack type
+            @NotNull PoseStack type
             //#endif
     ) {
         //#if MC > 11605
-        //$$ super(type);
+        super(type);
         //#endif
     }
 
     @Override
     public void translate(double x, double y, double z) {
         //#if MC > 11605
-        //$$ this.get().translate(x, y, z);
+        this.get().translate(x, y, z);
         //#else
-        GlStateManager.translated(x, y, z);
+        //$$ RenderSystem.translated(x, y, z);
         //#endif
     }
 
     @Override
     public void scale(float x, float y, float z) {
         //#if MC > 11605
-        //$$ this.get().scale(x, y, z);
+        this.get().scale(x, y, z);
         //#else
-        GlStateManager.scaled(x, y, z);
+        //$$ RenderSystem.scaled(x, y, z);
         //#endif
     }
 
     @Override
     public void pushPose() {
         //#if MC > 11605
-        //$$ this.get().pushPose();
+        this.get().pushPose();
         //#else
-        GlStateManager.pushMatrix();
+        //$$ RenderSystem.pushMatrix();
         //#endif
     }
 
     @Override
     public void popPose() {
         //#if MC > 11605
-        //$$ this.get().popPose();
+        this.get().popPose();
         //#else
-        GlStateManager.popMatrix();
+        //$$ RenderSystem.popMatrix();
         //#endif
     }
 }

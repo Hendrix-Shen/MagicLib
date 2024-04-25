@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 import java.util.List;
 
 //#if MC > 11605
-//$$ import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Widget;
 //#endif
 
 @Environment(EnvType.CLIENT)
@@ -22,21 +22,21 @@ public interface ScreenAccessor {
     List<GuiEventListener> magiclib$getChildren();
 
     //#if MC > 11605
-    //$$ @Invoker("addRenderableOnly")
-    //$$ Widget magiclib$invokeAddRenderableOnly(Widget guiEventListener);
-    //$$
+    @Invoker("addRenderableOnly")
+    Widget magiclib$invokeAddRenderableOnly(Widget guiEventListener);
+
     //#if FORGE == 0
-    //$$ @Invoker("addRenderableWidget")
-    //$$ GuiEventListener magiclib$invokeAddRenderableWidget(GuiEventListener guiEventListener);
-    //$$
-    //$$ @Invoker("addWidget")
-    //$$ GuiEventListener magiclib$invokeAddWidget(GuiEventListener guiEventListener);
+    @Invoker("addRenderableWidget")
+    GuiEventListener magiclib$invokeAddRenderableWidget(GuiEventListener guiEventListener);
+
+    @Invoker("addWidget")
+    GuiEventListener magiclib$invokeAddWidget(GuiEventListener guiEventListener);
     //#endif
     //#else
-    @Accessor("buttons")
-    List<AbstractWidget> magiclib$getButtons();
-
-    @Invoker("addButton")
-    AbstractWidget magiclib$invokeAddButton(AbstractWidget abstractWidget);
+    //$$ @Accessor("buttons")
+    //$$ List<AbstractWidget> magiclib$getButtons();
+    //$$
+    //$$ @Invoker("addButton")
+    //$$ AbstractWidget magiclib$invokeAddButton(AbstractWidget abstractWidget);
     //#endif
 }

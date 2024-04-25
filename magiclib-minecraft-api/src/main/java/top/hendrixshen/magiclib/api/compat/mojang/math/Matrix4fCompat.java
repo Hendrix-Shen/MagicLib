@@ -15,17 +15,17 @@ public interface Matrix4fCompat extends Provider<Matrix4f> {
     }
 
     static @NotNull Matrix4fCompat createScaleMatrix(float x, float y, float z) {
-        //#if MC >= 11903
+        //#if MC > 11902
         //$$ return Matrix4fCompat.of(new Matrix4f().scale(x, y, z));
         //#elseif MC > 11404
-        //$$ return Matrix4fCompat.of(Matrix4f.createScaleMatrix(x, y, z));
+        return Matrix4fCompat.of(Matrix4f.createScaleMatrix(x, y, z));
         //#else
-        Matrix4f matrix4f = new Matrix4f();
-        matrix4f.set(0, 0, x);
-        matrix4f.set(1, 1, y);
-        matrix4f.set(2, 2, z);
-        matrix4f.set(3, 3, 1);
-        return Matrix4fCompat.of(matrix4f);
+        //$$ Matrix4f matrix4f = new Matrix4f();
+        //$$ matrix4f.set(0, 0, x);
+        //$$ matrix4f.set(1, 1, y);
+        //$$ matrix4f.set(2, 2, z);
+        //$$ matrix4f.set(3, 3, 1);
+        //$$ return Matrix4fCompat.of(matrix4f);
         //#endif
     }
 
@@ -33,17 +33,17 @@ public interface Matrix4fCompat extends Provider<Matrix4f> {
         //#if MC > 11902
         //$$ return Matrix4fCompat.of(new Matrix4f().translation(x, y, z));
         //#elseif MC > 11404
-        //$$ return Matrix4fCompat.of(Matrix4f.createTranslateMatrix(x, y, z));
+        return Matrix4fCompat.of(Matrix4f.createTranslateMatrix(x, y, z));
         //#else
-        Matrix4f matrix4f = new Matrix4f();
-        matrix4f.set(0, 0, 1.0F);
-        matrix4f.set(1, 1, 1.0F);
-        matrix4f.set(2, 2, 1.0F);
-        matrix4f.set(3, 3, 1.0F);
-        matrix4f.set(0, 3, x);
-        matrix4f.set(1, 3, y);
-        matrix4f.set(2, 3, z);
-        return Matrix4fCompat.of(matrix4f);
+        //$$ Matrix4f matrix4f = new Matrix4f();
+        //$$ matrix4f.set(0, 0, 1.0F);
+        //$$ matrix4f.set(1, 1, 1.0F);
+        //$$ matrix4f.set(2, 2, 1.0F);
+        //$$ matrix4f.set(3, 3, 1.0F);
+        //$$ matrix4f.set(0, 3, x);
+        //$$ matrix4f.set(1, 3, y);
+        //$$ matrix4f.set(2, 3, z);
+        //$$ return Matrix4fCompat.of(matrix4f);
         //#endif
     }
 

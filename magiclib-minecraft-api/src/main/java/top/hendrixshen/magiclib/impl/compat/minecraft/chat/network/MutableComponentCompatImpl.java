@@ -9,16 +9,16 @@ import net.minecraft.network.chat.BaseComponent;
 //#endif
 
 //#if MC > 11502
-//$$ import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.MutableComponent;
 //#endif
 
 public class MutableComponentCompatImpl extends ComponentCompatImpl implements MutableComponentCompat {
-    public MutableComponentCompatImpl(@NotNull
-                                      //#if MC > 11502
-                                      //$$ MutableComponent type
-                                      //#else
-                                      BaseComponent type
-                                      //#endif
+    public MutableComponentCompatImpl(
+            //#if MC > 11502
+            @NotNull MutableComponent type
+            //#else
+            //$$ @NotNull BaseComponent type
+            //#endif
     ) {
         super(type);
     }
@@ -26,18 +26,18 @@ public class MutableComponentCompatImpl extends ComponentCompatImpl implements M
     @Override
     public void setStyle(@NotNull StyleCompat style) {
         //#if MC > 11502
-        //$$ ((MutableComponent) this.get()).setStyle(style.get());
+        ((MutableComponent) this.get()).setStyle(style.get());
         //#else
-        this.get().setStyle(style.get());
+        //$$ this.get().setStyle(style.get());
         //#endif
     }
 
     @Override
     public MutableComponentCompat append(@NotNull MutableComponentCompat component) {
         //#if MC > 11502
-        //$$ ((MutableComponent) this.get()).append(component.get());
+        ((MutableComponent) this.get()).append(component.get());
         //#else
-        this.get().append(component.get());
+        //$$ this.get().append(component.get());
         //#endif
         return this;
     }
@@ -47,9 +47,9 @@ public class MutableComponentCompatImpl extends ComponentCompatImpl implements M
         //#if MC > 11802
         //$$ ((MutableComponent) this.get()).withStyle(style.get());
         //#elseif MC > 11502
-        //$$ ((BaseComponent) this.get()).withStyle(style.get());
+        ((BaseComponent) this.get()).withStyle(style.get());
         //#else
-        this.get().setStyle(style.get());
+        //$$ this.get().setStyle(style.get());
         //#endif
         return this;
     }

@@ -18,9 +18,9 @@ public class FontCompatImpl extends AbstractCompat<Font> implements FontCompat {
     public int width(@NotNull Component component) {
         return this.get().width(
                 //#if MC > 11502
-                //$$ component
+                component
                 //#else
-                component.getString()
+                //$$ component.getString()
                 //#endif
         );
     }

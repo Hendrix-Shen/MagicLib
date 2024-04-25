@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 //#if MC > 11502
-//$$ import net.minecraft.network.chat.MutableComponent;
-//$$ import net.minecraft.world.level.Level;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.level.Level;
 //#else
-import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.world.level.dimension.DimensionType;
+//$$ import net.minecraft.network.chat.BaseComponent;
+//$$ import net.minecraft.world.level.dimension.DimensionType;
 //#endif
 
 public class MessageUtil {
@@ -36,9 +36,9 @@ public class MessageUtil {
                         //#if MC > 11904
                         //$$ source.getServer().getLevel(Level.OVERWORLD) != null
                         //#elseif MC > 11502
-                        //$$ source.getServer().getLevel(Level.OVERWORLD) != null
+                        source.getServer().getLevel(Level.OVERWORLD) != null
                         //#else
-                        source.getServer() != null && source.getServer().getLevel(DimensionType.OVERWORLD) != null
+                        //$$ source.getServer() != null && source.getServer().getLevel(DimensionType.OVERWORLD) != null
                         //#endif
                 ));
     }
@@ -58,9 +58,9 @@ public class MessageUtil {
                     //#if MC > 11802
                     //$$ p.sendSystemMessage(message));
                     //#elseif MC > 11502
-                    //$$ p.sendMessage(message, p.getUUID()));
+                    p.sendMessage(message, p.getUUID()));
                     //#else
-                    p.sendMessage(message));
+                    //$$ p.sendMessage(message));
                     //#endif
         });
     }
@@ -72,11 +72,11 @@ public class MessageUtil {
     private static @NotNull Component insertComponent(@NotNull List<Component> messages) {
         return MessageUtil.insertComponentCompat(messages.stream()
                 //#if MC > 11502
-                //$$ .filter(c -> c instanceof MutableComponent)
-                //$$ .map(c -> (MutableComponent) c)
+                .filter(c -> c instanceof MutableComponent)
+                .map(c -> (MutableComponent) c)
                 //#else
-                .filter(c -> c instanceof BaseComponent)
-                .map(c -> (BaseComponent) c)
+                //$$ .filter(c -> c instanceof BaseComponent)
+                //$$ .map(c -> (BaseComponent) c)
                 //#endif
                 .map(MutableComponentCompat::of)
                 .collect(Collectors.toList()));

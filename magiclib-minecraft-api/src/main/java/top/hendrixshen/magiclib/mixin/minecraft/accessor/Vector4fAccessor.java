@@ -1,14 +1,11 @@
 package top.hendrixshen.magiclib.mixin.minecraft.accessor;
 
-import com.mojang.math.Vector4f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import top.hendrixshen.magiclib.api.preprocess.DummyClass;
 
 @Environment(EnvType.CLIENT)
-@Mixin(Vector4f.class)
+@Mixin(DummyClass.class)
 public interface Vector4fAccessor {
-    @Accessor("values")
-    float[] magiclib$getValues();
 }

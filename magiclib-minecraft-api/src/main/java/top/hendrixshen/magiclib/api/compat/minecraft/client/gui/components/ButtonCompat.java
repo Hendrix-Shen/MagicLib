@@ -121,9 +121,9 @@ public interface ButtonCompat extends Provider<Button> {
                     this.width,
                     this.height,
                     //#if MC > 11502
-                    //$$ this.message,
+                    this.message,
                     //#else
-                    this.message.getString(),
+                    //$$ this.message.getString(),
                     //#endif
                     this.onPress::onPress
             );

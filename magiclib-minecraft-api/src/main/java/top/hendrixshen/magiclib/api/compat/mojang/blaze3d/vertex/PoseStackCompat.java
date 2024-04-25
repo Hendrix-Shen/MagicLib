@@ -6,24 +6,24 @@ import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.impl.compat.mojang.blaze3d.vertex.PoseStackCompatImpl;
 
 //#if MC > 11605
-//$$ import com.mojang.blaze3d.vertex.PoseStack;
-//$$ import top.hendrixshen.magiclib.util.collect.Provider;
+import com.mojang.blaze3d.vertex.PoseStack;
+import top.hendrixshen.magiclib.util.collect.Provider;
 //#endif
 
 @Environment(EnvType.CLIENT)
 public interface PoseStackCompat
         //#if MC > 11605
-        //$$ extends Provider<PoseStack>
+        extends Provider<PoseStack>
         //#endif
 {
     static @NotNull PoseStackCompat of(
             //#if MC > 11605
-            //$$ @NotNull PoseStack poseStack
+            @NotNull PoseStack poseStack
             //#endif
     ) {
         return new PoseStackCompatImpl(
                 //#if MC > 11605
-                //$$ poseStack
+                poseStack
                 //#endif
         );
     }

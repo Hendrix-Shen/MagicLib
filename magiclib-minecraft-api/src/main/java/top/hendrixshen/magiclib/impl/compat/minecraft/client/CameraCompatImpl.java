@@ -18,13 +18,13 @@ public class CameraCompatImpl extends AbstractCompat<Camera> implements CameraCo
 
     public QuaternionCompat rotation() {
         //#if MC > 11404
-        //$$ return QuaternionCompat.of(this.get().rotation());
+        return QuaternionCompat.of(this.get().rotation());
         //#else
-        Quaternion quaternion = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
-        Quaternion ret = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
-        ret.mul(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), -this.get().getYRot(), true));
-        ret.mul(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), this.get().getXRot(), true));
-        return QuaternionCompat.of(quaternion);
+        //$$ Quaternion quaternion = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
+        //$$ Quaternion ret = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
+        //$$ ret.mul(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), -this.get().getYRot(), true));
+        //$$ ret.mul(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), this.get().getXRot(), true));
+        //$$ return QuaternionCompat.of(quaternion);
         //#endif
     }
 }

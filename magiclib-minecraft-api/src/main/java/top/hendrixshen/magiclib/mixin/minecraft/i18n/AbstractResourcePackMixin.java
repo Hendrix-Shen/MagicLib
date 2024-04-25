@@ -1,6 +1,6 @@
 package top.hendrixshen.magiclib.mixin.minecraft.i18n;
 
-import net.minecraft.server.packs.AbstractResourcePack;
+import net.minecraft.server.packs.AbstractPackResources;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -8,7 +8,7 @@ import top.hendrixshen.magiclib.api.fake.i18n.PackAccessor;
 
 import java.io.File;
 
-@Mixin(AbstractResourcePack.class)
+@Mixin(AbstractPackResources.class)
 public class AbstractResourcePackMixin implements PackAccessor {
     @Final
     @Shadow

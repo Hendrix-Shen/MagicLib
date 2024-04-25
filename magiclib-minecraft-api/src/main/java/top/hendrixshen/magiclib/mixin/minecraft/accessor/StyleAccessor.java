@@ -1,8 +1,30 @@
 package top.hendrixshen.magiclib.mixin.minecraft.accessor;
 
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import top.hendrixshen.magiclib.api.preprocess.DummyClass;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(DummyClass.class)
+/**
+ * The implementation for mc [1.16.5, ~)
+ */
+@Mixin(Style.class)
 public interface StyleAccessor {
+    @Invoker(value = "<init>")
+    static Style magiclib$invokeConstructor(@Nullable TextColor color,
+                                            @Nullable Boolean bold,
+                                            @Nullable Boolean italic,
+                                            @Nullable Boolean underlined,
+                                            @Nullable Boolean strikethrough,
+                                            @Nullable Boolean obfuscated,
+                                            @Nullable ClickEvent clickEvent,
+                                            @Nullable HoverEvent hoverEvent,
+                                            @Nullable String insertion,
+                                            @Nullable ResourceLocation font) {
+        throw new AssertionError();
+    }
 }

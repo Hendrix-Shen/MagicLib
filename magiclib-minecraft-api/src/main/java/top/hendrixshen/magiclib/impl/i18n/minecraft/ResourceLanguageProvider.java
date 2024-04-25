@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.server.packs.repository.UnopenedPack;
+import net.minecraft.server.packs.repository.Pack;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.fake.i18n.PackAccessor;
 import top.hendrixshen.magiclib.api.i18n.LanguageProvider;
@@ -29,9 +29,9 @@ public class ResourceLanguageProvider implements LanguageProvider {
 
     @Override
     public void init() {
-        Minecraft.getInstance().getResourcePackRepository().getSelected().stream()
+        Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream()
                 .filter(pack -> pack.getId().startsWith("file"))
-                .map(UnopenedPack::open)
+                .map(Pack::open)
                 .filter(pack -> pack instanceof PackAccessor)
                 .map(pack -> ((PackAccessor) pack).magiclib$getFile().toPath())
                 .forEach(this::updateFileList);

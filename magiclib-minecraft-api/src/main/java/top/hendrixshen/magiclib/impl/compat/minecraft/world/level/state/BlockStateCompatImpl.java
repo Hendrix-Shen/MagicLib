@@ -13,10 +13,9 @@ public class BlockStateCompatImpl extends AbstractCompat<BlockState> implements 
 
     public boolean is(Block block) {
         //#if MC > 11502
-        //$$ return this.get().is(block);
+        return this.get().is(block);
         //#else
-        return this.get().getBlock() == block;
+        //$$ return this.get().getBlock() == block;
         //#endif
     }
-
 }
