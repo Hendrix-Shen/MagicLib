@@ -31,6 +31,10 @@ preprocess {
     vars.put("FORGE_LIKE", forgeLike ? 1 : 0)
 }
 
+loom {
+    silentMojangMappingsLicense()
+}
+
 repositories {
     mavenLocal()
 
@@ -99,7 +103,6 @@ dependencies {
 }
 
 loom {
-    silentMojangMappingsLicense()
     accessWidenerPath.set(file("src/main/resources/${project.parent.property("mod.id")}.accesswidener"))
     enableTransitiveAccessWideners.set(true)
 

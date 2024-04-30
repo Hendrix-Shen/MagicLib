@@ -9,7 +9,7 @@ import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
-//#if MC > 11502
+//#if MC > 11502 && MC < 11900
 import top.hendrixshen.magiclib.api.compat.minecraft.UtilCompat;
 //#endif
 
@@ -157,7 +157,9 @@ public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCo
 
     @Override
     public void setMaxUpStep(float maxUpStep) {
-        //#if MC > 11903
+        //#if MC > 12004
+        //$$ throw new UnsupportedOperationException();
+        //#elseif MC > 11903
         //$$ this.get().setMaxUpStep(maxUpStep);
         //#else
         this.get().maxUpStep = maxUpStep;

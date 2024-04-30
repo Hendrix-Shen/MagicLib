@@ -46,5 +46,9 @@ public interface EntityCompat extends Provider<Entity> {
 
     float getMaxUpStep();
 
+    /**
+     * This method is no longer available in MC 1.20.5 and above, and attempting to use it will throw an exception.
+     */
+    @Deprecated
     void setMaxUpStep(float maxUpStep);
 }
