@@ -1,0 +1,525 @@
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.LdcInsnNode
+
+plugins {
+    id("java")
+    id("java-library")
+    id("maven-publish")
+    id("signing")
+}
+
+apply(plugin: "dev.architectury.loom")
+apply(plugin: "com.replaymod.preprocess")
+apply(plugin: "me.fallenbreath.yamlang")
+
+String modPlatform = loom.platform.get().toString().toLowerCase()
+boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
+boolean forgeLike = modPlatform == "forge" || modPlatform == "neoforge"
+String projectName = project.name.replace("legacy-", "")
+Project betterDev = evaluationDependsOn(":magiclib-better-dev:better-dev-${projectName}")
+Project malilib = evaluationDependsOn(":magiclib-malilib-extra:malilib-${projectName}")
+Project mcAPI = evaluationDependsOn(":magiclib-minecraft-api:mc-api-${projectName}")
+int mcVersion = 0
+
+preprocess {
+    mcVersion = vars.get().get("MC")
+    vars.put("MC", mcVersion)
+    vars.put("FABRIC", modPlatform == "fabric" ? 1 : 0)
+    vars.put("FORGE", modPlatform == "forge" ? 1 : 0)
+    vars.put("NEO_FORGE", modPlatform == "neoforge" ? 1 : 0)
+    vars.put("FABRIC_LIKE", fabricLike ? 1 : 0)
+    vars.put("FORGE_LIKE", forgeLike ? 1 : 0)
+}
+
+loom {
+    silentMojangMappingsLicense()
+}
+
+repositories {
+    mavenLocal()
+
+    maven {
+        name("NeoForge")
+        url("https://maven.neoforged.net/releases/")
+    }
+
+    maven {
+        name("Curse Maven")
+        url("https://www.cursemaven.com")
+
+        content {
+            includeGroup("curse.maven")
+        }
+    }
+
+    maven {
+        name("Modrinth Maven")
+        url("https://api.modrinth.com/maven")
+
+        content {
+            includeGroup("maven.modrinth")
+        }
+    }
+
+    maven {
+        name("Masa Maven")
+        url("https://masa.dy.fi/maven")
+    }
+
+    maven {
+        name("Jitpack Maven")
+        url("https://jitpack.io")
+
+        content {
+            includeGroup("com.github.Nyan-Work")
+        }
+    }
+
+    mavenCentral()
+}
+
+// Module, Property prefix, Resolve condition, Transitive dependencies.
+def apiDependencies = [
+        ["carpet:fabric-carpet", "carpet", true, false],
+]
+
+// Module, Property prefix, Resolve condition, Transitive dependencies.
+def runtimeDependencies = [
+]
+
+dependencies {
+    minecraft("com.mojang:minecraft:${project.property("dependencies.minecraft_version")}")
+    mappings(loom.officialMojangMappings())
+    modApi("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
+    annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
+
+    // Make IDE happy.
+    api(project(":magiclib-core:common"))
+    api(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow"))
+
+    api(project(path: betterDev.path, configuration: "namedElements"))
+    api(project(path: malilib.path, configuration: "namedElements"))
+    api(project(path: mcAPI.path, configuration: "namedElements"))
+
+    if (forgeLike) {
+        compileOnly(project(path: betterDev.path, configuration: "modCompileClasspathMainMapped"))
+        localRuntime(project(path: betterDev.path, configuration: "modRuntimeClasspathMainMapped"))
+    }
+
+    if (modPlatform == "forge") {
+        forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
+    } else if (modPlatform == "neoforge") {
+        neoForge("net.neoforged:neoforge:${project.property("dependencies.neoforge_version")}")
+    }
+
+    // API
+    apiDependencies.forEach { item ->
+        String dependencyNotation = item[0]
+        String propertyPrefix = item[1]
+        boolean shouldResolve = item[2]
+        boolean shouldTransitive = item[3]
+
+        if (shouldResolve) {
+            modApi("${dependencyNotation}:${project.property("dependencies.api.${propertyPrefix}_version")}") {
+                transitive(shouldTransitive)
+            }
+        }
+    }
+
+    // Runtime Library - Make development environment comfortable.
+    runtimeDependencies.forEach { item ->
+        String dependencyNotation = item[0]
+        String propertyPrefix = item[1]
+        boolean shouldResolve = item[2]
+        boolean shouldTransitive = item[3]
+
+        if (shouldResolve) {
+            modRuntimeOnly("${dependencyNotation}:${project.property("dependencies.runtime.${propertyPrefix}_version")}") {
+                transitive(shouldTransitive)
+            }
+        }
+    }
+}
+
+loom {
+    accessWidenerPath.set(file("src/main/resources/${project.parent.property("mod.id")}.accesswidener"))
+    enableTransitiveAccessWideners.set(true)
+
+    if (modPlatform == "forge") {
+        forge {
+            convertAccessWideners.set(true)
+            mixinConfig("${project.parent.property("mod.id")}.mixins.json")
+        }
+    }
+
+    runConfigs.configureEach {
+        // Dump modified classes automatically.
+        property("mixin.debug.export", "true")
+    }
+
+    runConfigs.named("client") {
+        programArgs([
+                "--width",
+                project.getOrDefault("ow.game.window.width", "1920"),
+                "--height",
+                project.getOrDefault("ow.game.window.height", "1080"),
+                "--username",
+                project.getOrDefault("ow.game.window.username", "dev")
+        ])
+        vmArgs("-Dmagiclib.debug=true")
+        vmArgs("-Dmagiclib.dev.qol=true")
+        vmArgs("-Dmagiclib.dev.qol.dfu.destroy=true")
+        runDir("run/client")
+    }
+
+    runConfigs.named("server") {
+        vmArgs("-Dmagiclib.debug=true")
+        vmArgs("-Dmagiclib.dev.qol=true")
+        vmArgs("-Dmagiclib.dev.qol.dfu.destroy=true")
+        runDir("run/server")
+    }
+
+    runs {
+        mixinAuditClient {
+            inherit(client)
+            vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
+            ideConfigGenerated(false)
+            runDir("run/client")
+        }
+
+        mixinAuditServer {
+            inherit(server)
+            vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
+            ideConfigGenerated(false)
+            runDir("run/server")
+        }
+    }
+
+    if (fabricLike) {
+        // Setup client default settings.
+        runClient {
+            defaultCharacterEncoding("UTF-8")
+            file("${projectDir}/run/client/config").mkdirs()
+            file("${projectDir}/run/client/options.txt").with { File f ->
+                {
+                    if (!f.exists()) {
+                        f.parentFile.mkdirs()
+                        f.withWriter { BufferedWriter writer ->
+                            writer.writeLine("autoJump:false")
+                            writer.writeLine("enableVsync:false")
+                            writer.writeLine("forceUnicodeFont:true")
+                            writer.writeLine("fov:1.0")
+                            writer.writeLine("gamma:16.0")
+                            writer.writeLine("guiScale:3")
+                            writer.writeLine("lang:${Locale.getDefault().toString().toLowerCase()}")
+                            writer.writeLine("maxFps:260")
+                            writer.writeLine("renderDistance:10")
+                            writer.writeLine("soundCategory_master:0.0")
+                        }
+                    }
+                }
+            }
+        }
+
+        // Setup server default settings.
+        runServer {
+            defaultCharacterEncoding("UTF-8")
+
+            // Agree eula before server init.
+            file("${projectDir}/run/server/eula.txt").with { File f ->
+                {
+                    if (!f.exists()) {
+                        f.parentFile.mkdirs()
+                        f.withWriter { BufferedWriter writer ->
+                            writer.writeLine("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).")
+                            writer.writeLine("#${new Date()}")
+                            writer.writeLine("eula=true")
+                        }
+                    }
+                }
+            }
+            if (!new File("${projectDir}/run/server/eula.txt").exists()) {
+                new File("${projectDir}/run/server").mkdirs()
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("${projectDir}/run/server/eula.txt"))
+                bufferedWriter.writeLine("eula=true")
+                bufferedWriter.close()
+            }
+        }
+    }
+}
+
+base {
+    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}-${modPlatform}")
+    group("${project.property("mod.maven_group")}")
+    version(project.getModVersion(project.parent))
+}
+
+java {
+    if (mcVersion > 11701) {
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
+    } else if (mcVersion > 11605) {
+        sourceCompatibility(JavaVersion.VERSION_16)
+        targetCompatibility(JavaVersion.VERSION_16)
+    } else {
+        sourceCompatibility(JavaVersion.VERSION_1_8)
+        targetCompatibility(JavaVersion.VERSION_1_8)
+    }
+
+    withSourcesJar()
+    withJavadocJar()
+}
+
+remapJar {
+    if (forgeLike) {
+        if (modPlatform == "neoforge") {
+            atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
+        }
+
+        exclude("${project.parent.property("mod.id")}.accesswidener")
+    }
+
+    setRemapperIsolation(true)
+}
+
+processResources {
+    [
+            "fabric.mod.json"   : ["fabric"],
+            "META-INF"          : ["forge", "neoforge"],
+            "META-INF/mods.toml": ["forge", "neoforge"]
+    ].forEach { file, platforms ->
+        if (platforms.contains(modPlatform)) {
+            filesMatching(file) {
+                expand([
+                        "malilib_mod_id"      : mcVersion > 11701 ? "mafglib" : "malilib",
+                        "minecraft_dependency": project.property("dependencies.minecraft_dependency"),
+                        "minecraft_version"   : project.property("dependencies.minecraft_version"),
+                        "minecraft_version_id": project.property("dependencies.minecraft_version").toString().replace(".", "_"),
+                        "mod_alias"           : project.parent.property("mod.id"),
+                        "mod_description"     : project.parent.property("mod.description"),
+                        "mod_homepage"        : project.parent.property("mod.homepage"),
+                        "mod_id"              : project.parent.property("mod.id").toString().replace("-", "_"),
+                        "mod_license"         : project.parent.property("mod.license"),
+                        "mod_name"            : project.parent.property("mod.name"),
+                        "mod_sources"         : project.parent.property("mod.sources"),
+                        "mod_version"         : project.getVersionWithCommitHash(this.project.parent),
+                        "root_mod_id"         : rootProject.property("mod.id"),
+                        "root_mod_name"       : rootProject.property("mod.name"),
+                        "root_mod_description": rootProject.property("mod.description"),
+                ])
+            }
+        } else {
+            exclude(file)
+        }
+    }
+
+    from("${rootDir}/LICENSE")
+    from("${rootDir}/icon.png") {
+        if (fabricLike) {
+            into("assets/${project.parent.property("mod.id")}")
+        }
+    }
+}
+
+yamlang {
+    targetSourceSets.set([sourceSets.main])
+    inputDir.set("assets/${project.parent.property("mod.id")}/lang")
+}
+
+signing {
+    String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getEnv().SIGNING_PGP_KEY)
+    String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getEnv().SIGNING_PGP_PASSWORD)
+
+    required {
+        signingKey
+    }
+
+    useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
+    sign(publishing.publications)
+}
+
+publishing {
+    publications { PublicationContainer publications ->
+        register("release", MavenPublication) { MavenPublication publication ->
+            artifactId("${this.project.parent.property("mod.artifact_name")}-${projectName}")
+            from(this.project.components.java)
+            version("${this.project.getMavenArtifactVersion(this.project.parent)}")
+            alias(false)
+            this.project.addPomMetadataInformation(this.project.parent, publication)
+        }
+
+        register("snapshot", MavenPublication) { MavenPublication publication ->
+            artifactId("${this.project.parent.property("mod.artifact_name")}-${projectName}")
+            from(this.project.components.java)
+            version("${this.project.parent.property("mod.version")}-SNAPSHOT")
+            alias(true)
+            this.project.addPomMetadataInformation(this.project, publication)
+        }
+    }
+
+    repositories { RepositoryHandler repositoryHandler ->
+        mavenLocal {
+            name("mavenLocal")
+        }
+
+        maven {
+            name("projectLocalSnapshot")
+            url("${rootDir}/publish/snapshot")
+        }
+
+        maven {
+            name("projectLocalRelease")
+            url("${rootDir}/publish/release")
+        }
+
+        maven {
+            name("mavenCentralSnapshot")
+            url("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+
+            project.credentialsMavenCentral(it)
+        }
+
+        maven {
+            name("mavenCentralRelease")
+            url("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+            project.credentialsMavenCentral(it)
+        }
+    }
+}
+
+// Solutions from: https://youtrack.jetbrains.com/issue/KT-46466
+TaskCollection<Sign> signingTasks = tasks.withType(Sign)
+tasks.withType(AbstractPublishToMaven).configureEach {
+    dependsOn(signingTasks)
+}
+
+tasks.withType(PublishToMavenRepository).configureEach {
+    Provider<Boolean> predicate = provider {
+        repository == publishing.repositories.mavenLocal ||
+                (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
+                (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
+                (repository == publishing.repositories.mavenCentralSnapshot && publication == publishing.publications.snapshot && project.isMavenCentralCredentialsExist()) ||
+                (repository == publishing.repositories.mavenCentralRelease && publication == publishing.publications.release && project.isMavenCentralCredentialsExist())
+    }
+
+    onlyIf {
+        predicate.get()
+    }
+}
+
+tasks.withType(Javadoc).configureEach { Javadoc task ->
+    include("**/api/**")
+    task.options.encoding("UTF-8")
+    (task.options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
+}
+
+tasks.withType(JavaCompile).configureEach { JavaCompile task ->
+    task.options.encoding("UTF-8")
+
+    if (mcVersion > 11701) {
+        task.options.release.set(17)
+    } else if (mcVersion > 11605) {
+        task.options.release.set(16)
+    } else {
+        task.options.release.set(8)
+    }
+}
+
+[
+        "runClient", "runServer",
+        "runMixinAuditClient", "runMixinAuditServer",
+        "preprocessCode", "preprocessResources",
+        "preprocessTestCode", "preprocessTestResources"].forEach { taskName ->
+    if (tasks.getNames().contains(taskName)) {
+        tasks.named(taskName) {
+            it.group("${project.property("mod.id")}")
+        }
+    }
+}
+
+Map<Object, Object> replaceTokenMap = Map.of(
+        "@MOD_IDENTIFIER@"            , "magiclib",
+        "@MOD_NAME@"                  , rootProject.property("mod.name"),
+        "@MINECRAFT_VERSION_IDENTIFY@", project.property("dependencies.minecraft_version").toString().replace(".", "_"),
+)
+List<Object> replaceTokenFile = List.of(
+        "MagicLibReference"
+)
+
+tasks.named("classes") {
+    doLast {
+        File dir = file("build/classes/java")
+
+        dir.eachFileRecurse {
+            String path = it.path.replace(dir.path, "")
+
+            if (path.endsWith(".class") && replaceTokenFile.stream().anyMatch { path.contains(it as String) }) {
+                ClassReader cr = new ClassReader(it.newInputStream().bytes)
+                ClassNode cn = new ClassNode()
+                cr.accept(cn, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG)
+
+                // ReplaceToken in fields
+                cn.fields.each {
+                    if (it.desc == "Ljava/lang/String;" && it.value instanceof String) {
+                        String value = it.value as String
+
+                        replaceTokenMap.each {
+                            value = value.replace(it.key as String, it.value as String)
+                        }
+
+                        it.value = value
+                    }
+                }
+
+                // ReplaceToken in methods
+                cn.methods.each {
+                    it.instructions.each {
+                        if (it instanceof LdcInsnNode) {
+                            LdcInsnNode ldc = it as LdcInsnNode
+
+                            if (ldc.cst instanceof String) {
+                                String value = ldc.cst as String
+
+                                replaceTokenMap.each {
+                                    value = value.replace(it.key as String, it.value as String)
+                                }
+
+                                ldc.cst = value
+                            }
+                        }
+                    }
+                }
+
+                // ReplaceToken in class visible annotations.
+                if (cn.visibleAnnotations != null) {
+                    cn.visibleAnnotations.forEach {
+                        if (it.values != null) {
+                            // Skip keys
+                            for (int i = 1; i < it.values.size(); i += 2) {
+                                Object value = it.values.get(i)
+
+                                if (value instanceof String) {
+                                    replaceTokenMap.each {
+                                        value = value.replace(it.key as String, it.value as String)
+                                    }
+
+                                    it.values.set(i, value)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES)
+                cn.accept(cw)
+                new FileOutputStream(it).write(cw.toByteArray())
+            }
+        }
+    }
+}

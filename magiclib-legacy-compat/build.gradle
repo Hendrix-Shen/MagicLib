@@ -1,0 +1,38 @@
+import com.replaymod.gradle.preprocess.Node
+import com.replaymod.gradle.preprocess.RootPreprocessExtension
+
+plugins {
+    id("dev.architectury.loom").version("${architectury_loom_version}").apply(false)
+    id("com.replaymod.preprocess").version("${preprocessor_version}").apply(false)
+    id("me.fallenbreath.yamlang").version("${yamlang_version}").apply(false)
+}
+
+extensions.create("preprocess", RootPreprocessExtension.class)
+
+preprocess {
+    // Fabric
+    Node mc_11404_fabric = createNode("legacy-1.14.4-fabric", 1_14_04, "mojang")
+    Node mc_11502_fabric = createNode("legacy-1.15.2-fabric", 1_15_02, "mojang")
+    Node mc_11605_fabric = createNode("legacy-1.16.5-fabric", 1_16_05, "mojang")
+    Node mc_11701_fabric = createNode("legacy-1.17.1-fabric", 1_17_01, "mojang")
+    Node mc_11802_fabric = createNode("legacy-1.18.2-fabric", 1_18_02, "mojang")
+    Node mc_11902_fabric = createNode("legacy-1.19.2-fabric", 1_19_02, "mojang")
+    Node mc_11903_fabric = createNode("legacy-1.19.3-fabric", 1_19_03, "mojang")
+    Node mc_11904_fabric = createNode("legacy-1.19.4-fabric", 1_19_04, "mojang")
+    Node mc_12001_fabric = createNode("legacy-1.20.1-fabric", 1_20_01, "mojang")
+    Node mc_12002_fabric = createNode("legacy-1.20.2-fabric", 1_20_02, "mojang")
+    Node mc_12004_fabric = createNode("legacy-1.20.4-fabric", 1_20_04, "mojang")
+    Node mc_12006_fabric = createNode("legacy-1.20.6-fabric", 1_20_06, "mojang")
+
+    mc_11404_fabric.link(mc_11502_fabric, null)
+    mc_11502_fabric.link(mc_11605_fabric, file("versions/mapping-1.15.2-1.16.5.txt"))
+    mc_11605_fabric.link(mc_11701_fabric, null)
+    mc_11701_fabric.link(mc_11802_fabric, null)
+    mc_11802_fabric.link(mc_11902_fabric, null)
+    mc_11902_fabric.link(mc_11903_fabric, file("versions/mapping-1.19.2-1.19.3.txt"))
+    mc_11903_fabric.link(mc_11904_fabric, null)
+    mc_11904_fabric.link(mc_12001_fabric, null)
+    mc_12001_fabric.link(mc_12002_fabric, null)
+    mc_12002_fabric.link(mc_12004_fabric, null)
+    mc_12004_fabric.link(mc_12006_fabric, null)
+}

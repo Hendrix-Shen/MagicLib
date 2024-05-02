@@ -85,7 +85,7 @@ ext {
     }
 
     getVersionWithCommitHash = { Project proj ->
-        return "${getVersion(proj)}+${getVersionGit(proj == rootProject ? [] : [proj.projectDir.name])}"
+        return "${getModVersion(proj)}+${getVersionGit(proj == rootProject ? [] : [proj.projectDir.name])}"
     }
 
     getModVersion = { Project proj ->

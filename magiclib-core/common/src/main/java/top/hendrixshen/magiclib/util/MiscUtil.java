@@ -1,13 +1,20 @@
 package top.hendrixshen.magiclib.util;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.impl.dependency.DependenciesContainer;
 import top.hendrixshen.magiclib.impl.dependency.DependencyCheckResult;
 import top.hendrixshen.magiclib.util.collect.InfoNode;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.BiConsumer;
 
 public class MiscUtil {
     public static @NotNull String getSystemLanguageCode() {
@@ -63,5 +70,21 @@ public class MiscUtil {
                 }
             }
         }
+    }
+
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval()
+    public static Gson GSON = GsonUtil.GSON;
+
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval()
+    public static JsonObject readJson(@NotNull URL url) throws IOException {
+        return JsonUtil.readJson(url);
+    }
+
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval()
+    public static void loadStringMapFromJson(InputStream inputStream, BiConsumer<String, String> biConsumer) {
+        JsonUtil.loadStringMapFromJson(inputStream, biConsumer);
     }
 }
