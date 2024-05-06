@@ -5,6 +5,7 @@ plugins {
     id("signing")
 
     id("com.github.johnrengelman.shadow").version("${shadow_version}")
+    id("top.hendrixshen.replace-token").version("${replace_token_version}")
 }
 
 allprojects {
@@ -14,6 +15,7 @@ allprojects {
     apply(plugin: "signing")
 
     apply(plugin: "com.github.johnrengelman.shadow")
+    apply(plugin: "top.hendrixshen.replace-token")
 
     configurations {
         register("shade")
@@ -96,6 +98,16 @@ subprojects {
         setConfigurations([project.configurations.shade, project.configurations.shadeOnly])
         relocate("org.semver4j", "${project.property("mod.maven_group")}.libs.org.semver4j")
         exclude("META-INF/maven/**/*")
+    }
+
+    replaceToken {
+        targetSourceSets.set([sourceSets.main])
+        replace("@MOD_IDENTIFIER@", project.parent.property("mod.id").toString().replace("-", "_"))
+        replace("@MOD_NAME@"      , project.parent.property("mod.name"))
+        replace("@MOD_VERSION@"   , project.getVersionWithCommitHash(project.parent) as String)
+        replaceIn("top/hendrixshen/magiclib/SharedConstants")
+        replaceIn("top/hendrixshen/magiclib/entrypoint/core/MagicLibForge")
+        replaceIn("top/hendrixshen/magiclib/entrypoint/core/MagicLibNeoForge")
     }
 
     signing {

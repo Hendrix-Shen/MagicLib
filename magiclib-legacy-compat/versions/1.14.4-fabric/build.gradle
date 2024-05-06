@@ -1,13 +1,10 @@
-import org.objectweb.asm.ClassReader
-import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.tree.ClassNode
-import org.objectweb.asm.tree.LdcInsnNode
-
 plugins {
     id("java")
     id("java-library")
     id("maven-publish")
     id("signing")
+
+    id("top.hendrixshen.replace-token").version("${replace_token_version}")
 }
 
 apply(plugin: "dev.architectury.loom")
@@ -287,6 +284,13 @@ remapJar {
     setRemapperIsolation(true)
 }
 
+replaceToken {
+    replace("@MINECRAFT_VERSION@"         , project.property("dependencies.minecraft_version"))
+    replace("@MINECRAFT_VERSION_IDENTIFY@", project.property("dependencies.minecraft_version").toString().replace(".", "_"))
+    replace("@MOD_VERSION@"               , project.getVersionWithCommitHash(this.project.parent) as String)
+    replaceIn("top/hendrixshen/magiclib/MagicLibReference")
+}
+
 processResources {
     [
             "fabric.mod.json"   : ["fabric"],
@@ -296,7 +300,6 @@ processResources {
         if (platforms.contains(modPlatform)) {
             filesMatching(file) {
                 expand([
-                        "malilib_mod_id"      : mcVersion > 11701 ? "mafglib" : "malilib",
                         "minecraft_dependency": project.property("dependencies.minecraft_dependency"),
                         "minecraft_version"   : project.property("dependencies.minecraft_version"),
                         "minecraft_version_id": project.property("dependencies.minecraft_version").toString().replace(".", "_"),
@@ -439,87 +442,6 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
             it.group("${project.property("mod.id")}")
-        }
-    }
-}
-
-Map<Object, Object> replaceTokenMap = Map.of(
-        "@MOD_IDENTIFIER@"            , "magiclib",
-        "@MOD_NAME@"                  , rootProject.property("mod.name"),
-        "@MINECRAFT_VERSION_IDENTIFY@", project.property("dependencies.minecraft_version").toString().replace(".", "_"),
-)
-List<Object> replaceTokenFile = List.of(
-        "MagicLibReference"
-)
-
-tasks.named("classes") {
-    doLast {
-        File dir = file("build/classes/java")
-
-        dir.eachFileRecurse {
-            String path = it.path.replace(dir.path, "")
-
-            if (path.endsWith(".class") && replaceTokenFile.stream().anyMatch { path.contains(it as String) }) {
-                ClassReader cr = new ClassReader(it.newInputStream().bytes)
-                ClassNode cn = new ClassNode()
-                cr.accept(cn, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG)
-
-                // ReplaceToken in fields
-                cn.fields.each {
-                    if (it.desc == "Ljava/lang/String;" && it.value instanceof String) {
-                        String value = it.value as String
-
-                        replaceTokenMap.each {
-                            value = value.replace(it.key as String, it.value as String)
-                        }
-
-                        it.value = value
-                    }
-                }
-
-                // ReplaceToken in methods
-                cn.methods.each {
-                    it.instructions.each {
-                        if (it instanceof LdcInsnNode) {
-                            LdcInsnNode ldc = it as LdcInsnNode
-
-                            if (ldc.cst instanceof String) {
-                                String value = ldc.cst as String
-
-                                replaceTokenMap.each {
-                                    value = value.replace(it.key as String, it.value as String)
-                                }
-
-                                ldc.cst = value
-                            }
-                        }
-                    }
-                }
-
-                // ReplaceToken in class visible annotations.
-                if (cn.visibleAnnotations != null) {
-                    cn.visibleAnnotations.forEach {
-                        if (it.values != null) {
-                            // Skip keys
-                            for (int i = 1; i < it.values.size(); i += 2) {
-                                Object value = it.values.get(i)
-
-                                if (value instanceof String) {
-                                    replaceTokenMap.each {
-                                        value = value.replace(it.key as String, it.value as String)
-                                    }
-
-                                    it.values.set(i, value)
-                                }
-                            }
-                        }
-                    }
-                }
-
-                ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES)
-                cn.accept(cw)
-                new FileOutputStream(it).write(cw.toByteArray())
-            }
         }
     }
 }

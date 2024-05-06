@@ -7,13 +7,11 @@ import top.hendrixshen.magiclib.util.VersionUtil;
 
 public class SharedConstants {
     @Getter
-    private static final String modIdentifier = "magiclib_core";
+    private static final String modIdentifier = "@MOD_IDENTIFIER@";
     @Getter
-    private static final String modName = MagicLib.getInstance().getPlatformManage().getCurrentPlatform()
-            .getModName(SharedConstants.modIdentifier);
+    private static final String modName = "@MOD_NAME@";
     @Getter
-    private static final String modVersion = MagicLib.getInstance().getPlatformManage().getCurrentPlatform()
-            .getModVersion(SharedConstants.modIdentifier);
+    private static final String modVersion = "@MOD_VERSION@";
     @Getter
     private static final String modVersionType = VersionUtil.getVersionType(SharedConstants.modVersion);
 

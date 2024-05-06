@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "magiclib-${minecraft_version_id}",
-  "name": "MagicLib for ${minecraft_version}",
+  "name": "MagicLib Legacy Compat for ${minecraft_version}",
   "description": "${mod_description}",
   "icon": "assets/${mod_alias}/icon.png",
   "version": "${mod_version}",

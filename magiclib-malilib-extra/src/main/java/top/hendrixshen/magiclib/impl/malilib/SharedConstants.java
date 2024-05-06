@@ -2,7 +2,6 @@ package top.hendrixshen.magiclib.impl.malilib;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigHandler;
@@ -14,8 +13,7 @@ public class SharedConstants {
     @Getter
     private static final String modName = "@MOD_NAME@";
     @Getter
-    private static final String modVersion = MagicLib.getInstance().getPlatformManage().getCurrentPlatform()
-            .getModVersion(SharedConstants.modIdentifier);
+    private static final String modVersion = "@MOD_VERSION@";
     @Getter
     private static final String modVersionType = VersionUtil.getVersionType(SharedConstants.modVersion);
     @Getter

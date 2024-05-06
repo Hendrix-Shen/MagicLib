@@ -8,15 +8,15 @@ import top.hendrixshen.magiclib.util.StringUtil;
 
 public class MagicLibReference {
     @Getter
-    private static final String modIdentifier = "@MOD_IDENTIFIER@";
+    private static final String modIdentifier = "magiclib";
     @Getter
-    private static final String modIdentifierCurrent = "@MOD_IDENTIFIER@-@MINECRAFT_VERSION_IDENTIFY@";
+    private static final String modIdentifierCurrent = "magiclib-@MINECRAFT_VERSION_IDENTIFY@";
     @Getter
-    private static final String modName = "@MOD_NAME@";
+    private static final String modName = "MagicLib";
     @Getter
-    private static final String modNameCurrent = FabricLoader.getInstance().getModContainer(modIdentifierCurrent).orElseThrow(RuntimeException::new).getMetadata().getName();
+    private static final String modNameCurrent = "MagicLib Legacy Compat for @MINECRAFT_VERSION@";
     @Getter
-    private static final String modVersion = FabricLoader.getInstance().getModContainer(modIdentifierCurrent).orElseThrow(RuntimeException::new).getMetadata().getVersion().getFriendlyString();
+    private static final String modVersion = "@MOD_VERSION@";
     @Getter
     private static final String modVersionType = StringUtil.getVersionType(modVersion);
     @Getter

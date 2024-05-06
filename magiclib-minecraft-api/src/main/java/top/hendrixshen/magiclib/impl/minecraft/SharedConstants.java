@@ -1,8 +1,7 @@
-package top.hendrixshen.magiclib.impl;
+package top.hendrixshen.magiclib.impl.minecraft;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.util.VersionUtil;
 
 public class SharedConstants {
@@ -11,8 +10,7 @@ public class SharedConstants {
     @Getter
     private static final String modName = "@MOD_NAME@";
     @Getter
-    private static final String modVersion = MagicLib.getInstance().getPlatformManage().getCurrentPlatform()
-            .getModVersion(SharedConstants.modIdentifier);
+    private static final String modVersion = "@MOD_VERSION@";
     @Getter
     private static final String modVersionType = VersionUtil.getVersionType(SharedConstants.modVersion);
 

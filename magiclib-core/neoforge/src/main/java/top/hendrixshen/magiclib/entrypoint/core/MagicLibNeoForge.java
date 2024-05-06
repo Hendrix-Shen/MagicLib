@@ -9,7 +9,7 @@ import top.hendrixshen.magiclib.impl.mixin.audit.MixinAuditor;
 import top.hendrixshen.magiclib.impl.mixin.extension.MagicExtensions;
 import top.hendrixshen.magiclib.impl.platform.NeoForgePlatformImpl;
 
-@Mod("magiclib_core")
+@Mod("@MOD_IDENTIFIER@")
 public class MagicLibNeoForge implements ModInitializer {
     public MagicLibNeoForge() {
         String headless = System.getProperty("java.awt.headless");
