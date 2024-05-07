@@ -80,8 +80,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
 
     // Make IDE happy.
-    api(project(":magiclib-core:common"))
-    api(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow"))
+    api(project(path: ":magiclib-core:${modPlatform}"))
+    api(project(path: ":magiclib-core:common", configuration: "shadow"))
 
     // Dont publish better dev dependencies.
     compileOnly(project(path: betterDev.path, configuration: "namedElements"))
