@@ -42,10 +42,6 @@ pluginManagement {
                     useModule("com.github.Fallen-Breath:preprocessor:${requested.version}")
                     break
                 }
-                case "top.hendrixshen.replace-token": {
-                    useModule("com.github.Hendrix-Shen:replace-token:${requested.version}")
-                    break
-                }
             }
         }
     }
