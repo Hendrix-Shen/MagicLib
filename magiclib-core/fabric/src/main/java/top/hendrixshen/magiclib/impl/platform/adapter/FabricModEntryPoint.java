@@ -34,6 +34,7 @@ public class FabricModEntryPoint implements ModEntryPointAdapter {
         this.entryPoints = containers.stream()
                 .map(entrypointContainer -> entrypointContainer.getEntrypoint().getClass())
                 .filter(clazz -> !clazz.getName().startsWith("com.sun.proxy.jdk.proxy3"))
+                .filter(clazz -> !clazz.getName().contains("$$Lambda"))
                 .map(clazz -> MixinUtil.getClassNode(clazz.getName()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.collectingAndThen(Collectors.toCollection(() ->
