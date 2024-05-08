@@ -285,6 +285,7 @@ remapJar {
 }
 
 replaceToken {
+    targetSourceSets.set([sourceSets.main])
     replace("@MINECRAFT_VERSION@"         , project.property("dependencies.minecraft_version"))
     replace("@MINECRAFT_VERSION_IDENTIFY@", project.property("dependencies.minecraft_version").toString().replace(".", "_"))
     replace("@MOD_VERSION@"               , project.getVersionWithCommitHash(this.project.parent) as String)
