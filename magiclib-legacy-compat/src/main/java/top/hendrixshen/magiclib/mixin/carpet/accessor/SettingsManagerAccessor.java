@@ -12,23 +12,23 @@ import java.nio.file.Path;
 //#endif
 
 //#if MC > 11900
-import carpet.api.settings.SettingsManager;
+//$$ import carpet.api.settings.SettingsManager;
 //#else
-//$$ import carpet.settings.ParsedRule;
-//$$ import carpet.settings.SettingsManager;
-//$$ import org.spongepowered.asm.mixin.gen.Accessor;
-//$$ import java.util.Map;
+import carpet.settings.ParsedRule;
+import carpet.settings.SettingsManager;
+import org.spongepowered.asm.mixin.gen.Accessor;
+import java.util.Map;
 //#endif
 
 @Dependencies(and = @Dependency("carpet"))
 @Mixin(value = SettingsManager.class, remap = false)
 public interface SettingsManagerAccessor {
     //#if MC < 11901
-    //$$ @Accessor
-    //$$ Map<String, ParsedRule<?>> getRules();
-    //$$
-    //$$ @Invoker
-    //$$ void invokeWriteSettingsToConf(Map<String, String> values);
+    @Accessor
+    Map<String, ParsedRule<?>> getRules();
+
+    @Invoker
+    void invokeWriteSettingsToConf(Map<String, String> values);
     //#endif
 
     //#if MC > 11502

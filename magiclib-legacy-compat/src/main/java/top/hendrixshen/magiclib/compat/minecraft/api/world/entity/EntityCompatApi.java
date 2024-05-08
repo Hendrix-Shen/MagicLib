@@ -75,57 +75,57 @@ public interface EntityCompatApi {
     }
 
     //#if MC < 11904
-    //$$ default float maxUpStep() {
-    //$$     return this.maxUpStepCompat();
-    //$$ }
-    //$$
-    //$$ default void setMaxUpStep(float maxUpStep) {
-    //$$     this.setMaxUpStepCompat(maxUpStep);
-    //$$ }
+    default float maxUpStep() {
+        return this.maxUpStepCompat();
+    }
+
+    default void setMaxUpStep(float maxUpStep) {
+        this.setMaxUpStepCompat(maxUpStep);
+    }
     //#endif
 
     //#if MC < 11900
-    //$$ default void sendSystemMessage(Component component) {
-    //$$     this.sendSystemMessageCompat(component);
-    //$$ }
+    default void sendSystemMessage(Component component) {
+        this.sendSystemMessageCompat(component);
+    }
     //#endif
 
     //#if MC <= 11701
-    //$$ // fuck remap
-    //$$ // It will cause remap fail...
-    //$$ ////$$ default Level getLevel() {
-    //$$ ////$$     return this.getLevelCompat();
-    //$$ ////$$ }
+    // fuck remap
+    // It will cause remap fail...
+    ////$$ default Level getLevel() {
+    ////$$     return this.getLevelCompat();
+    ////$$ }
     //#endif
 
     //#if MC <= 11605
-    //$$ default int getBlockX() {
-    //$$     return this.getBlockXCompat();
-    //$$ }
-    //$$
-    //$$ default int getBlockY() {
-    //$$     return this.getBlockYCompat();
-    //$$ }
-    //$$
-    //$$ default int getBlockZ() {
-    //$$     return this.getBlockZCompat();
-    //$$ }
-    //$$
-    //$$ default float getYRot() {
-    //$$     return this.getYRotCompat();
-    //$$ }
-    //$$
-    //$$ default void setYRot(float yRot) {
-    //$$     this.setYRotCompat(yRot);
-    //$$ }
-    //$$
-    //$$ default float getXRot() {
-    //$$     return this.getXRotCompat();
-    //$$ }
-    //$$
-    //$$ default void setXRot(float xRot) {
-    //$$     this.setXRotCompat(xRot);
-    //$$ }
+    default int getBlockX() {
+        return this.getBlockXCompat();
+    }
+
+    default int getBlockY() {
+        return this.getBlockYCompat();
+    }
+
+    default int getBlockZ() {
+        return this.getBlockZCompat();
+    }
+
+    default float getYRot() {
+        return this.getYRotCompat();
+    }
+
+    default void setYRot(float yRot) {
+        this.setYRotCompat(yRot);
+    }
+
+    default float getXRot() {
+        return this.getXRotCompat();
+    }
+
+    default void setXRot(float xRot) {
+        this.setXRotCompat(xRot);
+    }
     //#endif
 
     //#if MC <= 11502

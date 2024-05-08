@@ -134,9 +134,9 @@ public abstract class MixinWidgetConfigOptionForBooleanHotkeyed extends WidgetCo
         ConfigButtonBoolean booleanButton = new ConfigButtonBoolean(x, y, booleanBtnWidth, 20, booleanConfig);
         x += booleanBtnWidth + 2;
         //#if MC > 11701
-        configWidth -= booleanBtnWidth + 22;
+        //$$ configWidth -= booleanBtnWidth + 22;
         //#else
-        //$$ configWidth -= booleanBtnWidth + 24;
+        configWidth -= booleanBtnWidth + 24;
         //#endif
 
         ConfigButtonKeybind keybindButton = new ConfigButtonKeybind(x, y, configWidth, 20, keybind, this.host);
@@ -144,9 +144,9 @@ public abstract class MixinWidgetConfigOptionForBooleanHotkeyed extends WidgetCo
 
         this.addWidget(new WidgetKeybindSettings(x, y, 20, 20, keybind, booleanConfig.getName(), this.parent, this.host.getDialogHandler()));
         //#if MC > 11701
-        x += 22;
+        //$$ x += 22;
         //#else
-        //$$ x += 24;
+        x += 24;
         //#endif
 
         ButtonGeneric resetButton = this.createResetButton(x, y, resettableConfig);

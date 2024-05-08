@@ -1,7 +1,7 @@
 package top.hendrixshen.magiclib.compat.minecraft.api.math;
 
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
 public interface Vector3fCompatApi {
@@ -13,7 +13,7 @@ public interface Vector3fCompatApi {
     Vector3f ZP = new Vector3f(0.0F, 0.0F, 1.0F);
     Vector3f ZERO = new Vector3f(0.0F, 0.0F, 0.0F);
 
-    default Quaternionf rotationDegreesCompat(float degrees) {
+    default Quaternion rotationDegreesCompat(float degrees) {
         throw new UnImplCompatApiException();
     }
     //#if MC <= 11404

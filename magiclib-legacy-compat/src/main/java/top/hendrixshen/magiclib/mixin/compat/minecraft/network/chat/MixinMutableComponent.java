@@ -6,7 +6,7 @@ import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompa
 import top.hendrixshen.magiclib.util.MiscUtil;
 
 //#if MC < 11900
-//$$ import net.minecraft.network.chat.BaseComponent;
+import net.minecraft.network.chat.BaseComponent;
 //#endif
 
 //#if MC > 11502
@@ -18,9 +18,9 @@ import net.minecraft.network.chat.MutableComponent;
 
 @Mixin(
         //#if MC > 11802
-        MutableComponent.class
+        //$$ MutableComponent.class
         //#else
-        //$$ BaseComponent.class
+        BaseComponent.class
         //#endif
 )
 public abstract class MixinMutableComponent implements ComponentCompatApi {
@@ -31,14 +31,14 @@ public abstract class MixinMutableComponent implements ComponentCompatApi {
 
     @Override
     //#if MC > 11802
-    public MutableComponent withStyleCompat(Style style) {
+    //$$ public MutableComponent withStyleCompat(Style style) {
     //#else
-    //$$ public BaseComponent withStyleCompat(Style style) {
+    public BaseComponent withStyleCompat(Style style) {
     //#endif
         //#if MC > 11802
-        return ((MutableComponent) MiscUtil.cast(this)).withStyle(style);
+        //$$ return ((MutableComponent) MiscUtil.cast(this)).withStyle(style);
         //#elseif MC > 11502
-        //$$ return (BaseComponent) ((MutableComponent) MiscUtil.cast(this)).withStyle(style);
+        return (BaseComponent) ((MutableComponent) MiscUtil.cast(this)).withStyle(style);
         //#else
         //$$ return (BaseComponent) setStyle(style);
         //#endif

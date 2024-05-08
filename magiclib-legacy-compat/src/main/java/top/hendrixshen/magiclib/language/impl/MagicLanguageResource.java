@@ -2,11 +2,11 @@ package top.hendrixshen.magiclib.language.impl;
 
 import net.minecraft.resources.ResourceLocation;
 //#if MC >= 11903
-import net.minecraft.server.packs.PackResources;
+//$$ import net.minecraft.server.packs.PackResources;
 //#else
-//$$ import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
-//$$ import org.jetbrains.annotations.NotNull;
-//$$ import org.jetbrains.annotations.Nullable;
+import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 //#endif
 import net.minecraft.server.packs.resources.Resource;
 import org.jetbrains.annotations.NotNull;
@@ -16,42 +16,42 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 //#if MC > 11802
-public class MagicLanguageResource extends Resource {
+//$$ public class MagicLanguageResource extends Resource {
 //#else
-//$$ public class MagicLanguageResource implements Resource {
+public class MagicLanguageResource implements Resource {
     //#endif
     //#if MC >= 11903
-    private final PackResources resources;
+    //$$ private final PackResources resources;
     //#else
-    //$$ private final String sourceName;
+    private final String sourceName;
     //#endif
     private final ResourceLocation location;
     private final Supplier<InputStream> inputStreamSupplier;
 
     //#if MC > 11902
-    public MagicLanguageResource(PackResources resources, ResourceLocation resourceLocation, Supplier<InputStream> inputStreamSupplier) {
-        super(resources, inputStreamSupplier::get);
-        this.resources = resources;
+    //$$ public MagicLanguageResource(PackResources resources, ResourceLocation resourceLocation, Supplier<InputStream> inputStreamSupplier) {
+    //$$     super(resources, inputStreamSupplier::get);
+    //$$     this.resources = resources;
         //#else
-        //$$ public MagicLanguageResource(String sourceName, ResourceLocation resourceLocation, Supplier<InputStream> inputStreamSupplier) {
+        public MagicLanguageResource(String sourceName, ResourceLocation resourceLocation, Supplier<InputStream> inputStreamSupplier) {
         //#if MC > 11802
         //$$     super(sourceName, inputStreamSupplier::get);
         //#endif
-        //$$     this.sourceName = sourceName;
+            this.sourceName = sourceName;
         //#endif
         this.location = resourceLocation;
         this.inputStreamSupplier = inputStreamSupplier;
     }
 
     //#if MC <= 11802
-    //$$ @Override
+    @Override
     //#endif
     public ResourceLocation getLocation() {
         return this.location;
     }
 
     @Override
-    public InputStream open() {
+    public InputStream getInputStream() {
         return inputStreamSupplier.get();
     }
 
@@ -62,24 +62,24 @@ public class MagicLanguageResource extends Resource {
     //$$     return false;
     //$$ }
     //#endif
-    //$$
-    //$$ @Nullable
-    //$$ @Override
-    //$$ public <T> T getMetadata(@NotNull MetadataSectionSerializer<T> metadataSectionSerializer) {
-    //$$     return null;
-    //$$ }
-    //$$
-    //$$ @Override
-    //$$ public void close() {
-    //$$ }
+
+    @Nullable
+    @Override
+    public <T> T getMetadata(@NotNull MetadataSectionSerializer<T> metadataSectionSerializer) {
+        return null;
+    }
+
+    @Override
+    public void close() {
+    }
     //#endif
 
     @Override
-    public String sourcePackId() {
+    public String getSourceName() {
         //#if MC >= 11903
-        return this.resources.packId();
+        //$$ return this.resources.packId();
         //#else
-        //$$ return this.sourceName;
+        return this.sourceName;
         //#endif
     }
 
@@ -93,9 +93,9 @@ public class MagicLanguageResource extends Resource {
             MagicLanguageResource magicLanguageResource = (MagicLanguageResource) object;
             return Objects.equals(this.location, magicLanguageResource.location)
                     //#if MC >= 11903
-                    && Objects.equals(this.sourcePackId(), magicLanguageResource.sourcePackId());
+                    //$$ && Objects.equals(this.sourcePackId(), magicLanguageResource.sourcePackId());
                     //#else
-                    //$$ && Objects.equals(this.sourceName, magicLanguageResource.sourceName);
+                    && Objects.equals(this.sourceName, magicLanguageResource.sourceName);
                     //#endif
         }
     }
@@ -104,9 +104,9 @@ public class MagicLanguageResource extends Resource {
     @Override
     public int hashCode() {
         //#if MC >= 11903
-        int i = this.sourcePackId() != null ? this.sourcePackId().hashCode() : 0;
+        //$$ int i = this.sourcePackId() != null ? this.sourcePackId().hashCode() : 0;
         //#else
-        //$$ int i = this.sourceName != null ? this.sourceName.hashCode() : 0;
+        int i = this.sourceName != null ? this.sourceName.hashCode() : 0;
         //#endif
         i = 31 * i + (this.location != null ? this.location.hashCode() : 0);
         return i;

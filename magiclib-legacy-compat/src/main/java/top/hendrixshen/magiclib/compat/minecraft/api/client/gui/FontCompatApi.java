@@ -3,7 +3,7 @@ package top.hendrixshen.magiclib.compat.minecraft.api.client.gui;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
-import org.joml.Matrix4f;
+import com.mojang.math.Matrix4f;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
 @Environment(EnvType.CLIENT)

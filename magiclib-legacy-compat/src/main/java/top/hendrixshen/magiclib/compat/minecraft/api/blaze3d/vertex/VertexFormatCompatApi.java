@@ -5,16 +5,16 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 //#if MC <= 11605
-//$$ import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11;
 //#endif
 
 @Environment(EnvType.CLIENT)
 public interface VertexFormatCompatApi {
     class Mode {
         //#if MC > 11605
-        public static final VertexFormat.Mode QUADS = VertexFormat.Mode.QUADS;
+        //$$ public static final VertexFormat.Mode QUADS = VertexFormat.Mode.QUADS;
         //#else
-        //$$ public static final int QUADS = GL11.GL_QUADS;
+        public static final int QUADS = GL11.GL_QUADS;
         //#endif
     }
 }

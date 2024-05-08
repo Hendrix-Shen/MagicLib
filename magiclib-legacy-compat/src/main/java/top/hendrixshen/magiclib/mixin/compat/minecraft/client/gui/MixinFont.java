@@ -5,7 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import org.joml.Matrix4f;
+import com.mojang.math.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.minecraft.api.client.gui.FontCompatApi;
@@ -59,9 +59,9 @@ public abstract class MixinFont implements FontCompatApi {
             Matrix4f matrix4f,
             MultiBufferSource multiBufferSource,
             //#if MC > 11903
-            Font.DisplayMode displayMode,
+            //$$ Font.DisplayMode displayMode,
             //#else
-            //$$ boolean seeThrough,
+            boolean seeThrough,
             //#endif
             int backgroundColor,
             int light
@@ -86,9 +86,9 @@ public abstract class MixinFont implements FontCompatApi {
                 matrix4f,
                 bufferSource,
                 //#if MC > 11903
-                seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL,
+                //$$ seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL,
                 //#else
-                //$$ seeThrough,
+                seeThrough,
                 //#endif
                 backgroundColor,
                 light

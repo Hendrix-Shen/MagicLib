@@ -37,9 +37,9 @@ public abstract class MixinLevel implements LevelCompatApi {
     @Override
     public int getMinBuildHeightCompat() {
         //#if MC > 11605
-        return ((Level) (Object) this).getMinBuildHeight();
+        //$$ return ((Level) (Object) this).getMinBuildHeight();
         //#else
-        //$$ return 0;
+        return 0;
         //#endif
     }
 }

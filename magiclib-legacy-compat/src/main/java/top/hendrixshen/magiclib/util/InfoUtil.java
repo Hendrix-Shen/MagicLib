@@ -43,11 +43,11 @@ public class InfoUtil {
             String realText = message.trim();
             if (!realText.isEmpty()) {
                 //#if MC > 11902
-                player.connection.sendChat(message.trim());
+                //$$ player.connection.sendChat(message.trim());
                 //#elseif MC > 11802
                 //$$ player.chatSigned(message, InfoUtil.getSign(message));
                 //#else
-                //$$ player.chat(message.trim());
+                player.chat(message.trim());
                 //#endif
             }
         });
@@ -58,11 +58,11 @@ public class InfoUtil {
             String realText = command.trim();
             if (!realText.isEmpty()) {
                 //#if MC > 11902
-                player.connection.sendCommand(command.trim());
+                //$$ player.connection.sendCommand(command.trim());
                 //#elseif MC > 11802
                 //$$ player.commandSigned(command, InfoUtil.getSign(command));
                 //#else
-                //$$ player.chat(String.format("/%s", command.trim()));
+                player.chat(String.format("/%s", command.trim()));
                 //#endif
             }
         });

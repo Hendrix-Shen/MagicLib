@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 //#if MC >= 11901
-@SuppressWarnings("removal")
+//$$ @SuppressWarnings("removal")
 //#endif
 public class Validators {
     public static class Strict<T> extends Validator<T> {

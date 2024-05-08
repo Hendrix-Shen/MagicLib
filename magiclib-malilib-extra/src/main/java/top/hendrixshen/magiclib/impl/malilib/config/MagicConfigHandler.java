@@ -24,12 +24,12 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 //#if MC < 11800
-//$$ import com.google.gson.JsonParser;
-//$$ import top.hendrixshen.magiclib.MagicLib;
-//$$
-//$$ import java.io.IOException;
-//$$ import java.nio.file.Files;
-//$$ import java.nio.file.StandardCopyOption;
+import com.google.gson.JsonParser;
+import top.hendrixshen.magiclib.MagicLib;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 //#endif
 
 public class MagicConfigHandler implements IConfigHandler {
@@ -89,9 +89,9 @@ public class MagicConfigHandler implements IConfigHandler {
 
     public final void loadFromJson(@NotNull JsonObject root) {
         //#if MC > 11701
-        this.loadedJson = root.deepCopy();
+        //$$ this.loadedJson = root.deepCopy();
         //#else
-        //$$ this.loadedJson = new JsonParser().parse(root.toString()).getAsJsonObject();
+        this.loadedJson = new JsonParser().parse(root.toString()).getAsJsonObject();
         //#endif
 
         if (this.preDeserializeCallback != null) {
@@ -162,15 +162,15 @@ public class MagicConfigHandler implements IConfigHandler {
         this.saveToJson();
 
         //#if MC > 11605
-        JsonUtils.writeJsonToFile(this.loadedJson, configFile);
+        //$$ JsonUtils.writeJsonToFile(this.loadedJson, configFile);
         //#else
-        //$$ try {
-        //$$     File tempFile = new File(configFile.getParent(), configFile.getName() + ".tmp");
-        //$$     JsonUtils.writeJsonToFile(this.loadedJson, tempFile);
-        //$$     Files.move(tempFile.toPath(), configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        //$$ } catch (IOException e) {
-        //$$     MagicLib.getLogger().error("Failed to save the config file of {}", this.identifier, e);
-        //$$ }
+        try {
+            File tempFile = new File(configFile.getParent(), configFile.getName() + ".tmp");
+            JsonUtils.writeJsonToFile(this.loadedJson, tempFile);
+            Files.move(tempFile.toPath(), configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            MagicLib.getLogger().error("Failed to save the config file of {}", this.identifier, e);
+        }
         //#endif
     }
 

@@ -1,10 +1,10 @@
 package top.hendrixshen.magiclib.compat.minecraft.api.math;
 
-import org.joml.Quaternionf;
+import com.mojang.math.Quaternion;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
 public interface QuaternionCompatApi {
-    Quaternionf ONE = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
+    Quaternion ONE = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
 
     default void mulCompat(float f) {
         throw new UnImplCompatApiException();
@@ -14,7 +14,7 @@ public interface QuaternionCompatApi {
         throw new UnImplCompatApiException();
     }
 
-    default Quaternionf copyCompat() {
+    default Quaternion copyCompat() {
         throw new UnImplCompatApiException();
     }
 

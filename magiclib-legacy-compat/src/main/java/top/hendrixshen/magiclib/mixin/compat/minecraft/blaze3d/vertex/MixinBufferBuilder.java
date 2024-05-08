@@ -3,7 +3,7 @@ package top.hendrixshen.magiclib.mixin.compat.minecraft.blaze3d.vertex;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import org.joml.Matrix4f;
+import com.mojang.math.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.compat.minecraft.api.blaze3d.vertex.BufferBuilderCompatApi;
 import top.hendrixshen.magiclib.util.MiscUtil;

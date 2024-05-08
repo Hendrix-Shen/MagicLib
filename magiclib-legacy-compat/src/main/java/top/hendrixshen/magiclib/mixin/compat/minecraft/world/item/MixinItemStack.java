@@ -9,19 +9,19 @@ import top.hendrixshen.magiclib.compat.minecraft.api.world.item.ItemStackCompatA
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack implements ItemStackCompatApi {
     //#if MC > 11605
-    @Shadow
-    public abstract boolean is(Item item);
-    //#else
     //$$ @Shadow
-    //$$ public abstract Item getItem();
+    //$$ public abstract boolean is(Item item);
+    //#else
+    @Shadow
+    public abstract Item getItem();
     //#endif
 
     @Override
     public boolean isCompat(Item item) {
         //#if MC > 11605
-        return this.is(item);
+        //$$ return this.is(item);
         //#else
-        //$$ return this.getItem() == item;
+        return this.getItem() == item;
         //#endif
     }
 }

@@ -13,8 +13,8 @@ public interface LevelCompatApi {
     }
 
     //#if MC <= 11650
-    //$$ default int getMinBuildHeight() {
-    //$$     return this.getMinBuildHeightCompat();
-    //$$ }
+    default int getMinBuildHeight() {
+        return this.getMinBuildHeightCompat();
+    }
     //#endif
 }

@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 //#if MC > 11802
-import net.minecraft.network.chat.MutableComponent;
+//$$ import net.minecraft.network.chat.MutableComponent;
 //#else
-//$$ import net.minecraft.network.chat.BaseComponent;
+import net.minecraft.network.chat.BaseComponent;
 //#endif
 
 //#if MC > 11502
@@ -29,9 +29,9 @@ public class MessageUtil {
 
     public static void sendMessage(CommandSourceStack source, Component messages) {
         //#if MC > 11904
-        Optional.ofNullable(source).ifPresent(sourceStack -> sourceStack.sendSuccess(() -> messages, source.getServer().getLevel(Level.OVERWORLD) != null));
+        //$$ Optional.ofNullable(source).ifPresent(sourceStack -> sourceStack.sendSuccess(() -> messages, source.getServer().getLevel(Level.OVERWORLD) != null));
         //#elseif MC > 11502
-        //$$ Optional.ofNullable(source).ifPresent(sourceStack -> sourceStack.sendSuccess(messages, source.getServer().getLevel(Level.OVERWORLD) != null));
+        Optional.ofNullable(source).ifPresent(sourceStack -> sourceStack.sendSuccess(messages, source.getServer().getLevel(Level.OVERWORLD) != null));
         //#else
         //$$ Optional.ofNullable(source).ifPresent(sourceStack -> sourceStack.sendSuccess(messages, source.getServer() != null && source.getServer().getLevel(DimensionType.OVERWORLD) != null));
         //#endif
@@ -50,9 +50,9 @@ public class MessageUtil {
             MagicLibReference.getLogger().info(message.getString());
             s.getPlayerList().getPlayers().forEach(p ->
                     //#if MC > 11802
-                    p.sendSystemMessage(message));
+                    //$$ p.sendSystemMessage(message));
                     //#elseif MC > 11502
-                    //$$ p.sendMessage(message, p.getUUID()));
+                    p.sendMessage(message, p.getUUID()));
                     //#else
                     //$$ p.sendMessage(message));
                     //#endif
@@ -64,14 +64,14 @@ public class MessageUtil {
     }
 
     //#if MC > 11802
-    private static @NotNull MutableComponent insertComponent(@NotNull List<Component> messages) {
+    //$$ private static @NotNull MutableComponent insertComponent(@NotNull List<Component> messages) {
     //#else
-    //$$ private static @NotNull BaseComponent insertComponent(@NotNull List<Component> messages) {
+    private static @NotNull BaseComponent insertComponent(@NotNull List<Component> messages) {
     //#endif
         //#if MC > 11802
-        MutableComponent components = ComponentCompatApi.literal("");
+        //$$ MutableComponent components = ComponentCompatApi.literal("");
         //#else
-        //$$ BaseComponent components = ComponentCompatApi.literal("");
+        BaseComponent components = ComponentCompatApi.literal("");
         //#endif
         messages.forEach(components::append);
         return components;

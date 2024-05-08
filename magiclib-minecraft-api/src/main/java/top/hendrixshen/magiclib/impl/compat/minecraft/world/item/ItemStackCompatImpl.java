@@ -14,9 +14,9 @@ public class ItemStackCompatImpl extends AbstractCompat<ItemStack> implements It
     @Override
     public boolean is(Item item) {
         //#if MC > 11605
-        return this.get().is(item);
+        //$$ return this.get().is(item);
         //#else
-        //$$ return this.get().getItem() == item;
+        return this.get().getItem() == item;
         //#endif
     }
 }

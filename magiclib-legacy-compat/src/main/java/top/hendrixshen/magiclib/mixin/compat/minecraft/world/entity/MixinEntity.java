@@ -10,8 +10,8 @@ import top.hendrixshen.magiclib.compat.minecraft.api.world.entity.EntityCompatAp
 
 //#if MC > 11502
 //#if MC < 11900
-//$$ import top.hendrixshen.magiclib.compat.minecraft.api.UtilCompatApi;
-//$$ import java.util.UUID;
+import top.hendrixshen.magiclib.compat.minecraft.api.UtilCompatApi;
+import java.util.UUID;
 //#endif
 //#else
 //$$ import net.minecraft.world.phys.Vec3;
@@ -20,14 +20,14 @@ import top.hendrixshen.magiclib.compat.minecraft.api.world.entity.EntityCompatAp
 @Mixin(Entity.class)
 public abstract class MixinEntity implements EntityCompatApi {
     //#if MC > 11903
-    @Shadow
-    private float maxUpStep;
-
-    @Shadow
-    public abstract void setMaxUpStep(float maxUpStep);
-    //#else
     //$$ @Shadow
-    //$$ public float maxUpStep;
+    //$$ private float maxUpStep;
+    //$$
+    //$$ @Shadow
+    //$$ public abstract void setMaxUpStep(float maxUpStep);
+    //#else
+    @Shadow
+    public float maxUpStep;
     //#endif
 
     //#if MC > 11404
@@ -76,12 +76,12 @@ public abstract class MixinEntity implements EntityCompatApi {
     }
 
     //#if MC > 11802
-    @Shadow
-    public abstract void sendSystemMessage(Component component);
-    //#elseif MC > 11502
     //$$ @Shadow
-    //$$ public abstract void sendMessage(Component component, UUID uuid);
-    //$$
+    //$$ public abstract void sendSystemMessage(Component component);
+    //#elseif MC > 11502
+    @Shadow
+    public abstract void sendMessage(Component component, UUID uuid);
+
     //#else
     //$$ @Shadow
     //$$ public abstract void sendMessage(Component component);
@@ -89,83 +89,83 @@ public abstract class MixinEntity implements EntityCompatApi {
     @Override
     public void sendSystemMessageCompat(Component component) {
         //#if MC > 11802
-        this.sendSystemMessage(component);
+        //$$ this.sendSystemMessage(component);
         //#elseif MC > 11502
-        //$$ this.sendMessage(component, UtilCompatApi.NIL_UUID);
+        this.sendMessage(component, UtilCompatApi.NIL_UUID);
         //#else
         //$$ this.sendMessage(component);
         //#endif
     }
 
     //#if MC > 11701
-    @Shadow
-    public abstract Level level();
-    //#else
     //$$ @Shadow
-    //$$ public Level level;
+    //$$ public abstract Level getLevel();
+    //#else
+    @Shadow
+    public Level level;
     //#endif
 
     @Override
     public Level getLevelCompat() {
         //#if MC > 11701
-        return this.level();
+        //$$ return this.getLevel();
         //#else
-        //$$ return this.level;
+        return this.level;
         //#endif
     }
 
     //#if MC > 11605
-    @Shadow
-    public abstract float getYRot();
-
-    @Shadow
-    public abstract void setYRot(float f);
-
-    @Shadow
-    public abstract float getXRot();
-
-    @Shadow
-    public abstract void setXRot(float f);
+    //$$ @Shadow
+    //$$ public abstract float getYRot();
+    //$$
+    //$$ @Shadow
+    //$$ public abstract void setYRot(float f);
+    //$$
+    //$$ @Shadow
+    //$$ public abstract float getXRot();
+    //$$
+    //$$ @Shadow
+    //$$ public abstract void setXRot(float f);
     //#else
-    //$$ @Shadow
-    //$$ public float yRot;
-    //$$ @Shadow
-    //$$ public float xRot;
+    @Shadow
+    public float yRot;
+    @Shadow
+    public float xRot;
     //#endif
 
     @Override
     public float getYRotCompat() {
         //#if MC > 11605
-        return this.getYRot();
+        //$$ return this.getYRot();
         //#else
-        //$$ return this.yRot;
+        return this.yRot;
         //#endif
     }
 
     @Override
     public void setYRotCompat(float yRot) {
         //#if MC > 11605
-        this.setYRot(yRot);
+        //$$ this.setYRot(yRot);
         //#else
-        //$$ this.yRot = yRot;
+        this.yRot = yRot;
         //#endif
     }
 
     @Override
     public float getXRotCompat() {
         //#if MC > 11605
-        return this.getXRot();
+        //$$ return this.getXRot();
         //#else
-        //$$ return this.xRot;
+        return this.xRot;
         //#endif
     }
 
     @Override
     public void setXRotCompat(float xRot) {
         //#if MC > 11605
-        this.setXRot(xRot);
+        //$$ this.setXRot(xRot);
         //#else
-        //$$ this.xRot = xRot;
+        this.xRot = xRot;
         //#endif
     }
 
@@ -174,7 +174,7 @@ public abstract class MixinEntity implements EntityCompatApi {
     public abstract BlockPos blockPosition();
 
     @Shadow
-    public abstract boolean onGround();
+    public abstract boolean isOnGround();
 
     @Shadow
     public abstract void setOnGround(boolean onGround);
@@ -200,7 +200,7 @@ public abstract class MixinEntity implements EntityCompatApi {
     @Override
     public boolean isOnGroundCompat() {
         //#if MC > 11502
-        return this.onGround();
+        return this.isOnGround();
         //#else
         //$$ return this.onGround;
         //#endif
@@ -223,9 +223,9 @@ public abstract class MixinEntity implements EntityCompatApi {
     @Override
     public void setMaxUpStepCompat(float maxUpStep) {
         //#if MC > 11903
-        this.setMaxUpStep(maxUpStep);
+        //$$ this.setMaxUpStep(maxUpStep);
         //#else
-        //$$ this.maxUpStep = maxUpStep;
+        this.maxUpStep = maxUpStep;
         //#endif
     }
 }

@@ -9,8 +9,8 @@ public interface BlockEntityCompatApi {
     }
 
     //#if MC <= 11605 && MC > 11502
-    //$$ default void load(CompoundTag compoundTag) {
-    //$$     this.loadCompat(compoundTag);
-    //$$ }
+    default void load(CompoundTag compoundTag) {
+        this.loadCompat(compoundTag);
+    }
     //#endif
 }

@@ -15,18 +15,18 @@ public class PlayerCompatImpl extends AbstractCompat<Player> implements PlayerCo
     @Override
     public Inventory getInventory() {
         //#if MC > 11605
-        return this.get().getInventory();
+        //$$ return this.get().getInventory();
         //#else
-        //$$ return this.get().inventory;
+        return this.get().inventory;
         //#endif
     }
 
     @Override
     public Abilities getAbilities() {
         //#if MC > 11605
-        return this.get().getAbilities();
+        //$$ return this.get().getAbilities();
         //#else
-        //$$ return this.get().abilities;
+        return this.get().abilities;
         //#endif
     }
 }

@@ -49,9 +49,9 @@ public abstract class MixinWidgetConfigOptionForHotkeyed extends WidgetConfigOpt
             at = @At(
                     value = "INVOKE",
                     //#if MC > 11701
-                    target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addHotkeyConfigElements(IIILjava/lang/String;Lfi/dy/masa/malilib/hotkeys/IHotkey;)V"
+                    //$$ target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addHotkeyConfigElements(IIILjava/lang/String;Lfi/dy/masa/malilib/hotkeys/IHotkey;)V"
                     //#else
-                    //$$ target = "Lfi/dy/masa/malilib/gui/button/ConfigButtonKeybind;<init>(IIIILfi/dy/masa/malilib/hotkeys/IKeybind;Lfi/dy/masa/malilib/gui/interfaces/IKeybindConfigGui;)V"
+                    target = "Lfi/dy/masa/malilib/gui/button/ConfigButtonKeybind;<init>(IIIILfi/dy/masa/malilib/hotkeys/IKeybind;Lfi/dy/masa/malilib/gui/interfaces/IKeybindConfigGui;)V"
                     //#endif
             ),
             cancellable = true
@@ -67,9 +67,9 @@ public abstract class MixinWidgetConfigOptionForHotkeyed extends WidgetConfigOpt
     private void magiclib$addConfigHotkeyedElements(int x, int y, int configWidth, @NotNull IHotkey hotkey) {
         IKeybind keybind = hotkey.getKeybind();
         //#if MC > 11701
-        int triggerBtnWidth = (configWidth - 24) / 2;
+        //$$ int triggerBtnWidth = (configWidth - 24) / 2;
         //#else
-        //$$ int triggerBtnWidth = configWidth / 2 + 1;
+        int triggerBtnWidth = configWidth / 2 + 1;
         //#endif
         ButtonGeneric triggerButton = new ButtonGeneric(
                 x, y, triggerBtnWidth, 20,
@@ -89,17 +89,17 @@ public abstract class MixinWidgetConfigOptionForHotkeyed extends WidgetConfigOpt
 
         x += triggerBtnWidth + 2;
         //#if MC > 11701
-        configWidth -= triggerBtnWidth + 24;
+        //$$ configWidth -= triggerBtnWidth + 24;
         //#else
-        //$$ configWidth -= triggerBtnWidth;
+        configWidth -= triggerBtnWidth;
         //#endif
         ConfigButtonKeybind keybindButton = new ConfigButtonKeybind(x, y, configWidth, 20, keybind, this.host);
         x += configWidth + 2;
         this.addWidget(new WidgetKeybindSettings(x, y, 20, 20, keybind, hotkey.getName(), this.parent, this.host.getDialogHandler()));
         //#if MC > 11701
-        x += 22;
+        //$$ x += 22;
         //#else
-        //$$ x += 25;
+        x += 25;
         //#endif
         this.addButton(keybindButton, this.host.getButtonPressListener());
         this.addKeybindResetButton(x, y, keybind, keybindButton);

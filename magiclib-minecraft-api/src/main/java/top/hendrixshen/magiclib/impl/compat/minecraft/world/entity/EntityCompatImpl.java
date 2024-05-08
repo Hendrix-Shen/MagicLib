@@ -75,36 +75,36 @@ public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCo
     @Override
     public float getYRot() {
         //#if MC > 11605
-        return this.get().getYRot();
+        //$$ return this.get().getYRot();
         //#else
-        //$$ return this.get().yRot;
+        return this.get().yRot;
         //#endif
     }
 
     @Override
     public void setYRot(float yRot) {
         //#if MC > 11605
-        this.get().setYRot(yRot);
+        //$$ this.get().setYRot(yRot);
         //#else
-        //$$ this.get().yRot = yRot;
+        this.get().yRot = yRot;
         //#endif
     }
 
     @Override
     public float getXRot() {
         //#if MC > 11605
-        return this.get().getXRot();
+        //$$ return this.get().getXRot();
         //#else
-        //$$ return this.get().xRot;
+        return this.get().xRot;
         //#endif
     }
 
     @Override
     public void setXRot(float xRot) {
         //#if MC > 11605
-        this.get().setXRot(xRot);
+        //$$ this.get().setXRot(xRot);
         //#else
-        //$$ this.get().xRot = xRot;
+        this.get().xRot = xRot;
         //#endif
     }
 

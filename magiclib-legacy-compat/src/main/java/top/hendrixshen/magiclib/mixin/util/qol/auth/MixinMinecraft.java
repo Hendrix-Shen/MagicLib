@@ -19,16 +19,16 @@ import top.hendrixshen.magiclib.dependency.impl.MixinDependencyPredicates;
 public class MixinMinecraft {
     @Redirect(
             //#if MC > 11701
-            method = "createUserApiService",
+            //$$ method = "createUserApiService",
             //#else
-            //$$ method = "createSocialInteractions",
+            method = "createSocialInteractions",
             //#endif
             at = @At(
                     value = "INVOKE",
                     //#if MC > 11701
-                    target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Throwable;)V",
+                    //$$ target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Throwable;)V",
                     //#else
-                    //$$ target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Throwable;)V",
+                    target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Throwable;)V",
                     //#endif
                     remap = false
             ),

@@ -2,7 +2,7 @@ package top.hendrixshen.magiclib.compat.minecraft.api.client.gui.screens;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
@@ -12,7 +12,7 @@ public interface ScreenCompatApi {
         throw new UnImplCompatApiException();
     }
 
-    default Renderable addRenderableOnlyCompat(Renderable widget) {
+    default Widget addRenderableOnlyCompat(Widget widget) {
         throw new UnImplCompatApiException();
     }
 
@@ -21,13 +21,13 @@ public interface ScreenCompatApi {
     }
 
     //#if MC <= 11605
-    //$$ default GuiEventListener addRenderableWidget(GuiEventListener guiEventListener) {
-    //$$     return this.addRenderableWidgetCompat(guiEventListener);
-    //$$ }
-    //$$
-    //$$ default Widget addRenderableOnly(Widget widget) {
-    //$$    return this.addRenderableOnlyCompat(widget);
-    //$$ }
+    default GuiEventListener addRenderableWidget(GuiEventListener guiEventListener) {
+        return this.addRenderableWidgetCompat(guiEventListener);
+    }
+
+    default Widget addRenderableOnly(Widget widget) {
+       return this.addRenderableOnlyCompat(widget);
+    }
     //#endif
 
     //#if MC <= 11502

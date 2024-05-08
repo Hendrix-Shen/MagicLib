@@ -18,7 +18,7 @@ import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
 //#endif
 
 //#if MC > 11502 && MC < 11800
-//$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.ServerboundClientInformationPacketAccessor;
+import top.hendrixshen.magiclib.mixin.minecraft.accessor.ServerboundClientInformationPacketAccessor;
 //#endif
 
 @Mixin(ServerPlayer.class)
@@ -43,10 +43,10 @@ public class ServerPlayerMixin implements ServerPlayerLanguage {
         //#if MC > 12001
         //$$ this.magiclib$language = clientInformation.language().toLowerCase(Locale.ROOT);
         //#elseif MC > 11701
-        this.magiclib$language = serverboundClientInformationPacket.language().toLowerCase(Locale.ROOT);
+        //$$ this.magiclib$language = serverboundClientInformationPacket.language().toLowerCase(Locale.ROOT);
         //#elseif MC > 11502
-        //$$ this.magiclib$language = ((ServerboundClientInformationPacketAccessor) serverboundClientInformationPacket)
-        //$$         .magiclib$getLanguage().toLowerCase(Locale.ROOT);
+        this.magiclib$language = ((ServerboundClientInformationPacketAccessor) serverboundClientInformationPacket)
+                .magiclib$getLanguage().toLowerCase(Locale.ROOT);
         //#else
         //$$ this.magiclib$language = serverboundClientInformationPacket.getLanguage().toLowerCase(Locale.ROOT);
         //#endif

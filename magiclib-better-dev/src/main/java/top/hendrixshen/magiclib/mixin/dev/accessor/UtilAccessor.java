@@ -5,9 +5,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 //#if MC > 11701
-import org.slf4j.Logger;
+//$$ import org.slf4j.Logger;
 //#else
-//$$ import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 //#endif
 
 @Mixin(Util.class)

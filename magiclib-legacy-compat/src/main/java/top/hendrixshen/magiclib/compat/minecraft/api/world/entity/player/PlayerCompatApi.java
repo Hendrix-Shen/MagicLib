@@ -10,9 +10,9 @@ public interface PlayerCompatApi {
     }
 
     //#if MC <= 11605
-    //$$ default Inventory getInventory() {
-    //$$     return this.getInventoryCompat();
-    //$$ }
+    default Inventory getInventory() {
+        return this.getInventoryCompat();
+    }
     //#endif
 
     default Abilities getAbilitiesCompat() {
@@ -20,8 +20,8 @@ public interface PlayerCompatApi {
     }
 
     //#if MC <= 11605
-    //$$ default Abilities getAbilities() {
-    //$$     return this.getAbilitiesCompat();
-    //$$ }
+    default Abilities getAbilities() {
+        return this.getAbilitiesCompat();
+    }
     //#endif
 }

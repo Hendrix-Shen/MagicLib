@@ -3,7 +3,7 @@ package top.hendrixshen.magiclib.compat.minecraft.api.client.renderer.entity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.Entity;
-import org.joml.Quaternionf;
+import com.mojang.math.Quaternion;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
 @Environment(EnvType.CLIENT)
@@ -12,7 +12,7 @@ public interface EntityRenderDispatcherCompatApi {
         throw new UnImplCompatApiException();
     }
 
-    default Quaternionf cameraOrientationCompat() {
+    default Quaternion cameraOrientationCompat() {
         throw new UnImplCompatApiException();
     }
 

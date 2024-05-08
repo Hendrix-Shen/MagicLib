@@ -25,9 +25,9 @@ public class BlockEntityCompatImpl extends AbstractCompat<BlockEntity> implement
         //#if MC > 12004
         //$$ this.get().loadWithComponents(compoundTag, provider);
         //#elseif MC > 11605 || MC < 11600
-        this.get().load(compoundTag);
+        //$$ this.get().load(compoundTag);
         //#else
-        //$$ this.get().load(this.get().getLevel().getBlockState(this.get().getBlockPos()), compoundTag);
+        this.get().load(this.get().getLevel().getBlockState(this.get().getBlockPos()), compoundTag);
         //#endif
     }
 }

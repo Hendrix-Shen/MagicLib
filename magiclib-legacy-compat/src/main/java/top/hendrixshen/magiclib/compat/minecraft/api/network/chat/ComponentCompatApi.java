@@ -9,34 +9,34 @@ import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 public interface ComponentCompatApi {
     @Contract("_ -> new")
     //#if MC > 11802
-    static @NotNull MutableComponent literal(String string) {
+    //$$ static @NotNull MutableComponent literal(String string) {
     //#else
-    //$$ static @NotNull BaseComponent literal(String string) {
+    static @NotNull BaseComponent literal(String string) {
     //#endif
         //#if MC > 11802
-        return Component.literal(string);
+        //$$ return Component.literal(string);
         //#else
-        //$$ return new TextComponent(string);
+        return new TextComponent(string);
         //#endif
     }
 
     @Contract("_, _ -> new")
     //#if MC > 11802
-    static @NotNull MutableComponent translatable(String string, Object... objects) {
+    //$$ static @NotNull MutableComponent translatable(String string, Object... objects) {
     //#else
-    //$$ static @NotNull BaseComponent translatable(String string, Object... objects) {
+    static @NotNull BaseComponent translatable(String string, Object... objects) {
     //#endif
         //#if MC > 11802
-        return Component.translatable(string, objects);
+        //$$ return Component.translatable(string, objects);
         //#else
-        //$$ return new TranslatableComponent(string, objects);
+        return new TranslatableComponent(string, objects);
         //#endif
     }
 
     //#if MC > 11802
-    default MutableComponent withStyleCompat(Style style) {
+    //$$ default MutableComponent withStyleCompat(Style style) {
     //#else
-    //$$ default BaseComponent withStyleCompat(Style style) {
+    default BaseComponent withStyleCompat(Style style) {
     //#endif
         throw new UnImplCompatApiException();
     }

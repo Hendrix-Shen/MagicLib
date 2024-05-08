@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import org.joml.Matrix4f;
+import com.mojang.math.Matrix4f;
 
 import lombok.Getter;
 
@@ -36,9 +36,9 @@ public class RenderContext {
 
     public void mulPoseMatrix(Matrix4f matrix4f) {
         //#if MC > 11605 || MC < 11500
-        this.poseStack.mulPoseMatrix(matrix4f);
+        //$$ this.poseStack.mulPoseMatrix(matrix4f);
         //#else
-        //$$ this.poseStack.last().pose().multiply(matrix4f);
+        this.poseStack.last().pose().multiply(matrix4f);
         //#endif
     }
 
@@ -64,25 +64,25 @@ public class RenderContext {
 
     public void color4f(float red, float green, float blue, float alpha) {
         //#if MC > 11605
-        RenderSystem.setShaderColor(red, green, blue, alpha);
+        //$$ RenderSystem.setShaderColor(red, green, blue, alpha);
         //#else
-        //$$ RenderSystem.color4f(red, green, blue, alpha);
+        RenderSystem.color4f(red, green, blue, alpha);
         //#endif
     }
 
     //#if MC < 11904
-    //$$ public void enableTexture() {
-    //$$     RenderSystem.enableTexture();
-    //$$ }
+    public void enableTexture() {
+        RenderSystem.enableTexture();
+    }
     //#endif
 
     //#if MC < 11700
-    //$$ public void enableAlphaTest() {
-    //$$     RenderSystem.enableAlphaTest();
-    //$$ }
-    //$$
-    //$$ public void disableLighting() {
-    //$$    RenderSystem.disableLighting();
-    //$$ }
+    public void enableAlphaTest() {
+        RenderSystem.enableAlphaTest();
+    }
+
+    public void disableLighting() {
+       RenderSystem.disableLighting();
+    }
     //#endif
 }

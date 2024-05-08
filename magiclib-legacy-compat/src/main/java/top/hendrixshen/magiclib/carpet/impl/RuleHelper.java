@@ -7,7 +7,7 @@ import top.hendrixshen.magiclib.util.ReflectUtil;
 import java.util.Optional;
 
 //#if MC >= 11901
-@SuppressWarnings("removal")
+//$$ @SuppressWarnings("removal")
 //#endif
 public class RuleHelper {
     public static RuleOption getRuleOption(@NotNull WrappedSettingManager settingManager, ParsedRule<?> parsedRule) {
@@ -16,16 +16,16 @@ public class RuleHelper {
 
     public static @NotNull WrappedSettingManager getSettingManager(ParsedRule<?> parsedRule) {
         //#if MC > 11802
-        Optional<?> settingManager = ReflectUtil.getDeclaredFieldValue("carpet.settings.ParsedRule", "realSettingsManager", parsedRule);
+        //$$ Optional<?> settingManager = ReflectUtil.getDeclaredFieldValue("carpet.settings.ParsedRule", "realSettingsManager", parsedRule);
         //#else
-        //$$ Optional<?> settingManager =  ReflectUtil.getFieldValue("carpet.settings.ParsedRule", "settingsManager", parsedRule);
+        Optional<?> settingManager =  ReflectUtil.getFieldValue("carpet.settings.ParsedRule", "settingsManager", parsedRule);
         //#endif
         if (settingManager.isPresent()) {
             if (!(settingManager.get() instanceof WrappedSettingManager)) {
                 //#if MC > 11802
-                throw new IllegalArgumentException(String.format("Rule %s is not registered by WrapperSettingManager!", parsedRule.name()));
+                //$$ throw new IllegalArgumentException(String.format("Rule %s is not registered by WrapperSettingManager!", parsedRule.name()));
                 //#else
-                //$$ throw new IllegalArgumentException(String.format("Rule %s is not registered by WrapperSettingManager!", parsedRule.name));
+                throw new IllegalArgumentException(String.format("Rule %s is not registered by WrapperSettingManager!", parsedRule.name));
                 //#endif
             }
             return (WrappedSettingManager) settingManager.get();

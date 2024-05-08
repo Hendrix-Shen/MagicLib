@@ -12,7 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
+import com.mojang.math.Matrix4f;
 import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.event.render.impl.RenderContext;
 import top.hendrixshen.magiclib.util.RenderUtil;
@@ -23,7 +23,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 //#if MC < 11904
-//$$ import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 //#if MC > 11404
@@ -75,16 +75,16 @@ public class TextRenderer {
         Minecraft mc = Minecraft.getInstance();
 
         //#if MC > 11605
-        context = new RenderContext(RenderSystem.getModelViewStack());
+        //$$ context = new RenderContext(RenderSystem.getModelViewStack());
         //#else
-        //$$ context = new RenderContext(new PoseStack());
+        context = new RenderContext(new PoseStack());
         //#endif
         CameraPositionTransformer transformer = new CameraPositionTransformer(this.pos);
         transformer.apply(context);
 
         context.scale(-this.fontScale, -this.fontScale, this.fontScale);
         //#if MC < 11700
-        //$$ context.disableLighting();
+        context.disableLighting();
         //#endif
 
         if (this.seeThrough) {
@@ -94,7 +94,7 @@ public class TextRenderer {
         }
 
         //#if MC < 11904
-        //$$ context.enableTexture();
+        context.enableTexture();
         //#endif
         context.depthMask(true);
         int lineNum = this.lines.size();
@@ -104,9 +104,9 @@ public class TextRenderer {
         context.translate(this.horizontalAlignment.getTranslateX(totalTextWidth), this.verticalAlignment.getTranslateY(totalTextHeight), 0);
         context.translate(this.shiftX, this.shiftY, 0);
         //#if MC > 11605
-        RenderSystem.applyModelViewMatrix();
+        //$$ RenderSystem.applyModelViewMatrix();
         //#else
-        //$$ context.enableAlphaTest();
+        context.enableAlphaTest();
         //#endif
         context.enableBlend();
         context.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -121,14 +121,14 @@ public class TextRenderer {
                 //#if MC > 11404
                 MultiBufferSource.BufferSource source = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
                 //#if MC > 11605
-                Matrix4f matrix4f = Transformation.identity().getMatrix();
+                //$$ Matrix4f matrix4f = Transformation.identity().getMatrix();
                 //#else
-                //$$ Matrix4f matrix4f = context.getPoseStack().last().pose();
+                Matrix4f matrix4f = context.getPoseStack().last().pose();
                 //#endif
                 //#if MC > 11903
-                mc.font.drawInBatch(text, textX, textY, this.color, this.shadow, matrix4f, source, this.seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, backgroundColor, 0xF000F0);
+                //$$ mc.font.drawInBatch(text, textX, textY, this.color, this.shadow, matrix4f, source, this.seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, backgroundColor, 0xF000F0);
                 //#elseif MC > 11502
-                //$$ mc.font.drawInBatch(text, textX, textY, this.color, this.shadow, matrix4f, source, this.seeThrough, backgroundColor, 0xF000F0);
+                mc.font.drawInBatch(text, textX, textY, this.color, this.shadow, matrix4f, source, this.seeThrough, backgroundColor, 0xF000F0);
                 //#else
                 //$$ mc.font.drawInBatch(text.getColoredString(), textX, textY, this.color, this.shadow, matrix4f, source, this.seeThrough, backgroundColor, 0xF000F0);
                 //#endif
@@ -149,11 +149,11 @@ public class TextRenderer {
         //$$ context.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         //#endif
         //#if MC < 11904
-        //$$ context.enableDepthTest();
+        context.enableDepthTest();
         //#endif
         transformer.restore();
         //#if MC > 11605
-        RenderSystem.applyModelViewMatrix();
+        //$$ RenderSystem.applyModelViewMatrix();
         //#endif
     }
 

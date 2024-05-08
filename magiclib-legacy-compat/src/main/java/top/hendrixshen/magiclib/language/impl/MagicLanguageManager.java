@@ -7,7 +7,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -17,7 +17,7 @@ import top.hendrixshen.magiclib.impl.config.ConfigEntrypoint;
 import top.hendrixshen.magiclib.util.MiscUtil;
 
 //#if MC <= 11802
-//$$ import java.io.FileNotFoundException;
+import java.io.FileNotFoundException;
 //#endif
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,7 +52,7 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
     public void initClient() {
         this.resourceManager = Minecraft.getInstance().getResourceManager();
         this.fallbackLanguageList = Lists.newArrayList(ConfigEntrypoint.getFallbackLanguageListFromConfig());
-        ((ReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(INSTANCE);
+        ((SimpleReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(INSTANCE);
         this.reload();
     }
 
@@ -71,9 +71,9 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
             ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
 
             try {
-                for (Resource resource : resourceManager.getResourceStack(resourceLocation)) {
+                for (Resource resource : resourceManager.getResources(resourceLocation)) {
                     try {
-                        InputStream inputStream = resource.open();
+                        InputStream inputStream = resource.getInputStream();
                         try {
                             MiscUtil.loadStringMapFromJson(inputStream, language::put);
                         } catch (Throwable e) {
@@ -94,8 +94,8 @@ public class MagicLanguageManager implements ResourceManagerReloadListener {
                     }
                 }
             //#if MC <= 11802
-            //$$ } catch (FileNotFoundException ignored) {
-            //$$ // ignore..
+            } catch (FileNotFoundException ignored) {
+            // ignore..
             //#endif
             } catch (Exception e) {
                 MagicLibReference.getLogger().warn("Failed to load translations from {}:{} ({})", namespace, languagePath, e);

@@ -26,11 +26,11 @@ import net.minecraft.server.players.GameProfileCache;
 
 //#if MC > 11502
 //#if MC > 11701
-import net.minecraft.server.WorldStem;
+//$$ import net.minecraft.server.WorldStem;
 //#else
-//$$ import net.minecraft.core.RegistryAccess;
-//$$ import net.minecraft.server.ServerResources;
-//$$ import net.minecraft.world.level.storage.WorldData;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.server.ServerResources;
+import net.minecraft.world.level.storage.WorldData;
 //#endif
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.level.storage.LevelStorageSource;
@@ -64,15 +64,15 @@ public class IntegratedServerMixin {
             Minecraft minecraft,
             //#if MC > 11502
             //#if MC < 11802
-            //$$ RegistryAccess.RegistryHolder registryHolder,
+            RegistryAccess.RegistryHolder registryHolder,
             //#endif
             LevelStorageSource.LevelStorageAccess levelStorageAccess,
             PackRepository packRepository,
             //#if MC > 11701
-            WorldStem worldStem,
+            //$$ WorldStem worldStem,
             //#else
-            //$$ ServerResources serverResources,
-            //$$ WorldData worldData,
+            ServerResources serverResources,
+            WorldData worldData,
             //#endif
             //#else
             //$$ String levelIdName,

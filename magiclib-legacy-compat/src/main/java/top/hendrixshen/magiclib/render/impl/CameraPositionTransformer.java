@@ -4,7 +4,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
+import com.mojang.math.Matrix4f;
 import top.hendrixshen.magiclib.event.render.impl.RenderContext;
 
 import java.util.Objects;
@@ -25,9 +25,9 @@ public class CameraPositionTransformer {
         context.pushPose();
         context.translate(vec3.x(), vec3.y(), vec3.z());
         //#if MC > 11902
-        context.mulPoseMatrix(new Matrix4f().rotation(camera.rotationCompat()));
+        //$$ context.mulPoseMatrix(new Matrix4f().rotation(camera.rotationCompat()));
         //#else
-        //$$ context.mulPoseMatrix(new Matrix4f(camera.rotationCompat()));
+        context.mulPoseMatrix(new Matrix4f(camera.rotationCompat()));
         //#endif
     }
 

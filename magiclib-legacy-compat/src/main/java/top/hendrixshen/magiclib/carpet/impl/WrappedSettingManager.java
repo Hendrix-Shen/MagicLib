@@ -43,33 +43,33 @@ import carpet.network.ServerNetworkHandler;
 //#endif
 
 //#if MC > 11502 && MC < 11904
-//$$ import carpet.script.CarpetEventServer;
+import carpet.script.CarpetEventServer;
 //#endif
 
 //#if MC <= 11605
-//$$ import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 //#endif
 
 //#if MC <= 11802
-//$$ import java.util.Map;
+import java.util.Map;
 //#endif
 
 //#if MC > 11900
 //#if MC > 11903
-import carpet.api.settings.CarpetRule;
+//$$ import carpet.api.settings.CarpetRule;
 //#endif
-import carpet.api.settings.SettingsManager;
-import net.minecraft.commands.CommandBuildContext;
+//$$ import carpet.api.settings.SettingsManager;
+//$$ import net.minecraft.commands.CommandBuildContext;
 //#else
-//$$ import top.hendrixshen.magiclib.mixin.carpet.accessor.SettingsManagerAccessor;
+import top.hendrixshen.magiclib.mixin.carpet.accessor.SettingsManagerAccessor;
 //#if MC > 11502
-//$$ import carpet.settings.Condition;
+import carpet.settings.Condition;
 //#endif
-//$$ import carpet.settings.SettingsManager;
+import carpet.settings.SettingsManager;
 //#endif
 
 //#if MC >= 11901
-@SuppressWarnings("removal")
+//$$ @SuppressWarnings("removal")
 //#endif
 public class WrappedSettingManager extends SettingsManager {
     private static final ConcurrentHashMap<String, WrappedSettingManager> INSTANCES = new ConcurrentHashMap<>();
@@ -115,13 +115,13 @@ public class WrappedSettingManager extends SettingsManager {
         //#endif
 
         //#if MC > 11903
-        ReflectUtil.invokeDeclared("carpet.api.settings.SettingsManager",
-                "switchScarpetRuleIfNeeded", this,
-                new Class[]{CommandSourceStack.class, CarpetRule.class}, source, rule.getRule());
+        //$$ ReflectUtil.invokeDeclared("carpet.api.settings.SettingsManager",
+        //$$         "switchScarpetRuleIfNeeded", this,
+        //$$         new Class[]{CommandSourceStack.class, CarpetRule.class}, source, rule.getRule());
         //#elseif MC > 11502
-        //$$ if (CarpetEventServer.Event.CARPET_RULE_CHANGES.isNeeded()) {
-        //$$    CarpetEventServer.Event.CARPET_RULE_CHANGES.onCarpetRuleChanges(rule.getRule(), source);
-        //$$ }
+        if (CarpetEventServer.Event.CARPET_RULE_CHANGES.isNeeded()) {
+           CarpetEventServer.Event.CARPET_RULE_CHANGES.onCarpetRuleChanges(rule.getRule(), source);
+        }
         //#endif
     }
 
@@ -164,7 +164,7 @@ public class WrappedSettingManager extends SettingsManager {
     }
 
     //#if MC <= 11802
-    //$$ @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     //#endif
     @Override
     public void parseSettingsClass(@NotNull Class settingsClass) {
@@ -188,9 +188,9 @@ public class WrappedSettingManager extends SettingsManager {
                         }
 
                         //#if MC > 11802
-                        this.addCarpetRule(carpetRule);
+                        //$$ this.addCarpetRule(carpetRule);
                         //#else
-                        //$$ ((SettingsManagerAccessor) this).getRules().put(carpetRule.name, carpetRule);
+                        ((SettingsManagerAccessor) this).getRules().put(carpetRule.name, carpetRule);
                         //#endif
                         this.OPTIONS.putIfAbsent(field.getName(), ruleOption);
                         this.RULE_TO_OPTION.putIfAbsent(carpetRule, ruleOption);
@@ -201,9 +201,9 @@ public class WrappedSettingManager extends SettingsManager {
     //#if MC > 11502
     @Override
     //#if MC > 11802
-    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext) {
+    //$$ public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext) {
     //#else
-    //$$ public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
     //#endif
         this.registerCommandCompat(dispatcher);
     }
@@ -327,9 +327,9 @@ public class WrappedSettingManager extends SettingsManager {
     }
 
     //#if MC <= 11802
-    //$$ public boolean locked() {
-    //$$     return this.locked;
-    //$$ }
+    public boolean locked() {
+        return this.locked;
+    }
     //#endif
 
     // The server side requires this way to use the fallback language.
@@ -501,17 +501,17 @@ public class WrappedSettingManager extends SettingsManager {
         //$$ Pair<Map<String, String>, Boolean> conf = ((SettingsManagerAccessor) this).invokeReadSettingsFromConf();
         //#endif
         //#if MC > 11605
-        Map<String, String> ruleMap = (Map<String, String>) ReflectUtil.invoke(ReflectUtil.getInnerClass(carpetSM,
-                "ConfigReadResult").orElseThrow(RuntimeException::new), "ruleMap", conf).orElseThrow(RuntimeException::new);
+        //$$ Map<String, String> ruleMap = (Map<String, String>) ReflectUtil.invoke(ReflectUtil.getInnerClass(carpetSM,
+        //$$         "ConfigReadResult").orElseThrow(RuntimeException::new), "ruleMap", conf).orElseThrow(RuntimeException::new);
         //#else
-        //$$ Map<String, String> ruleMap = ((Pair<Map<String, String>, Boolean>) conf).getLeft();
+        Map<String, String> ruleMap = ((Pair<Map<String, String>, Boolean>) conf).getLeft();
         //#endif
         ruleMap.put(ruleOption.getName(), newValue);
         //#if MC > 11802
-        ReflectUtil.invokeDeclared(carpetSM, "writeSettingsToConf", this,
-                new Class[]{ReflectUtil.getInnerClass(carpetSM, "ConfigReadResult").orElseThrow(RuntimeException::new)}, conf);
+        //$$ ReflectUtil.invokeDeclared(carpetSM, "writeSettingsToConf", this,
+        //$$         new Class[]{ReflectUtil.getInnerClass(carpetSM, "ConfigReadResult").orElseThrow(RuntimeException::new)}, conf);
         //#else
-        //$$ ((SettingsManagerAccessor) this).invokeWriteSettingsToConf(ruleMap);
+        ((SettingsManagerAccessor) this).invokeWriteSettingsToConf(ruleMap);
         //#endif
         MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("set_default", this.getTranslatedRuleName(ruleOption.getName()),
                 ruleOption.getStringValue())).withStyle(style -> style.withItalic(true).withColor(ChatFormatting.GRAY)));
@@ -542,17 +542,17 @@ public class WrappedSettingManager extends SettingsManager {
         //$$ Pair<Map<String, String>, Boolean> conf = ((SettingsManagerAccessor) this).invokeReadSettingsFromConf();
         //#endif
         //#if MC > 11605
-        Map<String, String> ruleMap = (Map<String, String>) ReflectUtil.invoke(ReflectUtil.getInnerClass(carpetSM,
-                "ConfigReadResult").orElseThrow(RuntimeException::new), "ruleMap", conf).orElseThrow(RuntimeException::new);
+        //$$ Map<String, String> ruleMap = (Map<String, String>) ReflectUtil.invoke(ReflectUtil.getInnerClass(carpetSM,
+        //$$         "ConfigReadResult").orElseThrow(RuntimeException::new), "ruleMap", conf).orElseThrow(RuntimeException::new);
         //#else
-        //$$ Map<String, String> ruleMap = ((Pair<Map<String, String>, Boolean>) conf).getLeft();
+        Map<String, String> ruleMap = ((Pair<Map<String, String>, Boolean>) conf).getLeft();
         //#endif
         ruleMap.remove(ruleOption.getName());
         //#if MC > 11802
-        ReflectUtil.invokeDeclared(carpetSM, "writeSettingsToConf", this,
-                new Class[]{ReflectUtil.getInnerClass(carpetSM, "ConfigReadResult").orElseThrow(RuntimeException::new)}, conf);
+        //$$ ReflectUtil.invokeDeclared(carpetSM, "writeSettingsToConf", this,
+        //$$         new Class[]{ReflectUtil.getInnerClass(carpetSM, "ConfigReadResult").orElseThrow(RuntimeException::new)}, conf);
         //#else
-        //$$ ((SettingsManagerAccessor) this).invokeWriteSettingsToConf(ruleMap);
+        ((SettingsManagerAccessor) this).invokeWriteSettingsToConf(ruleMap);
         //#endif
         MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("reset_default", this.getTranslatedRuleName(ruleOption.getName())))
                 .withStyle(style -> style.withItalic(true).withColor(ChatFormatting.GRAY)));
@@ -649,10 +649,10 @@ public class WrappedSettingManager extends SettingsManager {
         //$$ Pair<Map<String, String>, Boolean> conf = ((SettingsManagerAccessor) this).invokeReadSettingsFromConf();
         //#endif
         //#if MC > 11605
-        Set<String> defaults = ((Map<String, String>) ReflectUtil.invoke(ReflectUtil.getInnerClass(carpetSM,
-                "ConfigReadResult").orElseThrow(RuntimeException::new), "ruleMap", conf).orElseThrow(RuntimeException::new)).keySet();
+        //$$ Set<String> defaults = ((Map<String, String>) ReflectUtil.invoke(ReflectUtil.getInnerClass(carpetSM,
+        //$$         "ConfigReadResult").orElseThrow(RuntimeException::new), "ruleMap", conf).orElseThrow(RuntimeException::new)).keySet();
         //#else
-        //$$ Set<String> defaults = ((Pair<Map<String, String>, Boolean>) conf).getLeft().keySet();
+        Set<String> defaults = ((Pair<Map<String, String>, Boolean>) conf).getLeft().keySet();
         //#endif
         this.getMatchedSettings(this.OPTIONS
                 .values()

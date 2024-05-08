@@ -11,31 +11,31 @@ import top.hendrixshen.magiclib.impl.carpet.CarpetEntrypoint;
 import top.hendrixshen.magiclib.util.MessageUtil;
 
 //#if MC >= 11901
-import carpet.api.settings.CarpetRule;
+//$$ import carpet.api.settings.CarpetRule;
 //#endif
 
 //#if MC >= 11901
-@SuppressWarnings("removal")
-public abstract class Validator<T> extends carpet.api.settings.Validator<T> {
+//$$ @SuppressWarnings("removal")
+//$$ public abstract class Validator<T> extends carpet.api.settings.Validator<T> {
 //#else
-//$$ public abstract class Validator<T> extends carpet.settings.Validator<T> {
+public abstract class Validator<T> extends carpet.settings.Validator<T> {
 //#endif
     @Override
     //#if MC >= 11901
-    public T validate(CommandSourceStack source, CarpetRule<T> carpetRule, T newValue, String userInput) {
-        return this.validateCompat(source, RuleHelper.getSettingManager((ParsedRule<T>) carpetRule).getRuleOption((ParsedRule<T>) carpetRule), newValue, userInput);
+    //$$ public T validate(CommandSourceStack source, CarpetRule<T> carpetRule, T newValue, String userInput) {
+    //$$     return this.validateCompat(source, RuleHelper.getSettingManager((ParsedRule<T>) carpetRule).getRuleOption((ParsedRule<T>) carpetRule), newValue, userInput);
     //#else
-    //$$ public T validate(CommandSourceStack source, ParsedRule<T> carpetRule, T newValue, String userInput) {
-    //$$     return this.validateCompat(source, RuleHelper.getSettingManager((ParsedRule<T>) carpetRule).getRuleOption(carpetRule), newValue, userInput);
+    public T validate(CommandSourceStack source, ParsedRule<T> carpetRule, T newValue, String userInput) {
+        return this.validateCompat(source, RuleHelper.getSettingManager((ParsedRule<T>) carpetRule).getRuleOption(carpetRule), newValue, userInput);
     //#endif
     }
 
     //#if MC > 11502
     @Override
     //#if MC >= 11901
-    public void notifyFailure(CommandSourceStack source, CarpetRule<T> carpetRule, String providedValue) {
+    //$$ public void notifyFailure(CommandSourceStack source, CarpetRule<T> carpetRule, String providedValue) {
     //#else
-    //$$ public void notifyFailure(CommandSourceStack source, ParsedRule<T> carpetRule, String providedValue) {
+    public void notifyFailure(CommandSourceStack source, ParsedRule<T> carpetRule, String providedValue) {
     //#endif
     }
     //#endif

@@ -77,9 +77,9 @@ public class MagicLibConfigs {
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
             MagicLibConfigGui screen = MagicLibConfigGui.getInstance();
             //#if MC > 11903
-            screen.setParent(Minecraft.getInstance().screen);
+            //$$ screen.setParent(Minecraft.getInstance().screen);
             //#else
-            //$$ screen.setParentGui(Minecraft.getInstance().screen);
+            screen.setParentGui(Minecraft.getInstance().screen);
             //#endif
             Minecraft.getInstance().setScreen(screen);
             return true;

@@ -2,24 +2,24 @@ package top.hendrixshen.magiclib.compat.minecraft.api.math;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Quaternion;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
 //#if MC > 11902
-@Deprecated
+//$$ @Deprecated
 //#endif
 public interface Matrix4fCompatApi {
     //#if MC > 11902
-    /**
-     * Deprecated api. Use {@link Matrix4f#scale(float, float, float)} instead.
-     */
+    //$$ /**
+    //$$  * Deprecated api. Use {@link Matrix4f#scale(float, float, float)} instead.
+    //$$  */
     //#endif
     static Matrix4f createScaleMatrix(float f, float g, float h) {
         //#if MC >= 11903
-        throw new UnsupportedOperationException("Don't use this method, use Matrix4f::scale instead");
+        //$$ throw new UnsupportedOperationException("Don't use this method, use Matrix4f::scale instead");
         //#elseif MC > 11404
-        //$$ return Matrix4f.createScaleMatrix(f, g, h);
+        return Matrix4f.createScaleMatrix(f, g, h);
         //#else
         //$$ Matrix4f matrix4f = new Matrix4f();
         //$$ matrix4f.set(0, 0, f);
@@ -42,7 +42,7 @@ public interface Matrix4fCompatApi {
         throw new UnImplCompatApiException();
     }
 
-    default void multiplyCompat(Quaternionf quaternion) {
+    default void multiplyCompat(Quaternion quaternion) {
         throw new UnImplCompatApiException();
     }
 
@@ -51,9 +51,9 @@ public interface Matrix4fCompatApi {
     }
 
     //#if MC <= 11605
-    //$$ default void multiplyWithTranslation(float f, float g, float h) {
-    //$$     this.multiplyWithTranslationCompat(f, g, h);
-    //$$ }
+    default void multiplyWithTranslation(float f, float g, float h) {
+        this.multiplyWithTranslationCompat(f, g, h);
+    }
     //#endif
 
     //#if MC <= 11404

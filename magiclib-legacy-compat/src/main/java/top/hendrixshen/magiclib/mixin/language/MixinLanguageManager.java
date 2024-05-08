@@ -37,15 +37,15 @@ public class MixinLanguageManager {
     private Map<String, LanguageInfo> languages;
 
     //#if MC > 12001
-    @Unique
-    private static final String magiclib$DEFAULT_LANGUAGE = "en_us";
+    //$$ @Unique
+    //$$ private static final String magiclib$DEFAULT_LANGUAGE = "en_us";
     //#else
-    //$$ @Shadow
-    //$$ @Final
+    @Shadow
+    @Final
     //#if MC > 11903
     //$$ public static String DEFAULT_LANGUAGE_CODE;
     //#else
-    //$$ private static LanguageInfo DEFAULT_LANGUAGE;
+    private static LanguageInfo DEFAULT_LANGUAGE;
     //#endif
     //#endif
     //#endif
@@ -68,9 +68,9 @@ public class MixinLanguageManager {
     )
     private void postSetSelected(
             //#if MC > 11903
-            String languageCode,
+            //$$ String languageCode,
             //#else
-            //$$ LanguageInfo languageInfo,
+            LanguageInfo languageInfo,
             //#endif
             CallbackInfo ci
     ) {
@@ -84,17 +84,17 @@ public class MixinLanguageManager {
             at = @At(
                     value = "INVOKE",
                     //#if MC > 11903
-                    target = "Lnet/minecraft/client/resources/language/ClientLanguage;loadFrom(Lnet/minecraft/server/packs/resources/ResourceManager;Ljava/util/List;Z)Lnet/minecraft/client/resources/language/ClientLanguage;",
+                    //$$ target = "Lnet/minecraft/client/resources/language/ClientLanguage;loadFrom(Lnet/minecraft/server/packs/resources/ResourceManager;Ljava/util/List;Z)Lnet/minecraft/client/resources/language/ClientLanguage;",
                     //#else
-                    //$$ target = "Lnet/minecraft/client/resources/language/ClientLanguage;loadFrom(Lnet/minecraft/server/packs/resources/ResourceManager;Ljava/util/List;)Lnet/minecraft/client/resources/language/ClientLanguage;",
+                    target = "Lnet/minecraft/client/resources/language/ClientLanguage;loadFrom(Lnet/minecraft/server/packs/resources/ResourceManager;Ljava/util/List;)Lnet/minecraft/client/resources/language/ClientLanguage;",
                     //#endif
                     ordinal = 0
             )
     )
     //#if MC > 11903
-    private @NotNull List<String> addFallbackLanguage(List<String> languageInfoList) {
+    //$$ private @NotNull List<String> addFallbackLanguage(List<String> languageInfoList) {
     //#else
-    //$$ private @NotNull List<LanguageInfo> addFallbackLanguage(List<LanguageInfo> languageInfoList) {
+    private @NotNull List<LanguageInfo> addFallbackLanguage(List<LanguageInfo> languageInfoList) {
     //#endif
         ArrayList<String> codes = Lists.newArrayList(ConfigEntrypoint.getFallbackLanguageListFromConfig());
 
@@ -116,9 +116,9 @@ public class MixinLanguageManager {
 
             if (languageInfo != null) {
                 //#if MC > 11903
-                languageInfoList.add(code);
+                //$$ languageInfoList.add(code);
                 //#else
-                //$$ languageInfoList.add(languageInfo);
+                languageInfoList.add(languageInfo);
                 //#endif
             }
         }
@@ -126,11 +126,11 @@ public class MixinLanguageManager {
         if (languageInfoList.isEmpty()) {
             languageInfoList.add(
                     //#if MC > 12001
-                    magiclib$DEFAULT_LANGUAGE
+                    //$$ magiclib$DEFAULT_LANGUAGE
                     //#elseif MC > 11903
                     //$$ DEFAULT_LANGUAGE_CODE
                     //#else
-                    //$$ DEFAULT_LANGUAGE
+                    DEFAULT_LANGUAGE
                     //#endif
             );
         }

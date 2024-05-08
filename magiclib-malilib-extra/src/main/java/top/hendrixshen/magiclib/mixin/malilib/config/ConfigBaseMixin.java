@@ -10,8 +10,8 @@ import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
 import top.hendrixshen.magiclib.util.MiscUtil;
 
 //#if MC > 11701
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+//$$ import org.spongepowered.asm.mixin.Shadow;
+//$$ import org.spongepowered.asm.mixin.injection.ModifyArg;
 //#endif
 
 /**
@@ -20,24 +20,24 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(value = ConfigBase.class, remap = false)
 public class ConfigBaseMixin {
     //#if MC > 11701
-    @Shadow
-    private String comment;
-
-    @ModifyArg(
-            method = "getComment",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lfi/dy/masa/malilib/util/StringUtils;getTranslatedOrFallback(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;"
-            ),
-            index = 0
-    )
-    private String magicConfigCommentIsTheTranslationKey(String key) {
-        if (MiscUtil.cast(this) instanceof MagicIConfigBase) {
-            key = this.comment;
-        }
-
-        return key;
-    }
+    //$$ @Shadow
+    //$$ private String comment;
+    //$$
+    //$$ @ModifyArg(
+    //$$         method = "getComment",
+    //$$         at = @At(
+    //$$                 value = "INVOKE",
+    //$$                 target = "Lfi/dy/masa/malilib/util/StringUtils;getTranslatedOrFallback(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;"
+    //$$         ),
+    //$$         index = 0
+    //$$ )
+    //$$ private String magicConfigCommentIsTheTranslationKey(String key) {
+    //$$     if (MiscUtil.cast(this) instanceof MagicIConfigBase) {
+    //$$         key = this.comment;
+    //$$     }
+    //$$
+    //$$     return key;
+    //$$ }
     //#endif
 
     @Inject(

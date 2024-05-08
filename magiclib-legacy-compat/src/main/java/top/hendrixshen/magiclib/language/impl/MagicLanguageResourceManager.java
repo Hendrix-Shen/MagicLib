@@ -62,11 +62,11 @@ public class MagicLanguageResourceManager implements ResourceManager {
                     ResourceLocation resourceLocation = new ResourceLocation(namespace, languagePath);
                     Resource resource = new MagicLanguageResource(
                             //#if MC > 12001
-                            new FilePackResources.FileResourcesSupplier(new File(resourceUrl.getPath()), true).openPrimary(namespace),
+                            //$$ new FilePackResources.FileResourcesSupplier(new File(resourceUrl.getPath()), true).openPrimary(namespace),
                             //#elseif MC > 11902
                             //$$ new FilePackResources(namespace, new File(resourceUrl.getPath()), true),
                             //#else
-                            //$$ namespace,
+                            namespace,
                             //#endif
                             resourceLocation,
                             () -> {
@@ -106,11 +106,11 @@ public class MagicLanguageResourceManager implements ResourceManager {
 
                         Resource resource = new MagicLanguageResource(
                                 //#if MC > 12001
-                                new FilePackResources.FileResourcesSupplier(file, true).openPrimary(namespace),
+                                //$$ new FilePackResources.FileResourcesSupplier(file, true).openPrimary(namespace),
                                 //#elseif MC > 11902
                                 //$$ new FilePackResources(namespace, file.toFile(), true),
                                 //#else
-                                //$$ namespace,
+                                namespace,
                                 //#endif
                                 resourceLocation,
                                 () -> {
@@ -157,25 +157,25 @@ public class MagicLanguageResourceManager implements ResourceManager {
     }
 
     @Override
-    public List<Resource> getResourceStack(@NotNull ResourceLocation resourceLocation) {
+    public List<Resource> getResources(@NotNull ResourceLocation resourceLocation) {
         return new ArrayList<>(resources.getOrDefault(resourceLocation, new HashSet<>()));
     }
 
     //#if MC > 11802
-    @Override
-    public Map<ResourceLocation, Resource> listResources(@NotNull String string, @NotNull Predicate<ResourceLocation> predicate) {
-        return null;
-    }
-
-    @Override
-    public Map<ResourceLocation, List<Resource>> listResourceStacks(@NotNull String string, @NotNull Predicate<ResourceLocation> predicate) {
-        return null;
-    }
-    //#else
     //$$ @Override
-    //$$ public Collection<ResourceLocation> listResources(@NotNull String string, @NotNull Predicate<String> predicate) {
+    //$$ public Map<ResourceLocation, Resource> listResources(@NotNull String string, @NotNull Predicate<ResourceLocation> predicate) {
     //$$     return null;
     //$$ }
+    //$$
+    //$$ @Override
+    //$$ public Map<ResourceLocation, List<Resource>> listResourceStacks(@NotNull String string, @NotNull Predicate<ResourceLocation> predicate) {
+    //$$     return null;
+    //$$ }
+    //#else
+    @Override
+    public Collection<ResourceLocation> listResources(@NotNull String string, @NotNull Predicate<String> predicate) {
+        return null;
+    }
     //#endif
 
     //#if MC > 11502
@@ -191,19 +191,19 @@ public class MagicLanguageResourceManager implements ResourceManager {
     //#endif
 
     //#if MC > 11802
-    @Override
-    public Optional<Resource> getResource(ResourceLocation resourceLocation) {
-        return Optional.empty();
-    }
+    //$$ @Override
+    //$$ public Optional<Resource> getResource(ResourceLocation resourceLocation) {
+    //$$     return Optional.empty();
+    //$$ }
     //#else
-    //$$ @Override
-    //$$ public Resource getResource(@NotNull ResourceLocation resourceLocation) {
-    //$$     return null;
-    //$$ }
-    //$$
-    //$$ @Override
-    //$$ public boolean hasResource(@NotNull ResourceLocation resourceLocation) {
-    //$$     return false;
-    //$$ }
+    @Override
+    public Resource getResource(@NotNull ResourceLocation resourceLocation) {
+        return null;
+    }
+
+    @Override
+    public boolean hasResource(@NotNull ResourceLocation resourceLocation) {
+        return false;
+    }
     //#endif
 }

@@ -2,7 +2,7 @@ package top.hendrixshen.magiclib.compat.minecraft.api.math;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import org.joml.Matrix4f;
+import com.mojang.math.Matrix4f;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
 public interface Vector4fCompatApi {

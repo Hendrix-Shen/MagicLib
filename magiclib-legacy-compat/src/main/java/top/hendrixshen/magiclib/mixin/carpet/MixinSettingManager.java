@@ -10,9 +10,9 @@ import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 
 //#if MC > 11802
-import carpet.api.settings.SettingsManager;
+//$$ import carpet.api.settings.SettingsManager;
 //#else
-//$$ import carpet.settings.SettingsManager;
+import carpet.settings.SettingsManager;
 //#if MC < 11600
 //$$ import com.mojang.brigadier.CommandDispatcher;
 //$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -42,9 +42,9 @@ public class MixinSettingManager {
             at = @At(
                     value = "INVOKE",
                     //#if MC > 11802
-                    target = "Lcarpet/api/settings/SettingsManager;getCategories()Ljava/lang/Iterable;"
+                    //$$ target = "Lcarpet/api/settings/SettingsManager;getCategories()Ljava/lang/Iterable;"
                     //#else
-                    //$$ target = "Lcarpet/settings/SettingsManager;getCategories()Ljava/lang/Iterable;"
+                    target = "Lcarpet/settings/SettingsManager;getCategories()Ljava/lang/Iterable;"
                     //#endif
             )
     )

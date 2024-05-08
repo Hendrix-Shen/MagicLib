@@ -8,8 +8,8 @@ public interface SlotCompatApi {
     }
 
     //#if MC <= 11605
-    //$$ default int getContainerSlot() {
-    //$$     return this.getContainerSlotCompat();
-    //$$ }
+    default int getContainerSlot() {
+        return this.getContainerSlotCompat();
+    }
     //#endif
 }

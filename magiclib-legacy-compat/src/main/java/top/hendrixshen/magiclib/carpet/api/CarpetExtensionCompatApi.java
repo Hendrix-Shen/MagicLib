@@ -15,28 +15,28 @@ import java.util.Collections;
 import java.util.Map;
 
 //#if MC > 11802
-import carpet.api.settings.SettingsManager;
-import net.minecraft.commands.CommandBuildContext;
+//$$ import carpet.api.settings.SettingsManager;
+//$$ import net.minecraft.commands.CommandBuildContext;
 //#else
-//$$ import carpet.settings.SettingsManager;
+import carpet.settings.SettingsManager;
 //#endif
 
 public interface CarpetExtensionCompatApi extends CarpetExtension {
     @Override
     //#if MC >= 11901
-    default void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext) {
-        this.registerCommandCompat(dispatcher);
-    //#else
-    //$$ default void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
+    //$$ default void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext) {
     //$$     this.registerCommandCompat(dispatcher);
+    //#else
+    default void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
+        this.registerCommandCompat(dispatcher);
     //#endif
     }
 
     @Override
     //#if MC >= 11901
-    default SettingsManager extensionSettingsManager() {
+    //$$ default SettingsManager extensionSettingsManager() {
     //#else
-    //$$ default SettingsManager customSettingsManager() {
+    default SettingsManager customSettingsManager() {
     //#endif
         return this.getSettingsManagerCompat();
     }

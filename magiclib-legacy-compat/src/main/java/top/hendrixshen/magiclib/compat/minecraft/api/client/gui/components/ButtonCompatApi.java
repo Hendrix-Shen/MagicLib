@@ -16,51 +16,51 @@ public interface ButtonCompatApi {
 
     class BuilderCompatApi {
         //#if MC > 11902
-        private final Button.Builder builder;
+        //$$ private final Button.Builder builder;
         //#else
-        //$$ private final Component message;
-        //$$ private final OnPressCompat onPress;
-        //$$ private int x;
-        //$$ private int y;
-        //$$ private int width = 150;
-        //$$ private int height = 20;
+        private final Component message;
+        private final OnPressCompat onPress;
+        private int x;
+        private int y;
+        private int width = 150;
+        private int height = 20;
         //#endif
 
         @Contract(pure = true)
         public BuilderCompatApi(Component message, @NotNull OnPressCompat onPress) {
             //#if MC > 11902
-            this.builder = new Button.Builder(message, onPress::onPress);
+            //$$ this.builder = new Button.Builder(message, onPress::onPress);
             //#else
-            //$$ this.message = message;
-            //$$ this.onPress = onPress;
+            this.message = message;
+            this.onPress = onPress;
             //#endif
         }
 
         public BuilderCompatApi pos(int x, int y) {
             //#if MC > 11902
-            this.builder.pos(x, y);
+            //$$ this.builder.pos(x, y);
             //#else
-            //$$ this.x = x;
-            //$$ this.y = y;
+            this.x = x;
+            this.y = y;
             //#endif
             return this;
         }
 
         public BuilderCompatApi width(int width) {
             //#if MC > 11902
-            this.builder.width(width);
+            //$$ this.builder.width(width);
             //#else
-            //$$ this.width = width;
+            this.width = width;
             //#endif
             return this;
         }
 
         public BuilderCompatApi size(int width, int height) {
             //#if MC > 11902
-            this.builder.size(width, height);
+            //$$ this.builder.size(width, height);
             //#else
-            //$$ this.width = width;
-            //$$ this.height = height;
+            this.width = width;
+            this.height = height;
             //#endif
             return this;
         }
@@ -71,9 +71,9 @@ public interface ButtonCompatApi {
 
         public Button build() {
             //#if MC > 11902
-            return this.builder.build();
+            //$$ return this.builder.build();
             //#elseif MC > 11502
-            //$$ return new Button(this.x, this.y, this.width, this.height, this.message, this.onPress::onPress);
+            return new Button(this.x, this.y, this.width, this.height, this.message, this.onPress::onPress);
             //#else
             //$$ return new Button(this.x, this.y, this.width, this.height, this.message.getString(), this.onPress::onPress);
             //#endif

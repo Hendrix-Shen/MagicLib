@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 //#if MC >= 11901
-@SuppressWarnings("removal")
+//$$ @SuppressWarnings("removal")
 //#endif
 public class RuleOption {
     private final Rule annotation;
@@ -53,9 +53,9 @@ public class RuleOption {
 
     public String getName() {
         //#if MC > 11802
-        return this.parsedRule.name();
+        //$$ return this.parsedRule.name();
         //#else
-        //$$ return this.parsedRule.name;
+        return this.parsedRule.name;
         //#endif
     }
 
@@ -65,9 +65,9 @@ public class RuleOption {
 
     public Object getValue() {
         //#if MC > 11802
-        return this.parsedRule.value();
+        //$$ return this.parsedRule.value();
         //#else
-        //$$ return this.parsedRule.get();
+        return this.parsedRule.get();
         //#endif
     }
 
@@ -77,15 +77,15 @@ public class RuleOption {
 
     public Object setValue(CommandSourceStack source, String newValue) {
         //#if MC > 11802
-        try {
-            this.parsedRule.set(source, newValue);
-            return this.getValue();
-        } catch (carpet.api.settings.InvalidRuleValueException e) {
-            e.printStackTrace();
-            return null;
-        }
+        //$$ try {
+        //$$     this.parsedRule.set(source, newValue);
+        //$$     return this.getValue();
+        //$$ } catch (carpet.api.settings.InvalidRuleValueException e) {
+        //$$     e.printStackTrace();
+        //$$     return null;
+        //$$ }
         //#else
-        //$$ return this.parsedRule.set(source, newValue);
+        return this.parsedRule.set(source, newValue);
         //#endif
     }
 
@@ -99,9 +99,9 @@ public class RuleOption {
 
     public Object getDefaultValue() {
         //#if MC > 11802
-        return this.parsedRule.defaultValue();
+        //$$ return this.parsedRule.defaultValue();
         //#else
-        //$$ return this.parsedRule.defaultValue;
+        return this.parsedRule.defaultValue;
         //#endif
     }
 
@@ -115,9 +115,9 @@ public class RuleOption {
 
     public Collection<String> getOptions() {
         //#if MC > 11802
-        return this.parsedRule.suggestions();
+        //$$ return this.parsedRule.suggestions();
         //#else
-        //$$ return this.parsedRule.options;
+        return this.parsedRule.options;
         //#endif
     }
 
@@ -133,9 +133,9 @@ public class RuleOption {
     @SuppressWarnings("unchecked")
     public List<Validator<?>> getValidators() {
         //#if MC > 11802
-        return (List<Validator<?>>) ReflectUtil.getFieldValue(ParsedRule.class, "realValidators", this.getRule()).orElseThrow(RuntimeException::new);
+        //$$ return (List<Validator<?>>) ReflectUtil.getFieldValue(ParsedRule.class, "realValidators", this.getRule()).orElseThrow(RuntimeException::new);
         //#else
-        //$$ return (List<Validator<?>>) ReflectUtil.getFieldValue(ParsedRule.class, "validators", this.getRule()).orElseThrow(RuntimeException::new);
+        return (List<Validator<?>>) ReflectUtil.getFieldValue(ParsedRule.class, "validators", this.getRule()).orElseThrow(RuntimeException::new);
         //#endif
     }
 }

@@ -8,42 +8,42 @@ import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.minecraft.api.world.entity.player.PlayerCompatApi;
 
 //#if MC < 11700
-//$$ import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Final;
 //#endif
 
 @Mixin(Player.class)
 public abstract class MixinPlayer implements PlayerCompatApi {
     //#if MC > 11605
-    @Shadow
-    public abstract Inventory getInventory();
-    //#else
     //$$ @Shadow
-    //$$ @Final
-    //$$ public Inventory inventory;
+    //$$ public abstract Inventory getInventory();
+    //#else
+    @Shadow
+    @Final
+    public Inventory inventory;
     //#endif
 
     //#if MC > 11605
-    @Shadow
-    public abstract Abilities getAbilities();
-    //#else
     //$$ @Shadow
-    //$$ public Abilities abilities;
+    //$$ public abstract Abilities getAbilities();
+    //#else
+    @Shadow
+    public Abilities abilities;
     //#endif
 
     public Inventory getInventoryCompat() {
         //#if MC > 11605
-        return this.getInventory();
+        //$$ return this.getInventory();
         //#else
-        //$$ return this.inventory;
+        return this.inventory;
         //#endif
     }
 
     @Override
     public Abilities getAbilitiesCompat() {
         //#if MC > 11605
-        return this.getAbilities();
+        //$$ return this.getAbilities();
         //#else
-        //$$ return this.abilities;
+        return this.abilities;
         //#endif
     }
 }

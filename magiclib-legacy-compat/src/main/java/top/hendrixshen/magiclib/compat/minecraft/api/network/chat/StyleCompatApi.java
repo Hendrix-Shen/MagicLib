@@ -26,13 +26,13 @@ public interface StyleCompatApi {
     }
 
     //#if MC <= 11605
-    //$$ default Style withStrikethrough(@Nullable Boolean strikethrough) {
-    //$$     return this.withStrikethroughCompat(strikethrough);
-    //$$ }
-    //$$
-    //$$ default Style withObfuscated(@Nullable Boolean obfuscated) {
-    //$$     return this.withObfuscatedCompat(obfuscated);
-    //$$ }
+    default Style withStrikethrough(@Nullable Boolean strikethrough) {
+        return this.withStrikethroughCompat(strikethrough);
+    }
+
+    default Style withObfuscated(@Nullable Boolean obfuscated) {
+        return this.withObfuscatedCompat(obfuscated);
+    }
     //#endif
 
     //#if MC <= 11502
