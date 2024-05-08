@@ -174,13 +174,14 @@ subprojects {
                     core_dependency.appendNode("artifactId", "${coreProject.parent.property("mod.artifact_name")}-${coreProject.name}")
                     core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(rootProject)}")
                     core_dependency.appendNode("scope", "compile")
-
-                    submodules.forEach { Project submodule ->
-                        Node dependency = dependencies.appendNode("dependency")
-                        dependency.appendNode("groupId", submodule.group)
-                        dependency.appendNode("artifactId", "${submodule.parent.property("mod.artifact_name")}-${submodule.name.replace("${(settings.get("projects").get(submodule.parent.name) as Map<String, ?>).get("prefix")}-", "")}")
-                        dependency.appendNode("version", "${this.project.getMavenArtifactVersion(submodule.parent)}")
-                        dependency.appendNode("scope", "compile")
+                    submodules
+                            .findAll { !it.name.contains("magiclib-legacy-compat") }
+                            .forEach { Project submodule ->
+                                Node dependency = dependencies.appendNode("dependency")
+                                dependency.appendNode("groupId", submodule.group)
+                                dependency.appendNode("artifactId", "${submodule.parent.property("mod.artifact_name")}-${submodule.name.replace("${(settings.get("projects").get(submodule.parent.name) as Map<String, ?>).get("prefix")}-", "")}")
+                                dependency.appendNode("version", "${this.project.getMavenArtifactVersion(submodule.parent)}")
+                                dependency.appendNode("scope", "compile")
                     }
                 }
             }
@@ -199,14 +200,15 @@ subprojects {
                     core_dependency.appendNode("artifactId", "${coreProject.parent.property("mod.artifact_name")}-${coreProject.name}")
                     core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(rootProject)}")
                     core_dependency.appendNode("scope", "compile")
-
-                    submodules.forEach { Project submodule ->
-                        Node dependency = dependencies.appendNode("dependency")
-                        dependency.appendNode("groupId", submodule.group)
-                        dependency.appendNode("artifactId", "${submodule.parent.property("mod.artifact_name")}-${submodule.name.replace("${(settings.get("projects").get(submodule.parent.name) as Map<String, ?>).get("prefix")}-", "")}")
-                        dependency.appendNode("version", "${this.project.getMavenArtifactVersion(submodule.parent)}")
-                        dependency.appendNode("scope", "compile")
-                    }
+                    submodules
+                            .findAll { !it.name.contains("magiclib-legacy-compat") }
+                            .forEach { Project submodule ->
+                                Node dependency = dependencies.appendNode("dependency")
+                                dependency.appendNode("groupId", submodule.group)
+                                dependency.appendNode("artifactId", "${submodule.parent.property("mod.artifact_name")}-${submodule.name.replace("${(settings.get("projects").get(submodule.parent.name) as Map<String, ?>).get("prefix")}-", "")}")
+                                dependency.appendNode("version", "${this.project.getMavenArtifactVersion(submodule.parent)}")
+                                dependency.appendNode("scope", "compile")
+                            }
                 }
             }
         }
