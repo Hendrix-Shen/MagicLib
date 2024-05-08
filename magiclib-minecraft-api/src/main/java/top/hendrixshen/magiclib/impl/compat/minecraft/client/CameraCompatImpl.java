@@ -1,7 +1,5 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.client;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
@@ -10,12 +8,18 @@ import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.CameraCompat;
 import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
 
+//#if MC < 11500
+//$$ import com.mojang.math.Quaternion;
+//$$ import com.mojang.math.Vector3f;
+//#endif
+
 @Environment(EnvType.CLIENT)
 public class CameraCompatImpl extends AbstractCompat<Camera> implements CameraCompat {
     public CameraCompatImpl(@NotNull Camera type) {
         super(type);
     }
 
+    @Override
     public QuaternionCompat rotation() {
         //#if MC > 11404
         return QuaternionCompat.of(this.get().rotation());
