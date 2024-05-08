@@ -14,47 +14,55 @@ public class SharedConstants {
     private static final String modVersion = "@MOD_VERSION@";
     @Getter
     private static final String modVersionType = VersionUtil.getVersionType(SharedConstants.modVersion);
+    @Getter
+    private static final String magiclibIdentifier = "@ROOT_MOD_IDENTIFIER@";
+    @Getter
+    private static final String magiclibName = "@ROOT_MOD_NAME@";
+    @Getter
+    private static final String magiclibVersion = "@ROOT_MOD_VERSION@";
+    @Getter
+    private static final String magiclibVersionType = VersionUtil.getVersionType(SharedConstants.magiclibVersion);
 
     public static @NotNull String getTranslatedModVersionType() {
         return VersionUtil.translateVersionType(SharedConstants.modVersion);
     }
 
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
-    public static String MAGICLIB_VERSION_0_1 = "0.1";
+    @ApiStatus.ScheduledForRemoval
+    public static String MAGICLIB_VERSION_0_1 = MagicLibVersion.VERSION_0_1.getOriginalVersion();
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
-    public static String MAGICLIB_VERSION_0_2 = "0.2";
+    @ApiStatus.ScheduledForRemoval
+    public static String MAGICLIB_VERSION_0_2 = MagicLibVersion.VERSION_0_2.getOriginalVersion();
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
-    public static String MAGICLIB_VERSION_0_3 = "0.3";
+    @ApiStatus.ScheduledForRemoval
+    public static String MAGICLIB_VERSION_0_3 = MagicLibVersion.VERSION_0_3.getOriginalVersion();
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
-    public static String MAGICLIB_VERSION_0_4 = "0.4";
+    @ApiStatus.ScheduledForRemoval
+    public static String MAGICLIB_VERSION_0_4 = MagicLibVersion.VERSION_0_4.getOriginalVersion();
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
-    public static String MAGICLIB_VERSION_0_5 = "0.5";
+    @ApiStatus.ScheduledForRemoval
+    public static String MAGICLIB_VERSION_0_5 = MagicLibVersion.VERSION_0_5.getOriginalVersion();
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
-    public static String MAGICLIB_VERSION_0_6 = "0.6";
+    @ApiStatus.ScheduledForRemoval
+    public static String MAGICLIB_VERSION_0_6 = MagicLibVersion.VERSION_0_6.getOriginalVersion();
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
-    public static String MAGICLIB_VERSION_0_7 = "0.7";
+    @ApiStatus.ScheduledForRemoval
+    public static String MAGICLIB_VERSION_0_7 = MagicLibVersion.VERSION_0_7.getOriginalVersion();
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
-    public static String MAGICLIB_VERSION_0_8 = "0.8"; // Current
+    @ApiStatus.ScheduledForRemoval
+    public static String MAGICLIB_VERSION_0_8 = MagicLibVersion.VERSION_0_8.getOriginalVersion(); // Current
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
+    @ApiStatus.ScheduledForRemoval
     public static String MAGICLIB_VERSION_0_9 = "0.9"; // Future
 
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
+    @ApiStatus.ScheduledForRemoval
     public static String getCurrentMajorVersion() {
         return SharedConstants.MAGICLIB_VERSION_0_8;
     }
 
     @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "0.9")
+    @ApiStatus.ScheduledForRemoval
     public static String getNextMajorVersion() {
         return SharedConstants.MAGICLIB_VERSION_0_9;
     }

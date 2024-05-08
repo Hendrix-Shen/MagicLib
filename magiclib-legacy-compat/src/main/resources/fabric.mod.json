@@ -35,6 +35,9 @@
     "client": [
       "top.hendrixshen.magiclib.entrypoint.legacy.MagicLibFabric"
     ],
+    "server": [
+      "top.hendrixshen.magiclib.entrypoint.legacy.MagicLibFabric"
+    ],
     "modmenu": [
       "top.hendrixshen.magiclib.game.malilib.ModMenuImpl"
     ]

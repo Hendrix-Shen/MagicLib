@@ -8,7 +8,7 @@ import top.hendrixshen.magiclib.util.StringUtil;
 
 public class MagicLibReference {
     @Getter
-    private static final String modIdentifier = "magiclib";
+    private static final String modIdentifier = SharedConstants.getMagiclibIdentifier();
     @Getter
     private static final String modIdentifierCurrent = "magiclib-@MINECRAFT_VERSION_IDENTIFY@";
     @Getter

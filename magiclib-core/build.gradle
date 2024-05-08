@@ -102,9 +102,12 @@ subprojects {
 
     replaceToken {
         targetSourceSets.set([sourceSets.main])
-        replace("@MOD_IDENTIFIER@", project.parent.property("mod.id").toString().replace("-", "_"))
-        replace("@MOD_NAME@"      , project.parent.property("mod.name"))
-        replace("@MOD_VERSION@"   , project.getVersionWithCommitHash(project.parent) as String)
+        replace("@MOD_IDENTIFIER@"     , project.parent.property("mod.id").toString().replace("-", "_"))
+        replace("@MOD_NAME@"           , project.parent.property("mod.name"))
+        replace("@MOD_VERSION@"        , project.getVersionWithCommitHash(project.parent) as String)
+        replace("@ROOT_MOD_IDENTIFIER@", rootProject.property("mod.id").toString().replace("-", "_"))
+        replace("@ROOT_MOD_NAME@"      , rootProject.property("mod.name"))
+        replace("@ROOT_MOD_VERSION@"   , project.getVersionWithCommitHash(rootProject) as String)
         replaceIn("top/hendrixshen/magiclib/SharedConstants")
         replaceIn("top/hendrixshen/magiclib/entrypoint/core/MagicLibForge")
         replaceIn("top/hendrixshen/magiclib/entrypoint/core/MagicLibNeoForge")
