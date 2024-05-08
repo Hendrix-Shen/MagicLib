@@ -196,6 +196,22 @@ public class ReflectionUtil {
         return ReflectionUtil.invokeDeclared(cls, methodName, null, type, args);
     }
 
+    public static <T> ValueContainer<T> invokeDeclared(String className, String methodName, Object instance,
+                                                       Class<?>[] type, Object... args) {
+        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
+        return ReflectionUtil.invokeDeclared(clazz, methodName, instance, type, args);
+    }
+
+    public static <T> ValueContainer<T> invokeDeclared(@NotNull ValueContainer<Class<?>> classContainer,
+                                                       String methodName, Object instance, Class<?>[] type,
+                                                       Object... args) {
+        if (classContainer.isException()) {
+            return ValueContainer.exception(classContainer.getException());
+        }
+
+        return ReflectionUtil.invokeDeclared(classContainer.get(), methodName, instance, type, args);
+    }
+
     public static <T> ValueContainer<T> invokeDeclared(@NotNull Class<?> cls, String methodName, Object instance,
                                                        Class<?>[] type, Object... args) {
         try {
@@ -212,6 +228,21 @@ public class ReflectionUtil {
         } catch (Exception e) {
             return ValueContainer.exception(e);
         }
+    }
+
+    public static <T> ValueContainer<T> invoke(String className, String methodName, Object instance,
+                                               Class<?>[] type, Object... args) {
+        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
+        return ReflectionUtil.invoke(clazz, methodName, instance, type, args);
+    }
+
+    public static <T> ValueContainer<T> invoke(@NotNull ValueContainer<Class<?>> classContainer, String methodName,
+                                               Object instance, Class<?>[] type, Object... args) {
+        if (classContainer.isException()) {
+            return ValueContainer.exception(classContainer.getException());
+        }
+
+        return ReflectionUtil.invoke(classContainer.get(), methodName, instance, type, args);
     }
 
     public static <T> ValueContainer<T> invoke(@NotNull Class<?> cls, String methodName, Object instance,
