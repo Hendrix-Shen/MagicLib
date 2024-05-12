@@ -26,8 +26,11 @@ import java.util.function.Function;
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
-//#if MC > 11404
+//#if MC > 11605
 import com.mojang.math.Transformation;
+//#endif
+
+//#if MC > 11404
 import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
 

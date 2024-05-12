@@ -1,18 +1,13 @@
 package top.hendrixshen.magiclib.compat.minecraft.api.world;
 
 import net.minecraft.nbt.ListTag;
+import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface SimpleContainerCompatApi {
-    // fuck remap
     default void fromTagCompat(ListTag listTag) {
         throw new UnImplCompatApiException();
     }
-    //#if MC < 11502
-    //$$ // fuck remap
-    //$$ // it will be remapped to intermediary name....
-    //$$ ////$$ void fromTagCompat(ListTag listTag) {
-    //$$ ////$$     this.fromTagCompat(listTag);
-    //$$ ////$$ }
-    //#endif
 }

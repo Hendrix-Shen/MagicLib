@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-//#if MC >= 11901
+//#if MC > 11900
 //$$ @SuppressWarnings("removal")
 //#endif
 public class Validators {

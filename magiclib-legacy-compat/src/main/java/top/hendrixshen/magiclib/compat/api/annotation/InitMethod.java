@@ -1,5 +1,7 @@
 package top.hendrixshen.magiclib.compat.api.annotation;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -22,6 +24,8 @@ import java.lang.annotation.Target;
  * the list of formal parameters of the method should be consistent with the list of
  * formal parameters of the constructor method of the superclass of the target class.
  */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface InitMethod {

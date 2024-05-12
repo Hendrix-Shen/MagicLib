@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.util;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLibReference;
 
@@ -9,6 +10,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
+/**
+ * See {@link ReflectionUtil}
+ */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public class ReflectUtil {
     public static Optional<Class<?>> getClass(String className) {
         try {

@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.compat.impl;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.MixinEnvironment;
@@ -7,6 +8,8 @@ import org.spongepowered.asm.mixin.transformer.ext.IExtension;
 import org.spongepowered.asm.mixin.transformer.ext.ITargetClassContext;
 import top.hendrixshen.magiclib.util.MixinUtil;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public class MagicExtension implements IExtension {
     @Override
     public boolean checkActive(MixinEnvironment environment) {

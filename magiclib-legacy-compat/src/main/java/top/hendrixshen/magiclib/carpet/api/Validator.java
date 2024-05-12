@@ -8,35 +8,53 @@ import top.hendrixshen.magiclib.carpet.impl.RuleHelper;
 import top.hendrixshen.magiclib.carpet.impl.RuleOption;
 import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.impl.carpet.CarpetEntrypoint;
-import top.hendrixshen.magiclib.util.MessageUtil;
+import top.hendrixshen.magiclib.util.minecraft.MessageUtil;
 
-//#if MC >= 11901
+//#if MC > 11900
 //$$ import carpet.api.settings.CarpetRule;
 //#endif
 
-//#if MC >= 11901
+//#if MC > 11900
 //$$ @SuppressWarnings("removal")
-//$$ public abstract class Validator<T> extends carpet.api.settings.Validator<T> {
-//#else
-public abstract class Validator<T> extends carpet.settings.Validator<T> {
 //#endif
+public abstract class Validator<T> extends
+        //#if MC > 11900
+        //$$ carpet.api.settings.Validator<T>
+        //#else
+        carpet.settings.Validator<T>
+        //#endif
+{
     @Override
-    //#if MC >= 11901
-    //$$ public T validate(CommandSourceStack source, CarpetRule<T> carpetRule, T newValue, String userInput) {
-    //$$     return this.validateCompat(source, RuleHelper.getSettingManager((ParsedRule<T>) carpetRule).getRuleOption((ParsedRule<T>) carpetRule), newValue, userInput);
-    //#else
-    public T validate(CommandSourceStack source, ParsedRule<T> carpetRule, T newValue, String userInput) {
-        return this.validateCompat(source, RuleHelper.getSettingManager((ParsedRule<T>) carpetRule).getRuleOption(carpetRule), newValue, userInput);
-    //#endif
+    public T validate(
+            CommandSourceStack source,
+            //#if MC > 11900
+            //$$ CarpetRule<T> carpetRule,
+            //#else
+            ParsedRule<T> carpetRule,
+            //#endif
+            T newValue,
+            String userInput) {
+        return this.validateCompat(
+                source,
+                //#if MC > 11900
+                //$$ RuleHelper.getSettingManager((ParsedRule<T>) carpetRule).getRuleOption((ParsedRule<T>) carpetRule),
+                //#else
+                RuleHelper.getSettingManager(carpetRule).getRuleOption(carpetRule),
+                //#endif
+                newValue,
+                userInput);
     }
 
     //#if MC > 11502
     @Override
-    //#if MC >= 11901
-    //$$ public void notifyFailure(CommandSourceStack source, CarpetRule<T> carpetRule, String providedValue) {
-    //#else
-    public void notifyFailure(CommandSourceStack source, ParsedRule<T> carpetRule, String providedValue) {
-    //#endif
+    public void notifyFailure(
+            CommandSourceStack source,
+            //#if MC > 11900
+            //$$ CarpetRule<T> carpetRule,
+            //#else
+            ParsedRule<T> carpetRule,
+            //#endif
+            String providedValue) {
     }
     //#endif
 

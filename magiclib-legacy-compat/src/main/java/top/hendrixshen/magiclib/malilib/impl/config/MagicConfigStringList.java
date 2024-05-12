@@ -6,11 +6,14 @@ import fi.dy.masa.malilib.config.options.ConfigBase;
 import fi.dy.masa.malilib.config.options.ConfigStringList;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.malilib.api.config.IMagicConfigBase;
 
 import java.util.function.Consumer;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Environment(EnvType.CLIENT)
 public class MagicConfigStringList extends ConfigStringList implements IMagicConfigBase {
     private final String prefix;

@@ -7,8 +7,9 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.language.api.I18n;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.malilib.impl.ConfigManager;
 import top.hendrixshen.magiclib.malilib.impl.ConfigOption;
 import top.hendrixshen.magiclib.util.RenderUtil;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Environment(EnvType.CLIENT)
 public class ConfigGui extends GuiConfigsBase {
     private String tab;
@@ -77,7 +80,7 @@ public class ConfigGui extends GuiConfigsBase {
         }
 
         int total = available + unavailable;
-        String stats = I18n.get("magiclib.gui.bottom_line.stat", total, available, unavailable, modified);
+        String stats = I18n.tr("magiclib.gui.bottom_line.stat", total, available, unavailable, modified);
         int width = RenderUtil.getRenderWidth(stats);
         int height = RenderUtil.TEXT_HEIGHT;
         int x = 10;
@@ -86,7 +89,7 @@ public class ConfigGui extends GuiConfigsBase {
     }
 
     private int createNavigationButton(int x, int y, String category) {
-        ButtonGeneric button = new ButtonGeneric(x, y, -1, 20, I18n.get(String.format("%s.gui.button.tab.%s", this.identifier, category)));
+        ButtonGeneric button = new ButtonGeneric(x, y, -1, 20, I18n.tr(String.format("%s.gui.button.tab.%s", this.identifier, category)));
         button.setEnabled(!Objects.equals(category, tab) && this.configManager.getOptionsByCategory(category).stream().anyMatch(ConfigOption::isEnabled));
 
         this.addButton(button, (b, mouseButton) -> {

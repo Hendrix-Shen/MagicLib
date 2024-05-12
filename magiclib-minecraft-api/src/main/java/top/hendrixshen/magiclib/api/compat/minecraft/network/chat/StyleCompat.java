@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.api.compat.minecraft.chat.network;
+package top.hendrixshen.magiclib.api.compat.minecraft.network.chat;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
@@ -6,7 +6,7 @@ import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.impl.compat.minecraft.chat.network.StyleCompatImpl;
+import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.StyleCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
 public interface StyleCompat extends Provider<Style> {
@@ -36,7 +36,11 @@ public interface StyleCompat extends Provider<Style> {
 
     StyleCompat withClickEvent(ClickEvent clickEvent);
 
+    StyleCompat withClickEvent(ClickEventCompat clickEvent);
+
     StyleCompat withHoverEvent(HoverEvent hoverEvent);
+
+    StyleCompat withHoverEvent(HoverEventCompat hoverEvent);
 
     StyleCompat withInsertion(String insertion);
 

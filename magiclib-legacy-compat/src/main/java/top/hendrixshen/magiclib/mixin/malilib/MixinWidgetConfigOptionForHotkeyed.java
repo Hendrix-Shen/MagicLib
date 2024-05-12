@@ -23,14 +23,16 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
-import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
+import top.hendrixshen.magiclib.api.dependency.DependencyType;
+import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.malilib.impl.config.MagicConfigHotkey;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.KeybindMultiAccessor;
 import top.hendrixshen.magiclib.util.StringUtil;
 
 @Environment(EnvType.CLIENT)
-@Dependencies(and = @Dependency("malilib"))
+@CompositeDependencies(@Dependencies(require = @Dependency(dependencyType = DependencyType.MOD_ID, value = "malilib")))
 @Mixin(value = WidgetConfigOption.class, remap = false)
 public abstract class MixinWidgetConfigOptionForHotkeyed extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
     public MixinWidgetConfigOptionForHotkeyed(int x, int y, int width, int height, WidgetListConfigOptionsBase<?, ?> parent, GuiConfigsBase.ConfigOptionWrapper entry, int listIndex) {

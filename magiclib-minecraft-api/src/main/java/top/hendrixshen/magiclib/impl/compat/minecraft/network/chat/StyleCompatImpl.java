@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.impl.compat.minecraft.chat.network;
+package top.hendrixshen.magiclib.impl.compat.minecraft.network.chat;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
@@ -7,7 +7,9 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.chat.network.StyleCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ClickEventCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.HoverEventCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.StyleCompat;
 
 //#if MC > 11502 && MC < 11700
 import net.minecraft.network.chat.TextColor;
@@ -182,6 +184,11 @@ public class StyleCompatImpl extends AbstractCompat<Style> implements StyleCompa
     }
 
     @Override
+    public StyleCompat withClickEvent(ClickEventCompat clickEvent) {
+        return this.withClickEvent(clickEvent == null ? null : clickEvent.get());
+    }
+
+    @Override
     public StyleCompat withHoverEvent(HoverEvent hoverEvent) {
         //#if MC > 11605
         //$$ this.style = style.withHoverEvent(hoverEvent);
@@ -201,6 +208,11 @@ public class StyleCompatImpl extends AbstractCompat<Style> implements StyleCompa
         //$$ this.style.setHoverEvent(hoverEvent);
         //#endif
         return this;
+    }
+
+    @Override
+    public StyleCompat withHoverEvent(HoverEventCompat hoverEvent) {
+        return this.withHoverEvent(hoverEvent == null ? null : hoverEvent.get());
     }
 
     @Override

@@ -1,8 +1,8 @@
-package top.hendrixshen.magiclib.impl.compat.minecraft.chat.network;
+package top.hendrixshen.magiclib.impl.compat.minecraft.network.chat;
 
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.minecraft.chat.network.MutableComponentCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.chat.network.StyleCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.StyleCompat;
 
 //#if MC < 11900
 import net.minecraft.network.chat.BaseComponent;

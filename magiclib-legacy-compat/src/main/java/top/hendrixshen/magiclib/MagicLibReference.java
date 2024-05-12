@@ -1,11 +1,13 @@
 package top.hendrixshen.magiclib;
 
 import lombok.Getter;
-import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import top.hendrixshen.magiclib.util.StringUtil;
+import org.jetbrains.annotations.ApiStatus;
+import top.hendrixshen.magiclib.util.VersionUtil;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public class MagicLibReference {
     @Getter
     private static final String modIdentifier = SharedConstants.getMagiclibIdentifier();
@@ -18,7 +20,7 @@ public class MagicLibReference {
     @Getter
     private static final String modVersion = "@MOD_VERSION@";
     @Getter
-    private static final String modVersionType = StringUtil.getVersionType(modVersion);
+    private static final String modVersionType = VersionUtil.getVersionType(modVersion);
     @Getter
     private static final Logger logger = LogManager.getLogger(modIdentifier);
 }

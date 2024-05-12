@@ -4,8 +4,11 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.Entity;
 import com.mojang.math.Quaternion;
+import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Environment(EnvType.CLIENT)
 public interface EntityRenderDispatcherCompatApi {
     default double distanceToSqrCompat(Entity entity) {
@@ -16,7 +19,7 @@ public interface EntityRenderDispatcherCompatApi {
         throw new UnImplCompatApiException();
     }
 
-    //#if MC <= 11404
+    //#if MC < 11500
     //$$ default double distanceToSqr(Entity entity) {
     //$$     return this.distanceToSqrCompat(entity);
     //$$ }

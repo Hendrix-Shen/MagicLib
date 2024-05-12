@@ -6,11 +6,13 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
-import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
-import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
+import top.hendrixshen.magiclib.api.dependency.DependencyType;
+import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
 @Environment(EnvType.CLIENT)
-@Dependencies(and = @Dependency("malilib"))
+@CompositeDependencies(@Dependencies(require = @Dependency(dependencyType = DependencyType.MOD_ID, value = "malilib")))
 @Mixin(value = KeybindMulti.class, remap = false)
 public interface KeybindMultiAccessor {
     @Accessor()

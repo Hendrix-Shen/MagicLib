@@ -8,8 +8,11 @@ import fi.dy.masa.malilib.gui.button.ConfigButtonKeybind;
 import fi.dy.masa.malilib.gui.interfaces.IKeybindConfigGui;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Environment(EnvType.CLIENT)
 public class HotkeyedBooleanResetListener extends ConfigOptionChangeListenerKeybind {
     private final ConfigBooleanHotkeyed config;

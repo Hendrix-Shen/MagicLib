@@ -11,17 +11,17 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.api.mixin.annotation.MagicInit;
 import top.hendrixshen.magiclib.carpet.api.Validator;
 import top.hendrixshen.magiclib.carpet.api.annotation.Command;
 import top.hendrixshen.magiclib.carpet.api.annotation.Numeric;
 import top.hendrixshen.magiclib.carpet.api.annotation.Rule;
 import top.hendrixshen.magiclib.carpet.impl.Validators;
 import top.hendrixshen.magiclib.carpet.impl.WrappedSettingManager;
-import top.hendrixshen.magiclib.compat.api.annotation.InitMethod;
-import top.hendrixshen.magiclib.compat.api.annotation.Public;
 import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
-import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
-import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.carpet.CarpetEntrypoint;
 import top.hendrixshen.magiclib.util.MessageUtil;
 
@@ -43,12 +43,17 @@ import top.hendrixshen.magiclib.carpet.impl.RuleHelper;
 //#endif
 //#if MC <= 11802
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import top.hendrixshen.magiclib.util.MiscUtil;
 //#endif
 
 //#if MC > 11900
 //$$ @SuppressWarnings("removal")
 //#endif
-@Dependencies(and = @Dependency("carpet"))
+@CompositeDependencies(
+        @Dependencies(
+                require = @Dependency("carpet")
+        )
+)
 @Mixin(ParsedRule.class)
 public abstract class MixinParsedRule<T> {
     // All field are dummy.
@@ -93,8 +98,7 @@ public abstract class MixinParsedRule<T> {
     //#endif
 
     @Unique
-    @Public
-    @InitMethod
+    @MagicInit
     private void magicInit(@NotNull Field field, @NotNull Rule rule, WrappedSettingManager settingsManager) {
         this.field = field;
         this.name = field.getName();
@@ -251,7 +255,6 @@ public abstract class MixinParsedRule<T> {
     //$$     ci.cancel();
     //#else
     public void set(CommandSourceStack source, String value, CallbackInfoReturnable<ParsedRule<T>> cir) {
-    //#else
         if (!(this.settingsManager instanceof WrappedSettingManager)) {
             return;
         }
@@ -292,7 +295,7 @@ public abstract class MixinParsedRule<T> {
     )
     private void onSetFailed(CommandSourceStack source, Object value, String userInput, @NotNull CallbackInfoReturnable<T> cir) {
         try {
-            RuleHelper.getSettingManager((ParsedRule<?>) (Object) this);
+            RuleHelper.getSettingManager(MiscUtil.cast(this));
             cir.setReturnValue(null);
         } catch (IllegalArgumentException ignore) {
         }

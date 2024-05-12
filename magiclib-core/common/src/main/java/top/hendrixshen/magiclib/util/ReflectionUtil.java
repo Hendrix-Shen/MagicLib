@@ -29,24 +29,19 @@ public class ReflectionUtil {
     public static <T> @NotNull ValueContainer<T> newInstance(@NotNull ValueContainer<Class<?>> classContainer,
                                                              Class<?>[] type, Object... args) {
         if (classContainer.isException()) {
-            return ReflectionUtil.newInstance(classContainer.get(), type, args);
+            return ValueContainer.exception(classContainer.getException());
         }
 
-        return ValueContainer.exception(classContainer.getException());
+        return ReflectionUtil.newInstance(classContainer.get(), type, args);
     }
 
     public static <T> @NotNull ValueContainer<T> newInstance(@NotNull Class<?> clazz, Class<?>[] type, Object... args) {
         try {
-            for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
-                if (Arrays.equals(constructor.getParameterTypes(), type)) {
-                    constructor.setAccessible(true);
-                    @SuppressWarnings("unchecked")
-                    ValueContainer<T> container = ValueContainer.ofNullable((T) constructor.newInstance(args));
-                    return container;
-                }
-            }
-
-            return ValueContainer.empty();
+            Constructor<?> declaredConstructor = clazz.getDeclaredConstructor(type);
+            declaredConstructor.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            ValueContainer<T> container = ValueContainer.of((T) declaredConstructor.newInstance(args));
+            return container;
         } catch (Exception e) {
             return ValueContainer.exception(e);
         }
@@ -80,8 +75,8 @@ public class ReflectionUtil {
         return ReflectionUtil.setDeclaredFieldValue(classContainer.get(), fieldName, null, value);
     }
 
-    public static ValueContainer<Boolean> setStaticFieldValue(@NotNull Class<?> cls, String fieldName, Object value) {
-        return ReflectionUtil.setDeclaredFieldValue(cls, fieldName, null, value);
+    public static ValueContainer<Boolean> setStaticFieldValue(@NotNull Class<?> clazz, String fieldName, Object value) {
+        return ReflectionUtil.setDeclaredFieldValue(clazz, fieldName, null, value);
     }
 
     public static <T> ValueContainer<T> getDeclaredFieldValue(String className, String fieldName, Object instance) {
@@ -152,9 +147,9 @@ public class ReflectionUtil {
         return ReflectionUtil.getFieldValue(classContainer.get(), fieldName, instance);
     }
 
-    public static <T> ValueContainer<T> getFieldValue(@NotNull Class<?> cls, String fieldName, Object instance) {
+    public static <T> ValueContainer<T> getFieldValue(@NotNull Class<?> clazz, String fieldName, Object instance) {
         try {
-            Field field = cls.getField(fieldName);
+            Field field = clazz.getField(fieldName);
             field.setAccessible(true);
             @SuppressWarnings("unchecked")
             ValueContainer<T> container = ValueContainer.ofNullable((T) field.get(instance));
@@ -191,9 +186,9 @@ public class ReflectionUtil {
         }
     }
 
-    public static <T> ValueContainer<T> invokeStatic(@NotNull Class<?> cls, String methodName,
+    public static <T> ValueContainer<T> invokeStatic(@NotNull Class<?> clazz, String methodName,
                                                      Class<?>[] type, Object... args) {
-        return ReflectionUtil.invokeDeclared(cls, methodName, null, type, args);
+        return ReflectionUtil.invokeDeclared(clazz, methodName, null, type, args);
     }
 
     public static <T> ValueContainer<T> invokeDeclared(String className, String methodName, Object instance,
@@ -212,19 +207,14 @@ public class ReflectionUtil {
         return ReflectionUtil.invokeDeclared(classContainer.get(), methodName, instance, type, args);
     }
 
-    public static <T> ValueContainer<T> invokeDeclared(@NotNull Class<?> cls, String methodName, Object instance,
+    public static <T> ValueContainer<T> invokeDeclared(@NotNull Class<?> clazz, String methodName, Object instance,
                                                        Class<?>[] type, Object... args) {
         try {
-            for (Method method : cls.getDeclaredMethods()) {
-                if (methodName.equals(method.getName()) && Arrays.equals(type, method.getParameterTypes())) {
-                    method.setAccessible(true);
-                    @SuppressWarnings("unchecked")
-                    ValueContainer<T> container = ValueContainer.ofNullable((T) method.invoke(instance, args));
-                    return container;
-                }
-            }
-
-            return ValueContainer.empty();
+            Method declaredMethod = clazz.getDeclaredMethod(methodName, type);
+            declaredMethod.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            ValueContainer<T> container = ValueContainer.of((T) declaredMethod.invoke(instance, args));
+            return container;
         } catch (Exception e) {
             return ValueContainer.exception(e);
         }
@@ -245,19 +235,15 @@ public class ReflectionUtil {
         return ReflectionUtil.invoke(classContainer.get(), methodName, instance, type, args);
     }
 
-    public static <T> ValueContainer<T> invoke(@NotNull Class<?> cls, String methodName, Object instance,
+    public static <T> ValueContainer<T> invoke(@NotNull Class<?> clazz, String methodName, Object instance,
                                                Class<?>[] type, Object... args) {
         try {
-            for (Method method : cls.getMethods()) {
-                if (methodName.equals(method.getName()) && Arrays.equals(type, method.getParameterTypes())) {
-                    method.setAccessible(true);
-                    @SuppressWarnings("unchecked")
-                    ValueContainer<T> container = ValueContainer.ofNullable((T) method.invoke(instance, args));
-                    return container;
-                }
-            }
-
-            return ValueContainer.empty();
+            clazz.getDeclaredMethod(methodName, type);
+            Method method = clazz.getMethod(methodName, type);
+            method.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            ValueContainer<T> container = ValueContainer.of((T) method.invoke(instance, args));
+            return container;
         } catch (Exception e) {
             return ValueContainer.exception(e);
         }

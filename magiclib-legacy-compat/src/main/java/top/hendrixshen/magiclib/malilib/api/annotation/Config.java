@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.malilib.api.annotation;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.dependency.api.ConfigDependencyPredicate;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.impl.ConfigDependencyPredicates;
@@ -14,6 +15,8 @@ import java.lang.annotation.Target;
 /**
  * Configuration annotations.
  */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Environment(EnvType.CLIENT)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

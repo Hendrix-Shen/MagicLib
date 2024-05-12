@@ -5,8 +5,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.compat.minecraft.chat.network.ComponentCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.chat.network.MutableComponentCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.util.List;
@@ -22,7 +22,11 @@ import net.minecraft.world.level.Level;
 
 public class MessageUtil {
     public static void sendMessage(CommandSourceStack source, String message) {
-        MessageUtil.sendMessage(source, ComponentCompat.literal(message).get());
+        MessageUtil.sendMessage(source, ComponentCompat.literal(message));
+    }
+
+    public static void sendMessage(CommandSourceStack source, ComponentCompat message) {
+        MessageUtil.sendMessage(source, message.get());
     }
 
     public static void sendMessage(CommandSourceStack source, Component messages) {
@@ -48,7 +52,11 @@ public class MessageUtil {
     }
 
     public static void sendServerMessage(MinecraftServer server, String message) {
-        MessageUtil.sendServerMessage(server, ComponentCompat.literal(message).get());
+        MessageUtil.sendServerMessage(server, ComponentCompat.literal(message));
+    }
+
+    public static void sendServerMessage(MinecraftServer server, ComponentCompat message) {
+        MessageUtil.sendServerMessage(server, message.get());
     }
 
     public static void sendServerMessage(MinecraftServer server, Component message) {

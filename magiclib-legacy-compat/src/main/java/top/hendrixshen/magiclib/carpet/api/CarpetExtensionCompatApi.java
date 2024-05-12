@@ -14,7 +14,7 @@ import top.hendrixshen.magiclib.carpet.impl.WrappedSettingManager;
 import java.util.Collections;
 import java.util.Map;
 
-//#if MC > 11802
+//#if MC > 11900
 //$$ import carpet.api.settings.SettingsManager;
 //$$ import net.minecraft.commands.CommandBuildContext;
 //#else
@@ -23,23 +23,25 @@ import carpet.settings.SettingsManager;
 
 public interface CarpetExtensionCompatApi extends CarpetExtension {
     @Override
-    //#if MC >= 11901
-    //$$ default void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext) {
-    //$$     this.registerCommandCompat(dispatcher);
-    //#else
-    default void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
+    default void registerCommands(
+            CommandDispatcher<CommandSourceStack> dispatcher
+            //#if MC > 11900
+            //$$ , CommandBuildContext commandBuildContext
+            //#endif
+    ) {
         this.registerCommandCompat(dispatcher);
-    //#endif
     }
 
     @Override
-    //#if MC >= 11901
+    //#if MC > 11900
     //$$ default SettingsManager extensionSettingsManager() {
+    //$$     return this.getSettingsManagerCompat();
+    //$$ }
     //#else
     default SettingsManager customSettingsManager() {
-    //#endif
         return this.getSettingsManagerCompat();
     }
+    //#endif
 
     //#if MC > 11404
     @Override

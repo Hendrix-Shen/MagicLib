@@ -1,7 +1,10 @@
 package top.hendrixshen.magiclib.compat.minecraft.api.util;
 
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.ApiStatus;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface MthCompatApi {
     static float fastInvCubeRoot(float f) {
         //#if MC > 11404

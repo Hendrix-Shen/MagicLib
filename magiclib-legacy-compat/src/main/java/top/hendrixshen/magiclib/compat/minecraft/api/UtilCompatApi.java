@@ -1,13 +1,12 @@
 package top.hendrixshen.magiclib.compat.minecraft.api;
 
-import net.minecraft.Util;
+import org.jetbrains.annotations.ApiStatus;
+import top.hendrixshen.magiclib.api.compat.minecraft.UtilCompat;
 
 import java.util.UUID;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface UtilCompatApi {
-    //#if MC >= 11605
-    UUID NIL_UUID = Util.NIL_UUID;
-    //#else
-    //$$ UUID NIL_UUID = new UUID(0L, 0L);
-    //#endif
+    UUID NIL_UUID = UtilCompat.NIL_UUID;
 }

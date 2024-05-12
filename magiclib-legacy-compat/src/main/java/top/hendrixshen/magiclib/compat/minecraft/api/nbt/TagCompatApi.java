@@ -1,5 +1,9 @@
 package top.hendrixshen.magiclib.compat.minecraft.api.nbt;
 
+import org.jetbrains.annotations.ApiStatus;
+
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface TagCompatApi {
     byte TAG_END = 0;
     byte TAG_BYTE = 1;

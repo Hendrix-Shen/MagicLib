@@ -4,11 +4,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
+import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
-//#if MC > 11902
-//$$ @Deprecated
-//#endif
+@Deprecated
+@ApiStatus.ScheduledForRemoval
+@Environment(EnvType.CLIENT)
 public interface Matrix4fCompatApi {
     //#if MC > 11902
     //$$ /**
@@ -16,7 +17,7 @@ public interface Matrix4fCompatApi {
     //$$  */
     //#endif
     static Matrix4f createScaleMatrix(float f, float g, float h) {
-        //#if MC >= 11903
+        //#if MC > 11902
         //$$ throw new UnsupportedOperationException("Don't use this method, use Matrix4f::scale instead");
         //#elseif MC > 11404
         return Matrix4f.createScaleMatrix(f, g, h);
@@ -50,13 +51,13 @@ public interface Matrix4fCompatApi {
         throw new UnImplCompatApiException();
     }
 
-    //#if MC <= 11605
+    //#if MC < 11700
     default void multiplyWithTranslation(float f, float g, float h) {
         this.multiplyWithTranslationCompat(f, g, h);
     }
     //#endif
 
-    //#if MC <= 11404
+    //#if MC < 11500
     //$$ default void setIdentity() {
     //$$     this.setIdentityCompat();
     //$$ }

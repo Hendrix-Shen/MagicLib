@@ -2,21 +2,17 @@ package top.hendrixshen.magiclib.util;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.MagicLibReference;
-import top.hendrixshen.magiclib.language.api.I18n;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public class StringUtil {
+    /**
+     * See {@link VersionUtil#getVersionType(String)}
+     */
     public static @NotNull String getVersionType(@NotNull String version) {
-        if (version.endsWith("stable")) {
-            return "Public Release";
-        } else if (version.endsWith("beta")) {
-            return "Public Beta";
-        } else if (version.endsWith("dev")) {
-            return "Development";
-        }
-
-        return "Unknown";
+        return VersionUtil.getVersionType(version);
     }
 
     public static @NotNull String getVersionTypeCode(@NotNull String version) {
@@ -31,17 +27,18 @@ public class StringUtil {
         return "misc.versionType.unknown";
     }
 
+    /**
+     * See {@link VersionUtil#translateVersionType(String)}
+     */
     public static @NotNull String trVersionType(@NotNull String version) {
-        return StringUtil.tr(StringUtil.getVersionTypeCode(version));
+        return VersionUtil.translateVersionType(version);
     }
 
-    @ApiStatus.OverrideOnly
     public static String tr(String node) {
-        return I18n.get(String.format("%s.%s", MagicLibReference.getModIdentifier(), node));
+        return I18n.tr(String.format("%s.%s", MagicLibReference.getModIdentifier(), node));
     }
 
-    @ApiStatus.OverrideOnly
     public static String tr(String node, Object... obj) {
-        return I18n.get(String.format("%s.%s", MagicLibReference.getModIdentifier(), node), obj);
+        return I18n.tr(String.format("%s.%s", MagicLibReference.getModIdentifier(), node), obj);
     }
 }

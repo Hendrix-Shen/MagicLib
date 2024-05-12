@@ -105,15 +105,7 @@ public class FabricUtil {
     }
 
     public static @NotNull Set<URL> getResources(String name) throws IOException {
-        ClassLoader urlLoader = Thread.currentThread().getContextClassLoader();
-        HashSet<URL> hashSet = new HashSet<>();
-        Enumeration<URL> urlEnumeration = urlLoader.getResources(name);
-
-        while (urlEnumeration.hasMoreElements()) {
-            hashSet.add(urlEnumeration.nextElement());
-        }
-
-        return hashSet;
+        return FileUtil.getResources(name);
     }
 
     private static @NotNull Map<String, Dependencies<Object>> getModInitDependencies(String entryKey, String entryMethod) {
@@ -213,7 +205,7 @@ public class FabricUtil {
             URL logUrl = null;
 
             try {
-                for (URL url : getResources("fabric.mod.json")) {
+                for (URL url : FileUtil.getResources("fabric.mod.json")) {
                     logUrl = url;
                     InputStream inputStream = url.openStream();
                     InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);

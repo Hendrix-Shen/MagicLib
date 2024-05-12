@@ -10,9 +10,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
-import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
-import top.hendrixshen.magiclib.dependency.impl.MixinDependencyPredicates;
+import top.hendrixshen.magiclib.api.dependency.DependencyType;
+import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.impl.mixin.BuiltInPredicates;
 
 /**
  * The implementation for mc [1.15.2, ~)
@@ -20,7 +22,14 @@ import top.hendrixshen.magiclib.dependency.impl.MixinDependencyPredicates;
  * Fix a stack overflow exception when you use Mojang Mappings in a development environment.
  * And since 1.18, carpet uses Mojang Mappings, this bug fixed itself.
  */
-@Dependencies(and = @Dependency("carpet"), predicate = MixinDependencyPredicates.DevMojangMixinPredicate.class)
+@CompositeDependencies(
+        @Dependencies(
+                require = {
+                        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
+                        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
+                }
+        )
+)
 @Mixin(value = ChunkMap.class, priority = 1001)
 public class MixinChunkMap {
     @Shadow

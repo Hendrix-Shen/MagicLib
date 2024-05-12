@@ -3,6 +3,8 @@ package top.hendrixshen.magiclib.carpet.impl;
 import carpet.CarpetServer;
 import carpet.settings.ParsedRule;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Queues;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -11,6 +13,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -20,68 +23,67 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.MagicLibReference;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ClickEventCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.HoverEventCompat;
+import top.hendrixshen.magiclib.api.i18n.minecraft.I18n;
 import top.hendrixshen.magiclib.carpet.api.CarpetExtensionCompatApi;
 import top.hendrixshen.magiclib.carpet.api.annotation.Rule;
 import top.hendrixshen.magiclib.mixin.carpet.accessor.SettingsManagerAccessor;
-import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.impl.carpet.MagicLibSettings;
-import top.hendrixshen.magiclib.language.api.I18n;
-import top.hendrixshen.magiclib.util.MessageUtil;
-import top.hendrixshen.magiclib.util.ReflectUtil;
+import top.hendrixshen.magiclib.util.ReflectionUtil;
+import top.hendrixshen.magiclib.util.collect.Provider;
+import top.hendrixshen.magiclib.util.minecraft.MessageUtil;
 
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
-//#if MC > 11404
-import carpet.network.ServerNetworkHandler;
+//#if MC > 11903
+//$$ import carpet.api.settings.CarpetRule;
+//#endif
+
+//#if MC > 11900
+//$$ import carpet.api.settings.SettingsManager;
+//$$ import net.minecraft.commands.CommandBuildContext;
+//#else
+import carpet.settings.SettingsManager;
+import java.util.Map;
+//#endif
+
+//#if MC < 11700
+import org.apache.commons.lang3.tuple.Pair;
 //#endif
 
 //#if MC > 11502 && MC < 11904
 import carpet.script.CarpetEventServer;
 //#endif
 
-//#if MC <= 11605
-import org.apache.commons.lang3.tuple.Pair;
-//#endif
-
-//#if MC <= 11802
-import java.util.Map;
+//#if MC > 11404
+import carpet.network.ServerNetworkHandler;
 //#endif
 
 //#if MC > 11900
-//#if MC > 11903
-//$$ import carpet.api.settings.CarpetRule;
-//#endif
-//$$ import carpet.api.settings.SettingsManager;
-//$$ import net.minecraft.commands.CommandBuildContext;
-//#else
-import top.hendrixshen.magiclib.mixin.carpet.accessor.SettingsManagerAccessor;
-//#if MC > 11502
-import carpet.settings.Condition;
-//#endif
-import carpet.settings.SettingsManager;
-//#endif
-
-//#if MC >= 11901
 //$$ @SuppressWarnings("removal")
 //#endif
 public class WrappedSettingManager extends SettingsManager {
-    private static final ConcurrentHashMap<String, WrappedSettingManager> INSTANCES = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, RuleOption> OPTIONS = new ConcurrentHashMap<>();
-    private final LinkedBlockingQueue<String> CATEGORIES = new LinkedBlockingQueue<>();
-    private final ConcurrentHashMap<ParsedRule<?>, RuleOption> RULE_TO_OPTION = new ConcurrentHashMap<>();
+    private static final Map<String, WrappedSettingManager> INSTANCES = Maps.newConcurrentMap();
+    private final Map<String, RuleOption> OPTIONS = Maps.newConcurrentMap();
+    private final Queue<String> CATEGORIES = Queues.newLinkedBlockingDeque();
+    private final Map<ParsedRule<?>, RuleOption> RULE_TO_OPTION = Maps.newConcurrentMap();
+    @Getter
     private final String version;
     private final String fancyName;
+    @Getter
     private final String identifier;
     public static final String DEFAULT_LANGUAGE = "en_us";
     private final List<RuleCallback> callbacks = Lists.newArrayList();
     private static final List<RuleCallback> globalCallbacks = Lists.newArrayList();
+
     public WrappedSettingManager(String version, String identifier, String fancyName) {
         super(version, identifier, fancyName);
         this.version = version;
@@ -95,27 +97,29 @@ public class WrappedSettingManager extends SettingsManager {
 
     public static void printAllExtensionVersion(CommandSourceStack source) {
         WrappedSettingManager.INSTANCES.values().forEach(instance ->
-                MessageUtil.sendMessage(source, ComponentCompatApi.literal(instance.trUI("version", instance.trFancyName(), instance.getVersion()))
+                MessageUtil.sendMessage(source, ComponentCompat.literal(
+                        instance.trUI("version", instance.trFancyName(), instance.getVersion()))
                         .withStyle(style -> style.withColor(ChatFormatting.GRAY))));
     }
 
     public void registerRuleCallback(RuleCallback callback) {
-        this.callbacks.add(callback);// 136
+        this.callbacks.add(callback);
     }
 
     public static void registerGlobalRuleCallback(RuleCallback callback) {
-        WrappedSettingManager.globalCallbacks.add(callback);// 150
+        WrappedSettingManager.globalCallbacks.add(callback);
     }
 
     public void onRuleChange(CommandSourceStack source, @NotNull RuleOption rule, String value) {
         this.callbacks.forEach(ruleCallback -> ruleCallback.callback(source, rule, value));
         WrappedSettingManager.globalCallbacks.forEach(ruleCallback -> ruleCallback.callback(source, rule, value));
+
         //#if MC > 11404
         ServerNetworkHandler.updateRuleWithConnectedClients(rule.getRule());
         //#endif
 
         //#if MC > 11903
-        //$$ ReflectUtil.invokeDeclared("carpet.api.settings.SettingsManager",
+        //$$ ReflectionUtil.invokeDeclared("carpet.api.settings.SettingsManager",
         //$$         "switchScarpetRuleIfNeeded", this,
         //$$         new Class[]{CommandSourceStack.class, CarpetRule.class}, source, rule.getRule());
         //#elseif MC > 11502
@@ -125,9 +129,10 @@ public class WrappedSettingManager extends SettingsManager {
         //#endif
     }
 
-    public static <T extends WrappedSettingManager> void register(String identifier, T wrapperSettingsManager, CarpetExtensionCompatApi extension) {
+    public static <T extends WrappedSettingManager> void register(String identifier, T wrapperSettingsManager,
+                                                                  CarpetExtensionCompatApi extension) {
         if (WrappedSettingManager.INSTANCES.containsKey(identifier)) {
-            MagicLibReference.getLogger().error("SettingManager {} is registered", identifier);
+            MagicLib.getLogger().error("SettingManager {} is registered", identifier);
         }
 
         CarpetServer.manageExtension(extension);
@@ -135,8 +140,10 @@ public class WrappedSettingManager extends SettingsManager {
     }
 
     public Collection<RuleOption> getNonDefaultRuleOption() {
-        return this.OPTIONS.values().stream().filter(ruleOption -> !ruleOption.isDefault() && ruleOption.isEnabled())
-                .sorted(Comparator.comparing(RuleOption::getName)).collect(Collectors.toList());
+        return this.OPTIONS.values().stream()
+                .filter(ruleOption -> !ruleOption.isDefault() && ruleOption.isEnabled())
+                .sorted(Comparator.comparing(RuleOption::getName))
+                .collect(Collectors.toList());
     }
 
     // Compat for legacy Minecraft version.
@@ -163,9 +170,6 @@ public class WrappedSettingManager extends SettingsManager {
         }
     }
 
-    //#if MC <= 11802
-    @SuppressWarnings("unchecked")
-    //#endif
     @Override
     public void parseSettingsClass(@NotNull Class settingsClass) {
         for (Field field : settingsClass.getDeclaredFields()) {
@@ -175,8 +179,9 @@ public class WrappedSettingManager extends SettingsManager {
                 continue;
             }
 
-            ReflectUtil.newInstance("carpet.settings.ParsedRule",
-                            new Class[]{Field.class, Rule.class, WrappedSettingManager.class}, field, rule, this)
+            ReflectionUtil.newInstance("carpet.settings.ParsedRule",
+                            new Class[]{Field.class, Rule.class, WrappedSettingManager.class},
+                            field, rule, this)
                     .ifPresent(o -> {
                         ParsedRule<?> carpetRule = (ParsedRule<?>) o;
                         RuleOption ruleOption = new RuleOption(rule, carpetRule);
@@ -200,18 +205,21 @@ public class WrappedSettingManager extends SettingsManager {
 
     //#if MC > 11502
     @Override
-    //#if MC > 11802
-    //$$ public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext) {
-    //#else
-    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
-    //#endif
+    public void registerCommand(
+            CommandDispatcher<CommandSourceStack> dispatcher
+            //#if MC > 11802
+            //$$ , CommandBuildContext commandBuildContext
+            //#endif
+    ) {
         this.registerCommandCompat(dispatcher);
     }
     //#endif
 
     public void registerCommandCompat(@NotNull CommandDispatcher<CommandSourceStack> dispatcher) {
-        if (dispatcher.getRoot().getChildren().stream().anyMatch(node -> node.getName().equalsIgnoreCase(this.identifier))) {
-            MagicLibReference.getLogger().error("Failed to add settings command for {}. It is masking previous command.", this.identifier);
+        if (dispatcher.getRoot().getChildren().stream()
+                .anyMatch(node -> node.getName().equalsIgnoreCase(this.identifier))) {
+            MagicLib.getLogger().error("Failed to add settings command for {}. It is masking previous command.",
+                    this.identifier);
             return;
         }
 
@@ -254,10 +262,14 @@ public class WrappedSettingManager extends SettingsManager {
         dispatcher.register(command);
     }
 
-    private @Nullable CompletableFuture<Suggestions> getRuleOptionSuggestion(CommandContext<CommandSourceStack> ctx, SuggestionsBuilder suggestionsBuilder) throws CommandSyntaxException {
+    private @Nullable CompletableFuture<Suggestions> getRuleOptionSuggestion(CommandContext<CommandSourceStack> ctx,
+                                                                             SuggestionsBuilder suggestionsBuilder)
+            throws CommandSyntaxException {
         RuleOption ruleOption = this.getRuleOption(ctx);
         return ruleOption.isEnabled() ? SharedSuggestionProvider.suggest(this.getRuleOption(ctx)
-                .getOptions().stream().sorted().collect(Collectors.toList()), suggestionsBuilder) : null;
+                .getOptions().stream()
+                .sorted()
+                .collect(Collectors.toList()), suggestionsBuilder) : null;
     }
 
     @Override
@@ -279,8 +291,8 @@ public class WrappedSettingManager extends SettingsManager {
         RuleOption ruleOption = this.getRuleOption(ruleName);
 
         if (ruleOption == null) {
-            throw new SimpleCommandExceptionType(ComponentCompatApi.literal(this.trUI("unknown_rule", ruleName))
-                    .withStyle(style -> style.withBold(true).withColor(ChatFormatting.RED))).create();
+            throw new SimpleCommandExceptionType(ComponentCompat.literal(this.trUI("unknown_rule", ruleName))
+                    .withStyle(style -> style.withBold(true).withColor(ChatFormatting.RED)).get()).create();
         }
 
         return ruleOption;
@@ -318,15 +330,7 @@ public class WrappedSettingManager extends SettingsManager {
                 this.trInfo("mod_name") : this.fancyName;
     }
 
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    public String getVersion() {
-        return this.version;
-    }
-
-    //#if MC <= 11802
+    //#if MC < 11900
     public boolean locked() {
         return this.locked;
     }
@@ -335,13 +339,13 @@ public class WrappedSettingManager extends SettingsManager {
     // The server side requires this way to use the fallback language.
     public String tr(String code, String key, Object... objects) {
         String value;
-        return (value = I18n.getByCode(code, key, objects)).equals(key) ? I18n.getByCode(WrappedSettingManager.DEFAULT_LANGUAGE, key, objects) : value;
+        return (value = I18n.trByCode(code, key, objects)).equals(key) ? I18n.trByCode(WrappedSettingManager.DEFAULT_LANGUAGE, key, objects) : value;
     }
 
     // The server side requires this way to use the fallback language.
     public String tr(String code, String key) {
         String value;
-        return (value = I18n.getByCode(code, key)).equals(key) ? I18n.getByCode(WrappedSettingManager.DEFAULT_LANGUAGE, key) : value;
+        return (value = I18n.trByCode(code, key)).equals(key) ? I18n.trByCode(WrappedSettingManager.DEFAULT_LANGUAGE, key) : value;
     }
 
     public String defaultRuleName(String ruleName) {
@@ -382,14 +386,14 @@ public class WrappedSettingManager extends SettingsManager {
     }
 
     public List<Component> trRuleExtraInfo(String ruleName) {
-        List<Component> ret = Lists.newArrayList();
+        List<ComponentCompat> ret = Lists.newArrayList();
         String key = String.format("%s.rule.%s.extra.%%d", this.identifier, ruleName);
 
         for (int i = 0; I18n.exists(String.format(key, i)); i++) {
-            ret.add(ComponentCompatApi.literal(this.tr(this.getCurrentLanguageCode(), String.format(key, i))));
+            ret.add(ComponentCompat.literal(this.tr(this.getCurrentLanguageCode(), String.format(key, i))));
         }
 
-        return ret;
+        return ret.stream().map(Provider::get).collect(Collectors.toList());
     }
 
     public int displayRuleMenu(@NotNull CommandSourceStack source, @NotNull RuleOption ruleOption) {
@@ -399,61 +403,58 @@ public class WrappedSettingManager extends SettingsManager {
         }
 
         MessageUtil.sendMessage(source, "");
-        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.getTranslatedRuleName(ruleOption.getName())).withStyle(
-                style -> style.withBold(true)
-                        .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/%s %s", this.identifier, ruleOption.getName())))
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.refresh"))
+        MessageUtil.sendMessage(source, ComponentCompat.literal(this.getTranslatedRuleName(ruleOption.getName()))
+                .withStyle(style -> style.withBold(true)
+                        .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND, String.format("/%s %s", this.identifier, ruleOption.getName())))
+                        .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.refresh"))
                                 .withStyle(style1 -> style1.withColor(ChatFormatting.GRAY))))));
         MessageUtil.sendMessage(source, this.trRuleDesc(ruleOption.getName()));
-
         this.trRuleExtraInfo(ruleOption.getName()).forEach(component ->
                 MessageUtil.sendMessage(source, component.copy().withStyle(style -> style.withColor(ChatFormatting.GRAY))));
-
-
-        List<Component> categories = Lists.newArrayList();
-        categories.add(ComponentCompatApi.literal(this.trUI("tags")));
+        List<ComponentCompat> categories = Lists.newArrayList();
+        categories.add(ComponentCompat.literal(this.trUI("tags")));
 
         Arrays.stream(ruleOption.getCategory()).sorted().forEach(category -> {
-            categories.add(ComponentCompatApi.literal(String.format("[%s]", this.trCategory(category))).withStyle(style ->
+            categories.add(ComponentCompat.literal(String.format("[%s]", this.trCategory(category))).withStyle(style ->
                     style.withColor(ChatFormatting.AQUA)
-                            .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/%s list %s", this.identifier, category)))
-                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.list_all_category", category))))));
-            categories.add(ComponentCompatApi.literal(" "));
+                            .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND, String.format("/%s list %s", this.identifier, category)))
+                            .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.list_all_category", category))))));
+            categories.add(ComponentCompat.literal(" "));
         });
 
         if (categories.size() > 1) {
             categories.remove(categories.size() - 1);
         } else {
-            categories.add(ComponentCompatApi.literal(this.trUI("null")).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+            categories.add(ComponentCompat.literal(this.trUI("null")).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
         }
 
-        MessageUtil.sendMessage(source, categories);
-        List<Component> value = Lists.newArrayList();
-        value.add(ComponentCompatApi.literal(this.trUI("current_value")));
-        value.add(ComponentCompatApi.literal(String.format("%s (%s)", ruleOption.getValue(), ruleOption.isDefault() ?
+        MessageUtil.sendMessage(source, categories.stream().map(Provider::get).collect(Collectors.toList()));
+        List<ComponentCompat> value = Lists.newArrayList();
+        value.add(ComponentCompat.literal(this.trUI("current_value")));
+        value.add(ComponentCompat.literal(String.format("%s (%s)", ruleOption.getValue(), ruleOption.isDefault() ?
                 this.trUI("default") : this.trUI("modified"))).withStyle(
                         style -> style.withBold(true)
                                 .withColor(ruleOption.isDefault() ? ChatFormatting.DARK_RED : ChatFormatting.GREEN)));
-        MessageUtil.sendMessage(source, value);
-        List<Component> options = Lists.newArrayList();
-        options.add(ComponentCompatApi.literal(this.trUI("options")));
-        options.add(ComponentCompatApi.literal("[ ").withStyle(style -> style.withColor(ChatFormatting.YELLOW)));
+        MessageUtil.sendMessage(source, value.stream().map(Provider::get).collect(Collectors.toList()));
+        List<ComponentCompat> options = Lists.newArrayList();
+        options.add(ComponentCompat.literal(this.trUI("options")));
+        options.add(ComponentCompat.literal("[ ").withStyle(style -> style.withColor(ChatFormatting.YELLOW)));
 
         for (String option : ruleOption.getOptions()) {
-            options.add(ComponentCompatApi.literal(option).withStyle(style ->
-                    style.withUnderlinedCompat(ruleOption.getStringValue().equals(option))
+            options.add(ComponentCompat.literal(option).withStyle(style ->
+                    style.withUnderlined(ruleOption.getStringValue().equals(option))
                             .withColor(ruleOption.isDefault() ? ChatFormatting.GRAY : ruleOption.getDefaultStringValue().equals(option) ? ChatFormatting.DARK_GREEN : ChatFormatting.YELLOW)
-                            .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
-                            .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.switch_to", option))))));
-            options.add(ComponentCompatApi.literal(" "));
+                            .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND, String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
+                            .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.switch_to", option))))));
+            options.add(ComponentCompat.literal(" "));
         }
 
         if (options.size() > 2) {
             options.remove(options.size() - 1);
         }
 
-        options.add(ComponentCompatApi.literal(" ]").withStyle(style -> style.withColor(ChatFormatting.YELLOW)));
-        MessageUtil.sendMessage(source, options);
+        options.add(ComponentCompat.literal(" ]").withStyle(style -> style.withColor(ChatFormatting.YELLOW)));
+        MessageUtil.sendMessage(source, options.stream().map(Provider::get).collect(Collectors.toList()));
         return 1;
     }
 
@@ -467,13 +468,13 @@ public class WrappedSettingManager extends SettingsManager {
             return 1;
         }
 
-        List<Component> components = Lists.newArrayList();
-        components.add(ComponentCompatApi.literal(String.format("%s: %s, ", this.getTranslatedRuleName(ruleOption.getName()), newValue)));
-        components.add(ComponentCompatApi.literal(String.format("[%s]", this.trUI("change_permanently")))
+        List<ComponentCompat> components = Lists.newArrayList();
+        components.add(ComponentCompat.literal(String.format("%s: %s, ", this.getTranslatedRuleName(ruleOption.getName()), newValue)));
+        components.add(ComponentCompat.literal(String.format("[%s]", this.trUI("change_permanently")))
                 .withStyle(style -> style.withColor(ChatFormatting.AQUA)
-                        .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/%s setDefault %s %s", this.identifier, ruleOption.getName(), newValue)))
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.change_permanently", String.format("%s.conf",this.identifier)))))));
-        MessageUtil.sendMessage(source, components);
+                        .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND, String.format("/%s setDefault %s %s", this.identifier, ruleOption.getName(), newValue)))
+                        .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.change_permanently", String.format("%s.conf",this.identifier)))))));
+        MessageUtil.sendMessage(source, components.stream().map(Provider::get).collect(Collectors.toList()));
         return 1;
     }
 
@@ -496,25 +497,24 @@ public class WrappedSettingManager extends SettingsManager {
         Class<?> carpetSM = WrappedSettingManager.class.getSuperclass();
         //#if MC > 11502
         Path path = ((SettingsManagerAccessor) this).invokeGetFile();
-        Object conf = ReflectUtil.invokeDeclared(carpetSM, "readSettingsFromConf", this, new Class<?>[]{Path.class}, path).orElseThrow(RuntimeException::new);
+        Object conf = ReflectionUtil.invokeDeclared(carpetSM, "readSettingsFromConf", this, new Class<?>[]{Path.class}, path).orElseThrow(RuntimeException::new);
         //#else
         //$$ Pair<Map<String, String>, Boolean> conf = ((SettingsManagerAccessor) this).invokeReadSettingsFromConf();
         //#endif
         //#if MC > 11605
-        //$$ Map<String, String> ruleMap = (Map<String, String>) ReflectUtil.invoke(ReflectUtil.getInnerClass(carpetSM,
-        //$$         "ConfigReadResult").orElseThrow(RuntimeException::new), "ruleMap", conf).orElseThrow(RuntimeException::new);
+        //$$ Map<String, String> ruleMap = (Map<String, String>) ReflectionUtil.invoke(carpetSM.getName() + "$ConfigReadResult", "ruleMap", conf, null).orElseThrow(RuntimeException::new);
         //#else
         Map<String, String> ruleMap = ((Pair<Map<String, String>, Boolean>) conf).getLeft();
         //#endif
         ruleMap.put(ruleOption.getName(), newValue);
         //#if MC > 11802
-        //$$ ReflectUtil.invokeDeclared(carpetSM, "writeSettingsToConf", this,
-        //$$         new Class[]{ReflectUtil.getInnerClass(carpetSM, "ConfigReadResult").orElseThrow(RuntimeException::new)}, conf);
+        //$$ ReflectionUtil.invokeDeclared(carpetSM, "writeSettingsToConf", this, new Class[]{ReflectionUtil.getClass(carpetSM.getName() + "$ConfigReadResult").orElseThrow(RuntimeException::new)}, conf);
         //#else
         ((SettingsManagerAccessor) this).invokeWriteSettingsToConf(ruleMap);
         //#endif
-        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("set_default", this.getTranslatedRuleName(ruleOption.getName()),
-                ruleOption.getStringValue())).withStyle(style -> style.withItalic(true).withColor(ChatFormatting.GRAY)));
+        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("set_default",
+                        this.getTranslatedRuleName(ruleOption.getName()), ruleOption.getStringValue()))
+                .withStyle(style -> style.withItalic(true).withColor(ChatFormatting.GRAY)));
         return 1;
     }
 
@@ -537,38 +537,36 @@ public class WrappedSettingManager extends SettingsManager {
         Class<?> carpetSM = WrappedSettingManager.class.getSuperclass();
         //#if MC > 11502
         Path path = ((SettingsManagerAccessor) this).invokeGetFile();
-        Object conf = ReflectUtil.invokeDeclared(carpetSM, "readSettingsFromConf", this, new Class<?>[]{Path.class}, path).orElseThrow(RuntimeException::new);
+        Object conf = ReflectionUtil.invokeDeclared(carpetSM, "readSettingsFromConf", this, new Class<?>[]{Path.class}, path).orElseThrow(RuntimeException::new);
         //#else
         //$$ Pair<Map<String, String>, Boolean> conf = ((SettingsManagerAccessor) this).invokeReadSettingsFromConf();
         //#endif
         //#if MC > 11605
-        //$$ Map<String, String> ruleMap = (Map<String, String>) ReflectUtil.invoke(ReflectUtil.getInnerClass(carpetSM,
-        //$$         "ConfigReadResult").orElseThrow(RuntimeException::new), "ruleMap", conf).orElseThrow(RuntimeException::new);
+        //$$ Map<String, String> ruleMap = (Map<String, String>) ReflectionUtil.invoke(carpetSM.getName() + "$ConfigReadResult", "ruleMap", conf, null).orElseThrow(RuntimeException::new);
         //#else
         Map<String, String> ruleMap = ((Pair<Map<String, String>, Boolean>) conf).getLeft();
         //#endif
         ruleMap.remove(ruleOption.getName());
         //#if MC > 11802
-        //$$ ReflectUtil.invokeDeclared(carpetSM, "writeSettingsToConf", this,
-        //$$         new Class[]{ReflectUtil.getInnerClass(carpetSM, "ConfigReadResult").orElseThrow(RuntimeException::new)}, conf);
+        //$$ ReflectionUtil.invokeDeclared(carpetSM, "writeSettingsToConf", this, new Class[]{ReflectionUtil.getClass(carpetSM.getName() + "$ConfigReadResult").orElseThrow(RuntimeException::new)}, conf);
         //#else
         ((SettingsManagerAccessor) this).invokeWriteSettingsToConf(ruleMap);
         //#endif
-        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("reset_default", this.getTranslatedRuleName(ruleOption.getName())))
+        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("reset_default", this.getTranslatedRuleName(ruleOption.getName())))
                 .withStyle(style -> style.withItalic(true).withColor(ChatFormatting.GRAY)));
         return 1;
     }
 
     public Collection<List<Component>> getMatchedSettings(@NotNull Collection<RuleOption> ruleOptions) {
         ruleOptions = ruleOptions.stream().filter((RuleOption::isEnabled)).collect(Collectors.toList());
-        Collection<List<Component>> collection = Lists.newArrayList();
+        Collection<List<ComponentCompat>> collection = Lists.newArrayList();
 
         for (RuleOption ruleOption : ruleOptions) {
-            List<Component> components = Lists.newArrayList();
-            components.add(ComponentCompatApi.literal(String.format("- %s", this.getTranslatedRuleName(ruleOption.getName()))).withStyle(style -> style
-                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/%s %s", this.identifier, ruleOption.getName())))
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trRuleDesc(ruleOption.getName())).withStyle(style1 -> style1.withColor(ChatFormatting.YELLOW))))));
-            components.add(ComponentCompatApi.literal(" "));
+            List<ComponentCompat> components = Lists.newArrayList();
+            components.add(ComponentCompat.literal(String.format("- %s", this.getTranslatedRuleName(ruleOption.getName()))).withStyle(style -> style
+                    .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND, String.format("/%s %s", this.identifier, ruleOption.getName())))
+                    .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trRuleDesc(ruleOption.getName())).withStyle(style1 -> style1.withColor(ChatFormatting.YELLOW))))));
+            components.add(ComponentCompat.literal(" "));
             List<String> options = new ArrayList<>(ruleOption.getOptions());
 
             if (!options.contains(ruleOption.getStringValue())) {
@@ -576,23 +574,23 @@ public class WrappedSettingManager extends SettingsManager {
             }
 
             for (String option : options) {
-                components.add(ComponentCompatApi.literal(String.format("[%s]", option)).withStyle(style ->
-                        style.withUnderlinedCompat(ruleOption.getStringValue().equals(option))
+                components.add(ComponentCompat.literal(String.format("[%s]", option)).withStyle(style ->
+                        style.withUnderlined(ruleOption.getStringValue().equals(option))
                                 .withColor(ruleOption.isDefault() ? ChatFormatting.GRAY : ruleOption.getDefaultStringValue().equals(option) ? ChatFormatting.DARK_GREEN : ChatFormatting.YELLOW)
-                                .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
-                                .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.switch_to", option))))));
-                components.add(ComponentCompatApi.literal(" "));
+                                .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND, String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
+                                .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.switch_to", option))))));
+                components.add(ComponentCompat.literal(" "));
             }
 
             components.remove(components.size() - 1);
             collection.add(components);
         }
 
-        return collection;
+        return collection.stream().map(list -> list.stream().map(Provider::get).collect(Collectors.toList())).collect(Collectors.toList());
     }
 
     private int listTagSettings(CommandSourceStack source, String category) {
-        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("matched_rule",  this.trFancyName(), category))
+        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("matched_rule",  this.trFancyName(), category))
                 .withStyle(style -> style.withBold(true)));
 
         for (List<Component> item : this.getMatchedSettings(this.OPTIONS.values().stream().filter(ruleOption ->
@@ -604,7 +602,7 @@ public class WrappedSettingManager extends SettingsManager {
     }
 
     private int displayMainMenu(CommandSourceStack source) {
-        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("current_rule",  this.trFancyName()))
+        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("current_rule",  this.trFancyName()))
                 .withStyle(style -> style.withBold(true)));
 
         for (List<Component> item : this.getMatchedSettings(this.getNonDefaultRuleOption())) {
@@ -612,45 +610,44 @@ public class WrappedSettingManager extends SettingsManager {
         }
 
         WrappedSettingManager.printAllExtensionVersion(source);
-        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("browse",  this.trFancyName()))
+        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("browse",  this.trFancyName()))
                 .withStyle(style -> style.withBold(true)));
-        List<Component> categories = Lists.newArrayList();
-        categories.add(ComponentCompatApi.literal(this.trUI("tags")));
+        List<ComponentCompat> categories = Lists.newArrayList();
+        categories.add(ComponentCompat.literal(this.trUI("tags")));
 
         this.CATEGORIES.stream().sorted().forEach(category -> {
             if (this.getRuleOptionByCategory(category).stream().anyMatch(RuleOption::isEnabled)) {
-                categories.add(ComponentCompatApi.literal(String.format("[%s]", this.trCategory(category))).withStyle(style ->
+                categories.add(ComponentCompat.literal(String.format("[%s]", this.trCategory(category))).withStyle(style ->
                         style.withColor(ChatFormatting.AQUA)
-                                .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/%s list %s", this.identifier, category)))
-                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentCompatApi.literal(this.trUI("hover.list_all_category", category))))));
-                categories.add(ComponentCompatApi.literal(" "));
+                                .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND, String.format("/%s list %s", this.identifier, category)))
+                                .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.list_all_category", category))))));
+                categories.add(ComponentCompat.literal(" "));
             }
         });
 
         if (categories.size() > 1) {
             categories.remove(categories.size() - 1);
         } else {
-            categories.add(ComponentCompatApi.literal(this.trUI("null")).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+            categories.add(ComponentCompat.literal(this.trUI("null")).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
         }
 
-        MessageUtil.sendMessage(source, categories);
+        MessageUtil.sendMessage(source, categories.stream().map(Provider::get).collect(Collectors.toList()));
         return 1;
     }
 
     @SuppressWarnings("unchecked")
     private int listDefaultSettings(CommandSourceStack source) {
-        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("default_rule",  this.trFancyName(), String.format("%s.conf", this.identifier)))
+        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("default_rule",  this.trFancyName(), String.format("%s.conf", this.identifier)))
                 .withStyle(style -> style.withBold(true)));
         Class<?> carpetSM = WrappedSettingManager.class.getSuperclass();
         //#if MC > 11502
         Path path = ((SettingsManagerAccessor) this).invokeGetFile();
-        Object conf = ReflectUtil.invokeDeclared(carpetSM, "readSettingsFromConf", this, new Class<?>[]{Path.class}, path).orElseThrow(RuntimeException::new);
+        Object conf = ReflectionUtil.invokeDeclared(carpetSM, "readSettingsFromConf", this, new Class<?>[]{Path.class}, path).orElseThrow(RuntimeException::new);
         //#else
         //$$ Pair<Map<String, String>, Boolean> conf = ((SettingsManagerAccessor) this).invokeReadSettingsFromConf();
         //#endif
         //#if MC > 11605
-        //$$ Set<String> defaults = ((Map<String, String>) ReflectUtil.invoke(ReflectUtil.getInnerClass(carpetSM,
-        //$$         "ConfigReadResult").orElseThrow(RuntimeException::new), "ruleMap", conf).orElseThrow(RuntimeException::new)).keySet();
+        //$$ Set<String> defaults = ((Map<String, String>) ReflectionUtil.invoke(carpetSM.getName() + "$ConfigReadResult", "ruleMap", conf, null).orElseThrow(RuntimeException::new)).keySet();
         //#else
         Set<String> defaults = ((Pair<Map<String, String>, Boolean>) conf).getLeft().keySet();
         //#endif
@@ -664,14 +661,14 @@ public class WrappedSettingManager extends SettingsManager {
     }
 
     public int listAllSettings(CommandSourceStack source) {
-        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("all_rule",  this.trFancyName()))
+        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("all_rule",  this.trFancyName()))
                 .withStyle(style -> style.withBold(true)));
         this.getMatchedSettings(this.OPTIONS.values()).forEach(components -> MessageUtil.sendMessage(source, components));
         return 1;
     }
 
     public int searchRule(CommandSourceStack source, String content) {
-        MessageUtil.sendMessage(source, ComponentCompatApi.literal(this.trUI("matched_rule",  this.trFancyName(), content))
+        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("matched_rule",  this.trFancyName(), content))
                 .withStyle(style -> style.withBold(true)));
         this.getMatchedSettings(this.OPTIONS
                 .values()

@@ -2,8 +2,11 @@ package top.hendrixshen.magiclib.compat.minecraft.api.world.item;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface ItemStackCompatApi {
     static boolean isSameItemSameTags(ItemStack itemStack, ItemStack itemStack2) {
         //#if MC > 11605
@@ -13,7 +16,7 @@ public interface ItemStackCompatApi {
         //#endif
     }
 
-    //#if MC <= 11605
+    //#if MC < 11700
     default boolean is(Item item) {
         return this.isCompat(item);
     }

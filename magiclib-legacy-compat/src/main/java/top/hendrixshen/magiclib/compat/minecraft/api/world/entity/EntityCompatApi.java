@@ -3,8 +3,11 @@ package top.hendrixshen.magiclib.compat.minecraft.api.world.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface EntityCompatApi {
     default Level getLevelCompat() {
         throw new UnImplCompatApiException();
@@ -90,15 +93,7 @@ public interface EntityCompatApi {
     }
     //#endif
 
-    //#if MC <= 11701
-    // fuck remap
-    // It will cause remap fail...
-    ////$$ default Level getLevel() {
-    ////$$     return this.getLevelCompat();
-    ////$$ }
-    //#endif
-
-    //#if MC <= 11605
+    //#if MC < 11700
     default int getBlockX() {
         return this.getBlockXCompat();
     }
@@ -128,7 +123,7 @@ public interface EntityCompatApi {
     }
     //#endif
 
-    //#if MC <= 11502
+    //#if MC < 11600
     //$$ default BlockPos blockPosition() {
     //$$     return this.blockPositionCompat();
     //$$ }
@@ -142,7 +137,7 @@ public interface EntityCompatApi {
     //$$ }
     //#endif
 
-    //#if MC <= 11404
+    //#if MC < 11500
     //$$ default double getX() {
     //$$     return this.getXCompat();
     //$$ }

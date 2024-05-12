@@ -2,10 +2,13 @@ package top.hendrixshen.magiclib.compat.minecraft.api.network.chat;
 
 import net.minecraft.network.chat.*;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface ComponentCompatApi {
     @Contract("_ -> new")
     //#if MC > 11802

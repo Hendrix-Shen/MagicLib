@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.compat.modmenu;
 
 import net.minecraft.client.gui.screens.Screen;
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import org.jetbrains.annotations.ApiStatus;
 
 //#if MC > 11404
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
@@ -9,6 +10,8 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 //$$ import java.util.function.Function;
 //#endif
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface ModMenuCompatApi extends ModMenuApi {
     ConfigScreenFactoryCompat<?> getConfigScreenFactoryCompat();
 
@@ -23,7 +26,7 @@ public interface ModMenuCompatApi extends ModMenuApi {
         return (screen) -> this.getConfigScreenFactoryCompat().create(screen);
     }
 
-    //#if MC <= 11404
+    //#if MC < 11502
     //$$ @Override
     //$$ default String getModId() {
     //$$     return this.getModIdCompat();

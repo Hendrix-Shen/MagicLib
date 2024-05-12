@@ -1,7 +1,7 @@
-package top.hendrixshen.magiclib.api.compat.minecraft.chat.network;
+package top.hendrixshen.magiclib.api.compat.minecraft.network.chat;
 
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.impl.compat.minecraft.chat.network.*;
+import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.MutableComponentCompatImpl;
 
 import java.util.function.UnaryOperator;
 

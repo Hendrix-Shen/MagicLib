@@ -1,8 +1,11 @@
 package top.hendrixshen.magiclib.malilib.impl;
 
 import fi.dy.masa.malilib.config.options.ConfigBase;
+import lombok.Getter;
+import lombok.Setter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.dependency.api.ConfigDependencyPredicate;
 import top.hendrixshen.magiclib.dependency.impl.Dependencies;
@@ -12,13 +15,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Environment(EnvType.CLIENT)
 public class ConfigOption {
     private final Config annotation;
+    @Getter
     private final ConfigBase<?> config;
+    @Getter
     private final Dependencies<ConfigOption> modDependencies;
     private final ConfigDependencyPredicate predicate;
 
+    @Getter
+    @Setter
     private Consumer<ConfigOption> valueChangeCallback = option -> {
     };
 
@@ -43,16 +52,8 @@ public class ConfigOption {
         return this.config.getName();
     }
 
-    public Dependencies<ConfigOption> getModDependencies() {
-        return this.modDependencies;
-    }
-
     public boolean isEnabled() {
         return this.modDependencies.satisfied(this) && this.predicate.isSatisfied(this);
-    }
-
-    public ConfigBase<?> getConfig() {
-        return this.config;
     }
 
     public <T> Optional<T> getConfig(@NotNull Class<T> clazz) {
@@ -63,11 +64,4 @@ public class ConfigOption {
         }
     }
 
-    public Consumer<ConfigOption> getValueChangeCallback() {
-        return this.valueChangeCallback;
-    }
-
-    public void setValueChangeCallback(Consumer<ConfigOption> valueChangeCallback) {
-        this.valueChangeCallback = valueChangeCallback;
-    }
 }

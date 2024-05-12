@@ -20,7 +20,7 @@ public interface FontCompatApi {
         throw new UnImplCompatApiException();
     }
 
-    //#if MC <= 11502
+    //#if MC < 11600
     //$$ default int width(Component component) {
     //$$     return this.widthCompat(component);
     //$$ }

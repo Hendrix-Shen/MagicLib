@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.carpet.impl;
 
 import carpet.settings.ParsedRule;
+import lombok.Getter;
 import net.minecraft.commands.CommandSourceStack;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.carpet.api.Validator;
@@ -14,11 +15,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-//#if MC >= 11901
+//#if MC > 11900
 //$$ @SuppressWarnings("removal")
 //#endif
 public class RuleOption {
     private final Rule annotation;
+    @Getter
     private final Dependencies<RuleOption> modDependencies;
     private final RuleDependencyPredicate predicate;
     private final ParsedRule<?> parsedRule;
@@ -43,16 +45,12 @@ public class RuleOption {
         return this.parsedRule;
     }
 
-    public Dependencies<RuleOption> getModDependencies() {
-        return this.modDependencies;
-    }
-
     public boolean isEnabled() {
         return this.modDependencies.satisfied(this) && predicate.isSatisfied(this);
     }
 
     public String getName() {
-        //#if MC > 11802
+        //#if MC > 11900
         //$$ return this.parsedRule.name();
         //#else
         return this.parsedRule.name;

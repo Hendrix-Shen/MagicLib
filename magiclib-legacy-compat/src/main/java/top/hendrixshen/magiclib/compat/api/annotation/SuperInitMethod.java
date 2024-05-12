@@ -1,5 +1,7 @@
 package top.hendrixshen.magiclib.compat.api.annotation;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,6 +16,8 @@ import java.lang.annotation.Target;
  * it means that the corresponding constructor method in the target class's
  * superclass is called.
  */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface SuperInitMethod {

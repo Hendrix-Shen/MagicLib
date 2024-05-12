@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.util;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
@@ -19,6 +20,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public class MixinUtil {
     private static final Field mixinInfoStateField;
     private static final Field mixinInfoInfoField;

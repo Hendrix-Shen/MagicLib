@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.malilib.api.annotation;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,6 +14,8 @@ import java.lang.annotation.Target;
  * <p>This annotation is only valid when decorating {@link fi.dy.masa.malilib.config.options.ConfigInteger}
  * instances and {@link fi.dy.masa.malilib.config.options.ConfigDouble} instances.
  */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Environment(EnvType.CLIENT)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

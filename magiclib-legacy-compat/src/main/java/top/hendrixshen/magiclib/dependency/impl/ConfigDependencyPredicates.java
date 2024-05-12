@@ -4,7 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import top.hendrixshen.magiclib.dependency.api.ConfigDependencyPredicate;
-import top.hendrixshen.magiclib.impl.config.MagicLibConfigs;
+import top.hendrixshen.magiclib.game.malilib.Configs;
 import top.hendrixshen.magiclib.malilib.impl.ConfigOption;
 import top.hendrixshen.magiclib.util.FabricUtil;
 
@@ -35,7 +35,7 @@ public class ConfigDependencyPredicates {
     public static class DebugConfigPredicate implements ConfigDependencyPredicate {
         @Override
         public boolean isSatisfied(ConfigOption option) {
-            return MagicLibConfigs.debug;
+            return Configs.debug.getBooleanValue();
         }
     }
 

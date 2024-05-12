@@ -4,8 +4,11 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Environment(EnvType.CLIENT)
 public interface ScreenCompatApi {
     default GuiEventListener addRenderableWidgetCompat(GuiEventListener guiEventListener) {
@@ -20,7 +23,7 @@ public interface ScreenCompatApi {
         throw new UnImplCompatApiException();
     }
 
-    //#if MC <= 11605
+    //#if MC < 11700
     default GuiEventListener addRenderableWidget(GuiEventListener guiEventListener) {
         return this.addRenderableWidgetCompat(guiEventListener);
     }
@@ -30,7 +33,7 @@ public interface ScreenCompatApi {
     }
     //#endif
 
-    //#if MC <= 11502
+    //#if MC < 11600
     //$$ default GuiEventListener addWidget(GuiEventListener guiEventListener) {
     //$$     return this.addWidgetCompat(guiEventListener);
     //$$ }

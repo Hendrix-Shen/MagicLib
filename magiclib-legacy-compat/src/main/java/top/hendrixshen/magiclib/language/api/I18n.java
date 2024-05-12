@@ -1,7 +1,12 @@
 package top.hendrixshen.magiclib.language.api;
 
-import top.hendrixshen.magiclib.language.impl.MagicLanguageManager;
+import org.jetbrains.annotations.ApiStatus;
 
+/**
+* See {@link top.hendrixshen.magiclib.api.i18n.minecraft.I18n}
+*/
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public class I18n {
     /**
      * Get the formatted localised text.
@@ -11,7 +16,7 @@ public class I18n {
      * @return Formatted localised string.
      */
     public static String get(String key, Object... objects) {
-        return MagicLanguageManager.INSTANCE.get(key, objects);
+        return top.hendrixshen.magiclib.api.i18n.minecraft.I18n.tr(key, objects);
     }
 
     /**
@@ -21,7 +26,7 @@ public class I18n {
      * @return Localised raw string.
      */
     public static String get(String key) {
-        return MagicLanguageManager.INSTANCE.get(key);
+        return top.hendrixshen.magiclib.api.i18n.minecraft.I18n.tr(key);
     }
 
     /**
@@ -33,7 +38,7 @@ public class I18n {
      * @return Formatted localised string.
      */
     public static String getByCode(String code, String key, Object... objects) {
-        return MagicLanguageManager.INSTANCE.getByCode(code, key, objects);
+        return top.hendrixshen.magiclib.api.i18n.minecraft.I18n.trByCode(code, key, objects);
     }
 
     /**
@@ -44,14 +49,14 @@ public class I18n {
      * @return Localised raw string.
      */
     public static String getByCode(String code, String key) {
-        return MagicLanguageManager.INSTANCE.getByCode(code, key);
+        return top.hendrixshen.magiclib.api.i18n.minecraft.I18n.trByCode(code, key);
     }
 
     public static boolean exists(String key) {
-        return MagicLanguageManager.INSTANCE.exists(key);
+        return top.hendrixshen.magiclib.api.i18n.minecraft.I18n.exists(key);
     }
 
     public static boolean exists(String code, String key) {
-        return MagicLanguageManager.INSTANCE.exists(code, key);
+        return top.hendrixshen.magiclib.api.i18n.minecraft.I18n.exists(code, key);
     }
 }
