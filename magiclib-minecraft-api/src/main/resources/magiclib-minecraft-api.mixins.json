@@ -19,6 +19,7 @@
     "accessor.ServerboundClientInformationPacketAccessor",
     "accessor.SlotAccessor",
     "accessor.StyleAccessor",
+    "accessor.TranslatableComponentAccessor",
     "i18n.AbstractResourcePackMixin",
     "i18n.FilePackResourcesMixin",
     "i18n.PathPackResourcesMixin",

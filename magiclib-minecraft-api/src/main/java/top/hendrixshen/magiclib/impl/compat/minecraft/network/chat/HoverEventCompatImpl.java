@@ -16,6 +16,5 @@ public class HoverEventCompatImpl extends AbstractCompat<HoverEvent> implements 
     public static @NotNull <T> HoverEventCompatImpl of(HoverEvent.Action<T> action, T object) {
         return new HoverEventCompatImpl(new HoverEvent(action, object));
     }
-    //#else
     //#endif
 }

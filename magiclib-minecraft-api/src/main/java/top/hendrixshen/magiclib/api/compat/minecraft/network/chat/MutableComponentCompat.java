@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.network.chat;
 
+import net.minecraft.ChatFormatting;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.MutableComponentCompatImpl;
 
@@ -35,6 +36,11 @@ public interface MutableComponentCompat extends ComponentCompat {
 
     default MutableComponentCompat withStyle(@NotNull UnaryOperator<StyleCompat> style) {
         this.setStyle(style.apply(this.getStyle()));
+        return this;
+    }
+
+    default MutableComponentCompat withStyle(ChatFormatting... chatFormattings) {
+        this.getStyle().applyFormats(chatFormattings);
         return this;
     }
 }

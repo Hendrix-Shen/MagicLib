@@ -9,6 +9,10 @@ import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.StyleCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
+//#if MC > 11502
+import net.minecraft.network.chat.TextColor;
+//#endif
+
 public interface StyleCompat extends Provider<Style> {
     static @NotNull StyleCompat of(@NotNull Style style) {
         return new StyleCompatImpl(style);
@@ -21,6 +25,10 @@ public interface StyleCompat extends Provider<Style> {
         //$$ return new Style();
         //#endif
     }
+
+    //#if MC > 11502
+    StyleCompat withColor(TextColor color);
+    //#endif
 
     StyleCompat withColor(ChatFormatting arg);
 
@@ -45,4 +53,6 @@ public interface StyleCompat extends Provider<Style> {
     StyleCompat withInsertion(String insertion);
 
     StyleCompat withFont(ResourceLocation font);
+
+    StyleCompat applyFormats(ChatFormatting... chatFormattings);
 }

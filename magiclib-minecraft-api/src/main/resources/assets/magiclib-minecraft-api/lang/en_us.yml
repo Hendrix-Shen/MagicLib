@@ -1,0 +1,24 @@
+magiclib:
+  util:
+    minecraft:
+      color:
+        black: black
+        blue: blue
+        brown: brown
+        cyan: cyan
+        gray: gray
+        green: green
+        light_blue: light blue
+        light_gray: light gray
+        lime: lime
+        magenta: magenta
+        orange: orange
+        pink: pink
+        purple: purple
+        red: red
+        white: white
+        yellow: yellow
+      entity_type: "Entity type: %1$s (%2$s)"
+      teleport_hint:
+        hover: Click to teleport to %1$s
+        dimension: Dimension
