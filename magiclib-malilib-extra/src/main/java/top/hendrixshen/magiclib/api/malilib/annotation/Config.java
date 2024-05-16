@@ -1,6 +1,5 @@
 package top.hendrixshen.magiclib.api.malilib.annotation;
 
-
 import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 
 import java.lang.annotation.ElementType;

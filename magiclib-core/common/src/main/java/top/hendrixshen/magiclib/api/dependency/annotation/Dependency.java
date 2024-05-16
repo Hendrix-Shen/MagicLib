@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
  * for the annotated class.
  * </p>
  */
-@Target({ /* No targets allowed */ })
+@Target({ /* No targets allowed */})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dependency {
     /**

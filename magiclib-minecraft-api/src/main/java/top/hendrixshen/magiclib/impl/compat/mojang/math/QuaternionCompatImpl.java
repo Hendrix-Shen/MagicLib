@@ -3,12 +3,15 @@ package top.hendrixshen.magiclib.impl.compat.mojang.math;
 import com.mojang.math.Quaternion;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
-import top.hendrixshen.magiclib.mixin.minecraft.accessor.QuaternionAccessor;
-import top.hendrixshen.magiclib.util.MiscUtil;
+
+//#if MC < 11500
+//$$ import net.minecraft.util.Mth;
+//$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.QuaternionAccessor;
+//$$ import top.hendrixshen.magiclib.util.MiscUtil;
+//#endif
 
 @Environment(EnvType.CLIENT)
 public class QuaternionCompatImpl extends AbstractCompat<Quaternion> implements QuaternionCompat {

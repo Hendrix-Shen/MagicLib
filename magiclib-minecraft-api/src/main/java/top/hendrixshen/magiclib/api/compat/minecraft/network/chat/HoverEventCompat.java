@@ -15,7 +15,7 @@ public interface HoverEventCompat extends Provider<HoverEvent> {
         return HoverEventCompatImpl.of(action, object.get());
     }
     //#else
-    //$$ public static @NotNull HoverEventCompatImpl of(HoverEvent.Action action, ComponentCompat object) {
+    //$$ static @NotNull HoverEventCompatImpl of(HoverEvent.Action action, ComponentCompat object) {
     //$$     return new HoverEventCompatImpl(new HoverEvent(action, object.get()));
     //$$ }
     //#endif

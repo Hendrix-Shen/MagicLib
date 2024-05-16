@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.api.platform.adapter.ModEntryPointAdapter;
 import top.hendrixshen.magiclib.api.platform.adapter.ModMetaDataAdapter;
-import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.util.NoSuchElementException;
 

@@ -56,9 +56,9 @@ public class ComponentUtil {
      */
 
     public static
-        //#if MC > 11802
-        //$$ ComponentContents
-        //#elseif MC > 11502
+    //#if MC > 11802
+    //$$ ComponentContents
+    //#elseif MC > 11502
     MutableComponent
     //#else
     //$$ BaseComponent
@@ -266,7 +266,7 @@ public class ComponentUtil {
                             //#if MC > 11802
                             //$$ return (Component) formattedText;
                             //#else
-                            return (MutableComponent) formattedText;
+                            return formattedText;
                             //#endif
 
                         }

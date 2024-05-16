@@ -51,21 +51,8 @@ public class MixinUtil {
     }
 
     public static @NotNull List<String> getMethodAnnotations(@NotNull MethodNode methodNode) {
-        List<String> ret = Lists.newArrayList();
-
-        if (methodNode.invisibleAnnotations != null) {
-            ret.addAll(methodNode.invisibleAnnotations
-                    .stream()
-                    .map(annotationNode -> annotationNode.desc)
-                    .collect(Collectors.toList()));
-        }
-
-        if (methodNode.visibleAnnotations != null) {
-            ret.addAll(methodNode.visibleAnnotations
-                    .stream()
-                    .map(annotationNode -> annotationNode.desc)
-                    .collect(Collectors.toList()));
-        }
+        List<String> ret = MixinUtil.getMethodInvisibleAnnotations(methodNode);
+        ret.addAll(MixinUtil.getMethodVisibleAnnotations(methodNode));
 
         return ret;
     }

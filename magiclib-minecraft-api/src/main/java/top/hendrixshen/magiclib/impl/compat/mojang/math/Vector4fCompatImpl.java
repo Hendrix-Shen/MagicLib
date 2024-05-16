@@ -7,7 +7,10 @@ import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.mojang.math.Vector4fCompat;
-import top.hendrixshen.magiclib.mixin.minecraft.accessor.Vector4fAccessor;
+
+//#if MC < 11500
+//$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.Vector4fAccessor;
+//#endif
 
 @Environment(EnvType.CLIENT)
 public class Vector4fCompatImpl extends AbstractCompat<Vector4f> implements Vector4fCompat {

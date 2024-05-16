@@ -392,30 +392,30 @@ public final class FabricStatusTree {
         public FabricStatusNode addCleanedException(Throwable exception) {
             return FabricStatusNode.addException(this, Collections.newSetFromMap(new IdentityHashMap<>()),
                     exception, e -> {
-                // Remove some self-repeating exception traces from the tree
-                // (for example the RuntimeException that is is created unnecessarily by ForkJoinTask)
-                Throwable cause;
+                        // Remove some self-repeating exception traces from the tree
+                        // (for example the RuntimeException that is is created unnecessarily by ForkJoinTask)
+                        Throwable cause;
 
-                while ((cause = e.getCause()) != null) {
-                    if (e.getSuppressed().length > 0) {
-                        break;
-                    }
+                        while ((cause = e.getCause()) != null) {
+                            if (e.getSuppressed().length > 0) {
+                                break;
+                            }
 
-                    String msg = e.getMessage();
+                            String msg = e.getMessage();
 
-                    if (msg == null) {
-                        msg = e.getClass().getName();
-                    }
+                            if (msg == null) {
+                                msg = e.getClass().getName();
+                            }
 
-                    if (!msg.equals(cause.getMessage()) && !msg.equals(cause.toString())) {
-                        break;
-                    }
+                            if (!msg.equals(cause.getMessage()) && !msg.equals(cause.toString())) {
+                                break;
+                            }
 
-                    e = cause;
-                }
+                            e = cause;
+                        }
 
-                return e;
-            }, new StackTraceElement[0]);
+                        return e;
+                    }, new StackTraceElement[0]);
         }
 
         private static FabricStatusNode addException(FabricStatusNode node, @NotNull Set<Throwable> seen, Throwable exception, UnaryOperator<Throwable> filter, StackTraceElement[] parentTrace) {

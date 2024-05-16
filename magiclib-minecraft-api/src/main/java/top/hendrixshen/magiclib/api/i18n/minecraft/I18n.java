@@ -13,6 +13,7 @@ public class I18n extends top.hendrixshen.magiclib.api.i18n.I18n {
 
         return I18n.tr(key);
     }
+
     public static String tr(CommandSource source, String key, Object... objects) {
         if (source instanceof ServerPlayer) {
             String code = ((ServerPlayerLanguage) source).magicLib$getLanguage();

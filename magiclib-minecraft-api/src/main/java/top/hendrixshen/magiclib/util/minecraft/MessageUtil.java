@@ -67,9 +67,9 @@ public class MessageUtil {
                     //$$ p.sendSystemMessage(message));
                     //#elseif MC > 11502
                     p.sendMessage(message, p.getUUID()));
-                    //#else
-                    //$$ p.sendMessage(message));
-                    //#endif
+            //#else
+            //$$ p.sendMessage(message));
+            //#endif
         });
     }
 

@@ -1,9 +1,12 @@
 package top.hendrixshen.magiclib.impl.malilib;
 
 import org.objectweb.asm.tree.ClassNode;
-import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.mixin.MixinPredicate;
+
+//#if FABRIC_LIKE
+import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.libs.org.semver4j.Semver;
+//#endif
 
 public class MixinPredicates {
     // Workaround for SemVer4j bug!

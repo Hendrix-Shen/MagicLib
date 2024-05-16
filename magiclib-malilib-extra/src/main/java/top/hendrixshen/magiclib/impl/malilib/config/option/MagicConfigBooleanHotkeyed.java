@@ -63,7 +63,7 @@ public class MagicConfigBooleanHotkeyed extends ConfigBooleanHotkeyed implements
     public void onValueChanged(boolean fromFile) {
         super.onValueChanged();
 
-        if (!fromFile &&  this.getMagicContainer().shouldStatisticValueChange()) {
+        if (!fromFile && this.getMagicContainer().shouldStatisticValueChange()) {
             this.updateStatisticOnUse();
         }
     }

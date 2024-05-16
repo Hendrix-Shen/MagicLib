@@ -7,11 +7,11 @@ import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.mojang.math.Matrix4fCompat;
-import top.hendrixshen.magiclib.mixin.minecraft.accessor.Matrix4fAccessor;
-import top.hendrixshen.magiclib.util.MiscUtil;
 
-//#if MC < 11502
+//#if MC < 11500
 //$$ import org.jetbrains.annotations.ApiStatus;
+//$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.Matrix4fAccessor;
+//$$ import top.hendrixshen.magiclib.util.MiscUtil;
 //#endif
 
 @Environment(EnvType.CLIENT)

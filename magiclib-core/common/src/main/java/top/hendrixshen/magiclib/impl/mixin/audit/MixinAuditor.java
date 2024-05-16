@@ -4,13 +4,12 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.MagicLibProperties;
-import top.hendrixshen.magiclib.util.SystemUtil;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MixinAuditor {
-    public static int DEFAULT_FAIL_CODE = -0x4D454F57; // MEOW
-    public static AtomicBoolean triggered = new AtomicBoolean(false);
+    public static final int DEFAULT_FAIL_CODE = -0x4D454F57; // MEOW
+    public static final AtomicBoolean triggered = new AtomicBoolean(false);
 
     public static boolean isEnable() {
         return MagicLibProperties.MIXIN_AUDITOR_ENABLE.getBooleanValue();

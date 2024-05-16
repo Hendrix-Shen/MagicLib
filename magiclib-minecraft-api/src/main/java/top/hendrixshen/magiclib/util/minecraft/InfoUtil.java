@@ -11,7 +11,6 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 //$$ import net.minecraft.Util;
 //#endif
 //$$ import net.minecraft.client.gui.chat.ClientChatPreview;
-//$$ import net.minecraft.network.chat.Component;
 //#endif
 
 @Environment(net.fabricmc.api.EnvType.CLIENT)

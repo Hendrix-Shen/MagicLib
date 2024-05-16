@@ -13,7 +13,7 @@ import top.hendrixshen.magiclib.util.FileUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Map;
@@ -28,8 +28,8 @@ public class ModMetaDataLite {
 
     static {
         try {
-            for (URL url : FileUtil.getResources("fabric.mod.json")) {
-                InputStream inputStream = url.openStream();
+            for (URI uri : FileUtil.getResources("fabric.mod.json")) {
+                InputStream inputStream = uri.toURL().openStream();
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
                 JsonReader jsonReader = new JsonReader(inputStreamReader);
 
@@ -37,7 +37,7 @@ public class ModMetaDataLite {
                     MetaData modMetaData = new MetaData(jsonReader);
                     ModMetaDataLite.data.put(modMetaData.getModIdentifier(), modMetaData);
                 } catch (Throwable e) {
-                    MagicLib.getLogger().debug("Failed to parse {}.", url, e);
+                    MagicLib.getLogger().debug("Failed to parse {}.", uri, e);
                 }
             }
         } catch (IOException e) {

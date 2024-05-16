@@ -44,8 +44,8 @@ public class DimensionWrapper {
             //#endif
     );
 
-    //#if MC > 11502
     private final
+    //#if MC > 11502
     ResourceKey<Level>
             //#else
             //$$ DimensionType

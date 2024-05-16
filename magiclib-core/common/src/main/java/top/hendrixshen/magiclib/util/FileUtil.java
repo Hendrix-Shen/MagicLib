@@ -6,6 +6,8 @@ import top.hendrixshen.magiclib.MagicLib;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Set;
@@ -16,13 +18,16 @@ public class FileUtil {
                 .getConfigFolder().resolve(identifier + ".json").toFile();
     }
 
-    public static @NotNull Set<URL> getResources(String name) throws IOException {
+    public static @NotNull Set<URI> getResources(String name) throws IOException {
         ClassLoader urlLoader = Thread.currentThread().getContextClassLoader();
-        Set<URL> set = Sets.newHashSet();
+        Set<URI> set = Sets.newHashSet();
         Enumeration<URL> urlEnumeration = urlLoader.getResources(name);
 
         while (urlEnumeration.hasMoreElements()) {
-            set.add(urlEnumeration.nextElement());
+            try {
+                set.add(urlEnumeration.nextElement().toURI());
+            } catch (URISyntaxException ignore) {
+            }
         }
 
         return set;

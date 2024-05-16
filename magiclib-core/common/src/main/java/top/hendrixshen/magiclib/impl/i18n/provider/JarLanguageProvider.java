@@ -66,7 +66,6 @@ public class JarLanguageProvider implements LanguageProvider {
         return this.languageMap.computeIfAbsent(languageCode.toLowerCase(), key -> Maps.newConcurrentMap());
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void loadFromJar(@NotNull JarFile jar) {
         for (JarEntry entry : Collections.list(jar.entries())) {
             Matcher matcher = languageResourcePattern.matcher(entry.getName());
@@ -77,7 +76,7 @@ public class JarLanguageProvider implements LanguageProvider {
 
             Map<String, String> language = this.getLanguage(matcher.group(2));
 
-            try (InputStream inputStream = jar.getInputStream(entry);) {
+            try (InputStream inputStream = jar.getInputStream(entry)) {
                 JsonUtil.loadStringMapFromJson(inputStream, language::put);
                 MagicLib.getLogger().debug("Loaded language file {} from {}.", entry.getName(), jar.getName());
             } catch (Exception e) {

@@ -14,7 +14,6 @@ public class MagicConfigInteger extends ConfigInteger implements MagicIConfigBas
         this.translationPrefix = translationPrefix;
     }
 
-
     public MagicConfigInteger(String translationPrefix, String name, int defaultValue,
                               int minValue, int maxValue) {
         super(name, defaultValue, minValue, maxValue,

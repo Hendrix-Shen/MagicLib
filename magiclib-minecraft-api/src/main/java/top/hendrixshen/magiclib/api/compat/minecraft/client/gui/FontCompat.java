@@ -20,6 +20,6 @@ public interface FontCompat extends Provider<Font> {
     enum DisplayMode {
         NORMAL,
         SEE_THROUGH,
-        POLYGON_OFFSET;
+        POLYGON_OFFSET
     }
 }

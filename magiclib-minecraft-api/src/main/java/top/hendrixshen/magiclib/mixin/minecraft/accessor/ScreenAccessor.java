@@ -2,7 +2,6 @@ package top.hendrixshen.magiclib.mixin.minecraft.accessor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,6 +12,8 @@ import java.util.List;
 
 //#if MC > 11605
 //$$ import net.minecraft.client.gui.components.Widget;
+//#else
+import net.minecraft.client.gui.components.AbstractWidget;
 //#endif
 
 @Environment(EnvType.CLIENT)

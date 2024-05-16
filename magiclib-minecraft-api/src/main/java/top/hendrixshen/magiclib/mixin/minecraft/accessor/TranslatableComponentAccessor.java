@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 //#if MC > 11701
-//$$ import net.minecraft.network.chat.FormattedText;
 //$$ import java.util.function.Consumer;
 //#else
 import java.util.List;

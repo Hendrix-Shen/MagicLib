@@ -84,7 +84,6 @@ public interface ButtonCompat extends Provider<Button> {
             return this;
         }
 
-
         public ButtonCompat.Builder tooltip(@Nullable
                                             //#if MC > 11902
                                             //$$ Tooltip tooltip
@@ -130,7 +129,6 @@ public interface ButtonCompat extends Provider<Button> {
             //#endif
         }
     }
-
 
     @Environment(EnvType.CLIENT)
     interface CreateNarration {

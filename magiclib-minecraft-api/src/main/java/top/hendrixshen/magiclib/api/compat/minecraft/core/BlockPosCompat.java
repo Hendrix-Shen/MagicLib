@@ -11,7 +11,7 @@ import top.hendrixshen.magiclib.util.collect.Provider;
 
 public interface BlockPosCompat extends Provider<BlockPos> {
     static @NotNull BlockPos blockPos(int x, int y, int z) {
-        return new BlockPos(x, y ,z);
+        return new BlockPos(x, y, z);
     }
 
     static @NotNull BlockPos blockPos(double x, double y, double z) {

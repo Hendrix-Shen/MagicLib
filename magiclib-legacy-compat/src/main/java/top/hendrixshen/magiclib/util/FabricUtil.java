@@ -17,10 +17,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 public class FabricUtil {
     // Fabric Loader 0.11 and below support
@@ -105,7 +108,13 @@ public class FabricUtil {
     }
 
     public static @NotNull Set<URL> getResources(String name) throws IOException {
-        return FileUtil.getResources(name);
+        return FileUtil.getResources(name).stream().map(uri -> {
+            try {
+                return uri.toURL();
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toSet());
     }
 
     private static @NotNull Map<String, Dependencies<Object>> getModInitDependencies(String entryKey, String entryMethod) {
@@ -205,9 +214,9 @@ public class FabricUtil {
             URL logUrl = null;
 
             try {
-                for (URL url : FileUtil.getResources("fabric.mod.json")) {
-                    logUrl = url;
-                    InputStream inputStream = url.openStream();
+                for (URI uri : FileUtil.getResources("fabric.mod.json")) {
+                    logUrl = uri.toURL();
+                    InputStream inputStream = logUrl.openStream();
                     InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
                     JsonReader jsonReader = new JsonReader(inputStreamReader);
 
@@ -215,7 +224,7 @@ public class FabricUtil {
                         ModMetaData modMetaData = new ModMetaData(jsonReader);
                         ModMetaData.data.put(modMetaData.id, modMetaData);
                     } catch (Throwable e) {
-                        MagicLibReference.getLogger().debug("Exception when parse {}.", url);
+                        MagicLibReference.getLogger().debug("Exception when parse {}.", logUrl);
                     }
                 }
             } catch (IOException e) {

@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 /**
  * Dependencies annotation.
  */
-@Target({ /* No targets allowed */ })
+@Target({ /* No targets allowed */})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dependencies {
     /**

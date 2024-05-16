@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 
 //#if MC < 11800
 import com.google.gson.JsonParser;
+//#endif
+
+//#if MC < 11700
 import top.hendrixshen.magiclib.MagicLib;
 
 import java.io.IOException;

@@ -94,7 +94,6 @@ public final class MagicLibProperties {
                 });
     }
 
-
     public static int getMaxBackgroundThreads() {
         String string = System.getProperty("max.bg.threads");
 
