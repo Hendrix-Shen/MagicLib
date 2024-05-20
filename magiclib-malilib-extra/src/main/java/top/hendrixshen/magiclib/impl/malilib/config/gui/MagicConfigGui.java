@@ -20,7 +20,7 @@ import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.impl.malilib.config.ConfigContainer;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetSearchBarAccessor;
-import top.hendrixshen.magiclib.util.minecraft.RenderUtil;
+import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 import top.hendrixshen.magiclib.util.minecraft.StringUtil;
 import top.hendrixshen.magiclib.util.serializable.JsonSaveAble;
 

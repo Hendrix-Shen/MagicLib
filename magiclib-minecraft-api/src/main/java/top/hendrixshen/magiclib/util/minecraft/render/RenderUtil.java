@@ -1,9 +1,13 @@
-package top.hendrixshen.magiclib.util.minecraft;
+package top.hendrixshen.magiclib.util.minecraft.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
+
+//#if MC > 11502
+import net.minecraft.util.FormattedCharSequence;
+//#endif
 
 public class RenderUtil {
     private static final Font TEXT_RENDERER = Minecraft.getInstance().font;
@@ -19,4 +23,10 @@ public class RenderUtil {
         FontCompat fontCompat = FontCompat.of(RenderUtil.TEXT_RENDERER);
         return fontCompat.width(text);
     }
+
+    //#if MC > 11502
+    public static int getRenderWidth(FormattedCharSequence text) {
+        return RenderUtil.TEXT_RENDERER.width(text);
+    }
+    //#endif
 }

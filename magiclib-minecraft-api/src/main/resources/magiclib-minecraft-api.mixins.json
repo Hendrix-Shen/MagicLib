@@ -8,12 +8,17 @@
     "defaultRequire": 1
   },
   "client": [
+    "accessor.GuiGraphicsAccessor",
     "accessor.Matrix4fAccessor",
     "accessor.QuaternionAccessor",
     "accessor.ScreenAccessor",
+    "accessor.StringSplitterAccessor",
     "accessor.Vector4fAccessor",
     "event.LanguageManagerMixin",
-    "event.MinecraftMixin"
+    "event.MinecraftMixin",
+    "event.render.EntityRendererMixin",
+    "event.render.GameRendererMixin",
+    "event.render.LevelRendererMixin"
   ],
   "mixins": [
     "accessor.ServerboundClientInformationPacketAccessor",
