@@ -3,8 +3,8 @@ package top.hendrixshen.magiclib.game.malilib;
 import fi.dy.masa.malilib.gui.GuiBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.SharedConstants;
 import top.hendrixshen.magiclib.api.i18n.minecraft.I18n;
-import top.hendrixshen.magiclib.impl.malilib.SharedConstants;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
@@ -13,9 +13,10 @@ public class ConfigGui extends MagicConfigGui {
     private static ConfigGui currentInstance = null;
 
     public ConfigGui() {
-        super(SharedConstants.getModIdentifier(), SharedConstants.getConfigManager(),
-                I18n.tr(String.format("%s.config.gui.title", SharedConstants.getModIdentifier()),
-                        SharedConstants.getModVersion(), SharedConstants.getTranslatedModVersionType()));
+        super(SharedConstants.getMagiclibIdentifier(),
+                top.hendrixshen.magiclib.impl.malilib.SharedConstants.getConfigManager(),
+                I18n.tr(String.format("%s.config.gui.title", SharedConstants.getMagiclibIdentifier()),
+                        SharedConstants.getMagiclibVersion(), SharedConstants.getTranslatedModVersionType()));
     }
 
     @Override
@@ -37,6 +38,11 @@ public class ConfigGui extends MagicConfigGui {
 
     public static void openGui() {
         GuiBase.openGui(new ConfigGui());
+    }
+
+    @Override
+    public boolean hideUnAvailableConfigs() {
+        return Configs.hideUnavailableConfigs.getBooleanValue();
     }
 
     public static @NotNull ValueContainer<ConfigGui> getCurrentInstance() {

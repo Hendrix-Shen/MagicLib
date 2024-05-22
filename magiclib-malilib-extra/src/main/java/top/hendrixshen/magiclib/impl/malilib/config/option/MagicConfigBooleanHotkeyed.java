@@ -28,6 +28,11 @@ public class MagicConfigBooleanHotkeyed extends ConfigBooleanHotkeyed implements
         this.translationPrefix = translationPrefix;
     }
 
+    @Override
+    public String getPrettyName() {
+        return MagicIConfigBase.super.getPrettyName();
+    }
+
     /**
      * Use this instead of {@code getKeybind().setCallback} directly
      * So the config statistic can be updated correctly

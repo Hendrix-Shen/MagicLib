@@ -18,7 +18,7 @@ public class SharedConstants {
     private static final String modVersionType = VersionUtil.getVersionType(SharedConstants.modVersion);
     @Getter
     private static final MagicConfigManager configManager = GlobalConfigManager
-            .getConfigManager(SharedConstants.modIdentifier);
+            .getConfigManager(top.hendrixshen.magiclib.SharedConstants.getMagiclibIdentifier());
     @Getter
     private static final MagicConfigHandler configHandler = new MagicConfigHandler(SharedConstants.configManager,
             1);

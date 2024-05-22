@@ -18,6 +18,11 @@ public class MagicConfigColor extends ConfigColor implements MagicIConfigBase {
     }
 
     @Override
+    public String getPrettyName() {
+        return MagicIConfigBase.super.getPrettyName();
+    }
+
+    @Override
     public void setValueFromJsonElement(JsonElement element) {
         Color4f oldValue = this.getColor();
         super.setValueFromJsonElement(element);

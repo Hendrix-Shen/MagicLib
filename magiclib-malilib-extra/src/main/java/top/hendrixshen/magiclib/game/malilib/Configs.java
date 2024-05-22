@@ -138,10 +138,10 @@ public class Configs {
                 return OptionListTest.DEFAULT;
             }
 
-            @Contract(pure = true)
             @Override
             public @NotNull String getTranslationPrefix() {
-                return String.format("%s.config.option.enumTest", SharedConstants.getModIdentifier());
+                return String.format("%s.config.option.enumTest",
+                        top.hendrixshen.magiclib.SharedConstants.getMagiclibIdentifier());
             }
         }
     }

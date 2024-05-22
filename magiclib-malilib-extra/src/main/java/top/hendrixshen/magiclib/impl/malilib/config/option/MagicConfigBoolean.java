@@ -15,6 +15,11 @@ public class MagicConfigBoolean extends ConfigBoolean implements MagicIConfigBas
     }
 
     @Override
+    public String getPrettyName() {
+        return MagicIConfigBase.super.getPrettyName();
+    }
+
+    @Override
     public void setValueFromJsonElement(JsonElement element) {
         boolean oldValue = this.getBooleanValue();
         super.setValueFromJsonElement(element);

@@ -13,7 +13,8 @@ import top.hendrixshen.magiclib.impl.malilib.SharedConstants;
 public class MalilibStuffsInitializer {
     public static void init() {
         InitializationHandler.getInstance().registerInitializationHandler(() ->
-                ConfigManager.getInstance().registerConfigHandler(SharedConstants.getModIdentifier(),
+                ConfigManager.getInstance().registerConfigHandler(
+                        top.hendrixshen.magiclib.SharedConstants.getMagiclibIdentifier(),
                         SharedConstants.getConfigHandler()));
         Configs.init();
         InputEventHandler.getKeybindManager().registerKeybindProvider(

@@ -79,7 +79,7 @@ public abstract class MixinWidgetConfigOptionForHotkeyed extends WidgetConfigOpt
                 StringUtil.tr("gui.button.widget.trigger.hover", hotkey.getName()));
 
         this.addButton(triggerButton, ((buttonBase, i) -> {
-            IHotkeyCallback callback = ((KeybindMultiAccessor)keybind).getCallback();
+            IHotkeyCallback callback = ((KeybindMultiAccessor)keybind).magiclib$getCallback();
             KeyAction activateOn = keybind.getSettings().getActivateOn();
             if (activateOn == KeyAction.BOTH || activateOn == KeyAction.PRESS) {
                 callback.onKeyAction(KeyAction.PRESS, keybind);

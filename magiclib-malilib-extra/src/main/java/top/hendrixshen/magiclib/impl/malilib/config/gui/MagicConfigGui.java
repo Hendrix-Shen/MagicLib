@@ -127,7 +127,6 @@ public class MagicConfigGui extends GuiConfigsBase {
         }
 
         return true;
-
     }
 
     private boolean filterUnsatisfiedConfig(ConfigContainer configContainer) {

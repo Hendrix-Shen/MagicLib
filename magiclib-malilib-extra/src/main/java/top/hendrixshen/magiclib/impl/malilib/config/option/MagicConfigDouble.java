@@ -29,6 +29,11 @@ public class MagicConfigDouble extends ConfigDouble implements MagicIConfigBase 
     }
 
     @Override
+    public String getPrettyName() {
+        return MagicIConfigBase.super.getPrettyName();
+    }
+
+    @Override
     public void setValueFromJsonElement(JsonElement element) {
         double oldValue = this.getDoubleValue();
         super.setValueFromJsonElement(element);

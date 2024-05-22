@@ -1,5 +1,14 @@
 magiclib:
   config:
+    category:
+      all:
+        name: 全部
+      generic:
+        name: 通用
+      debug:
+        name: 调试
+      test:
+        name: 测试
     gui:
       bottom_line:
         stat: "总计: %1$s (可用: %2$s + 不可用: %3$s), 已修改: %4$s"
@@ -10,6 +19,7 @@ magiclib:
           disabled: 已禁用
         config_button_option_list_hovering:
           title: "可用值列表:"
+      title: "魔法类库 - 版本: %1$s (%2$s)"
       trigger_button:
         text: 触发
         hover: |
@@ -28,19 +38,6 @@ magiclib:
     message:
       option_list_hotkeyed:
         cycled_message: 已将选项 %1$s 切换至 %2$s
-magiclib_malilib_extra:
-  config:
-    category:
-      all:
-        name: 全部
-      generic:
-        name: 通用
-      debug:
-        name: 调试
-      test:
-        name: 测试
-    gui:
-      title: "魔法类库 - 版本: %1$s (%2$s)"
     option:
       # ================================ 通用 ================================
       openConfigGui:

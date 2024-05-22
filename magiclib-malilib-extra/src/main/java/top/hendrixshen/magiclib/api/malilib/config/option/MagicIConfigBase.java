@@ -22,8 +22,8 @@ public interface MagicIConfigBase extends IConfigBase {
 
     @Override
     default String getPrettyName() {
-        return StringUtil.translateOrFallback(String.format("%s.config.option.%s.pretty_name",
-                this.getTranslationPrefix(), this.getName()), this.getName());
+        return StringUtil.translateOrFallback(String.format("%s.config.option.%s.name",
+                this.getTranslationPrefix(), this.getName()), this.getConfigGuiDisplayName());
     }
 
     @Override

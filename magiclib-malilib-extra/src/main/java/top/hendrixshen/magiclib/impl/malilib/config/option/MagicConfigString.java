@@ -17,6 +17,11 @@ public class MagicConfigString extends ConfigString implements MagicIConfigBase 
     }
 
     @Override
+    public String getPrettyName() {
+        return MagicIConfigBase.super.getPrettyName();
+    }
+
+    @Override
     public void setValueFromJsonElement(JsonElement element) {
         String oldValue = this.getStringValue();
         super.setValueFromJsonElement(element);
