@@ -75,7 +75,7 @@ jobs:
           cat $GITHUB_OUTPUT
       - name: Prepare changelog (Dev Channel)
         if: ${{ inputs.publish_channel == 'dev' }}
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         id: changelog_dev
         with:
           script: return process.env.CHANGELOG
@@ -95,7 +95,7 @@ jobs:
             - Built from: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       - name: Prepare changelog (Stable Channel)
         if: ${{ inputs.publish_channel == 'stable' }}
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         id: changelog_release
         with:
           script: return process.env.CHANGELOG
