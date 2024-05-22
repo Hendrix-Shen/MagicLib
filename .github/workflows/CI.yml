@@ -74,7 +74,7 @@ jobs:
     steps:
       - name: Get github release information
         if: ${{ github.event_name == 'workflow_dispatch' }}
-        uses: cardinalby/git-get-release-action@1.2.4
+        uses: cardinalby/git-get-release-action@1.2.5
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
