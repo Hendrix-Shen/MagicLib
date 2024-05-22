@@ -18,6 +18,7 @@ allprojects {
 Project coreProject = evaluationDependsOn(":magiclib-core:${project.name}")
 
 jar {
+    dependsOn(coreProject.tasks.shadowJar)
     delete(project.layout.buildDirectory.file("tmp/submods"))
 
     copy {
