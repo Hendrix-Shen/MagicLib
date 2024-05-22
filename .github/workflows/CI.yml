@@ -11,9 +11,9 @@ on:
       - 'exp/**'
     paths:
       - '*.gradle'
-      - 'gradle.properties'
-      - 'src/**'
-      - 'versions/**'
+      - '**/gradle.properties'
+      - '**/src/**'
+      - '**/versions/**'
       - '.github/**'
   release:
     types:
