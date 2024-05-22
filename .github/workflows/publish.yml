@@ -1,0 +1,185 @@
+name: step.publish
+on:
+  workflow_call:
+    inputs:
+      publish_channel:
+        type: string
+        required: true
+      publish_mc_ver:
+        type: string
+        required: true
+      publish_platform:
+        type: string
+        required: true
+      publish_target_release_tag:
+        description: |-
+          The tag of the release you want to append the artifact to.
+        type: string
+        required: true
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # Allow the mod publish step to add asserts to release
+    # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout the sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: build-artifacts
+      - name: Get git info
+        id: get_git_info
+        run: |
+          short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
+          commit_count=$(git log | grep -e '^commit [a-zA-Z0-9]*' | wc -l)
+          echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
+          echo "commit_count=$commit_count" >> $GITHUB_OUTPUT
+      - name: Get github release information
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        id: get_release
+        uses: cardinalby/git-get-release-action@1.2.4
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag: ${{ github.event.inputs.publish_target_release_tag }}
+      - name: Read Properties mod info
+        id: mod_info
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: gradle.properties
+          properties: 'mod.name mod.version'
+      - name: Prepare file information
+        id: file_info
+        run: |
+          shopt -s extglob
+          FILE_PATHS=$(ls ${{ format('build-artifacts/magiclib-wrapper/{0}/{1}/build/libs/!(*-@(dev|sources|shadow|javadoc|empty)).jar', inputs.publish_platform, inputs.publish_mc_ver) }})
+          
+          if (( ${#FILE_PATHS[@]} != 1 )); then
+              echo "Error: Found ${#FILE_PATHS[@]} files, expected exactly 1"
+              exit 1
+          else
+              FILE_PATH=${FILE_PATHS[0]}
+          fi
+          
+          FILE_NAME=$(basename $FILE_PATH)
+          FILE_HASH=$(sha256sum $FILE_PATH | awk '{ print $1 }')
+          echo "path=$FILE_PATH" >> $GITHUB_OUTPUT
+          echo "name=$FILE_NAME" >> $GITHUB_OUTPUT
+          echo "hash=$FILE_HASH" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
+      - name: Prepare changelog (Dev Channel)
+        if: ${{ inputs.publish_channel == 'dev' }}
+        uses: actions/github-script@v6
+        id: changelog_dev
+        with:
+          script: return process.env.CHANGELOG
+          result-encoding: string
+        env:
+          CHANGELOG: |-
+            **This version is automatically released by CI Build**
+            Latest commit log:
+            ${{ github.event.head_commit.message }}
+            
+            -------
+            
+            Build Information
+            
+            - File name: `${{ steps.file_info.outputs.name }}`
+            - SHA-256: `${{ steps.file_info.outputs.hash }}`
+            - Built from: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      - name: Prepare changelog (Stable Channel)
+        if: ${{ inputs.publish_channel == 'stable' }}
+        uses: actions/github-script@v6
+        id: changelog_release
+        with:
+          script: return process.env.CHANGELOG
+          result-encoding: string
+        env:
+          CHANGELOG: |-
+            ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
+            
+            -------
+            
+            Build Information
+            
+            - File name: `${{ steps.file_info.outputs.name }}`
+            - SHA-256: `${{ steps.file_info.outputs.hash }}`
+            - Built from: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      - name: Publish Minecraft Mods (Dev Channel)
+        if: ${{ inputs.publish_channel == 'dev' }}
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: JOGZQCse
+          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
+          curseforge-id: 1022790
+          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+          github-tag: ${{ github.ref_name }}.${{ steps.get_git_info.outputs.commit_count }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-prerelease: true
+          github-generate-changelog: true
+          github-files: |
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
+          files: |
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
+          name: '[CI#${{ github.run_number }}]${{ steps.mod_info.outputs.mod-name }} ${{ steps.mod_info.outputs.mod-version }}.${{ steps.get_git_info.outputs.commit_count }}+${{ steps.get_git_info.outputs.short_sha }}'
+          version: ${{ steps.mod_info.outputs.mod-version }}.${{ steps.get_git_info.outputs.commit_count }}+${{ steps.get_git_info.outputs.short_sha }}
+          version-type: alpha
+          modrinth-changelog: ${{ steps.changelog_dev.outputs.result }}
+          curseforge-changelog: ${{ steps.changelog_dev.outputs.result }}
+          loaders: |
+            ${{ inputs.publish_platform }}
+          game-versions: |
+            ${{ inputs.publish_mc_ver }}
+          game-version-filter: any
+          dependencies: |
+            carpet(optional)
+            malilib(optional)
+          retry-attempts: 2
+          retry-delay: 10000
+      - name: Publish Minecraft Mods (Stable Channel)
+        if: ${{ inputs.publish_channel == 'stable' }}
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: mv1zH6ln
+          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
+          curseforge-id: 576459
+          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+          github-tag: ${{ inputs.publish_target_release_tag }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-generate-changelog: true
+          github-files: |
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
+          files: |
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
+            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
+          name: '${{ steps.mod_info.outputs.mod-name }} ${{ steps.mod_info.outputs.mod-version }}.${{ steps.get_git_info.outputs.commit_count }}+${{ steps.get_git_info.outputs.short_sha }}'
+          version: ${{ steps.mod_info.outputs.mod-version }}.${{ steps.get_git_info.outputs.commit_count }}
+          version-type: release
+          github-changelog: ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
+          modrinth-changelog: ${{ steps.changelog.outputs.result }}
+          curseforge-changelog: ${{ steps.changelog.outputs.result }}
+          loaders: |
+            ${{ inputs.publish_platform }}
+          game-versions: |
+            ${{ inputs.publish_mc_ver }}
+          game-version-filter: any
+          dependencies: |
+            carpet(optional)
+            malilib(optional)
+          retry-attempts: 2
+          retry-delay: 10000
