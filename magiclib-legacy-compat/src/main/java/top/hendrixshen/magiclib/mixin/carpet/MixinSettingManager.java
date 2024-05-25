@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.mixin.carpet;
 
+import carpet.CarpetServer;
 import net.minecraft.commands.CommandSourceStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,6 +10,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.carpet.impl.WrappedSettingManager;
+import top.hendrixshen.magiclib.util.MiscUtil;
 
 
 //#if MC > 11802
@@ -55,6 +57,8 @@ public class MixinSettingManager {
             )
     )
     private void printAdditionVersion(CommandSourceStack source, CallbackInfoReturnable<Integer> cir) {
-        WrappedSettingManager.printAllExtensionVersion(source);
+        if (MiscUtil.cast(this) == CarpetServer.settingsManager) {
+            WrappedSettingManager.printAllExtensionVersion(source);
+        }
     }
 }
