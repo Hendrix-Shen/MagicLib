@@ -22,6 +22,9 @@ import java.io.*;
 import java.util.*;
 import java.util.function.UnaryOperator;
 
+/**
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/gui/FabricMainWindow.java">FabricLoader<a/>
+ */
 public final class FabricStatusTree {
     public enum FabricTreeWarningLevel {
         ERROR,

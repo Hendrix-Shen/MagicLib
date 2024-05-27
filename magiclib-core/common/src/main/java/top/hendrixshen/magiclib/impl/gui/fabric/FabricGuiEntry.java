@@ -32,6 +32,9 @@ import java.nio.file.Paths;
 import java.util.function.Consumer;
 
 /**
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/gui/FabricGuiEntry.java">FabricLoader<a/>
+ * <p>
+ *
  * The main entry point for all fabric-based stuff.
  */
 public final class FabricGuiEntry {

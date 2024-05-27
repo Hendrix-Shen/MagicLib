@@ -39,6 +39,9 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/gui/FabricMainWindow.java">FabricLoader<a/>
+ */
 class FabricMainWindow {
     static Icon missingIcon = null;
 

@@ -25,6 +25,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.CodeSource;
 
+/**
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/util/UrlUtil.java">FabricLoader<a/>
+ */
 public class UrlUtil {
     public static final Path LOADER_CODE_SOURCE = UrlUtil.getCodeSource(UrlUtil.class);
 

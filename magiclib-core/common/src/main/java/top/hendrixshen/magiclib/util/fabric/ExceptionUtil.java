@@ -22,6 +22,9 @@ import java.io.UncheckedIOException;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/util/ExceptionUtil.java">FabricLoader<a/>
+ */
 public class ExceptionUtil {
     public static @NotNull RuntimeException wrap(Throwable exc) {
         if (exc instanceof RuntimeException) {
