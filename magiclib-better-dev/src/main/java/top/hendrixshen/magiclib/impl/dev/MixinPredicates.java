@@ -5,7 +5,7 @@ import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.mixin.MixinPredicate;
 
 public class MixinPredicates {
-    public static class PredicatePredicate implements MixinPredicate {
+    public static class AuthEmptyKeyPredicate implements MixinPredicate {
         @Override
         public boolean test(ClassNode classNode) {
             return MagicLibProperties.DEV_QOL_AUTH_EMPTY_KEY.getBooleanValue();
