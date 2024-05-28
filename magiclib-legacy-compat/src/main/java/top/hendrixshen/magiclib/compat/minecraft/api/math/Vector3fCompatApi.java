@@ -2,14 +2,11 @@ package top.hendrixshen.magiclib.compat.minecraft.api.math;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
 @Deprecated
 @ApiStatus.ScheduledForRemoval
-@Environment(EnvType.CLIENT)
 public interface Vector3fCompatApi {
     Vector3f XN = new Vector3f(-1.0F, 0.0F, 0.0F);
     Vector3f XP = new Vector3f(1.0F, 0.0F, 0.0F);

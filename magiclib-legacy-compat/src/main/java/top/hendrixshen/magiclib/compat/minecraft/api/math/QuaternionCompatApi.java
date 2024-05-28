@@ -1,14 +1,11 @@
 package top.hendrixshen.magiclib.compat.minecraft.api.math;
 
 import com.mojang.math.Quaternion;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.compat.api.UnImplCompatApiException;
 
 @Deprecated
 @ApiStatus.ScheduledForRemoval
-@Environment(EnvType.CLIENT)
 public interface QuaternionCompatApi {
     Quaternion ONE = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
 
