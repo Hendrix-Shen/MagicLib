@@ -14,8 +14,7 @@ public class MixinPredicates {
         @Override
         public boolean test(ClassNode classNode) {
             //#if FABRIC_LIKE
-            String malilibVer = MagicLib.getInstance().getPlatformManage()
-                    .getCurrentPlatform().getModVersion("malilib");
+            String malilibVer = MagicLib.getInstance().getCurrentPlatform().getModVersion("malilib");
 
             if ("?".equals(malilibVer)) {
                 return false;

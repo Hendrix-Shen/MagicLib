@@ -17,9 +17,9 @@ public interface ModInitializer {
      * Call this method in your constructor.
      */
     default void construct() {
-        if (MagicLib.getInstance().getPlatformManage().getCurrentPlatform().matchesDist(DistType.CLIENT)) {
+        if (MagicLib.getInstance().getCurrentPlatform().matchesDist(DistType.CLIENT)) {
             this.onInitializeClient();
-        } else if (MagicLib.getInstance().getPlatformManage().getCurrentPlatform().matchesDist(DistType.SERVER)) {
+        } else if (MagicLib.getInstance().getCurrentPlatform().matchesDist(DistType.SERVER)) {
             this.onInitializeServer();
         }
 

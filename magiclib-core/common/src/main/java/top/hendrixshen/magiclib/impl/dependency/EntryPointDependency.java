@@ -44,7 +44,7 @@ public final class EntryPointDependency {
 
         List<DependencyCheckException> exceptions = Lists.newArrayList();
 
-        for (ModContainerAdapter mod : MagicLib.getInstance().getPlatformManage().getCurrentPlatform().getMods()) {
+        for (ModContainerAdapter mod : MagicLib.getInstance().getCurrentPlatform().getMods()) {
             for (ClassNode entryPoint : mod.getModEntryPoint().getMagicEntryPoints()) {
                 exceptions.add(this.check(mod.getModMetaData(), entryPoint));
             }
@@ -63,10 +63,10 @@ public final class EntryPointDependency {
     private @Nullable DependencyCheckException check(ModMetaDataAdapter modMetaDataAdapter, ClassNode entryPoint) {
         List<DependenciesContainer<?>> dependencies = Lists.newArrayList();
 
-        if (MagicLib.getInstance().getPlatformManage().getCurrentPlatform().getCurrentDistType()
+        if (MagicLib.getInstance().getCurrentPlatform().getCurrentDistType()
                 .matches(DistType.CLIENT)) {
             dependencies.addAll(this.getDependencies("onInitializeClient", entryPoint));
-        } else if (MagicLib.getInstance().getPlatformManage().getCurrentPlatform().getCurrentDistType()
+        } else if (MagicLib.getInstance().getCurrentPlatform().getCurrentDistType()
                 .matches(DistType.SERVER)) {
             dependencies.addAll(this.getDependencies("onInitializeServer", entryPoint));
         }

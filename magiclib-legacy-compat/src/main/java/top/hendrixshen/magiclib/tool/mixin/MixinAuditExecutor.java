@@ -15,7 +15,7 @@ public class MixinAuditExecutor {
     private static final String KEYWORD_PROPERTY = String.format("%s.mixin_audit", MagicLibReference.getModIdentifier());
 
     public static void execute() {
-        if (MagicLib.getInstance().getPlatformManage().getCurrentPlatform().isDevelopmentEnvironment() &&
+        if (MagicLib.getInstance().getCurrentPlatform().isDevelopmentEnvironment() &&
                 "true".equals(System.getProperty(MixinAuditExecutor.KEYWORD_PROPERTY))) {
             MagicLibReference.getLogger().info("Triggered mixin audit.");
             MixinUtil.audit();

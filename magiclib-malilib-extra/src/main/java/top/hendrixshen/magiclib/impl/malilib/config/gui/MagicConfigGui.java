@@ -134,8 +134,7 @@ public class MagicConfigGui extends GuiConfigsBase {
     }
 
     public boolean isDevOnly() {
-        return this.isDebug() && MagicLib.getInstance().getPlatformManage()
-                .getCurrentPlatform().isDevelopmentEnvironment();
+        return this.isDebug() && MagicLib.getInstance().getCurrentPlatform().isDevelopmentEnvironment();
     }
 
     // Dev & debug check.

@@ -30,7 +30,7 @@ public class BuiltInPredicates {
     public static class DevMixinPredicate implements MixinPredicate {
         @Override
         public boolean test(ClassNode classNode) {
-            return MagicLib.getInstance().getPlatformManage().getCurrentPlatform().isDevelopmentEnvironment();
+            return MagicLib.getInstance().getCurrentPlatform().isDevelopmentEnvironment();
         }
     }
 
@@ -42,8 +42,7 @@ public class BuiltInPredicates {
     public static class MojangMappingMixinPredicate implements MixinPredicate {
         @Override
         public boolean test(ClassNode classNode) {
-            return "mojang".equals(MagicLib.getInstance().getPlatformManage()
-                    .getCurrentPlatform().getNamedMappingName());
+            return "mojang".equals(MagicLib.getInstance().getCurrentPlatform().getNamedMappingName());
         }
     }
 }

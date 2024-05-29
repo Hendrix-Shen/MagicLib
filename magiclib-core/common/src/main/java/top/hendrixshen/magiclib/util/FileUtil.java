@@ -14,8 +14,8 @@ import java.util.Set;
 
 public class FileUtil {
     public static @NotNull File getConfigFile(String identifier) {
-        return MagicLib.getInstance().getPlatformManage().getCurrentPlatform()
-                .getConfigFolder().resolve(identifier + ".json").toFile();
+        return MagicLib.getInstance().getCurrentPlatform().getConfigFolder()
+                .resolve(identifier + ".json").toFile();
     }
 
     public static @NotNull Set<URI> getResources(String name) throws IOException {

@@ -107,7 +107,7 @@ public class DependencyContainer<T> {
     }
 
     public ValueContainer<DependencyCheckResult> check() {
-        Platform platform = MagicLib.getInstance().getPlatformManage().getCurrentPlatform();
+        Platform platform = MagicLib.getInstance().getCurrentPlatform();
 
         switch (this.dependencyType) {
             case DIST:

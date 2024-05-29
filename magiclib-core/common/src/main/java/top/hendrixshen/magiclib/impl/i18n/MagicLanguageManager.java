@@ -32,7 +32,7 @@ public class MagicLanguageManager {
     private String currentCode = MiscUtil.getSystemLanguageCode();
 
     private MagicLanguageManager() {
-        if (MagicLib.getInstance().getPlatformManage().getCurrentPlatform().getPlatformType()
+        if (MagicLib.getInstance().getCurrentPlatform().getPlatformType()
                 .matches(PlatformType.FABRIC_LIKE)) {
             this.providers.add(JarLanguageProvider.getInstance());
         }
