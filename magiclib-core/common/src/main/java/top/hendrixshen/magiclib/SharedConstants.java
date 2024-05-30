@@ -5,6 +5,8 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.util.VersionUtil;
 
+import java.util.regex.Pattern;
+
 public class SharedConstants {
     @Getter
     private static final String modIdentifier = "@MOD_IDENTIFIER@";
@@ -22,6 +24,8 @@ public class SharedConstants {
     private static final String magiclibVersion = "@ROOT_MOD_VERSION@";
     @Getter
     private static final String magiclibVersionType = VersionUtil.getVersionType(SharedConstants.magiclibVersion);
+    @Getter
+    private static final Pattern validLangNamespace = Pattern.compile("^[a-zA-Z\\d-_]*");
 
     public static @NotNull String getTranslatedModVersionType() {
         return VersionUtil.translateVersionType(SharedConstants.modVersion);

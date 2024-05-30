@@ -14,6 +14,7 @@ import top.hendrixshen.magiclib.util.MiscUtil;
 
 import java.util.IllegalFormatException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,11 +48,9 @@ public class MagicLanguageManager {
         this.languageOrder.addAll(this.fallbackLanguage);
         this.languageOrder.remove(this.currentCode);
         this.languageOrder.add(0, this.currentCode);
-
-        if (!this.languageOrder.contains(MagicLanguageManager.DEFAULT_CODE)) {
-            this.languageOrder.add(MagicLanguageManager.DEFAULT_CODE);
-        }
-
+        // Disallow Default Language to be replaced.
+        this.languageOrder.remove(MagicLanguageManager.DEFAULT_CODE);
+        this.languageOrder.add(MagicLanguageManager.DEFAULT_CODE);
         this.updateFallbackLanguage();
         this.updateCurrentLanguage();
     }
@@ -106,9 +105,15 @@ public class MagicLanguageManager {
         return false;
     }
 
-    public void setLanguageOrder(List<String> languageOrder) {
-        this.languageOrder.clear();
-        this.languageOrder.addAll(languageOrder);
+    public void setFallbackLanguage(@NotNull List<String> fallbackLanguage) {
+        this.fallbackLanguage.clear();
+        fallbackLanguage.forEach(code -> {
+            if (!this.fallbackLanguage.contains(code.toLowerCase(Locale.ROOT))) {
+                this.fallbackLanguage.add(code.toLowerCase(Locale.ROOT));
+            }
+        });
+        this.fallbackLanguage.removeIf(code -> code.equals(MagicLanguageManager.DEFAULT_CODE));
+        this.fallbackLanguage.add(MagicLanguageManager.DEFAULT_CODE);
         this.reload();
     }
 
@@ -131,12 +136,43 @@ public class MagicLanguageManager {
         }
     }
 
-    public String getByCode(String code, String key) {
+    public String getInCode(String code, String key) {
         return this.getLanguage(code).getOrDefault(key, key);
     }
 
+    public String getInCode(String code, String key, Object... objects) {
+        String translateValue = this.getInCode(code, key);
+
+        try {
+            return String.format(translateValue, objects);
+        } catch (IllegalFormatException var4) {
+            return "Format error: " + translateValue;
+        }
+    }
+
+    public String getByCode(String code, String key) {
+        // Bypass code order calc.
+        if (this.currentCode.equals(code)) {
+            return this.get(key);
+        } else if (MagicLanguageManager.DEFAULT_CODE.equals(code)) {
+            return this.getLanguage(code).getOrDefault(key, key);
+        }
+
+        List<String> languageOrder = this.generateLanguageOrder(code);
+
+        for (String languageCode : languageOrder) {
+            String translateValue = this.getLanguage(languageCode).getOrDefault(key, key);
+
+            if (!translateValue.equals(key)) {
+                return translateValue;
+            }
+        }
+
+        return key;
+    }
+
     public String getByCode(String code, String key, Object... objects) {
-        String translateValue = this.getLanguage(code).getOrDefault(key, key);
+        String translateValue = this.getByCode(code, key);
 
         try {
             return String.format(translateValue, objects);
@@ -151,5 +187,19 @@ public class MagicLanguageManager {
 
     public boolean exists(String code, String key) {
         return this.getLanguage(code).containsKey(key);
+    }
+
+    public boolean existsIn(String code, String key) {
+        return this.generateLanguageOrder(code).stream()
+                .anyMatch(c -> this.getLanguage(c).containsKey(key));
+    }
+
+    private @NotNull List<String> generateLanguageOrder(String code) {
+        List<String> result = Lists.newArrayList(this.fallbackLanguage);
+        result.remove(code);
+        result.add(0, code);
+        result.remove(MagicLanguageManager.DEFAULT_CODE);
+        result.add(code);
+        return result;
     }
 }

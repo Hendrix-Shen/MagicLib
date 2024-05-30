@@ -24,7 +24,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.i18n.minecraft.I18n;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

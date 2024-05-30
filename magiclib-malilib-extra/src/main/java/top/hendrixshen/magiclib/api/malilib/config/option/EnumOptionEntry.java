@@ -21,7 +21,7 @@
 package top.hendrixshen.magiclib.api.malilib.config.option;
 
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
-import top.hendrixshen.magiclib.util.minecraft.StringUtil;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 
 import java.util.Arrays;
 
@@ -46,7 +46,7 @@ public interface EnumOptionEntry extends IConfigOptionListEntry {
 
     @Override
     default String getDisplayName() {
-        return StringUtil.translateOrFallback(String.format("%s.value.%s", this.getTranslationPrefix(), this.name()),
+        return I18n.translateOrFallback(String.format("%s.value.%s", this.getTranslationPrefix(), this.name()),
                 this.name());
     }
 

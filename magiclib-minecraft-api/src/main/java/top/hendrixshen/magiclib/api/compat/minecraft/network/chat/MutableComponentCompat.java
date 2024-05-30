@@ -23,6 +23,15 @@ public interface MutableComponentCompat extends ComponentCompat {
         return new MutableComponentCompatImpl(mutableOrBaseComponent);
     }
 
+    @Override
+    @NotNull
+    //#if MC > 11502
+    MutableComponent
+    //#else
+    //$$ BaseComponent
+    //#endif
+    get();
+
     void setStyle(@NotNull StyleCompat style);
 
     MutableComponentCompat append(@NotNull MutableComponentCompat component);

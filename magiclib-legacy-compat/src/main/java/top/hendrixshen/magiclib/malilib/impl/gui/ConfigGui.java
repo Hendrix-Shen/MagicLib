@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.malilib.impl.ConfigManager;
 import top.hendrixshen.magiclib.malilib.impl.ConfigOption;
-import top.hendrixshen.magiclib.util.RenderUtil;
+import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 import java.util.List;
 import java.util.Objects;

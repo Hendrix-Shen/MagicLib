@@ -24,6 +24,21 @@ public class MutableComponentCompatImpl extends ComponentCompatImpl implements M
     }
 
     @Override
+    public
+    //#if MC > 11502
+    @NotNull MutableComponent
+    //#else
+    //$$ BaseComponent
+    //#endif
+    get() {
+        //#if MC > 11502
+        return (MutableComponent) super.get();
+        //#else
+        //$$ return (BaseComponent) super.get();
+        //#endif
+    }
+
+    @Override
     public void setStyle(@NotNull StyleCompat style) {
         //#if MC > 11502
         ((MutableComponent) this.get()).setStyle(style.get());

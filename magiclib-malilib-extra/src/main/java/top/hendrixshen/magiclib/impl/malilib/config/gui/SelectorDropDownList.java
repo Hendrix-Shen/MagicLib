@@ -24,7 +24,7 @@ import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
 import fi.dy.masa.malilib.interfaces.IStringValue;
 import fi.dy.masa.malilib.render.RenderUtils;
 import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.api.i18n.minecraft.I18n;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 
 import java.util.Collections;
 import java.util.List;

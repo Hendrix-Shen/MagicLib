@@ -34,14 +34,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.i18n.minecraft.I18n;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.impl.malilib.config.ConfigContainer;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetSearchBarAccessor;
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
-import top.hendrixshen.magiclib.util.minecraft.StringUtil;
 import top.hendrixshen.magiclib.util.serializable.JsonSaveAble;
 
 import java.util.*;
@@ -187,7 +186,7 @@ public class MagicConfigGui extends GuiConfigsBase {
         ButtonGeneric button = new ButtonGeneric(x, y, -1, 20,
                 I18n.tr(String.format("%s.config.category.%s.name", this.identifier, category)));
         button.setEnabled(!this.configManager.getGuiSetting().category.equals(category));
-        String translatedHoverText = StringUtil.translateOrFallback(String.format("%s.config.category.%s.desc",
+        String translatedHoverText = I18n.translateOrFallback(String.format("%s.config.category.%s.desc",
                 this.identifier, category), null);
 
         if (translatedHoverText != null) {

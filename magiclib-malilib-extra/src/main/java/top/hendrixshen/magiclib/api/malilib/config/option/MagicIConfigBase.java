@@ -23,9 +23,9 @@ package top.hendrixshen.magiclib.api.malilib.config.option;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiBase;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.impl.malilib.config.ConfigContainer;
 import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
-import top.hendrixshen.magiclib.util.minecraft.StringUtil;
 
 import java.util.function.Function;
 
@@ -39,19 +39,19 @@ public interface MagicIConfigBase extends IConfigBase {
 
     @Override
     default String getComment() {
-        return StringUtil.translateOrFallback(String.format("%s.config.option.%s.comment",
+        return I18n.translateOrFallback(String.format("%s.config.option.%s.comment",
                 this.getTranslationPrefix(), this.getName()), null);
     }
 
     @Override
     default String getPrettyName() {
-        return StringUtil.translateOrFallback(String.format("%s.config.option.%s.name",
+        return I18n.translateOrFallback(String.format("%s.config.option.%s.pretty_name",
                 this.getTranslationPrefix(), this.getName()), this.getConfigGuiDisplayName());
     }
 
     @Override
     default String getConfigGuiDisplayName() {
-        return StringUtil.translateOrFallback(String.format("%s.config.option.%s.name",
+        return I18n.translateOrFallback(String.format("%s.config.option.%s.name",
                 this.getTranslationPrefix(), this.getName()), this.getName());
     }
 

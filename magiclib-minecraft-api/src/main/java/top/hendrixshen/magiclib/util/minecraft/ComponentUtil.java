@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.*;
@@ -253,9 +254,9 @@ public class ComponentUtil {
 
     public static @NotNull MutableComponentCompat format(String formatter, Object... args) {
         TranslatableComponentAccessor dummy = (TranslatableComponentAccessor) (
-                ComponentUtil.tr(formatter, args)
+                ComponentUtil.tr(formatter, args).get()
                 //#if MC > 11802
-                //$$ .get().getContents()
+                //$$ .getContents()
                 //#endif
         );
 
@@ -492,17 +493,17 @@ public class ComponentUtil {
         return text;
     }
 
-    public static @NotNull MutableComponentCompat copy(MutableComponentCompat text) {
-        return ComponentUtil.copy(
-                //#if MC > 11502
-                (MutableComponent) text.get()
-                //#else
-                //$$ (BaseComponent) text.get()
-                //#endif
-        );
+    public static @NotNull MutableComponentCompat copy(@NotNull MutableComponentCompat text) {
+        return MutableComponentCompat.of(ComponentUtil.copy(text.get()));
     }
 
-    public static @NotNull MutableComponentCompat copy(
+    public static @NotNull
+    //#if MC > 11502
+    MutableComponent
+    //#else
+    //$$ BaseComponent
+    //#endif
+    copy(
             //#if MC > 11502
             @NotNull MutableComponent text
             //#else
@@ -562,6 +563,6 @@ public class ComponentUtil {
         }
         //#endif
 
-        return MutableComponentCompat.of(copied);
+        return copied;
     }
 }

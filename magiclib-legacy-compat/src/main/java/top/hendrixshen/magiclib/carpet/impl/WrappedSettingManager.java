@@ -28,9 +28,10 @@ import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ClickEventCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.HoverEventCompat;
-import top.hendrixshen.magiclib.api.i18n.minecraft.I18n;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.carpet.api.CarpetExtensionCompatApi;
 import top.hendrixshen.magiclib.carpet.api.annotation.Rule;
+import top.hendrixshen.magiclib.impl.i18n.minecraft.translation.HookTranslationManager;
 import top.hendrixshen.magiclib.mixin.carpet.accessor.SettingsManagerAccessor;
 import top.hendrixshen.magiclib.impl.carpet.MagicLibSettings;
 import top.hendrixshen.magiclib.util.ReflectionUtil;
@@ -137,6 +138,7 @@ public class WrappedSettingManager extends SettingsManager {
 
         CarpetServer.manageExtension(extension);
         WrappedSettingManager.INSTANCES.put(identifier, wrapperSettingsManager);
+        HookTranslationManager.getInstance().registerNamespace(identifier);
     }
 
     public Collection<RuleOption> getNonDefaultRuleOption() {
@@ -338,19 +340,17 @@ public class WrappedSettingManager extends SettingsManager {
 
     // The server side requires this way to use the fallback language.
     public String tr(String code, String key, Object... objects) {
-        String value;
-        return (value = I18n.trByCode(code, key, objects)).equals(key) ? I18n.trByCode(WrappedSettingManager.DEFAULT_LANGUAGE, key, objects) : value;
+        return I18n.trByCode(code, key, objects);
     }
 
     // The server side requires this way to use the fallback language.
     public String tr(String code, String key) {
-        String value;
-        return (value = I18n.trByCode(code, key)).equals(key) ? I18n.trByCode(WrappedSettingManager.DEFAULT_LANGUAGE, key) : value;
+        return I18n.trByCode(code, key);
     }
 
     public String defaultRuleName(String ruleName) {
-        return I18n.exists(WrappedSettingManager.DEFAULT_LANGUAGE, String.format("%s.rule.%s.name", this.identifier, ruleName)) ?
-                this.tr(WrappedSettingManager.DEFAULT_LANGUAGE, String.format("%s.rule.%s.name", this.identifier, ruleName)) : ruleName;
+        return I18n.translateInCodeOrFallback(WrappedSettingManager.DEFAULT_LANGUAGE,
+                String.format("%s.rule.%s.name", this.identifier, ruleName), ruleName);
     }
 
     public String trRuleName(String ruleName) {

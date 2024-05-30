@@ -19,14 +19,17 @@ Project coreProject = evaluationDependsOn(":magiclib-core:${project.name}")
 
 jar {
     dependsOn(coreProject.tasks.shadowJar)
-    delete(project.layout.buildDirectory.file("tmp/submods"))
 
-    copy {
-        from {
-            coreProject.tasks.shadowJar.outputs.files
+    doFirst {
+        delete(project.layout.buildDirectory.file("tmp/submods"))
+
+        copy {
+            from {
+                coreProject.tasks.shadowJar.outputs.files
+            }
+
+            into(project.layout.buildDirectory.file("tmp/submods/publish"))
         }
-
-        into(project.layout.buildDirectory.file("tmp/submods/publish"))
     }
 }
 

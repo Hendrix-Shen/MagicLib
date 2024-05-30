@@ -1,3 +1,23 @@
+/*
+ * This file is part of the Carpet TIS Addition project, licensed under the
+ * GNU Lesser General Public License v3.0
+ *
+ * Copyright (C) 2023  Fallen_Breath and contributors
+ *
+ * Carpet TIS Addition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Carpet TIS Addition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Carpet TIS Addition.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.hendrixshen.magiclib.impl.i18n.minecraft.translation;
 
 import net.minecraft.network.chat.*;
@@ -7,9 +27,8 @@ import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.api.fake.i18n.ServerPlayerLanguage;
-import top.hendrixshen.magiclib.api.i18n.minecraft.I18n;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.StyleAccessor;
-import top.hendrixshen.magiclib.util.MiscUtil;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 
 import java.util.List;
@@ -19,23 +38,15 @@ import java.util.List;
 //#endif
 
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/">Carpet-TIS-Addition</a>
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/translations/TranslationContext.java">Carpet-TIS-Addition</a>
  */
 public class MagicTranslation {
-    /**
-     * key -> translated formatting string
-     */
-    @Nullable
-    public static String getTranslationString(@NotNull String lang, String key) {
-        return I18n.trByCode(lang.toLowerCase(), key);
+    public static @NotNull MutableComponentCompat translate(MutableComponentCompat text) {
+        return MagicTranslation.translate(text, I18n.getCurrentLanguageCode());
     }
 
     public static @NotNull MutableComponentCompat translate(MutableComponentCompat text, String lang) {
         return MagicTranslation.translateComponent(text, lang);
-    }
-
-    public static @NotNull MutableComponentCompat translate(MutableComponentCompat text) {
-        return MagicTranslation.translate(text, I18n.getCurrentLanguageCode());
     }
 
     public static @NotNull MutableComponentCompat translate(MutableComponentCompat text, ServerPlayer player) {
@@ -44,14 +55,7 @@ public class MagicTranslation {
 
     private static @NotNull MutableComponentCompat translateComponent(@NotNull MutableComponentCompat text,
                                                                       @NotNull String lang) {
-        return MutableComponentCompat.of(MagicTranslation.translateComponent(
-                //#if MC > 11502
-                (MutableComponent) text.get(),
-                //#else
-                //$$ (BaseComponent) text.get(),
-                //#endif
-                lang
-        ));
+        return MutableComponentCompat.of(MagicTranslation.translateComponent(text.get(), lang));
     }
 
     private static
@@ -68,19 +72,20 @@ public class MagicTranslation {
             //#endif
             @NotNull String lang
     ) {
-        // quick scan to check if any required translation exists
+        // Quick scan to check if any required translation exists.
         boolean[] translationRequired = new boolean[]{false};
 
         MagicTranslation.forEachTranslationComponent(text, lang, (txt, msgKeyString) -> {
             translationRequired[0] = true;
             return txt;
         });
+
         if (!translationRequired[0]) {
             return text;
         }
 
-        // Make a copy of the text, and apply translation
-        return MagicTranslation.forEachTranslationComponent(MiscUtil.cast(ComponentUtil.copy(text).get()), lang,
+        // Make a copy of the text, and apply translation.
+        return MagicTranslation.forEachTranslationComponent(ComponentUtil.copy(text), lang,
                 (txt, msgKeyString) -> {
                     //#if MC > 11802
                     //$$ TranslatableContents content = (TranslatableContents) txt.getContents();
@@ -103,12 +108,12 @@ public class MagicTranslation {
                     //#endif
 
                     try {
-                        newText = MiscUtil.cast(ComponentUtil.format(msgKeyString, txtArgs).get());
+                        newText = ComponentUtil.format(msgKeyString, txtArgs).get();
                     } catch (IllegalArgumentException e) {
-                        newText = MiscUtil.cast(ComponentUtil.format(msgKeyString, txtArgs).get());
+                        newText = ComponentUtil.simple(msgKeyString).get();
                     }
 
-                    // Migrating text data
+                    // Migrating text data.
                     newText.getSiblings().addAll(txt.getSiblings());
                     newText.setStyle(txt.getStyle());
 
@@ -172,23 +177,21 @@ public class MagicTranslation {
             }
 
             // Do translation logic.
-            String msgKeyString = MagicTranslation.getTranslationString(lang, translatableText.getKey());
+            if (HookTranslationManager.getInstance().isNamespaceRegistered(translatableText.getKey())) {
+                String msgKeyString = I18n.trByCode(lang, translatableText.getKey());
 
-            if (msgKeyString == null && !lang.equals(I18n.DEFAULT_CODE)) {
-                msgKeyString = MagicTranslation.getTranslationString(I18n.DEFAULT_CODE, translatableText.getKey());
+                text = modifier.apply(
+                        //#if MC > 11802
+                        //$$ text,
+                        //#else
+                        translatableText,
+                        //#endif
+                        msgKeyString
+                );
             }
-
-            text = modifier.apply(
-                    //#if MC > 11802
-                    //$$ text,
-                    //#else
-                    translatableText,
-                    //#endif
-                    msgKeyString
-            );
         }
 
-        // translate hover text
+        // Translate hover text.
         HoverEvent hoverEvent = ((StyleAccessor) text.getStyle()).getHoverEvent();
 
         if (hoverEvent != null) {
@@ -226,7 +229,7 @@ public class MagicTranslation {
             //#endif
         }
 
-        // Translate sibling texts
+        // Translate sibling texts.
         List<Component> siblings = text.getSiblings();
 
         for (int i = 0; i < siblings.size(); i++) {

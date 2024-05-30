@@ -28,7 +28,8 @@
     "i18n.AbstractResourcePackMixin",
     "i18n.FilePackResourcesMixin",
     "i18n.PathPackResourcesMixin",
-    "i18n.ServerPlayerMixin"
+    "i18n.ServerPlayerMixin",
+    "i18n.TranslatableText"
   ],
   "server": [
     "event.DedicatedServerMixin"

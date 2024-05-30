@@ -19,6 +19,7 @@
     "panel.WidgetConfigOptionMixin",
     "panel.dropDownListRedraw.WidgetListBaseMixin",
     "panel.label.WidgetConfigOptionMixin",
+    "panel.label.WidgetListConfigOptionsMixin",
     "panel.searchBar.WidgetListConfigOptionsMixin"
   ]
 }

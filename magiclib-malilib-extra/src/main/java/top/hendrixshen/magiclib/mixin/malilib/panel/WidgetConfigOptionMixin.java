@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import top.hendrixshen.magiclib.api.i18n.minecraft.I18n;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.gui.ConfigButtonOptionListHovering;
 import top.hendrixshen.magiclib.api.malilib.config.option.HotkeyWithSwitch;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
