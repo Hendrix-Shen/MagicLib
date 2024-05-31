@@ -49,7 +49,7 @@
     "${mod_id}-minecraft-compat-api.mixins.json"
   ],
   "depends": {
-    "magiclib-malilib-extra": "*",
+    "magiclib-minecraft-api": "*",
     "minecraft": "${minecraft_dependency}"
   },
   "custom": {
