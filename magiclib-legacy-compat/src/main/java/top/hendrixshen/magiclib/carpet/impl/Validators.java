@@ -6,9 +6,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.carpet.api.Validator;
-import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
-import top.hendrixshen.magiclib.impl.carpet.CarpetEntrypoint;
-import top.hendrixshen.magiclib.util.MessageUtil;
+import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
+import top.hendrixshen.magiclib.util.minecraft.MessageUtil;
 
 import java.util.List;
 import java.util.Locale;
@@ -25,8 +24,8 @@ public class Validators {
                 return newValue;
             }
 
-            MessageUtil.sendMessage(source, ComponentCompatApi.literal(CarpetEntrypoint.getSettingManager()
-                    .trValidator("strict.validValue", ruleOption.getOptions().toString())).withStyle(style -> style.withColor(ChatFormatting.RED)));
+            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.validator.strict.validValue",
+                    ruleOption.getOptions().toString()).withStyle(style -> style.withColor(ChatFormatting.RED)));
             return null;
         }
     }
@@ -38,8 +37,8 @@ public class Validators {
                 return newValue;
             }
 
-            MessageUtil.sendMessage(source, ComponentCompatApi.literal(CarpetEntrypoint.getSettingManager()
-                    .trValidator("strictIgnoreCase.validValue", ruleOption.getOptions().toString())).withStyle(style -> style.withColor(ChatFormatting.RED)));
+            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.validator.strictIgnoreCase.validValue",
+                    ruleOption.getOptions().toString()).withStyle(style -> style.withColor(ChatFormatting.RED)));
             return null;
         }
     }
@@ -58,8 +57,8 @@ public class Validators {
                 return newValue.toLowerCase(Locale.ROOT);
             }
 
-            MessageUtil.sendMessage(source, ComponentCompatApi.literal(CarpetEntrypoint.getSettingManager()
-                    .trValidator("command.validValue", ruleOption.getOptions().toString())).withStyle(style -> style.withColor(ChatFormatting.RED)));
+            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.validator.command.validValue",
+                    ruleOption.getOptions().toString()).withStyle(style -> style.withColor(ChatFormatting.RED)));
             return null;
         }
     }
@@ -89,9 +88,9 @@ public class Validators {
                     (!this.canMaxEquals && number.doubleValue() >= this.max) ||
                     (this.canMinEquals && number.doubleValue() < this.min) ||
                     (!this.canMinEquals && number.doubleValue() <= this.min)) {
-                MessageUtil.sendMessage(source, ComponentCompatApi.literal(CarpetEntrypoint.getSettingManager()
-                        .trValidator("numeric.validValue", String.format("%s%s, %s%s",
-                                this.canMinEquals ? "[" : "(", this.min, this.max, this.canMaxEquals ? "]" : ")")))
+                MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.validator.numeric.validValue",
+                                String.format("%s%s, %s%s", this.canMinEquals ? "[" : "(", this.min,
+                                        this.max, this.canMaxEquals ? "]" : ")"))
                         .withStyle(style -> style.withColor(ChatFormatting.RED)));
                 return null;
             }

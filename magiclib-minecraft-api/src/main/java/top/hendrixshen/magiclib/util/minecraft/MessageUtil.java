@@ -2,97 +2,109 @@ package top.hendrixshen.magiclib.util.minecraft;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.compat.minecraft.UtilCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
+import top.hendrixshen.magiclib.impl.minecraft.MagicLibMinecraft;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-//#if MC > 11502
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.level.Level;
-//#else
-//$$ import net.minecraft.network.chat.BaseComponent;
-//$$ import net.minecraft.world.level.dimension.DimensionType;
-//#endif
+import java.util.Collection;
 
 public class MessageUtil {
-    public static void sendMessage(CommandSourceStack source, String message) {
-        MessageUtil.sendMessage(source, ComponentCompat.literal(message));
-    }
-
-    public static void sendMessage(CommandSourceStack source, ComponentCompat message) {
-        MessageUtil.sendMessage(source, message.get());
-    }
-
-    public static void sendMessage(CommandSourceStack source, Component messages) {
-        ValueContainer.ofNullable(source).ifPresent(commandSourceStack ->
-                commandSourceStack.sendSuccess(
+    private static void sendMessage0(CommandSourceStack source, Component messages, boolean broadcastToAdmins) {
+        ValueContainer.ofNullable(source).ifPresent(sourceStack ->
+                sourceStack.sendSuccess(
                         //#if MC > 11904
                         //$$ () -> messages,
                         //#else
                         messages,
                         //#endif
-                        //#if MC > 11904
-                        //$$ source.getServer().getLevel(Level.OVERWORLD) != null
-                        //#elseif MC > 11502
-                        source.getServer().getLevel(Level.OVERWORLD) != null
-                        //#else
-                        //$$ source.getServer() != null && source.getServer().getLevel(DimensionType.OVERWORLD) != null
-                        //#endif
+                        broadcastToAdmins
                 ));
     }
 
-    public static void sendMessage(CommandSourceStack source, List<Component> messages) {
-        MessageUtil.sendMessage(source, MessageUtil.insertComponent(messages));
+    public static void sendMessage(CommandSourceStack source, String message, boolean broadcastToAdmins) {
+        MessageUtil.sendMessageCompat(source, ComponentCompat.literal(message), broadcastToAdmins);
     }
 
-    public static void sendServerMessage(MinecraftServer server, String message) {
-        MessageUtil.sendServerMessage(server, ComponentCompat.literal(message));
+    public static void sendMessage(CommandSourceStack source, Component message, boolean broadcastToAdmins) {
+        MessageUtil.sendMessage0(source, message, broadcastToAdmins);
     }
 
-    public static void sendServerMessage(MinecraftServer server, ComponentCompat message) {
-        MessageUtil.sendServerMessage(server, message.get());
+    public static void sendMessageCompat(CommandSourceStack source, @NotNull ComponentCompat message,
+                                         boolean broadcastToAdmins) {
+        MessageUtil.sendMessage0(source, message.get(), broadcastToAdmins);
     }
 
-    public static void sendServerMessage(MinecraftServer server, Component message) {
-        ValueContainer.of(server).ifPresent(s -> {
-            MagicLib.getLogger().info(message.getString());
-            s.getPlayerList().getPlayers().forEach(p ->
-                    //#if MC > 11802
-                    //$$ p.sendSystemMessage(message));
-                    //#elseif MC > 11502
-                    p.sendMessage(message, p.getUUID()));
-            //#else
-            //$$ p.sendMessage(message));
-            //#endif
-        });
+    public static void sendMessage(CommandSourceStack source, String message) {
+        MessageUtil.sendMessage(source, message, false);
     }
 
-    public static void sendServerMessage(MinecraftServer server, @NotNull List<Component> messages) {
-        MessageUtil.sendServerMessage(server, MessageUtil.insertComponent(messages));
+    public static void sendMessage(CommandSourceStack source, @NotNull Component message) {
+        MessageUtil.sendMessage0(source, message, false);
     }
 
-    private static @NotNull Component insertComponent(@NotNull List<Component> messages) {
-        return MessageUtil.insertComponentCompat(messages.stream()
-                //#if MC > 11502
-                .filter(c -> c instanceof MutableComponent)
-                .map(c -> (MutableComponent) c)
+    public static void sendMessageCompat(CommandSourceStack source, @NotNull ComponentCompat message) {
+        MessageUtil.sendMessage0(source, message.get(), false);
+    }
+
+    public static void sendMessage(CommandSourceStack source, @NotNull Collection<Component> messages,
+                                   boolean broadcastToAdmins) {
+        messages.forEach(message -> MessageUtil.sendMessage(source, message, broadcastToAdmins));
+    }
+
+    public static void sendMessage(CommandSourceStack source, @NotNull Collection<Component> messages) {
+        messages.forEach(message -> MessageUtil.sendMessage(source, message, false));
+    }
+
+    public static void sendMessageCompat(CommandSourceStack source, @NotNull Collection<ComponentCompat> messages,
+                                         boolean broadcastToAdmins) {
+        messages.stream()
+                .map(ComponentCompat::get)
+                .forEach(message -> MessageUtil.sendMessage(source, message, broadcastToAdmins));
+    }
+
+    public static void sendMessageCompat(CommandSourceStack source, @NotNull Collection<ComponentCompat> messages) {
+        messages.stream()
+                .map(ComponentCompat::get)
+                .forEach(message -> MessageUtil.sendMessage(source, message, false));
+    }
+
+    // Component I18n cannot be processed with logger.
+    public static void sendToConsole(String message) {
+        MessageUtil.sendToConsoleCompat(ComponentCompat.literal(message));
+    }
+
+    public static void sendToConsole(Component message) {
+        MagicLibMinecraft.getInstance().getServer().ifPresent(server ->
+                //#if MC > 11802
+                //$$ server.sendSystemMessage(message)
                 //#else
-                //$$ .filter(c -> c instanceof BaseComponent)
-                //$$ .map(c -> (BaseComponent) c)
+                server.sendMessage(message
+                        //#if MC > 11502
+                        , UtilCompat.NIL_UUID
+                        //#endif
+                )
                 //#endif
-                .map(MutableComponentCompat::of)
-                .collect(Collectors.toList()));
+        );
     }
 
-    private static @NotNull Component insertComponentCompat(@NotNull List<MutableComponentCompat> messages) {
-        MutableComponentCompat component = ComponentCompat.literal("");
-        messages.forEach(component::append);
-        return component.get();
+    public static void sendToConsoleCompat(@NotNull ComponentCompat message) {
+        MessageUtil.sendToConsole(message.get());
+    }
+
+    public static void sendServerMessage(String message) {
+        MessageUtil.sendServerMessageCompat(ComponentCompat.literal(message));
+    }
+
+    public static void sendServerMessageCompat(@NotNull ComponentCompat message) {
+        MessageUtil.sendServerMessage(message.get());
+    }
+
+    public static void sendServerMessage(Component message) {
+        MessageUtil.sendToConsole(message);
+        MagicLibMinecraft.getInstance().getServer().ifPresent(server ->
+                server.getPlayerList().getPlayers().forEach(player ->
+                        MessageUtil.sendMessage(player.createCommandSourceStack(), message)));
     }
 }

@@ -9,8 +9,8 @@ import java.util.List;
 public class LanguageManagerEvent {
     public static class LanguageReloadEvent implements Event<LanguageManagerListener> {
         @Override
-        public void dispatch(@NotNull List<LanguageManagerListener> listener) {
-            listener.forEach(LanguageManagerListener::postLanguageReload);
+        public void dispatch(@NotNull List<LanguageManagerListener> listeners) {
+            listeners.forEach(LanguageManagerListener::postLanguageReload);
         }
 
         @Override
@@ -21,8 +21,8 @@ public class LanguageManagerEvent {
 
     public static class LanguageSelectEvent implements Event<LanguageManagerListener> {
         @Override
-        public void dispatch(@NotNull List<LanguageManagerListener> listener) {
-            listener.forEach(LanguageManagerListener::postLanguageSelect);
+        public void dispatch(@NotNull List<LanguageManagerListener> listeners) {
+            listeners.forEach(LanguageManagerListener::postLanguageSelect);
         }
 
         @Override

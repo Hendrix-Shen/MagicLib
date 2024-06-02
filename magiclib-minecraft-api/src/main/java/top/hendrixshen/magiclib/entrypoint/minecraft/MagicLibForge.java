@@ -4,6 +4,7 @@
 //$$ import net.minecraftforge.fml.common.Mod;
 //$$ import top.hendrixshen.magiclib.api.entrypoint.ModInitializer;
 //$$ import top.hendrixshen.magiclib.impl.i18n.minecraft.MinecraftLanguageManager;
+//$$ import top.hendrixshen.magiclib.impl.minecraft.MagicLibMinecraft;
 //$$ import top.hendrixshen.magiclib.impl.mixin.audit.minecraft.MinecraftMixinAudit;
 //$$
 //$$ @Mod("@MOD_IDENTIFIER@")
@@ -24,6 +25,7 @@
 //$$     @Override
 //$$     public void onInitialize() {
 //$$         MinecraftMixinAudit.init();
+//$$         MagicLibMinecraft.init();
 //$$     }
 //$$ }
 //#endif

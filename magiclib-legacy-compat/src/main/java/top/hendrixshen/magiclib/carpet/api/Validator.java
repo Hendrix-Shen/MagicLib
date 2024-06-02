@@ -6,8 +6,8 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import top.hendrixshen.magiclib.carpet.impl.RuleHelper;
 import top.hendrixshen.magiclib.carpet.impl.RuleOption;
-import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.impl.carpet.CarpetEntrypoint;
+import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 import top.hendrixshen.magiclib.util.minecraft.MessageUtil;
 
 //#if MC > 11900
@@ -67,8 +67,9 @@ public abstract class Validator<T> extends
             return this.getValidValue(source, ruleOption, newValue, userInput);
         }
 
-        MessageUtil.sendMessage(source, ComponentCompatApi.literal(CarpetEntrypoint.getSettingManager().trUI("could_not_set",
-                CarpetEntrypoint.getSettingManager().getTranslatedRuleName(ruleOption.getName()))).withStyle(style -> style.withColor(ChatFormatting.RED)));
+        MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.could_not_set",
+                        CarpetEntrypoint.getSettingManager().getTranslatedRuleName(source, ruleOption.getName()))
+                .withStyle(style -> style.withColor(ChatFormatting.RED)));
 
         if (this.getDescription() != null) {
             MessageUtil.sendMessage(source, this.getDescription());

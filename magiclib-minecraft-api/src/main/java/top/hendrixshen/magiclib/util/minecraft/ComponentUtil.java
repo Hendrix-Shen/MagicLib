@@ -138,7 +138,7 @@ public class ComponentUtil {
     });
 
     public static @NotNull MutableComponentCompat compose(Object @NotNull ... objects) {
-        MutableComponentCompat literal = ComponentCompat.literal("");
+        MutableComponentCompat literal = ComponentUtil.empty();
 
         for (Object o : objects) {
             if (o instanceof MutableComponentCompat) {
@@ -167,6 +167,10 @@ public class ComponentUtil {
     // Simple Component with formatting
     public static @NotNull MutableComponentCompat simple(Object text, ChatFormatting... chatFormattings) {
         return ComponentUtil.formatting(ComponentUtil.simple(text), chatFormattings);
+    }
+
+    public static @NotNull MutableComponentCompat empty() {
+        return ComponentUtil.simple("");
     }
 
     public static @NotNull MutableComponentCompat newLine() {
@@ -212,6 +216,12 @@ public class ComponentUtil {
     }
 
     public static @NotNull MutableComponentCompat tr(String key, Object... args) {
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] instanceof ComponentCompat) {
+                args[i] = ((ComponentCompat) args[i]).get();
+            }
+        }
+
         return ComponentCompat.translatable(key, args);
     }
 
@@ -232,11 +242,11 @@ public class ComponentUtil {
     }
 
     public static @NotNull MutableComponentCompat join(MutableComponentCompat joiner,
-                                                       @NotNull Iterable<MutableComponentCompat> items) {
-        MutableComponentCompat text = ComponentUtil.simple("");
+                                                       @NotNull Iterable<ComponentCompat> items) {
+        MutableComponentCompat text = ComponentUtil.empty();
         boolean first = true;
 
-        for (MutableComponentCompat item : items) {
+        for (ComponentCompat item : items) {
             if (!first) {
                 text.append(joiner);
             }
@@ -248,7 +258,7 @@ public class ComponentUtil {
         return text;
     }
 
-    public static @NotNull MutableComponentCompat join(MutableComponentCompat joiner, MutableComponentCompat... items) {
+    public static @NotNull MutableComponentCompat join(MutableComponentCompat joiner, ComponentCompat... items) {
         return ComponentUtil.join(joiner, Arrays.asList(items));
     }
 
@@ -318,7 +328,7 @@ public class ComponentUtil {
     }
 
     private static @NotNull MutableComponentCompat coordinate(@Nullable DimensionWrapper dim, String posStr, String command) {
-        MutableComponentCompat hoverText = ComponentUtil.simple("");
+        MutableComponentCompat hoverText = ComponentUtil.empty();
         hoverText.append(ComponentUtil.getTeleportHint(ComponentUtil.simple(posStr)));
 
         if (dim != null) {

@@ -34,7 +34,7 @@ public class StyleCompatImpl extends AbstractCompat<Style> implements StyleCompa
     //#if MC > 11605
     @Override
     public StyleCompat withColor(TextColor color) {
-        this.style = style.withColor(color);
+        this.style = this.style.withColor(color);
         return this;
     }
     //#endif

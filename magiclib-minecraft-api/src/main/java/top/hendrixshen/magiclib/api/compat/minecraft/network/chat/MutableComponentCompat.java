@@ -34,7 +34,7 @@ public interface MutableComponentCompat extends ComponentCompat {
 
     void setStyle(@NotNull StyleCompat style);
 
-    MutableComponentCompat append(@NotNull MutableComponentCompat component);
+    MutableComponentCompat append(@NotNull ComponentCompat component);
 
     default MutableComponentCompat append(String string) {
         this.append(ComponentCompat.literal(string));

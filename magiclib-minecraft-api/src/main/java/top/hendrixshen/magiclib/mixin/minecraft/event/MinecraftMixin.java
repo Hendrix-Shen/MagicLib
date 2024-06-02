@@ -21,6 +21,6 @@ public class MinecraftMixin {
             )
     )
     private void postInit(CallbackInfo ci) {
-        EventManager.dispatch(new MinecraftEvent.MinecraftPostInitEvent());
+        EventManager.dispatch(new MinecraftEvent.PostInitEvent());
     }
 }

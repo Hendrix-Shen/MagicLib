@@ -12,6 +12,8 @@ public class MagicLibSettings {
             categories = "generic"
     )
     public static boolean debug = false;
+
+    @Deprecated
     @Rule(
             categories = "generic",
             options = {"en_us", "zh_cn"}

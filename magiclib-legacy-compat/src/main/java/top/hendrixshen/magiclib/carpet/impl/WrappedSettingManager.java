@@ -21,6 +21,7 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLib;
@@ -28,6 +29,8 @@ import top.hendrixshen.magiclib.MagicLibReference;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ClickEventCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.HoverEventCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
+import top.hendrixshen.magiclib.api.fake.i18n.ServerPlayerLanguage;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.carpet.api.CarpetExtensionCompatApi;
 import top.hendrixshen.magiclib.carpet.api.annotation.Rule;
@@ -36,6 +39,7 @@ import top.hendrixshen.magiclib.mixin.carpet.accessor.SettingsManagerAccessor;
 import top.hendrixshen.magiclib.impl.carpet.MagicLibSettings;
 import top.hendrixshen.magiclib.util.ReflectionUtil;
 import top.hendrixshen.magiclib.util.collect.Provider;
+import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 import top.hendrixshen.magiclib.util.minecraft.MessageUtil;
 
 import java.lang.reflect.Field;
@@ -53,6 +57,7 @@ import java.util.stream.Collectors;
 //$$ import net.minecraft.commands.CommandBuildContext;
 //#else
 import carpet.settings.SettingsManager;
+
 import java.util.Map;
 //#endif
 
@@ -98,8 +103,8 @@ public class WrappedSettingManager extends SettingsManager {
 
     public static void printAllExtensionVersion(CommandSourceStack source) {
         WrappedSettingManager.INSTANCES.values().forEach(instance ->
-                MessageUtil.sendMessage(source, ComponentCompat.literal(
-                        instance.trUI("version", instance.trFancyName(), instance.getVersion()))
+                MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.version",
+                                instance.getTranslatedFancyName(), instance.getVersion())
                         .withStyle(style -> style.withColor(ChatFormatting.GRAY))));
     }
 
@@ -125,7 +130,7 @@ public class WrappedSettingManager extends SettingsManager {
         //$$         new Class[]{CommandSourceStack.class, CarpetRule.class}, source, rule.getRule());
         //#elseif MC > 11502
         if (CarpetEventServer.Event.CARPET_RULE_CHANGES.isNeeded()) {
-           CarpetEventServer.Event.CARPET_RULE_CHANGES.onCarpetRuleChanges(rule.getRule(), source);
+            CarpetEventServer.Event.CARPET_RULE_CHANGES.onCarpetRuleChanges(rule.getRule(), source);
         }
         //#endif
     }
@@ -155,7 +160,7 @@ public class WrappedSettingManager extends SettingsManager {
         } else {
             String commandLevelString = commandLevel.toString();
 
-            switch(commandLevelString) {
+            switch (commandLevelString) {
                 case "true":
                     return true;
                 case "ops":
@@ -285,7 +290,6 @@ public class WrappedSettingManager extends SettingsManager {
 
     public RuleOption getRuleOption(String name) {
         return this.OPTIONS.get(name);
-
     }
 
     public RuleOption getRuleOption(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
@@ -293,7 +297,7 @@ public class WrappedSettingManager extends SettingsManager {
         RuleOption ruleOption = this.getRuleOption(ruleName);
 
         if (ruleOption == null) {
-            throw new SimpleCommandExceptionType(ComponentCompat.literal(this.trUI("unknown_rule", ruleName))
+            throw new SimpleCommandExceptionType(ComponentUtil.tr("magiclib.ui.unknown_rule", ruleName)
                     .withStyle(style -> style.withBold(true).withColor(ChatFormatting.RED)).get()).create();
         }
 
@@ -320,11 +324,37 @@ public class WrappedSettingManager extends SettingsManager {
         return MagicLibSettings.language;
     }
 
+    public String getTranslatedRuleName(@NotNull CommandSourceStack source, String ruleName) {
+        String languageCode;
+
+        if (source.getEntity() instanceof ServerPlayer) {
+            languageCode = ((ServerPlayerLanguage) source.getEntity()).magicLib$getLanguage();
+        } else {
+            languageCode = I18n.getCurrentLanguageCode();
+        }
+
+        String translatedName = I18n.translateByCodeOrFallback(languageCode,
+                String.format("%s.rule.%s.name", this.identifier, ruleName), ruleName);
+        String defaultName = this.defaultRuleName(ruleName);
+        return defaultName.equals(translatedName) ? defaultName : String.format("%s (%s)", translatedName, defaultName);
+    }
+
+    @Deprecated
     public String getTranslatedRuleName(String ruleName) {
         return (!this.getCurrentLanguageCode().equals(WrappedSettingManager.DEFAULT_LANGUAGE) &&
                 I18n.exists(this.getCurrentLanguageCode(), String.format("%s.rule.%s.name", this.identifier, ruleName))) ?
                 String.format("%s (%s)", this.trRuleName(ruleName), this.defaultRuleName(ruleName)) :
                 this.defaultRuleName(ruleName);
+    }
+
+    public MutableComponentCompat getTranslatedFancyName() {
+        String translationKey = String.format("%s.info.mod_name", this.identifier);
+
+        if (I18n.exists(translationKey)) {
+            return ComponentUtil.tr(translationKey);
+        }
+
+        return ComponentUtil.simple(this.fancyName);
     }
 
     public String trFancyName() {
@@ -338,53 +368,62 @@ public class WrappedSettingManager extends SettingsManager {
     }
     //#endif
 
-    // The server side requires this way to use the fallback language.
-    public String tr(String code, String key, Object... objects) {
-        return I18n.trByCode(code, key, objects);
-    }
-
-    // The server side requires this way to use the fallback language.
-    public String tr(String code, String key) {
-        return I18n.trByCode(code, key);
-    }
-
     public String defaultRuleName(String ruleName) {
         return I18n.translateInCodeOrFallback(WrappedSettingManager.DEFAULT_LANGUAGE,
                 String.format("%s.rule.%s.name", this.identifier, ruleName), ruleName);
     }
 
+    @Deprecated
+    public String tr(String code, String key, Object... objects) {
+        return I18n.trByCode(code, key, objects);
+    }
+
+    @Deprecated
+    public String tr(String code, String key) {
+        return I18n.trByCode(code, key);
+    }
+
+    @Deprecated
     public String trRuleName(String ruleName) {
         return this.tr(this.getCurrentLanguageCode(), String.format("%s.rule.%s.name", this.identifier, ruleName));
     }
 
+    @Deprecated
     public String trRuleDesc(String ruleName) {
         return this.tr(this.getCurrentLanguageCode(), String.format("%s.rule.%s.desc", this.identifier, ruleName));
     }
 
+    @Deprecated
     public String trCategory(String category) {
         return this.tr(this.getCurrentLanguageCode(), String.format("%s.category.%s", this.identifier, category));
     }
 
+    @Deprecated
     public String trInfo(String info) {
         return this.tr(this.getCurrentLanguageCode(), String.format("%s.info.%s", this.identifier, info));
     }
 
+    @Deprecated
     public String trValidator(String uiText) {
         return this.tr(this.getCurrentLanguageCode(), String.format("%s.validator.%s", MagicLibReference.getModIdentifier(), uiText));
     }
 
+    @Deprecated
     public String trValidator(String uiText, Object... objects) {
         return this.tr(this.getCurrentLanguageCode(), String.format("%s.validator.%s", MagicLibReference.getModIdentifier(), uiText), objects);
     }
 
+    @Deprecated
     public String trUI(String uiText) {
         return this.tr(this.getCurrentLanguageCode(), String.format("%s.ui.%s", MagicLibReference.getModIdentifier(), uiText));
     }
 
+    @Deprecated
     public String trUI(String uiText, Object... objects) {
         return this.tr(this.getCurrentLanguageCode(), String.format("%s.ui.%s", MagicLibReference.getModIdentifier(), uiText), objects);
     }
 
+    @Deprecated
     public List<Component> trRuleExtraInfo(String ruleName) {
         List<ComponentCompat> ret = Lists.newArrayList();
         String key = String.format("%s.rule.%s.extra.%%d", this.identifier, ruleName);
@@ -396,71 +435,96 @@ public class WrappedSettingManager extends SettingsManager {
         return ret.stream().map(Provider::get).collect(Collectors.toList());
     }
 
+    public MutableComponentCompat getTranslatedRuleExtraInfo(String ruleName) {
+        List<ComponentCompat> ret = Lists.newArrayList();
+        String key = String.format("%s.rule.%s.extra.%%d", this.identifier, ruleName);
+
+        for (int i = 0; I18n.exists(String.format(key, i)); i++) {
+            ret.add(ComponentUtil.tr(String.format(key, i)));
+        }
+
+        return ComponentUtil.join(ComponentUtil.newLine(), ret);
+    }
+
     public int displayRuleMenu(@NotNull CommandSourceStack source, @NotNull RuleOption ruleOption) {
         if (!ruleOption.isEnabled()) {
-            MessageUtil.sendMessage(source, trUI("disabled", ruleOption.getName()));
+            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.disabled", ruleOption.getName()));
             return 1;
         }
 
-        MessageUtil.sendMessage(source, "");
-        MessageUtil.sendMessage(source, ComponentCompat.literal(this.getTranslatedRuleName(ruleOption.getName()))
-                .withStyle(style -> style.withBold(true)
-                        .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND, String.format("/%s %s", this.identifier, ruleOption.getName())))
-                        .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.refresh"))
-                                .withStyle(style1 -> style1.withColor(ChatFormatting.GRAY))))));
-        MessageUtil.sendMessage(source, this.trRuleDesc(ruleOption.getName()));
-        this.trRuleExtraInfo(ruleOption.getName()).forEach(component ->
-                MessageUtil.sendMessage(source, component.copy().withStyle(style -> style.withColor(ChatFormatting.GRAY))));
+        MessageUtil.sendMessageCompat(source, ComponentUtil.empty());
+        MessageUtil.sendMessageCompat(source,
+                ComponentUtil.simple(this.getTranslatedRuleName(source, ruleOption.getName()))
+                        .withStyle(style -> style
+                                .withBold(true)
+                                .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND,
+                                        String.format("/%s %s", this.identifier, ruleOption.getName())))
+                                .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
+                                        ComponentUtil.tr("magiclib.ui.hover.refresh")
+                                                .withStyle(style1 -> style1.withColor(ChatFormatting.GRAY))))));
+
+        String descTranslationKey = String.format("%s.rule.%s.desc", this.identifier, ruleOption.getName());
+
+        if (I18n.exists(descTranslationKey)) {
+            MessageUtil.sendMessageCompat(source, ComponentUtil.tr(descTranslationKey));
+        }
+
+        MessageUtil.sendMessageCompat(source, this.getTranslatedRuleExtraInfo(ruleOption.getName()));
         List<ComponentCompat> categories = Lists.newArrayList();
-        categories.add(ComponentCompat.literal(this.trUI("tags")));
+        categories.add(ComponentUtil.tr("magiclib.ui.tags"));
+        categories.add(ComponentUtil.join(ComponentUtil.simple(" "), Arrays.stream(ruleOption.getCategory())
+                .sorted()
+                .map(category -> ComponentUtil.compose(
+                        ComponentUtil.simple("["),
+                        ComponentUtil.tr(String.format("%s.category.%s", this.identifier, category)),
+                        ComponentUtil.simple("]")).withStyle(style -> style
+                        .withColor(ChatFormatting.AQUA)
+                        .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND,
+                                String.format("/%s list %s", this.identifier, category)))
+                        .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
+                                ComponentUtil.tr("magiclib.ui.hover.list_all_category", category)))))
+                .collect(Collectors.toList())));
 
-        Arrays.stream(ruleOption.getCategory()).sorted().forEach(category -> {
-            categories.add(ComponentCompat.literal(String.format("[%s]", this.trCategory(category))).withStyle(style ->
-                    style.withColor(ChatFormatting.AQUA)
-                            .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND, String.format("/%s list %s", this.identifier, category)))
-                            .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.list_all_category", category))))));
-            categories.add(ComponentCompat.literal(" "));
-        });
-
-        if (categories.size() > 1) {
-            categories.remove(categories.size() - 1);
-        } else {
-            categories.add(ComponentCompat.literal(this.trUI("null")).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+        if (categories.size() < 2) {
+            categories.add(ComponentUtil.tr("magiclib.ui.null")
+                    .withStyle(style -> style.withColor(ChatFormatting.GRAY)));
         }
 
-        MessageUtil.sendMessage(source, categories.stream().map(Provider::get).collect(Collectors.toList()));
-        List<ComponentCompat> value = Lists.newArrayList();
-        value.add(ComponentCompat.literal(this.trUI("current_value")));
-        value.add(ComponentCompat.literal(String.format("%s (%s)", ruleOption.getValue(), ruleOption.isDefault() ?
-                this.trUI("default") : this.trUI("modified"))).withStyle(
-                        style -> style.withBold(true)
-                                .withColor(ruleOption.isDefault() ? ChatFormatting.DARK_RED : ChatFormatting.GREEN)));
-        MessageUtil.sendMessage(source, value.stream().map(Provider::get).collect(Collectors.toList()));
-        List<ComponentCompat> options = Lists.newArrayList();
-        options.add(ComponentCompat.literal(this.trUI("options")));
-        options.add(ComponentCompat.literal("[ ").withStyle(style -> style.withColor(ChatFormatting.YELLOW)));
-
-        for (String option : ruleOption.getOptions()) {
-            options.add(ComponentCompat.literal(option).withStyle(style ->
-                    style.withUnderlined(ruleOption.getStringValue().equals(option))
-                            .withColor(ruleOption.isDefault() ? ChatFormatting.GRAY : ruleOption.getDefaultStringValue().equals(option) ? ChatFormatting.DARK_GREEN : ChatFormatting.YELLOW)
-                            .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND, String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
-                            .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.switch_to", option))))));
-            options.add(ComponentCompat.literal(" "));
-        }
-
-        if (options.size() > 2) {
-            options.remove(options.size() - 1);
-        }
-
-        options.add(ComponentCompat.literal(" ]").withStyle(style -> style.withColor(ChatFormatting.YELLOW)));
-        MessageUtil.sendMessage(source, options.stream().map(Provider::get).collect(Collectors.toList()));
+        MessageUtil.sendMessageCompat(source, ComponentUtil.join(ComponentUtil.empty(), categories));
+        MessageUtil.sendMessageCompat(source, ComponentUtil.compose(
+                ComponentUtil.tr("magiclib.ui.current_value"),
+                ComponentUtil.compose(
+                                ruleOption.getValue(),
+                                " (",
+                                ComponentUtil.tr(ruleOption.isDefault() ? "magiclib.ui.default" : "magiclib.ui.modified"),
+                                ")")
+                        .withStyle(style -> style
+                                .withBold(true)
+                                .withColor(ruleOption.isDefault() ? ChatFormatting.DARK_RED : ChatFormatting.GREEN))
+        ));
+        MessageUtil.sendMessageCompat(source, ComponentUtil.compose(
+                ComponentUtil.tr("magiclib.ui.options"),
+                ComponentUtil.simple("[ ").withStyle(style -> style.withColor(ChatFormatting.YELLOW)),
+                ComponentUtil.join(ComponentUtil.simple(" "), ruleOption.getOptions().stream()
+                        .map(option -> ComponentUtil.simple(option).withStyle(style -> style
+                                .withUnderlined(ruleOption.getStringValue().equals(option))
+                                .withColor(ruleOption.isDefault() ? ChatFormatting.GRAY :
+                                        ruleOption.getDefaultStringValue().equals(option) ? ChatFormatting.DARK_GREEN :
+                                                ChatFormatting.YELLOW)
+                                .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null :
+                                        ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND,
+                                                String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
+                                .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null :
+                                        HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
+                                                ComponentUtil.tr("magiclib.ui.hover.switch_to", option)))))
+                        .collect(Collectors.toList())),
+                ComponentUtil.simple(" ]").withStyle(style -> style.withColor(ChatFormatting.YELLOW))));
         return 1;
     }
 
     public int setRule(CommandSourceStack source, @NotNull RuleOption ruleOption, String newValue) {
         if (!ruleOption.isEnabled()) {
-            MessageUtil.sendMessage(source, trUI("disabled", ruleOption.getName()));
+            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.disabled", ruleOption.getName()));
             return 1;
         }
 
@@ -468,25 +532,35 @@ public class WrappedSettingManager extends SettingsManager {
             return 1;
         }
 
-        List<ComponentCompat> components = Lists.newArrayList();
-        components.add(ComponentCompat.literal(String.format("%s: %s, ", this.getTranslatedRuleName(ruleOption.getName()), newValue)));
-        components.add(ComponentCompat.literal(String.format("[%s]", this.trUI("change_permanently")))
-                .withStyle(style -> style.withColor(ChatFormatting.AQUA)
-                        .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND, String.format("/%s setDefault %s %s", this.identifier, ruleOption.getName(), newValue)))
-                        .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.change_permanently", String.format("%s.conf",this.identifier)))))));
-        MessageUtil.sendMessage(source, components.stream().map(Provider::get).collect(Collectors.toList()));
+        MessageUtil.sendMessageCompat(source, ComponentUtil.compose(
+                ComponentUtil.compose(
+                        ComponentUtil.simple(this.getTranslatedRuleName(source, ruleOption.getName())),
+                        ComponentUtil.simple(": "),
+                        ComponentUtil.simple(newValue),
+                        ComponentUtil.simple(", "),
+                        ComponentUtil.compose(
+                                ComponentUtil.simple("["),
+                                ComponentUtil.tr("magiclib.ui.change_permanently"),
+                                ComponentUtil.simple("]")).withStyle(style -> style
+                                .withColor(ChatFormatting.AQUA)
+                                .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND,
+                                        String.format("/%s setDefault %s %s",
+                                                this.identifier, ruleOption.getName(), newValue)))
+                                .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
+                                        ComponentUtil.tr("magiclib.ui.hover.change_permanently",
+                                                String.format("%s.conf", this.identifier))))))));
         return 1;
     }
 
     @SuppressWarnings("unchecked")
     public int setDefault(CommandSourceStack source, RuleOption ruleOption, String newValue) {
         if (this.locked()) {
-            MessageUtil.sendMessage(source, trUI("locked"));
+            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.locked"));
             return 1;
         }
 
         if (!ruleOption.isEnabled()) {
-            MessageUtil.sendMessage(source, trUI("disabled", ruleOption.getName()));
+            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.disabled", ruleOption.getName()));
             return 1;
         }
 
@@ -512,21 +586,22 @@ public class WrappedSettingManager extends SettingsManager {
         //#else
         ((SettingsManagerAccessor) this).invokeWriteSettingsToConf(ruleMap);
         //#endif
-        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("set_default",
-                        this.getTranslatedRuleName(ruleOption.getName()), ruleOption.getStringValue()))
-                .withStyle(style -> style.withItalic(true).withColor(ChatFormatting.GRAY)));
+
+        MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.set_default",
+                this.getTranslatedRuleName(source, ruleOption.getName()), ruleOption.getStringValue()).withStyle(style ->
+                style.withItalic(true).withColor(ChatFormatting.GRAY)));
         return 1;
     }
 
     @SuppressWarnings("unchecked")
     public int removeDefault(CommandSourceStack source, RuleOption ruleOption) {
         if (this.locked()) {
-            MessageUtil.sendMessage(source, trUI("locked"));
+            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.locked"));
             return 1;
         }
 
         if (!ruleOption.isEnabled()) {
-            MessageUtil.sendMessage(source, trUI("disabled", ruleOption.getName()));
+            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.disabled", ruleOption.getName()));
             return 1;
         }
 
@@ -552,11 +627,16 @@ public class WrappedSettingManager extends SettingsManager {
         //#else
         ((SettingsManagerAccessor) this).invokeWriteSettingsToConf(ruleMap);
         //#endif
-        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("reset_default", this.getTranslatedRuleName(ruleOption.getName())))
-                .withStyle(style -> style.withItalic(true).withColor(ChatFormatting.GRAY)));
+
+        MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.reset_default",
+                this.getTranslatedRuleName(source, ruleOption.getName()),
+                ruleOption.getStringValue()).withStyle(style -> style
+                .withItalic(true)
+                .withColor(ChatFormatting.GRAY)));
         return 1;
     }
 
+    @Deprecated
     public Collection<List<Component>> getMatchedSettings(@NotNull Collection<RuleOption> ruleOptions) {
         ruleOptions = ruleOptions.stream().filter((RuleOption::isEnabled)).collect(Collectors.toList());
         Collection<List<ComponentCompat>> collection = Lists.newArrayList();
@@ -589,55 +669,105 @@ public class WrappedSettingManager extends SettingsManager {
         return collection.stream().map(list -> list.stream().map(Provider::get).collect(Collectors.toList())).collect(Collectors.toList());
     }
 
+    public Collection<ComponentCompat> getMatchedSettings(CommandSourceStack source,
+                                                          @NotNull Collection<RuleOption> ruleOptions) {
+        Collection<ComponentCompat> ret = Lists.newArrayList();
+        ruleOptions.stream()
+                .filter((RuleOption::isEnabled))
+                .forEach(option -> {
+                    List<ComponentCompat> components = Lists.newArrayList();
+                    components.add(ComponentUtil.compose("- ",
+                            this.getTranslatedRuleName(source, option.getName())).withStyle(style -> {
+                        style.withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND,
+                                String.format("/%s %s", this.identifier, option.getName())));
+                        String descTranslationKey = String.format("%s.rule.%s.desc", this.identifier, option.getName());
+
+                        if (I18n.exists(descTranslationKey)) {
+                            style.withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
+                                    ComponentUtil.tr(descTranslationKey)
+                                            .withStyle(style1 -> style1.withColor(ChatFormatting.YELLOW))));
+                        }
+
+                        return style;
+                    }));
+                    components.add(ComponentUtil.simple(" "));
+                    List<String> options = Lists.newArrayList(option.getOptions());
+
+                    if (!options.contains(option.getStringValue())) {
+                        options.add(option.getStringValue());
+                    }
+
+                    components.add(ComponentUtil.join(ComponentUtil.simple(" "), options.stream()
+                            .map(o -> ComponentUtil.compose("[", o, "]").withStyle(style -> style
+                                    .withUnderlined(o.equals(option.getStringValue()))
+                                    .withColor(option.isDefault() ? ChatFormatting.GRAY :
+                                            o.equals(option.getDefaultStringValue()) ? ChatFormatting.DARK_GREEN :
+                                                    ChatFormatting.YELLOW)
+                                    .withClickEvent(o.equals(option.getStringValue()) || this.locked() ? null :
+                                            ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND,
+                                                    String.format("/%s %s %s", this.identifier, option.getName(), o)))
+                                    .withHoverEvent(o.equals(option.getStringValue()) || this.locked() ? null :
+                                            HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
+                                                    ComponentUtil.tr("magiclib.ui.hover.switch_to", o)))))
+                            .collect(Collectors.toList())));
+                    ret.add(ComponentUtil.join(ComponentUtil.empty(), components));
+                });
+
+        return ret;
+    }
+
     private int listTagSettings(CommandSourceStack source, String category) {
-        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("matched_rule",  this.trFancyName(), category))
-                .withStyle(style -> style.withBold(true)));
-
-        for (List<Component> item : this.getMatchedSettings(this.OPTIONS.values().stream().filter(ruleOption ->
-                Arrays.stream(ruleOption.getCategory()).collect(Collectors.toList()).contains(category)).collect(Collectors.toList()))) {
-            MessageUtil.sendMessage(source, item);
-        }
-
+        MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.matched_rule",
+                this.getTranslatedFancyName(), category).withStyle(style -> style.withBold(true)));
+        this.getMatchedSettings(source, this.OPTIONS
+                        .values()
+                        .stream()
+                        .filter(option -> Arrays.stream(option.getCategory())
+                                .collect(Collectors.toList()).contains(category))
+                        .collect(Collectors.toList()))
+                .forEach(c -> MessageUtil.sendMessageCompat(source, c));
         return 1;
     }
 
     private int displayMainMenu(CommandSourceStack source) {
-        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("current_rule",  this.trFancyName()))
-                .withStyle(style -> style.withBold(true)));
-
-        for (List<Component> item : this.getMatchedSettings(this.getNonDefaultRuleOption())) {
-            MessageUtil.sendMessage(source, item);
-        }
-
+        MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.current_rule",
+                this.getTranslatedFancyName()).withStyle(style -> style.withBold(true)));
+        this.getMatchedSettings(source, this.getNonDefaultRuleOption())
+                .forEach(c -> MessageUtil.sendMessageCompat(source, c));
         WrappedSettingManager.printAllExtensionVersion(source);
-        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("browse",  this.trFancyName()))
+        MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.browse", this.trFancyName())
                 .withStyle(style -> style.withBold(true)));
         List<ComponentCompat> categories = Lists.newArrayList();
-        categories.add(ComponentCompat.literal(this.trUI("tags")));
+        categories.add(ComponentUtil.tr("magiclib.ui.tags"));
+        this.CATEGORIES.stream()
+                .sorted()
+                .forEach(category -> {
+                    if (this.getRuleOptionByCategory(category).stream().anyMatch(RuleOption::isEnabled)) {
+                        categories.add(ComponentUtil.compose(
+                                "[",
+                                ComponentUtil.tr(String.format("%s.category.%s", this.identifier, category)),
+                                "]").withStyle(style -> style
+                                .withColor(ChatFormatting.AQUA)
+                                .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND,
+                                        String.format("/%s list %s", this.identifier, category)))
+                                .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
+                                        ComponentUtil.tr("magiclib.ui.hover.list_all_category", category)))));
+                    }
+                });
 
-        this.CATEGORIES.stream().sorted().forEach(category -> {
-            if (this.getRuleOptionByCategory(category).stream().anyMatch(RuleOption::isEnabled)) {
-                categories.add(ComponentCompat.literal(String.format("[%s]", this.trCategory(category))).withStyle(style ->
-                        style.withColor(ChatFormatting.AQUA)
-                                .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND, String.format("/%s list %s", this.identifier, category)))
-                                .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literal(this.trUI("hover.list_all_category", category))))));
-                categories.add(ComponentCompat.literal(" "));
-            }
-        });
-
-        if (categories.size() > 1) {
-            categories.remove(categories.size() - 1);
-        } else {
-            categories.add(ComponentCompat.literal(this.trUI("null")).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+        if (categories.size() < 2) {
+            categories.add(ComponentUtil.tr("magiclib.ui.null")
+                    .withStyle(style -> style.withColor(ChatFormatting.GRAY)));
         }
 
-        MessageUtil.sendMessage(source, categories.stream().map(Provider::get).collect(Collectors.toList()));
+        MessageUtil.sendMessageCompat(source, ComponentUtil.join(ComponentUtil.simple(" "), categories));
         return 1;
     }
 
     @SuppressWarnings("unchecked")
     private int listDefaultSettings(CommandSourceStack source) {
-        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("default_rule",  this.trFancyName(), String.format("%s.conf", this.identifier)))
+        MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.default_rule",
+                        this.getTranslatedFancyName(), String.format("%s.conf", this.identifier))
                 .withStyle(style -> style.withBold(true)));
         Class<?> carpetSM = WrappedSettingManager.class.getSuperclass();
         //#if MC > 11502
@@ -651,31 +781,35 @@ public class WrappedSettingManager extends SettingsManager {
         //#else
         Set<String> defaults = ((Pair<Map<String, String>, Boolean>) conf).getLeft().keySet();
         //#endif
-        this.getMatchedSettings(this.OPTIONS
-                .values()
-                .stream()
-                .filter(ruleOption -> defaults.contains(ruleOption.getName()))
-                .collect(Collectors.toList()))
-                .forEach(components -> MessageUtil.sendMessage(source, components));
+        this.getMatchedSettings(source, this.OPTIONS
+                        .values()
+                        .stream()
+                        .filter(ruleOption -> defaults.contains(ruleOption.getName()))
+                        .collect(Collectors.toList()))
+                .forEach(components -> MessageUtil.sendMessageCompat(source, components));
         return 1;
     }
 
     public int listAllSettings(CommandSourceStack source) {
-        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("all_rule",  this.trFancyName()))
+        MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.all_rule",
+                        this.getTranslatedFancyName())
                 .withStyle(style -> style.withBold(true)));
-        this.getMatchedSettings(this.OPTIONS.values()).forEach(components -> MessageUtil.sendMessage(source, components));
+        this.getMatchedSettings(source, this.OPTIONS.values())
+                .forEach(c -> MessageUtil.sendMessageCompat(source, c));
         return 1;
     }
 
     public int searchRule(CommandSourceStack source, String content) {
-        MessageUtil.sendMessage(source, ComponentCompat.literal(this.trUI("matched_rule",  this.trFancyName(), content))
+        MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.matched_rule",
+                        this.getTranslatedFancyName(), content)
                 .withStyle(style -> style.withBold(true)));
-        this.getMatchedSettings(this.OPTIONS
-                .values()
-                .stream()
-                .filter(ruleOption -> this.getTranslatedRuleName(ruleOption.getName()).toLowerCase().contains(content.toLowerCase()))
-                .collect(Collectors.toList()))
-                .forEach(components -> MessageUtil.sendMessage(source, components));
+        this.getMatchedSettings(source, this.OPTIONS
+                        .values()
+                        .stream()
+                        .filter(ruleOption -> this.getTranslatedRuleName(source, ruleOption.getName())
+                                .toLowerCase().contains(content.toLowerCase()))
+                        .collect(Collectors.toList()))
+                .forEach(c -> MessageUtil.sendMessageCompat(source, c));
         return 1;
     }
 

@@ -25,6 +25,7 @@
     "accessor.SlotAccessor",
     "accessor.StyleAccessor",
     "accessor.TranslatableComponentAccessor",
+    "event.MinecraftServerMixin",
     "i18n.AbstractResourcePackMixin",
     "i18n.FilePackResourcesMixin",
     "i18n.PathPackResourcesMixin",
