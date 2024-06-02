@@ -3,7 +3,8 @@ description: Anything you don't understand.
 title: "[Question] "
 labels:
   - "type: question"
-  - "status: enhancement"
+  - "resolution: unresolved"
+  - "status: pending"
 body:
   - type: markdown
     attributes:

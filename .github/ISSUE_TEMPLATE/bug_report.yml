@@ -3,6 +3,7 @@ description: Create a report to help us improve.
 title: "[Bug] "
 labels:
   - "type: bug"
+  - "resolution: unresolved"
   - "status: pending"
 body:
   - type: markdown
