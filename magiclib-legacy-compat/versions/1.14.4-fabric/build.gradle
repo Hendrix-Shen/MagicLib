@@ -89,15 +89,13 @@ def runtimeDependencies = [
 dependencies {
     minecraft("com.mojang:minecraft:${project.property("dependencies.minecraft_version")}")
     mappings(loom.officialMojangMappings())
-    modApi("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
 
     // Lombok
     compileOnly("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
     annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
 
-    // Make IDE happy.
-    api(project(path: ":magiclib-core:${modPlatform}"))
-    api(project(path: ":magiclib-core:common", configuration: "shadow"))
+    // MagicLib Core
+    api(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow"))
 
     api(project(path: betterDev.path, configuration: "namedElements"))
     api(project(path: malilib.path, configuration: "namedElements"))
@@ -108,10 +106,16 @@ dependencies {
         localRuntime(project(path: betterDev.path, configuration: "modRuntimeClasspathMainMapped"))
     }
 
-    if (modPlatform == "forge") {
-        forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
-    } else if (modPlatform == "neoforge") {
-        neoForge("net.neoforged:neoforge:${project.property("dependencies.neoforge_version")}")
+    switch (modPlatform) {
+        case "fabric":
+            modApi("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
+            break
+        case "forge":
+            forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
+            break
+        case "neoforge":
+            neoForge("net.neoforged:neoforge:${project.property("dependencies.neoforge_version")}")
+            break
     }
 
     // API
@@ -294,9 +298,10 @@ replaceToken {
 
 processResources {
     [
-            "fabric.mod.json"   : ["fabric"],
-            "META-INF"          : ["forge", "neoforge"],
-            "META-INF/mods.toml": ["forge", "neoforge"]
+            "fabric.mod.json"            : ["fabric"],
+            "META-INF"                   : ["forge", "neoforge"],
+            "META-INF/mods.toml"         : ["forge", "neoforge", mcVersion < 12005 ? "neoforge": "none"],
+            "META-INF/neoforge.mods.toml": [mcVersion > 12004 ? "neoforge" : "none"]
     ].forEach { file, platforms ->
         if (platforms.contains(modPlatform)) {
             filesMatching(file) {

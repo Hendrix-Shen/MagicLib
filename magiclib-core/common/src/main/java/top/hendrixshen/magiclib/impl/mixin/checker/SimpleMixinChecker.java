@@ -53,12 +53,17 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
 
         AnnotationNode mixinConfigNode = Annotations.getVisible(mixinClassNode, CompositeDependencies.class);
         List<AnnotationNode> nodes = Annotations.getValue(mixinConfigNode, "value", true);
+
+        if (nodes.isEmpty()) {
+            return true;
+        }
+
         List<DependenciesContainer<?>> dependencies = nodes
                 .stream()
                 .map(node -> DependenciesContainer.of(node, targetClassNode))
                 .collect(Collectors.toList());
 
-        if (dependencies.stream().allMatch(DependenciesContainer::isSatisfied)) {
+        if (dependencies.stream().anyMatch(DependenciesContainer::isSatisfied)) {
             return true;
         }
 
