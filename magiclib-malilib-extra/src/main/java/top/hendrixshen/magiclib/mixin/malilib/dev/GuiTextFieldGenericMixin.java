@@ -15,7 +15,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.mixin.BuiltInPredicates;
 
-@CompositeDependencies(
+@CompositeDependencies({
         @Dependencies(
                 require = {
                         @Dependency(dependencyType = DependencyType.MOD_ID, value = "malilib"),
@@ -23,8 +23,16 @@ import top.hendrixshen.magiclib.impl.mixin.BuiltInPredicates;
                         @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class),
 
                 }
+        ),
+        @Dependencies(
+                require = {
+                        @Dependency(dependencyType = DependencyType.MOD_ID, value = "mafglib"),
+                        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
+                        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class),
+
+                }
         )
-)
+})
 @Mixin(value = GuiTextFieldGeneric.class, remap = false)
 public class GuiTextFieldGenericMixin extends EditBox {
     @Unique

@@ -38,11 +38,17 @@ preprocess {
 
     // Forge
     Node mc_11701_forge = createNode("mc-api-1.17.1-forge", 1_17_01, "mojang")
+    Node mc_11802_forge = createNode("mc-api-1.18.2-forge", 1_18_02, "mojang")
+    Node mc_11904_forge = createNode("mc-api-1.19.4-forge", 1_19_04, "mojang")
 
     mc_11701_fabric.link(mc_11701_forge, file("versions/mapping-1.17.1-fabric-forge.txt"))
+    mc_11802_fabric.link(mc_11802_forge, file("versions/mapping-1.18.2-fabric-forge.txt"))
+    mc_11904_fabric.link(mc_11904_forge, file("versions/mapping-1.19.4-fabric-forge.txt"))
 
     // NeoForge
     Node mc_12002_neoforge = createNode("mc-api-1.20.2-neoforge", 1_20_02, "mojang")
+    Node mc_12006_neoforge = createNode("mc-api-1.20.6-neoforge", 1_20_06, "mojang")
 
     mc_12002_fabric.link(mc_12002_neoforge, file("versions/mapping-1.20.2-fabric-neoforge.txt"))
+    mc_12006_fabric.link(mc_12006_neoforge, file("versions/mapping-1.20.6-fabric-neoforge.txt"))
 }

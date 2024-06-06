@@ -1,0 +1,3 @@
+net.fabricmc.api.EnvType net.neoforged.api.distmarker.Dist
+net.fabricmc.api.Environment net.neoforged.api.distmarker.OnlyIn
+net.fabricmc.api.EnvType SERVER net.neoforged.api.distmarker.Dist DEDICATED_SERVER

@@ -73,15 +73,13 @@ repositories {
 dependencies {
     minecraft("com.mojang:minecraft:${project.property("dependencies.minecraft_version")}")
     mappings(loom.officialMojangMappings())
-    modApi("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
 
     // Lombok
     compileOnly("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
     annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
 
-    // Make IDE happy.
-    api(project(path: ":magiclib-core:${modPlatform}"))
-    api(project(path: ":magiclib-core:common", configuration: "shadow"))
+    // MagicLib Core
+    api(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow"))
 
     // Dont publish better dev dependencies.
     compileOnly(project(path: betterDev.path, configuration: "namedElements"))
@@ -92,10 +90,16 @@ dependencies {
         localRuntime(project(path: betterDev.path, configuration: "modRuntimeClasspathMainMapped"))
     }
 
-    if (modPlatform == "forge") {
-        forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
-    } else if (modPlatform == "neoforge") {
-        neoForge("net.neoforged:neoforge:${project.property("dependencies.neoforge_version")}")
+    switch (modPlatform) {
+        case "fabric":
+            modApi("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
+            break
+        case "forge":
+            forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
+            break
+        case "neoforge":
+            neoForge("net.neoforged:neoforge:${project.property("dependencies.neoforge_version")}")
+            break
     }
 }
 
@@ -213,7 +217,10 @@ base {
 }
 
 java {
-    if (mcVersion > 11701) {
+    if (mcVersion > 12004) {
+        sourceCompatibility(JavaVersion.VERSION_21)
+        targetCompatibility(JavaVersion.VERSION_21)
+    } else if (mcVersion > 11701) {
         sourceCompatibility(JavaVersion.VERSION_17)
         targetCompatibility(JavaVersion.VERSION_17)
     } else if (mcVersion > 11605) {
@@ -252,9 +259,10 @@ replaceToken {
 
 processResources {
     [
-            "fabric.mod.json"   : ["fabric"],
-            "META-INF"          : ["forge", "neoforge"],
-            "META-INF/mods.toml": ["forge", "neoforge"]
+            "fabric.mod.json"            : ["fabric"],
+            "META-INF"                   : ["forge", "neoforge"],
+            "META-INF/mods.toml"         : ["forge", "neoforge", mcVersion < 12005 ? "neoforge": "none"],
+            "META-INF/neoforge.mods.toml": [mcVersion > 12004 ? "neoforge" : "none"]
     ].forEach { file, platforms ->
         if (platforms.contains(modPlatform)) {
             filesMatching(file) {
@@ -382,7 +390,9 @@ tasks.withType(Javadoc).configureEach { Javadoc task ->
 tasks.withType(JavaCompile).configureEach { JavaCompile task ->
     task.options.encoding("UTF-8")
 
-    if (mcVersion > 11701) {
+    if (mcVersion > 12004) {
+        task.options.release.set(21)
+    } else if (mcVersion > 11701) {
         task.options.release.set(17)
     } else if (mcVersion > 11605) {
         task.options.release.set(16)

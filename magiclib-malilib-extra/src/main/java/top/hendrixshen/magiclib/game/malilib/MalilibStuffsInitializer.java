@@ -7,7 +7,11 @@ import fi.dy.masa.malilib.hotkeys.IKeybindProvider;
 import top.hendrixshen.magiclib.impl.malilib.SharedConstants;
 
 //#if FORGE_LIKE
+//#if MC > 11701 && MC != 11904
+//$$ import org.thinkingstudio.mafglib.util.ForgePlatformUtils;
+//#else
 //$$ import fi.dy.masa.malilib.compat.forge.ForgePlatformCompat;
+//#endif
 //#endif
 
 public class MalilibStuffsInitializer {
@@ -26,11 +30,20 @@ public class MalilibStuffsInitializer {
 
     //#if FORGE_LIKE
     //$$ private static void setupForgeConfigGui() {
+    //#if MC > 11701 && MC != 11904
+    //$$     ForgePlatformUtils.getInstance().registerModConfigScreen(SharedConstants.getModIdentifier(),
+    //#else
     //$$     ForgePlatformCompat.getInstance()
-    //$$             .getMod(SharedConstants.getModIdentifier())
-    //$$             .registerModConfigScreen(screen -> {
+    //$$         .getMod(SharedConstants.getModIdentifier())
+    //$$         .registerModConfigScreen(
+    //#endif
+    //$$             screen -> {
     //$$                 ConfigGui gui = new ConfigGui();
+    //#if MC > 11903
+    //$$                 gui.setParent(screen);
+    //#else
     //$$                 gui.setParentGui(screen);
+    //#endif
     //$$                 return gui;
     //$$             });
     //$$ }

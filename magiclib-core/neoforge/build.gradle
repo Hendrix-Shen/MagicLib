@@ -17,7 +17,7 @@ java {
 }
 
 processResources {
-    filesMatching("META-INF/mods.toml") {
+    filesMatching(["META-INF/mods.toml", "META-INF/neoforge.mods.toml"]) {
         expand([
                 "mod_description": project.parent.property("mod.description"),
                 "mod_homepage"   : project.parent.property("mod.homepage"),

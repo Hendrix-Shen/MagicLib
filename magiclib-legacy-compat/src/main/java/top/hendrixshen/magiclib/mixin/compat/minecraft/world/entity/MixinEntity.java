@@ -19,7 +19,10 @@ import java.util.UUID;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity implements EntityCompatApi {
-    //#if MC > 11903
+    //#if MC > 12004
+    //$$ @Shadow
+    //$$ public abstract float maxUpStep();
+    //#elseif MC > 11903
     //$$ @Shadow
     //$$ private float maxUpStep;
     //$$
@@ -217,12 +220,18 @@ public abstract class MixinEntity implements EntityCompatApi {
 
     @Override
     public float maxUpStepCompat() {
+        //#if MC > 12004
+        //$$ return this.maxUpStep();
+        //#else
         return this.maxUpStep;
+        //#endif
     }
 
     @Override
     public void setMaxUpStepCompat(float maxUpStep) {
-        //#if MC > 11903
+        //#if MC > 12004
+        //$$ throw new UnsupportedOperationException();
+        //#elseif MC > 11903
         //$$ this.setMaxUpStep(maxUpStep);
         //#else
         this.maxUpStep = maxUpStep;
