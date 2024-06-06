@@ -38,8 +38,31 @@ public class MixinLevelRenderer {
                     //#endif
             )
     )
-    private void postRenderLevelNormal(PoseStack poseStack, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, CallbackInfo ci) {
-        RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(this.level, poseStack, tickDelta);
+    private void postRenderLevelNormal(
+            //#if MC < 12005
+            PoseStack poseStack,
+            //#endif
+            float tickDelta,
+            long limitTime,
+            boolean renderBlockOutline,
+            Camera camera,
+            GameRenderer gameRenderer,
+            LightTexture lightTexture,
+            Matrix4f matrix4f,
+            //#if MC > 12004
+            //$$ Matrix4f matrix4f2,
+            //#endif
+            CallbackInfo ci
+    ) {
+        RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(
+                this.level,
+                //#if MC > 12004
+                //$$ new PoseStack(),
+                //#elseif MC > 11502
+                poseStack,
+                //#endif
+                tickDelta
+        );
     }
 
     //#if MC > 11502
@@ -62,8 +85,31 @@ public class MixinLevelRenderer {
                     target = "Lnet/minecraft/client/renderer/PostChain;process(F)V"
             )
     )
-    private void postRenderLevelFabulous(PoseStack poseStack, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, CallbackInfo ci) {
-        RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(this.level, poseStack, tickDelta);
+    private void postRenderLevelFabulous(
+            //#if MC < 12005
+            PoseStack poseStack,
+            //#endif
+            float tickDelta,
+            long limitTime,
+            boolean renderBlockOutline,
+            Camera camera,
+            GameRenderer gameRenderer,
+            LightTexture lightTexture,
+            Matrix4f matrix4f,
+            //#if MC > 12004
+            //$$ Matrix4f matrix4f2,
+            //#endif
+            CallbackInfo ci
+    ) {
+        RenderEventHandler.getInstance().dispatchPostRenderLevelEvent(
+                this.level,
+                //#if MC > 12004
+                //$$ new PoseStack(),
+                //#elseif MC > 11502
+                poseStack,
+                //#endif
+                tickDelta
+        );
     }
     //#endif
 }
