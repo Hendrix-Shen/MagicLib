@@ -42,7 +42,7 @@ public abstract class MixinBlockEntity implements BlockEntityCompatApi {
             //$$ , HolderLookup.Provider provider
             //#endif
     ) {
-        //#if MC > 11204
+        //#if MC > 12004
         //$$ this.loadWithComponents(compoundTag, provider);
         //#elseif MC > 11605 || MC <= 11502
         //$$ this.load(compoundTag);

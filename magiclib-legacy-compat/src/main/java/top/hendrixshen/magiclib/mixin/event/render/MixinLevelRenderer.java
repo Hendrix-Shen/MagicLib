@@ -58,7 +58,7 @@ public class MixinLevelRenderer {
                 this.level,
                 //#if MC > 12004
                 //$$ new PoseStack(),
-                //#elseif MC > 11502
+                //#else
                 poseStack,
                 //#endif
                 tickDelta
@@ -105,7 +105,7 @@ public class MixinLevelRenderer {
                 this.level,
                 //#if MC > 12004
                 //$$ new PoseStack(),
-                //#elseif MC > 11502
+                //#else
                 poseStack,
                 //#endif
                 tickDelta
