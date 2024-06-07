@@ -1,3 +1,23 @@
+/*
+ * This file is part of the Carpet TIS Addition project, licensed under the
+ * GNU Lesser General Public License v3.0
+ *
+ * Copyright (C) 2023  Fallen_Breath and contributors
+ *
+ * Carpet TIS Addition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Carpet TIS Addition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Carpet TIS Addition.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.hendrixshen.magiclib.impl.compat.minecraft.world.level.dimension;
 
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +35,7 @@ import net.minecraft.resources.ResourceKey;
 //#endif
 
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/">Carpet-TIS-Addition</a>
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/f407a6338363cc2ffe87c19759a36c53e1b0fec0/src/main/java/carpettisaddition/utils/compat/DimensionWrapper.java">Carpet-TIS-Addition</a>
  * <p>
  * A wrapper class to deal with dimension type class differences between minecraft version:
  * <li>DimensionType in 1.15-</li>
