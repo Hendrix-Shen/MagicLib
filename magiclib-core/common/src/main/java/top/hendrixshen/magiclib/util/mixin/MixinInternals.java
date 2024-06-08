@@ -1,5 +1,7 @@
 package top.hendrixshen.magiclib.util.mixin;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.MixinEnvironment;
@@ -11,8 +13,6 @@ import org.spongepowered.asm.mixin.transformer.ext.IExtensionRegistry;
 import org.spongepowered.asm.mixin.transformer.ext.ITargetClassContext;
 import top.hendrixshen.magiclib.util.ReflectionUtil;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
-import top.hendrixshen.magiclib.util.collect.tuple.ImmutablePair;
-import top.hendrixshen.magiclib.util.collect.tuple.Pair;
 
 import java.util.List;
 import java.util.Map;

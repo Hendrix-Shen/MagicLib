@@ -64,6 +64,7 @@ subprojects {
         annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
 
         // Other
+        compileOnly("org.apache.commons:commons-lang3:${project.property("dependencies.apache_common_lang3_version")}")
         compileOnly("com.google.code.gson:gson:${project.property("dependencies.gson_version")}")
         compileOnly("com.google.guava:guava:${project.property("dependencies.guava_version")}")
         compileOnly("org.jetbrains:annotations:${project.property("dependencies.jetbrains_annotations_version")}")
