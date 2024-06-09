@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.util;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -18,6 +19,14 @@ public class ReflectionUtil {
 
     public static @NotNull ValueContainer<Class<?>> getClass(@NotNull Class<?> clazz) {
         return ValueContainer.of(clazz);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static @NotNull <T extends Annotation> ValueContainer<Class<T>> getAnnotationClass(String className) {
+        return ReflectionUtil.getClass(className)
+                .filter(Class::isAnnotation)
+                .map(clazz -> (Class<T>) clazz)
+                .or(() -> ValueContainer.exception(new RuntimeException("Class" + className + " is not an annotation.")));
     }
 
     public static <T> @NotNull ValueContainer<T> newInstance(String className, Class<?>[] type, Object... args) {
@@ -44,6 +53,19 @@ public class ReflectionUtil {
         } catch (Exception e) {
             return ValueContainer.exception(e);
         }
+    }
+
+    public static ValueContainer<Field> getStaticField(String className, String fieldName) {
+        return ReflectionUtil.getDeclaredField(className, fieldName, null);
+    }
+
+    public static ValueContainer<Field> getStaticField(@NotNull ValueContainer<Class<?>> classContainer,
+                                                       String fieldName) {
+        return ReflectionUtil.getDeclaredField(classContainer, fieldName, null);
+    }
+
+    public static @NotNull ValueContainer<Field> getStaticField(@NotNull Class<?> clazz, String fieldName) {
+        return ReflectionUtil.getDeclaredField(clazz, fieldName, null);
     }
 
     public static <T> ValueContainer<T> getStaticFieldValue(String className, String fieldName) {
@@ -76,6 +98,29 @@ public class ReflectionUtil {
 
     public static ValueContainer<Boolean> setStaticFieldValue(@NotNull Class<?> clazz, String fieldName, Object value) {
         return ReflectionUtil.setDeclaredFieldValue(clazz, fieldName, null, value);
+    }
+
+    public static ValueContainer<Field> getDeclaredField(String className, String fieldName, Object instance) {
+        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
+        return ReflectionUtil.getDeclaredField(clazz, fieldName, instance);
+    }
+
+    public static ValueContainer<Field> getDeclaredField(@NotNull ValueContainer<Class<?>> classContainer,
+                                                         String fieldName, Object instance) {
+        if (classContainer.isException()) {
+            return ValueContainer.exception(classContainer.getException());
+        }
+
+        return ReflectionUtil.getDeclaredField(classContainer.get(), fieldName, instance);
+    }
+
+    public static @NotNull ValueContainer<Field> getDeclaredField(@NotNull Class<?> clazz, String fieldName,
+                                                                  Object instance) {
+        try {
+            return ValueContainer.ofNullable(clazz.getDeclaredField(fieldName));
+        } catch (Exception e) {
+            return ValueContainer.exception(e);
+        }
     }
 
     public static <T> ValueContainer<T> getDeclaredFieldValue(String className, String fieldName, Object instance) {
@@ -127,6 +172,29 @@ public class ReflectionUtil {
             field.setAccessible(true);
             field.set(instance, value);
             return ValueContainer.of(true);
+        } catch (Exception e) {
+            return ValueContainer.exception(e);
+        }
+    }
+
+    public static ValueContainer<Field> getField(String className, String fieldName, Object instance) {
+        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
+        return ReflectionUtil.getField(clazz, fieldName, instance);
+    }
+
+    public static ValueContainer<Field> getField(@NotNull ValueContainer<Class<?>> classContainer,
+                                                 String fieldName, Object instance) {
+        if (classContainer.isException()) {
+            return ValueContainer.exception(classContainer.getException());
+        }
+
+        return ReflectionUtil.getField(classContainer.get(), fieldName, instance);
+    }
+
+    public static @NotNull ValueContainer<Field> getField(@NotNull Class<?> clazz, String fieldName,
+                                                          Object instance) {
+        try {
+            return ValueContainer.ofNullable(clazz.getField(fieldName));
         } catch (Exception e) {
             return ValueContainer.exception(e);
         }
@@ -243,6 +311,28 @@ public class ReflectionUtil {
             @SuppressWarnings("unchecked")
             ValueContainer<T> container = ValueContainer.of((T) method.invoke(instance, args));
             return container;
+        } catch (Exception e) {
+            return ValueContainer.exception(e);
+        }
+    }
+
+    public static <T extends Annotation> ValueContainer<T> getFieldAnnotation(Field field, String annotationClassName) {
+        ValueContainer<Class<T>> clazz = ReflectionUtil.getAnnotationClass(annotationClassName);
+        return ReflectionUtil.getFieldAnnotation(field, clazz);
+    }
+
+    public static <T extends Annotation> ValueContainer<T> getFieldAnnotation(
+            Field field, @NotNull ValueContainer<Class<T>> classContainer) {
+        if (classContainer.isException()) {
+            return ValueContainer.exception(classContainer.getException());
+        }
+
+        return ReflectionUtil.getFieldAnnotation(field, classContainer.get());
+    }
+
+    public static <T extends Annotation> ValueContainer<T> getFieldAnnotation(Field field, Class<T> annotationClass) {
+        try {
+            return ValueContainer.ofNullable(field.getAnnotation(annotationClass));
         } catch (Exception e) {
             return ValueContainer.exception(e);
         }

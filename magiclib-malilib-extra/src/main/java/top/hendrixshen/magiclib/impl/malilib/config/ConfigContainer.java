@@ -29,23 +29,27 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
+import top.hendrixshen.magiclib.api.malilib.annotation.Statistic;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.game.malilib.Configs;
 import top.hendrixshen.magiclib.impl.dependency.DependenciesContainer;
 import top.hendrixshen.magiclib.impl.dependency.DependencyCheckResult;
 import top.hendrixshen.magiclib.impl.malilib.config.statistic.ConfigStatistic;
+import top.hendrixshen.magiclib.util.DependencyUtil;
 import top.hendrixshen.magiclib.util.collect.InfoNode;
+import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
-import java.util.Arrays;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/TweakerMoreOption.java">TweakerMore<a/>
  */
 public class ConfigContainer {
     private final Config configAnnotation;
+    @NotNull
+    private final ValueContainer<Statistic> statisticAnnotation;
     @Getter
     private final MagicIConfigBase config;
     private final List<DependenciesContainer<ConfigContainer>> dependencies;
@@ -57,13 +61,12 @@ public class ConfigContainer {
     @Getter
     private boolean appendFooterFlag = true;
 
-    public ConfigContainer(@NotNull Config configAnnotation, MagicIConfigBase config) {
+    public ConfigContainer(@NotNull Config configAnnotation, @NotNull Field field, MagicIConfigBase config) {
         this.configAnnotation = configAnnotation;
         this.config = config;
-        this.dependencies = Arrays.stream(this.configAnnotation.compositeDependencies().value())
-                .map(deps -> DependenciesContainer.of(deps, this))
-                .collect(Collectors.toList());
+        this.statisticAnnotation = ValueContainer.ofNullable(field.getAnnotation(Statistic.class));
         this.statistic = new ConfigStatistic();
+        this.dependencies = DependencyUtil.parseDependencies(field, this);
     }
 
     public String getCategory() {
@@ -92,12 +95,12 @@ public class ConfigContainer {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean shouldStatisticHotkey() {
-        return this.configAnnotation.statistic().hotkey();
+        return this.statisticAnnotation.map(Statistic::hotkey).orElse(true);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean shouldStatisticValueChange() {
-        return this.configAnnotation.statistic().valueChanged();
+        return this.statisticAnnotation.map(Statistic::valueChanged).orElse(true);
     }
 
     public void setCommentModifier(@Nullable Function<String, String> commentModifier) {

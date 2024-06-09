@@ -60,7 +60,7 @@ public class MagicConfigManagerImpl implements MagicConfigManager, IKeybindProvi
                     continue;
                 }
 
-                ConfigContainer configContainer = new ConfigContainer(annotation, (MagicIConfigBase) config);
+                ConfigContainer configContainer = new ConfigContainer(annotation, field, (MagicIConfigBase) config);
                 this.CONTAINERS.add(configContainer);
                 this.CATEGORIES.add(configContainer.getCategory());
                 this.CATEGORY_TO_CONTAINERS.computeIfAbsent(configContainer.getCategory(),
