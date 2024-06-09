@@ -1,6 +1,5 @@
 package top.hendrixshen.magiclib.util;
 
-import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -16,57 +15,60 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DependencyUtil {
-    public static @NotNull List<AnnotationNode> parseDependencies(ClassNode classNode) {
-        AnnotationNode compositeNode = Annotations.getVisible(classNode, CompositeDependencies.class);
+    public static <T> List<DependenciesContainer<T>> parseDependencies(ClassNode classNode, T instance) {
+        List<DependenciesContainer<T>> composite = DependencyUtil.convertCompositeDependencies(ValueContainer
+                .ofNullable(Annotations.getVisible(classNode, CompositeDependencies.class)), instance);
 
-        if (compositeNode == null) {
-            AnnotationNode dependenciesNode = Annotations.getVisible(classNode, Dependencies.class);
-
-            if (dependenciesNode != null) {
-                return Lists.newArrayList(dependenciesNode);
-            }
-        } else {
-            return Annotations.getValue(compositeNode, "value", true);
+        if (!composite.isEmpty()) {
+            return composite;
         }
 
-        return Collections.emptyList();
+        return DependencyUtil.convertDependencies(ValueContainer.ofNullable(Annotations.getVisible(classNode,
+                Dependencies.class)), instance);
     }
 
-    public static @NotNull List<AnnotationNode> parseDependencies(MethodNode methodNode) {
-        AnnotationNode compositeNode = Annotations.getVisible(methodNode, CompositeDependencies.class);
+    public static @NotNull <T> List<DependenciesContainer<T>> parseDependencies(MethodNode methodNode, T instance) {
+        List<DependenciesContainer<T>> composite = DependencyUtil.convertCompositeDependencies(ValueContainer
+                .ofNullable(Annotations.getVisible(methodNode, CompositeDependencies.class)), instance);
 
-        if (compositeNode == null) {
-            AnnotationNode dependenciesNode = Annotations.getVisible(methodNode, Dependencies.class);
-
-            if (dependenciesNode != null) {
-                return Lists.newArrayList(dependenciesNode);
-            }
-        } else {
-            return Annotations.getValue(compositeNode, "value", true);
+        if (!composite.isEmpty()) {
+            return composite;
         }
 
-        return Collections.emptyList();
+        return DependencyUtil.convertDependencies(ValueContainer.ofNullable(Annotations.getVisible(methodNode,
+                Dependencies.class)), instance);
     }
 
-    public static @NotNull List<AnnotationNode> parseDependencies(FieldNode fieldNode) {
-        AnnotationNode compositeNode = Annotations.getVisible(fieldNode, CompositeDependencies.class);
+    public static @NotNull <T> List<DependenciesContainer<T>> parseDependencies(FieldNode fieldNode, T instance) {
+        List<DependenciesContainer<T>> composite = DependencyUtil.convertCompositeDependencies(ValueContainer
+                .ofNullable(Annotations.getVisible(fieldNode, CompositeDependencies.class)), instance);
 
-        if (compositeNode == null) {
-            AnnotationNode dependenciesNode = Annotations.getVisible(fieldNode, Dependencies.class);
-
-            if (dependenciesNode != null) {
-                return Lists.newArrayList(dependenciesNode);
-            }
-        } else {
-            return Annotations.getValue(compositeNode, "value", true);
+        if (!composite.isEmpty()) {
+            return composite;
         }
 
-        return Collections.emptyList();
+        return DependencyUtil.convertDependencies(ValueContainer.ofNullable(Annotations.getVisible(fieldNode,
+                Dependencies.class)), instance);
+    }
+
+    private static <T> List<DependenciesContainer<T>> convertCompositeDependencies(
+            @NotNull ValueContainer<AnnotationNode> composite, T instance) {
+        return composite.map(compositeNode -> Annotations.getValue(compositeNode, "value", true))
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(dependenciesNode -> DependenciesContainer.of((AnnotationNode) dependenciesNode, instance))
+                .collect(Collectors.toList());
+    }
+
+    private static <T> List<DependenciesContainer<T>> convertDependencies(
+            @NotNull ValueContainer<AnnotationNode> dependencies, T instance) {
+        return dependencies.stream()
+                .map(d -> DependenciesContainer.of(d, instance))
+                .collect(Collectors.toList());
     }
 
     public static <T> @NotNull List<DependenciesContainer<T>> parseDependencies(@NotNull Field field, T instance) {

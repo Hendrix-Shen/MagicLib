@@ -20,10 +20,10 @@ import top.hendrixshen.magiclib.util.DependencyUtil;
 import top.hendrixshen.magiclib.util.MiscUtil;
 import top.hendrixshen.magiclib.util.collect.InfoNode;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 @ApiStatus.Internal
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -57,7 +57,7 @@ public final class EntryPointDependency {
     }
 
     private @Nullable DependencyCheckException check(ModMetaDataAdapter modMetaDataAdapter, ClassNode entryPoint) {
-        List<DependenciesContainer<?>> dependencies = Lists.newArrayList();
+        List<DependenciesContainer<Object>> dependencies = Lists.newArrayList();
 
         if (MagicLib.getInstance().getCurrentPlatform().getCurrentDistType()
                 .matches(DistType.CLIENT)) {
@@ -85,12 +85,9 @@ public final class EntryPointDependency {
                 continue;
             }
 
-            return DependencyUtil.parseDependencies(method)
-                    .stream()
-                    .map(node -> DependenciesContainer.of(node, null))
-                    .collect(Collectors.toList());
+            return DependencyUtil.parseDependencies(method, null);
         }
 
-        return Lists.newArrayList();
+        return Collections.emptyList();
     }
 }

@@ -20,7 +20,6 @@
 
 package top.hendrixshen.magiclib.impl.mixin.checker;
 
-import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import top.hendrixshen.magiclib.api.dependency.DependencyCheckException;
 import top.hendrixshen.magiclib.api.i18n.I18n;
@@ -30,11 +29,9 @@ import top.hendrixshen.magiclib.impl.dependency.DependenciesContainer;
 import top.hendrixshen.magiclib.util.DependencyUtil;
 import top.hendrixshen.magiclib.util.MiscUtil;
 import top.hendrixshen.magiclib.util.collect.InfoNode;
-import top.hendrixshen.magiclib.util.collect.ValueContainer;
 import top.hendrixshen.magiclib.util.mixin.MixinUtil;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/conditional-mixin/blob/88cbb739c375925b134a464428a1f67ee3bd74e2/common/src/main/java/me/fallenbreath/conditionalmixin/impl/SimpleRestrictionChecker.java">conditional mixin<a/>
@@ -51,24 +48,19 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
             return false;
         }
 
-        List<AnnotationNode> nodes = DependencyUtil.parseDependencies(mixinClassNode);
+        List<DependenciesContainer<ClassNode>> nodes = DependencyUtil.parseDependencies(mixinClassNode, targetClassNode);
 
         if (nodes.isEmpty()) {
             return true;
         }
 
-        List<DependenciesContainer<?>> dependencies = nodes
-                .stream()
-                .map(node -> DependenciesContainer.of(node, targetClassNode))
-                .collect(Collectors.toList());
-
-        if (dependencies.stream().anyMatch(DependenciesContainer::isSatisfied)) {
+        if (nodes.stream().anyMatch(DependenciesContainer::isSatisfied)) {
             return true;
         }
 
         InfoNode rootNode = new InfoNode(null, I18n.tr("magiclib.dependency.checker.mixin.title",
                 mixinClassName, targetClassName));
-        MiscUtil.generateDependencyCheckMessage(dependencies, rootNode);
+        MiscUtil.generateDependencyCheckMessage(nodes, rootNode);
         this.onCheckFailure(targetClassName, mixinClassName, new DependencyCheckException(rootNode.toString()));
 
         return false;
