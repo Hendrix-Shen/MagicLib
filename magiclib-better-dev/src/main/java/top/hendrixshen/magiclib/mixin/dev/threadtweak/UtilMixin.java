@@ -31,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
@@ -43,14 +42,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Reference to <a href="https://github.com/UltimateBoomer/mc-smoothboot/blob/9a519ade89af24aa8b337dfed7d8eb8c0b62ec81/src/main/java/io/github/ultimateboomer/smoothboot/mixin/UtilMixin.java">SmoothBoot<a/>
  */
-@CompositeDependencies(
-        @Dependencies(
-                require = @Dependency(
-                        dependencyType = DependencyType.PREDICATE,
-                        predicate = MixinPredicates.TheadTweakPredicate.class
-                )
-        )
-)
+@Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.TheadTweakPredicate.class))
 @Mixin(Util.class)
 public class UtilMixin {
     //#if MC > 11502

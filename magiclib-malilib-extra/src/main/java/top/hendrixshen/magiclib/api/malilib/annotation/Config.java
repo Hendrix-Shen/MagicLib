@@ -22,9 +22,5 @@ public @interface Config {
 
     boolean devOnly() default false;
 
-    Statistic statistic() default @Statistic;
-
-    CompositeDependencies compositeDependencies() default @CompositeDependencies();
-
     String defaultCategory = "all";
 }

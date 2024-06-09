@@ -26,7 +26,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
@@ -34,14 +33,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 /**
  * Reference to <a href="https://github.com/magistermaks/mod-fungible/blob/9cd81f1d8ebcef43cff3df279aaef9bb68950e7c/src/main/java/net/darktree/fungible/mixin/chunk_loading/MinecraftServerMixin.java">Fungible<a/>
  */
-@CompositeDependencies(
-        @Dependencies(
-                require = @Dependency(
-                        dependencyType = DependencyType.PREDICATE,
-                        predicate = MixinPredicates.ChunkPredicate.class
-                )
-        )
-)
+@Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.ChunkPredicate.class))
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
     @Inject(

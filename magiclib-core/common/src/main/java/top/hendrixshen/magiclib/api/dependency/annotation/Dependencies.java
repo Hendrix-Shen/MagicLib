@@ -1,13 +1,12 @@
 package top.hendrixshen.magiclib.api.dependency.annotation;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Dependencies annotation.
  */
-@Target({ /* No targets allowed */})
+@Repeatable(CompositeDependencies.class)
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dependencies {
     /**

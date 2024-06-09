@@ -27,7 +27,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
@@ -35,14 +34,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 /**
  * Reference to <a href="https://github.com/magistermaks/mod-fungible/blob/9cd81f1d8ebcef43cff3df279aaef9bb68950e7c/src/main/java/net/darktree/fungible/mixin/dfu/DatafixTypesMixin.java">Fungible<a/>
  */
-@CompositeDependencies(
-        @Dependencies(
-                require = @Dependency(
-                        dependencyType = DependencyType.PREDICATE,
-                        predicate = MixinPredicates.DestroyDFUPredicate.class
-                )
-        )
-)
+@Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.DestroyDFUPredicate.class))
 @Mixin(value = DataFixerUpper.class, remap = false)
 public class DataFixerUpperMixin {
     @Inject(

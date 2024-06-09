@@ -31,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
@@ -39,14 +38,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 /**
  * Reference to <a href="https://github.com/astei/lazydfu/blob/a83ce2f3e7deb429d48134700424b4454f3bee8b/src/main/java/me/steinborn/lazydfu/mixin/SharedConstantsMixin.java">LazyDFU<a/>
  */
-@CompositeDependencies(
-        @Dependencies(
-                require = @Dependency(
-                        dependencyType = DependencyType.PREDICATE,
-                        predicate = MixinPredicates.LazyDFUPredicate.class
-                )
-        )
-)
+@Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.LazyDFUPredicate.class))
 @Mixin(SharedConstants.class)
 public class SharedConstantsMixin {
     @Inject(

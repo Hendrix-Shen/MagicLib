@@ -26,7 +26,7 @@ public class MiscUtil {
         return (T) obj;
     }
 
-    public static void generateDependencyCheckMessage(@NotNull List<DependenciesContainer<?>> dependencies,
+    public static <T> void generateDependencyCheckMessage(@NotNull List<DependenciesContainer<T>> dependencies,
                                                       InfoNode rootNode) {
         boolean first = true;
         boolean composite = false;

@@ -18,7 +18,7 @@ public class MixinUtil {
         try {
             return MixinService.getService().getBytecodeProvider().getClassNode(className);
         } catch (ClassNotFoundException | IOException e) {
-            MagicLib.getLogger().error("Failed to fetch class node {}: ", className, e);
+            MagicLib.getLogger().error("Failed to fetch class node {}: ", className);
         }
 
         return null;

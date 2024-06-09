@@ -10,28 +10,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.mixin.BuiltInPredicates;
 
-@CompositeDependencies({
-        @Dependencies(
-                require = {
-                        @Dependency(dependencyType = DependencyType.MOD_ID, value = "malilib"),
-                        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
-                        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class),
-
-                }
-        ),
-        @Dependencies(
-                require = {
-                        @Dependency(dependencyType = DependencyType.MOD_ID, value = "mafglib"),
-                        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
-                        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class),
-
-                }
-        )
+@Dependencies(require = {
+        @Dependency(dependencyType = DependencyType.MOD_ID, value = "malilib"),
+        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
+        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
+})
+@Dependencies(require = {
+        @Dependency(dependencyType = DependencyType.MOD_ID, value = "mafglib"),
+        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
+        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
 })
 @Mixin(value = GuiTextFieldGeneric.class, remap = false)
 public class GuiTextFieldGenericMixin extends EditBox {

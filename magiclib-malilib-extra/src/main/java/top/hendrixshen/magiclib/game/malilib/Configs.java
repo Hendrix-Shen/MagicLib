@@ -21,7 +21,8 @@ public class Configs {
     private static final MagicConfigManager cm = SharedConstants.getConfigManager();
     private static final MagicConfigFactory cf = Configs.cm.getConfigFactory();
 
-    @Config(category = ConfigCategory.GENERIC, statistic = @Statistic(hotkey = false))
+    @Statistic(hotkey = false)
+    @Config(category = ConfigCategory.GENERIC)
     public static MagicConfigHotkey openConfigGui = Configs.cf.newConfigHotkey("openConfigGui", "M,A,G");
 
     @Config(category = ConfigCategory.DEBUG)
@@ -30,10 +31,12 @@ public class Configs {
     @Config(category = ConfigCategory.DEBUG, debugOnly = true)
     public static MagicConfigBoolean hideUnavailableConfigs = Configs.cf.newConfigBoolean("hideUnavailableConfigs", true);
 
-    @Config(category = ConfigCategory.DEBUG, debugOnly = true, statistic = @Statistic(hotkey = false))
+    @Statistic(hotkey = false)
+    @Config(category = ConfigCategory.DEBUG, debugOnly = true)
     public static MagicConfigHotkey resetAllConfigStatistic = Configs.cf.newConfigHotkey("resetAllConfigStatistic");
 
-    @Config(category = ConfigCategory.DEBUG, debugOnly = true, statistic = @Statistic(hotkey = false))
+    @Statistic(hotkey = false)
+    @Config(category = ConfigCategory.DEBUG, debugOnly = true)
     public static MagicConfigHotkey resetMagicLibConfigStatistic = Configs.cf.newConfigHotkey("resetMagicLibConfigStatistic");
 
     @Config(category = ConfigCategory.TEST, debugOnly = true)
@@ -69,41 +72,25 @@ public class Configs {
     @Config(category = ConfigCategory.TEST, debugOnly = true)
     public static final MagicConfigStringList testConfigStringList = Configs.cf.newConfigStringList("testConfigStringList", ImmutableList.of("test1", "test2"));
 
-    @Config(category = ConfigCategory.TEST, debugOnly = true, compositeDependencies = @CompositeDependencies(
-            {
-                    @Dependencies(
-                            conflict = {
-                                    @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "<2.0"),
-                            },
-                            require = {
-                                    @Dependency(dependencyType = DependencyType.MOD_ID, value = "dummy-lib", versionPredicates = "*")
-                            }
-                    )
-            }
-    ))
+    @Dependencies(
+            conflict = @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "<2.0"),
+            require = @Dependency(dependencyType = DependencyType.MOD_ID, value = "dummy-lib", versionPredicates = "*")
+    )
+    @Config(category = ConfigCategory.TEST, debugOnly = true)
     public static MagicConfigBoolean testDependencies = Configs.cf.newConfigBoolean("testDependencies", false);
 
-    @Config(category = ConfigCategory.TEST, debugOnly = true, compositeDependencies = @CompositeDependencies(
-            {
-                    @Dependencies(
-                            conflict = {
-                                    @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "<2.0"),
-                            },
-                            require = {
-                                    @Dependency(dependencyType = DependencyType.MOD_ID, value = "dummy-lib", versionPredicates = "*")
-                            }
-                    ),
-                    @Dependencies(
-                            conflict = {
-                                    @Dependency(dependencyType = DependencyType.MOD_ID, value = "magiclib_core", versionPredicates = "*"),
-                            },
-                            require = {
-                                    @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "*"),
-                                    @Dependency(dependencyType = DependencyType.MOD_ID, value = "dummy", versionPredicates = ">0.15.5")
-                            }
-                    )
+    @Dependencies(
+            conflict = @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "<2.0"),
+            require = @Dependency(dependencyType = DependencyType.MOD_ID, value = "dummy-lib", versionPredicates = "*")
+    )
+    @Dependencies(
+            conflict = @Dependency(dependencyType = DependencyType.MOD_ID, value = "magiclib_core", versionPredicates = "*"),
+            require = {
+                    @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "*"),
+                    @Dependency(dependencyType = DependencyType.MOD_ID, value = "dummy", versionPredicates = ">0.15.5")
             }
-    ))
+    )
+    @Config(category = ConfigCategory.TEST, debugOnly = true)
     public static MagicConfigBoolean testDependenciesComposite = Configs.cf.newConfigBoolean("testDependenciesComposite", false);
 
     public static void init() {

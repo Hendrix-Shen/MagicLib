@@ -28,7 +28,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
@@ -36,14 +35,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/versions/1.16.5/src/main/java/me/fallenbreath/tweakermore/mixins/util/qol/MinecraftClientMixin.java">TweakerMore<a/>
  */
-@CompositeDependencies(
-        @Dependencies(
-                require = @Dependency(
-                        dependencyType = DependencyType.PREDICATE,
-                        predicate = MixinPredicates.AuthVerifyPredicate.class
-                )
-        )
-)
+@Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.AuthVerifyPredicate.class))
 @Environment(EnvType.CLIENT)
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
