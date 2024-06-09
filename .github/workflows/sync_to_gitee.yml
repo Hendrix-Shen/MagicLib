@@ -1,6 +1,10 @@
 name: Sync to Gitee
 
-on: [push]
+on:
+  push:
+    branches:
+      - 'dev/**'
+      - 'exp/**'
 
 jobs:
   sync:
