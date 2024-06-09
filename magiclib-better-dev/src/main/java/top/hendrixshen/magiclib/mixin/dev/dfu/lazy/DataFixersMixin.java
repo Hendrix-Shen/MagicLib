@@ -31,7 +31,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
@@ -40,14 +39,7 @@ import top.hendrixshen.magiclib.impl.dev.dfu.lazy.LazyDataFixerBuilder;
 /**
  * Reference to <a href="https://github.com/astei/lazydfu/blob/385764a6fb4cf57b7a39e0ff367a704f74f12497/src/main/java/me/steinborn/lazydfu/mixin/SchemasMixin.java">LazyDFU</a>
  */
-@CompositeDependencies(
-        @Dependencies(
-                require = @Dependency(
-                        dependencyType = DependencyType.PREDICATE,
-                        predicate = MixinPredicates.LazyDFUPredicate.class
-                )
-        )
-)
+@Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.LazyDFUPredicate.class))
 @Mixin(value = DataFixers.class, remap = false)
 public class DataFixersMixin {
     @Redirect(

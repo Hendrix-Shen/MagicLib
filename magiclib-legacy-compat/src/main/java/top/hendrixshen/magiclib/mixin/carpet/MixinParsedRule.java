@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.mixin.annotation.MagicInit;
@@ -29,7 +28,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -37,23 +35,21 @@ import java.util.stream.Stream;
 
 //#if MC > 11802
 //$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//#elseif MC <= 11605
-import top.hendrixshen.magiclib.carpet.impl.RuleHelper;
 //#else
-//#endif
-//#if MC <= 11802
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.hendrixshen.magiclib.util.MiscUtil;
+//#endif
+
+//#if MC > 11605
+//$$ import java.util.Collections;
+//#else
+import top.hendrixshen.magiclib.carpet.impl.RuleHelper;
 //#endif
 
 //#if MC > 11900
 //$$ @SuppressWarnings("removal")
 //#endif
-@CompositeDependencies(
-        @Dependencies(
-                require = @Dependency("carpet")
-        )
-)
+@Dependencies(require = @Dependency("carpet"))
 @Mixin(ParsedRule.class)
 public abstract class MixinParsedRule<T> {
     // All field are dummy.

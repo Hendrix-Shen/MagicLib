@@ -10,17 +10,12 @@ import fi.dy.masa.malilib.util.JsonUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.malilib.MixinPredicates;
 import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBooleanHotkeyed;
 
-@CompositeDependencies(
-        @Dependencies(
-                require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.Malilib_0_11_4.class)
-        )
-)
+@Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.Malilib_0_11_4.class))
 @Mixin(value = MagicConfigBooleanHotkeyed.class, remap = false)
 public abstract class MagicConfigBooleanHotkeyedMixin extends ConfigBoolean implements IHotkeyTogglable {
     public MagicConfigBooleanHotkeyedMixin(String name, boolean defaultValue, String comment) {
