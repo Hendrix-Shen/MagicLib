@@ -22,15 +22,15 @@ package top.hendrixshen.magiclib.impl.mixin.checker;
 
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.spongepowered.asm.util.Annotations;
 import top.hendrixshen.magiclib.api.dependency.DependencyCheckException;
-import top.hendrixshen.magiclib.api.dependency.annotation.CompositeDependencies;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyCheckFailureCallback;
 import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyChecker;
 import top.hendrixshen.magiclib.impl.dependency.DependenciesContainer;
+import top.hendrixshen.magiclib.util.DependencyUtil;
 import top.hendrixshen.magiclib.util.MiscUtil;
 import top.hendrixshen.magiclib.util.collect.InfoNode;
+import top.hendrixshen.magiclib.util.collect.ValueContainer;
 import top.hendrixshen.magiclib.util.mixin.MixinUtil;
 
 import java.util.List;
@@ -51,8 +51,7 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
             return false;
         }
 
-        AnnotationNode mixinConfigNode = Annotations.getVisible(mixinClassNode, CompositeDependencies.class);
-        List<AnnotationNode> nodes = Annotations.getValue(mixinConfigNode, "value", true);
+        List<AnnotationNode> nodes = DependencyUtil.parseDependencies(mixinClassNode);
 
         if (nodes.isEmpty()) {
             return true;

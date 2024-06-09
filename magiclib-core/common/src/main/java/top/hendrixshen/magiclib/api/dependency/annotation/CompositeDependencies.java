@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * CompositeDependencies annotation.
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CompositeDependencies {
     /**
