@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    id("java-library")
     id("maven-publish")
     id("signing")
 
@@ -10,7 +9,6 @@ plugins {
 
 allprojects {
     apply(plugin: "java")
-    apply(plugin: "java-library")
     apply(plugin: "maven-publish")
     apply(plugin: "signing")
 
@@ -130,7 +128,10 @@ subprojects {
         publications { PublicationContainer publications ->
             register("release", MavenPublication) { MavenPublication publication ->
                 artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
-                from(components.java as SoftwareComponent)
+                artifact(jar)
+                artifact(javadocJar)
+                artifact(sourcesJar)
+                artifact(shadowJar)
                 version("${project.getMavenArtifactVersion(this.project)}")
                 alias(false)
                 project.addPomMetadataInformation(this.project, publication)
@@ -138,7 +139,10 @@ subprojects {
 
             register("snapshot", MavenPublication) { MavenPublication publication ->
                 artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
-                from(components.java as SoftwareComponent)
+                artifact(jar)
+                artifact(javadocJar)
+                artifact(sourcesJar)
+                artifact(shadowJar)
                 version("${project.property("mod.version")}-SNAPSHOT")
                 alias(true)
                 project.addPomMetadataInformation(this.project, publication)

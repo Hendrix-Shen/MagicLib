@@ -3,14 +3,12 @@ import groovy.json.JsonSlurper
 
 plugins {
     id("java")
-    id("java-library")
     id("maven-publish")
     id("signing")
 }
 
 allprojects {
     apply(plugin: "java")
-    apply(plugin: "java-library")
     apply(plugin: "maven-publish")
     apply(plugin: "signing")
 }
@@ -166,7 +164,9 @@ subprojects {
         publications { PublicationContainer publications ->
             register("release", MavenPublication) { MavenPublication publication ->
                 artifactId("${project.parent.property("mod.artifact_name")}-${project.name}-${project.parent.name}")
-                from(components.java as SoftwareComponent)
+                artifact(jar)
+                artifact(javadocJar)
+                artifact(sourcesJar)
                 version("${this.project.getMavenArtifactVersion(rootProject)}")
                 alias(false)
                 this.project.addPomMetadataInformation(this.project, publication)
@@ -176,10 +176,10 @@ subprojects {
                     Node core_dependency = dependencies.appendNode("dependency")
                     core_dependency.appendNode("groupId", coreProject.group)
                     core_dependency.appendNode("artifactId", "${coreProject.parent.property("mod.artifact_name")}-${coreProject.name}")
-                    core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(rootProject)}")
+                    core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(coreProject.parent)}")
                     core_dependency.appendNode("scope", "compile")
                     submodules
-                            .findAll { !it.name.contains("magiclib-legacy-compat") }
+                            .findAll { !it.name.contains("legacy") }
                             .forEach { Project submodule ->
                                 Node dependency = dependencies.appendNode("dependency")
                                 dependency.appendNode("groupId", submodule.group)
@@ -192,7 +192,9 @@ subprojects {
 
             register("snapshot", MavenPublication) { MavenPublication publication ->
                 artifactId("${project.parent.property("mod.artifact_name")}-${project.name}-${project.parent.name}")
-                from(components.java as SoftwareComponent)
+                artifact(jar)
+                artifact(javadocJar)
+                artifact(sourcesJar)
                 version("${project.property("mod.version")}-SNAPSHOT")
                 alias(true)
                 project.addPomMetadataInformation(this.project, publication)
@@ -202,10 +204,10 @@ subprojects {
                     Node core_dependency = dependencies.appendNode("dependency")
                     core_dependency.appendNode("groupId", coreProject.group)
                     core_dependency.appendNode("artifactId", "${coreProject.parent.property("mod.artifact_name")}-${coreProject.name}")
-                    core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(rootProject)}")
+                    core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(coreProject.parent)}")
                     core_dependency.appendNode("scope", "compile")
                     submodules
-                            .findAll { !it.name.contains("magiclib-legacy-compat") }
+                            .findAll { !it.name.contains("legacy") }
                             .forEach { Project submodule ->
                                 Node dependency = dependencies.appendNode("dependency")
                                 dependency.appendNode("groupId", submodule.group)

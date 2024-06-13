@@ -239,6 +239,11 @@ subprojects {
 
                 pom.withXml { XmlProvider provider ->
                     Node dependencies = provider.asNode().appendNode("dependencies")
+                    Node core_dependency = dependencies.appendNode("dependency")
+                    core_dependency.appendNode("groupId", coreProject.group)
+                    core_dependency.appendNode("artifactId", "${coreProject.parent.property("mod.artifact_name")}-${coreProject.name}")
+                    core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(coreProject.parent)}")
+                    core_dependency.appendNode("scope", "compile")
                     submodules.forEach { Project submodule ->
                         Node dependency = dependencies.appendNode("dependency")
                         dependency.appendNode("groupId", submodule.group)
@@ -263,6 +268,11 @@ subprojects {
 
                 pom.withXml { XmlProvider provider ->
                     Node dependencies = provider.asNode().appendNode("dependencies")
+                    Node core_dependency = dependencies.appendNode("dependency")
+                    core_dependency.appendNode("groupId", coreProject.group)
+                    core_dependency.appendNode("artifactId", "${coreProject.parent.property("mod.artifact_name")}-${coreProject.name}")
+                    core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(coreProject.parent)}")
+                    core_dependency.appendNode("scope", "compile")
                     submodules.forEach { Project submodule ->
                         Node dependency = dependencies.appendNode("dependency")
                         dependency.appendNode("groupId", submodule.group)
