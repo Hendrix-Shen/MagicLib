@@ -18,8 +18,7 @@ public class CarpetEntrypoint {
             return;
         }
 
-        ReflectionUtil.invoke("top.hendrixshen.magiclib.carpet.impl.WrappedSettingManager", "register",
-                null,
+        ReflectionUtil.invokeStatic("top.hendrixshen.magiclib.carpet.impl.WrappedSettingManager", "register",
                 new Class[] {
                         String.class,
                         WrappedSettingManager.class,
