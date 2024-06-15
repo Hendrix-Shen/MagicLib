@@ -43,6 +43,7 @@ public class MagicConfigHandler implements IConfigHandler {
     private final File configFile;
     private JsonObject loadedJson = new JsonObject();
     private final Map<String, JsonSaveAble> internalDataSavers = Maps.newHashMap();
+    private final Map<String, JsonSaveAble> externalDataSavers = Maps.newHashMap();
     @Getter
     private final GlobalConfig globalConfig = new GlobalConfig();
 
@@ -66,6 +67,24 @@ public class MagicConfigHandler implements IConfigHandler {
         this.internalDataSavers.put("global", this.globalConfig);
         this.internalDataSavers.put("config_gui", this.configManager.getGuiSetting());
         this.internalDataSavers.put("configStatistic", new ConfigStatisticSaver(this.configManager));
+    }
+
+    public boolean registerExternalData(String namespace, JsonSaveAble data) {
+        if (this.externalDataSavers.containsKey(namespace)) {
+            return false;
+        }
+
+        this.externalDataSavers.put(namespace, data);
+        return true;
+    }
+
+    public boolean unregisterExternalData(String namespace) {
+        if (!this.externalDataSavers.containsKey(namespace)) {
+            return false;
+        }
+
+        this.externalDataSavers.remove(namespace);
+        return true;
     }
 
     public void loadConfig(JsonObject root) {
@@ -103,6 +122,7 @@ public class MagicConfigHandler implements IConfigHandler {
 
         this.loadConfig(root);
         this.loadInternal(root);
+        this.loadExternal(root);
 
         if (this.postDeserializeCallback != null) {
             this.postDeserializeCallback.accept(this);
@@ -118,17 +138,35 @@ public class MagicConfigHandler implements IConfigHandler {
 
         this.saveConfig(this.loadedJson);
         this.saveInternal(this.loadedJson);
+        this.saveExternal(this.loadedJson);
 
         if (this.postSerializeCallback != null) {
             this.postSerializeCallback.accept(this);
         }
     }
 
+    private void loadExternal(JsonObject jsonObject) {
+        this.loadInjected(jsonObject, "external", this.externalDataSavers);
+    }
+
+    private void saveExternal(JsonObject jsonObject) {
+        this.saveInjected(jsonObject, "external", this.internalDataSavers);
+    }
+
     private void loadInternal(JsonObject jsonObject) {
-        JsonObject internal = JsonUtils.getNestedObject(jsonObject, "internal", false);
-        if (internal != null) {
-            this.internalDataSavers.forEach((name, jsonSaveAble) -> {
-                JsonObject object = JsonUtils.getNestedObject(internal, name, false);
+        this.loadInjected(jsonObject, "internal", this.internalDataSavers);
+    }
+
+    private void saveInternal(JsonObject jsonObject) {
+        this.saveInjected(jsonObject, "internal", this.internalDataSavers);
+    }
+
+    private void loadInjected(JsonObject jsonObject, String namespace, Map<String, JsonSaveAble> mapping) {
+        JsonObject injected = JsonUtils.getNestedObject(jsonObject, namespace, false);
+
+        if (injected != null) {
+            mapping.forEach((name, jsonSaveAble) -> {
+                JsonObject object = JsonUtils.getNestedObject(injected, name, false);
 
                 if (object != null) {
                     jsonSaveAble.loadFromJsonSafe(object);
@@ -137,10 +175,10 @@ public class MagicConfigHandler implements IConfigHandler {
         }
     }
 
-    private void saveInternal(JsonObject jsonObject) {
-        JsonObject internal = JsonUtils.getNestedObject(jsonObject, "internal", true);
-        assert internal != null;
-        this.internalDataSavers.forEach((name, jsonSaveAble) -> internal.add(name, jsonSaveAble.dumpToJson()));
+    private void saveInjected(JsonObject jsonObject, String namespace, @NotNull Map<String, JsonSaveAble> mapping) {
+        JsonObject injected = JsonUtils.getNestedObject(jsonObject, namespace, true);
+        assert injected != null;
+        mapping.forEach((name, jsonSaveAble) -> injected.add(name, jsonSaveAble.dumpToJson()));
     }
 
     @Override
