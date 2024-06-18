@@ -150,7 +150,7 @@ public class MagicConfigHandler implements IConfigHandler {
     }
 
     private void saveExternal(JsonObject jsonObject) {
-        this.saveInjected(jsonObject, "external", this.internalDataSavers);
+        this.saveInjected(jsonObject, "external", this.externalDataSavers);
     }
 
     private void loadInternal(JsonObject jsonObject) {
