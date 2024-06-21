@@ -136,4 +136,23 @@ public class RenderGlobal {
         //$$ GlStateManager.blendFunc(srcFactor, dstFactor);
         //#endif
     }
+
+    public static void blendFuncSeparate(
+            GlStateManager.SourceFactor sourceFactor, GlStateManager.DestFactor destFactor,
+            GlStateManager.SourceFactor sourceFactorAlpha, GlStateManager.DestFactor destFactorAlpha
+    ) {
+        //#if MC > 11404
+        RenderSystem.blendFuncSeparate(sourceFactor, destFactor, sourceFactorAlpha, destFactorAlpha);
+        //#else
+        //$$ GlStateManager.blendFuncSeparate(sourceFactor, destFactor, sourceFactorAlpha, destFactorAlpha);
+        //#endif
+    }
+
+    public static void blendFuncSeparate(int sourceFactor, int destFactor, int sourceFactorAlpha, int destFactorAlpha) {
+        //#if MC > 11404
+        RenderSystem.blendFuncSeparate(sourceFactor, destFactor, sourceFactorAlpha, destFactorAlpha);
+        //#else
+        //$$ GlStateManager.blendFuncSeparate(sourceFactor, destFactor, sourceFactorAlpha, destFactorAlpha);
+        //#endif
+    }
 }

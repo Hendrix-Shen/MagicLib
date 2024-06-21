@@ -14,6 +14,7 @@
     "accessor.ScreenAccessor",
     "accessor.StringSplitterAccessor",
     "accessor.Vector4fAccessor",
+    "compat.FontMixin",
     "event.LanguageManagerMixin",
     "event.MinecraftMixin",
     "event.render.EntityRendererMixin",
