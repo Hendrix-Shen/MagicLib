@@ -39,6 +39,10 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+//#if MC >= 12100
+//$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.TesselatorAccessor;
+//#endif
+
 //#if MC > 12005 || MC < 11700 && MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
@@ -174,7 +178,11 @@ public class TextRenderer {
 
             while (true) {
                 MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(
+                        //#if MC >= 12100
+                        //$$ ((TesselatorAccessor) Tesselator.getInstance()).magiclib$getBuffer());
+                        //#else
                         Tesselator.getInstance().getBuilder());
+                        //#endif
                 //#if MC > 12004
                 //$$ Matrix4f matrix4f = context.getPoseStack().last().pose();
                 //#else

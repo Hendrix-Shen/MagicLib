@@ -25,6 +25,10 @@ import net.minecraft.client.gui.GuiComponent;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.impl.render.context.RenderContextImpl;
 
+//#if MC >= 12100
+//$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.TesselatorAccessor;
+//#endif
+
 //#if MC > 11904
 //$$ import com.mojang.blaze3d.vertex.Tesselator;
 //$$ import net.minecraft.client.Minecraft;
@@ -47,7 +51,11 @@ public interface RenderContext {
     ) {
         //#if MC > 11904
         //$$ GuiGraphics guiGraphics = new GuiGraphics(Minecraft.getInstance(),
+        //#if MC >= 12100
+        //$$         MultiBufferSource.immediate(((TesselatorAccessor) Tesselator.getInstance()).magiclib$getBuffer()));
+        //#else
         //$$         MultiBufferSource.immediate(Tesselator.getInstance().getBuilder()));
+        //#endif
         //$$ ((GuiGraphicsAccessor) guiGraphics).magiclib$setPose(poseStack);
         //#endif
 

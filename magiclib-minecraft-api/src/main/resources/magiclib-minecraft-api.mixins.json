@@ -13,6 +13,7 @@
     "accessor.QuaternionAccessor",
     "accessor.ScreenAccessor",
     "accessor.StringSplitterAccessor",
+    "accessor.TesselatorAccessor",
     "accessor.Vector4fAccessor",
     "event.LanguageManagerMixin",
     "event.MinecraftMixin",
