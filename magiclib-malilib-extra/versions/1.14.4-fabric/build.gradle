@@ -73,8 +73,8 @@ repositories {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["maven.modrinth:malilib"         , "malilib", fabricLike && mcVersion < 12005, false],
-        ["com.github.sakura-ryoko:malilib", "malilib", fabricLike && mcVersion > 12004, false],
+        ["maven.modrinth:malilib"         , "malilib", fabricLike && mcVersion < 12100, false],
+        ["com.github.sakura-ryoko:malilib", "malilib", fabricLike && mcVersion > 12006, false],
         ["maven.modrinth:mafglib"         , "malilib", forgeLike                      , false],
 ]
 
