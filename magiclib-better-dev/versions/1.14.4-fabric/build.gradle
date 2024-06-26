@@ -77,9 +77,9 @@ def apiDependencies = [
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def runtimeDependencies = [
-        ["maven.modrinth:in-game-account-switcher", "inGameAccountSwitcher", fabricLike || mcVersion < 11202, false],
-        ["maven.modrinth:imblocker"               , "imblockerfabric"      , fabricLike && mcVersion < 12002, false],
-        ["maven.modrinth:imblocker-original"      , "imblocker"            , forgeLike  && false            , false],
+        ["maven.modrinth:in-game-account-switcher", "inGameAccountSwitcher", fabricLike || mcVersion < 11202 , false],
+        ["maven.modrinth:imblocker"               , "imblockerfabric"      , fabricLike && mcVersion < 12002 , false],
+        ["maven.modrinth:imblocker-original"      , "imblocker"            , fabricLike && mcVersion >= 12100, false],
 ]
 
 dependencies {

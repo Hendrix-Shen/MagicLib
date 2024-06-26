@@ -24,6 +24,9 @@
 
 package top.hendrixshen.magiclib.impl.dev.threadtweak;
 
+//#if MC >= 12100
+//$$ import net.minecraft.ReportType;
+//#endif
 import net.minecraft.ReportedException;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.util.Mth;
@@ -69,7 +72,11 @@ public class ThreadTweaker {
             }
 
             if (throwable instanceof ReportedException) {
+                //#if MC >= 12100
+                //$$ Bootstrap.realStdoutPrintln(((ReportedException) throwable).getReport().getFriendlyReport(ReportType.CRASH));
+                //#else
                 Bootstrap.realStdoutPrintln(((ReportedException) throwable).getReport().getFriendlyReport());
+                //#endif
                 System.exit(-1);
             }
 
