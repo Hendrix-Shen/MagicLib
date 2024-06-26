@@ -23,4 +23,13 @@ public class LevelCompatImpl extends AbstractCompat<Level> implements LevelCompa
         //$$ return DimensionType.getName(this.get().dimension.getType());
         //#endif
     }
+
+    @Override
+    public int getMinBuildHeight() {
+        //#if MC > 11605
+        //$$ return this.get().getMinBuildHeight();
+        //#else
+        return 0;
+        //#endif
+    }
 }

@@ -109,6 +109,8 @@ subprojects {
     }
 
     processResources {
+        outputs.upToDateWhen { false }
+
         from(project.parent.sourceSets.main.resources.srcDirs) {
             include("fabric.mod.json")
             expand([
@@ -186,7 +188,7 @@ subprojects {
                                 dependency.appendNode("artifactId", "${submodule.parent.property("mod.artifact_name")}-${submodule.name.replace("${(settings.get("projects").get(submodule.parent.name) as Map<String, ?>).get("prefix")}-", "")}")
                                 dependency.appendNode("version", "${this.project.getMavenArtifactVersion(submodule.parent)}")
                                 dependency.appendNode("scope", "compile")
-                    }
+                            }
                 }
             }
 

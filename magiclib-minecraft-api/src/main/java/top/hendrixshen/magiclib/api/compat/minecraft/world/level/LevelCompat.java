@@ -12,4 +12,6 @@ public interface LevelCompat extends Provider<Level> {
     }
 
     ResourceLocation getDimensionLocation();
+
+    int getMinBuildHeight();
 }

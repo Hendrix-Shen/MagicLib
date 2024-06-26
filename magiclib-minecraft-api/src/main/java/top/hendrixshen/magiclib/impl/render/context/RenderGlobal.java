@@ -23,58 +23,29 @@ package top.hendrixshen.magiclib.impl.render.context;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+//#if MC > 11605
+//$$ import net.minecraft.client.renderer.ShaderInstance;
+//$$ import java.util.function.Supplier;
+//#endif
+
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>
  */
 public class RenderGlobal {
-    public static void enableDepthTest() {
-        //#if MC > 11404
-        RenderSystem.enableDepthTest();
-        //#else
-        //$$ GlStateManager.enableDepthTest();
-        //#endif
-    }
-
-    public static void disableDepthTest() {
-        //#if MC >= 11500
-        RenderSystem.disableDepthTest();
-        //#else
-        //$$ GlStateManager.disableDepthTest();
-        //#endif
-    }
-
-    //#if MC < 11904
-    public static void enableTexture() {
-        //#if MC > 11404
-        RenderSystem.enableTexture();
-        //#else
-        //$$ GlStateManager.enableTexture();
-        //#endif
-    }
-
-    public static void disableTexture() {
-        //#if MC > 11404
-        RenderSystem.disableTexture();
-        //#else
-        //$$ GlStateManager.disableTexture();
-        //#endif
-    }
-    //#endif
-
     //#if MC < 11700
-    public static void enableAlphaTest() {
-        //#if MC > 11404
-        RenderSystem.enableAlphaTest();
-        //#else
-        //$$ GlStateManager.enableAlphaTest();
-        //#endif
-    }
-
     public static void disableAlphaTest() {
         //#if MC > 11404
         RenderSystem.disableAlphaTest();
         //#else
         //$$ GlStateManager.disableAlphaTest();
+        //#endif
+    }
+
+    public static void enableAlphaTest() {
+        //#if MC > 11404
+        RenderSystem.enableAlphaTest();
+        //#else
+        //$$ GlStateManager.enableAlphaTest();
         //#endif
     }
 
@@ -95,21 +66,27 @@ public class RenderGlobal {
     }
     //#endif
 
+    public static void disableDepthTest() {
+        //#if MC > 11404
+        RenderSystem.disableDepthTest();
+        //#else
+        //$$ GlStateManager.disableDepthTest();
+        //#endif
+    }
+
+    public static void enableDepthTest() {
+        //#if MC > 11404
+        RenderSystem.enableDepthTest();
+        //#else
+        //$$ GlStateManager.enableDepthTest();
+        //#endif
+    }
+
     public static void depthMask(boolean mask) {
         //#if MC > 11404
         RenderSystem.depthMask(mask);
         //#else
         //$$ GlStateManager.depthMask(mask);
-        //#endif
-    }
-
-    public static void color4f(float red, float green, float blue, float alpha) {
-        //#if MC > 11605
-        //$$ RenderSystem.setShaderColor(red, green, blue, alpha);
-        //#elseif MC > 11404
-        RenderSystem.color4f(red, green, blue, alpha);
-        //#else
-        //$$ GlStateManager.color4f(red, green, blue, alpha);
         //#endif
     }
 
@@ -148,11 +125,65 @@ public class RenderGlobal {
         //#endif
     }
 
-    public static void blendFuncSeparate(int sourceFactor, int destFactor, int sourceFactorAlpha, int destFactorAlpha) {
+    public static void blendFuncSeparate(int sourceFactor, int destFactor,
+                                         int sourceFactorAlpha, int destFactorAlpha) {
         //#if MC > 11404
         RenderSystem.blendFuncSeparate(sourceFactor, destFactor, sourceFactorAlpha, destFactorAlpha);
         //#else
         //$$ GlStateManager.blendFuncSeparate(sourceFactor, destFactor, sourceFactorAlpha, destFactorAlpha);
         //#endif
     }
+
+    //#if MC < 11904
+    public static void enableTexture() {
+        //#if MC > 11404
+        RenderSystem.enableTexture();
+        //#else
+        //$$ GlStateManager.enableTexture();
+        //#endif
+    }
+
+    public static void disableTexture() {
+        //#if MC > 11404
+        RenderSystem.disableTexture();
+        //#else
+        //$$ GlStateManager.disableTexture();
+        //#endif
+    }
+    //#endif
+
+    public static void colorMask(boolean red, boolean green, boolean blue, boolean alpha) {
+        //#if MC > 11404
+        RenderSystem.colorMask(red, green, blue, alpha);
+        //#else
+        //$$ GlStateManager.colorMask(red, green, blue, alpha);
+        //#endif
+    }
+
+    public static void color4f(float red, float green, float blue, float alpha) {
+        //#if MC > 11605
+        //$$ RenderSystem.setShaderColor(red, green, blue, alpha);
+        //#elseif MC > 11404
+        RenderSystem.color4f(red, green, blue, alpha);
+        //#else
+        //$$ GlStateManager.color4f(red, green, blue, alpha);
+        //#endif
+    }
+
+    public static void defaultBlendFunc() {
+        //#if MC > 11404
+        RenderSystem.defaultBlendFunc();
+        //#else
+        //$$ RenderGlobal.blendFuncSeparate(
+        //$$         GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+        //$$         GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO
+        //$$ );
+        //#endif
+    }
+
+    //#if MC > 11605
+    //$$ public static void setShader(Supplier<ShaderInstance> supplier) {
+    //$$     RenderSystem.setShader(supplier);
+    //$$ }
+    //#endif
 }

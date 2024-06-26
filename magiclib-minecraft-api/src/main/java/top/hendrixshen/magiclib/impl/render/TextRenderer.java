@@ -107,7 +107,7 @@ public class TextRenderer {
      * double, double, int, float, boolean, float, boolean)}
      * <p>
      * Note:
-     * - shadow=true + seeThrough=false might result in weird rendering.
+     * <li>shadow=true + seeThrough=false might result in weird rendering.</li>
      */
     @SuppressWarnings("UnnecessaryLocalVariable")
     public void render() {
