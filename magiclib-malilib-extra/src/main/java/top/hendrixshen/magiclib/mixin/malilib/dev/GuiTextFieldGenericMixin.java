@@ -14,16 +14,24 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.mixin.BuiltInPredicates;
 
-@Dependencies(require = {
-        @Dependency(dependencyType = DependencyType.MOD_ID, value = "malilib"),
-        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
-        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
-})
-@Dependencies(require = {
-        @Dependency(dependencyType = DependencyType.MOD_ID, value = "mafglib"),
-        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
-        @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
-})
+@Dependencies(
+        require = {
+                @Dependency(dependencyType = DependencyType.MOD_ID, value = "malilib", versionPredicates = "<0.18.2"),
+                @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
+                @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
+        }
+)
+@Dependencies(
+        require = {
+                @Dependency(dependencyType = DependencyType.MOD_ID, value = "mafglib"),
+                @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
+                @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
+        },
+        conflict = {
+                @Dependency(dependencyType = DependencyType.MOD_ID, value = "mafglib", versionPredicates = ">0.1.8"),
+                @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = ">1.20.4"),
+        }
+)
 @Mixin(value = GuiTextFieldGeneric.class, remap = false)
 public class GuiTextFieldGenericMixin extends EditBox {
     @Unique
