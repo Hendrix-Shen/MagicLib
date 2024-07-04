@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.entrypoint.core;
 
+import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
@@ -26,6 +27,7 @@ public class MagicLibFabric implements ModInitializer, ClientModInitializer, Ded
     @ApiStatus.Internal
     public static void bootstrap() {
         MagicLib.getInstance().getPlatformManage().register(FabricPlatformImpl.getInstance());
+        MixinExtrasBootstrap.init();
         MagicExtensions.init();
     }
 }

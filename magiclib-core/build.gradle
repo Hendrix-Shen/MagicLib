@@ -72,6 +72,10 @@ subprojects {
         shade("org.semver4j:semver4j:${project.property("dependencies.semver4j_version")}") {
             transitive(false)
         }
+
+        shade(annotationProcessor("io.github.llamalad7:mixinextras-common:${project.property("dependencies.mixinextras_version")}")) {
+            transitive(false)
+        }
     }
 
     base {
@@ -96,7 +100,9 @@ subprojects {
         setArchiveClassifier(null)
         setConfigurations([project.configurations.shade, project.configurations.shadeOnly])
         relocate("org.semver4j", "${project.property("mod.maven_group")}.libs.org.semver4j")
+        relocate("com.llamalad7", "${project.property("mod.maven_group")}.libs.com.llamalad7")
         exclude("META-INF/maven/**/*")
+        mergeServiceFiles()
     }
 
     replaceToken {

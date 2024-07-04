@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.entrypoint.core;
 
+import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import net.neoforged.fml.common.Mod;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
@@ -26,6 +27,7 @@ public class MagicLibNeoForge implements ModInitializer {
     @ApiStatus.Internal
     public static void bootstrap() {
         MagicLib.getInstance().getPlatformManage().register(NeoForgePlatformImpl.getInstance());
+        MixinExtrasBootstrap.init();
         MagicExtensions.init();
     }
 

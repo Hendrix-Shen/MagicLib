@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.entrypoint.core;
 
+import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
@@ -38,6 +39,7 @@ public class MagicLibForge implements ModInitializer {
     @ApiStatus.Internal
     public static void bootstrap() {
         MagicLib.getInstance().getPlatformManage().register(ForgePlatformImpl.getInstance());
+        MixinExtrasBootstrap.init();
         MagicExtensions.init();
     }
 }

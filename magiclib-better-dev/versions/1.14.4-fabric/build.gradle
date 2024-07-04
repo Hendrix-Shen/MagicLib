@@ -91,7 +91,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
 
     // MagicLib Core
-    api(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow"))
+    api(annotationProcessor(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow")))
 
     switch (modPlatform) {
         case "fabric":
