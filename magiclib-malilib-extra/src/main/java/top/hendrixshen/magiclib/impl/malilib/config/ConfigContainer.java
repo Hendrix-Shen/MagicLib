@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.gui.GuiBase;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.gui.Gui;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.i18n.I18n;
@@ -142,13 +143,13 @@ public class ConfigContainer {
                 I18n.tr("magiclib.dependency.label.composite") + GuiBase.TXT_RST);
 
         for (DependenciesContainer<?> dependenciesContainer : dependencies) {
-            boolean conflictSatisfied = dependenciesContainer.isConflictSatisfied();
-            boolean requireSatisfied = dependenciesContainer.isRequireSatisfied();
+            List<DependencyCheckResult> conflict = dependenciesContainer.checkConflict();
+            List<DependencyCheckResult> require = dependenciesContainer.checkRequire();
             InfoNode orNode = null;
 
             if (first) {
                 first = false;
-            } else if (!conflictSatisfied || !requireSatisfied) {
+            } else if (!conflict.isEmpty() || !require.isEmpty()) {
                 if (!composite) {
                     for (InfoNode child : rootNode.getChildren()) {
                         child.moveTo(compositeNode);
@@ -162,21 +163,23 @@ public class ConfigContainer {
                         I18n.tr("magiclib.dependency.label.or") + GuiBase.TXT_RST);
             }
 
-            if (!conflictSatisfied) {
+            if (!conflict.isEmpty()) {
                 InfoNode conflictNode = new InfoNode(orNode == null ? rootNode : orNode,
                         GuiBase.TXT_GRAY + I18n.tr("magiclib.dependency.label.conflict"));
 
-                for (DependencyCheckResult result : dependenciesContainer.checkConflict()) {
-                    new InfoNode(conflictNode, GuiBase.TXT_RED + result.getReason());
+                for (DependencyCheckResult result : conflict) {
+                    new InfoNode(conflictNode, (result.isSuccess() ? GuiBase.TXT_GREEN : GuiBase.TXT_RED) +
+                            result.getReason());
                 }
             }
 
-            if (!requireSatisfied) {
+            if (!require.isEmpty()) {
                 InfoNode requireNode = new InfoNode(orNode == null ? rootNode : orNode,
                         GuiBase.TXT_GRAY + I18n.tr("magiclib.dependency.label.require"));
 
-                for (DependencyCheckResult result : dependenciesContainer.checkRequire()) {
-                    new InfoNode(requireNode, GuiBase.TXT_RED + result.getReason());
+                for (DependencyCheckResult result : require) {
+                    new InfoNode(requireNode, (result.isSuccess() ? GuiBase.TXT_GREEN : GuiBase.TXT_RED) +
+                            result.getReason());
                 }
             }
         }

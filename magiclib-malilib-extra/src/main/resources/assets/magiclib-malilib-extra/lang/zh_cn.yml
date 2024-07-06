@@ -12,7 +12,7 @@ magiclib:
     gui:
       bottom_line:
         stat: "总计: %1$s (可用: %2$s + 不可用: %3$s), 已修改: %4$s"
-      dependencies_footer: "未满足依赖:"
+      dependencies_footer: "依赖:"
       element:
         config_button_boolean_switch:
           enabled: 已启用

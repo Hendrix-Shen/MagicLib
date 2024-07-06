@@ -23,12 +23,28 @@ magiclib:
       require: "必要:"
     result:
       dist:
-        require: "运行在非预期环境, 预期: %1$s, 实际: %2$s."
-        conflict: 运行在非预期环境 %1$s.
+        conflict:
+          fail: "运行在非预期环境: %1$s."
+          success: "未运行在非预期环境: %1$s."
+        require:
+          fail: "运行在非预期环境, 预期: %1$s, 实际: %2$s."
+          success: "运行在预期环境: %1$s."
       mod_id:
-        conflict: 检测到冲突模组 %1$s (%2$s)@%3$s.
-        optional: "检测到模组 %1$s (%2$s). 预期: %3$s, 实际: %4$s!"
-        require: 找不到模组 %1$s. 需要 %2$s!
+        conflict:
+          fail: "检测到冲突模组 %1$s (%2$s)@%3$s 与 %4$s 冲突!"
+          success:
+            not_found: 冲突模组 %1$s 未安装!
+            unsatisfied: "检测到模组 %1$s (%2$s)@%3$s. [被标记为与 %4$s 冲突]"
+        optional:
+          fail: "检测到可选模组 %1$s (%2$s) 需要: %3$s, 实际: %4$s!"
+          success:
+            found: 可选模组 %1$s (%2$s)@%3$s 已安装!
+            not_found: 可选模组 %2$s 未安装!
+        require:
+          fail:
+            not_found: 找不到模组 %1$s. 需要 %2$s!
+            unsatisfied: "检测到模组 %1$s (%2$s) 需要: %3$s, 实际: %4$s!"
+          success: 模组 %1$s (%2$s) 已安装!
       predicate:
         message: 谓词 %s 测试结果 = %s
   misc:

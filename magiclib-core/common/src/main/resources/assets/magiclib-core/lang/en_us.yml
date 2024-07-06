@@ -23,12 +23,28 @@ magiclib:
       require: "Require:"
     result:
       dist:
-        conflict: Running on unexpected dist %1$s.
-        require: Running on unexpected dist, expected %1$s, but found %2$s.
+        conflict:
+          fail: "Running on unexpected dist: %1$s."
+          success: "Not running on unexpected dist: %1$s."
+        require:
+          fail: Running on unexpected dist, expected %1$s, but found %2$s.
+          success: "Running on expected dist: %1$s."
       mod_id:
-        conflict: Conflicted Mod %1$s (%2$s)@%3$s detected.
-        optional: Mod %1$s (%2$s) detected. Requires %3$s, but found %4$s!
-        require: Mod %1$s not found. Requires %2$s!.
+        conflict:
+          fail: Conflicted Mod %1$s (%2$s)@%3$s detected. Conflicts with %4$s!
+          success:
+            not_found: Conflicted Mod %1$s not installed!
+            unsatisfied: Mod %1$s (%2$s)@%3$s detected. [Marked as conflicted with %4$s!]
+        optional:
+          fail: Optional Mod %1$s (%2$s) detected. Requires %3$s, but found %4$s!
+          success:
+            found: Optional Mod %1$s (%2$s)@%3$s installed!
+            not_found: Optional Mod %2$s not installed!
+        require:
+          fail:
+            not_found: Mod %1$s not found. Requires %2$s!
+            unsatisfied: Mod %1$s (%2$s) detected. Requires %3$s, but found %4$s!
+          success: Mod %1$s (%2$s) installed!
       predicate:
         message: Predicate %s test result = %s
   misc:

@@ -27,7 +27,7 @@ public class MiscUtil {
     }
 
     public static <T> void generateDependencyCheckMessage(@NotNull List<DependenciesContainer<T>> dependencies,
-                                                      InfoNode rootNode) {
+                                                          InfoNode rootNode) {
         boolean first = true;
         boolean composite = false;
         InfoNode compositeNode = new InfoNode(null, I18n.tr("magiclib.dependency.label.composite"));

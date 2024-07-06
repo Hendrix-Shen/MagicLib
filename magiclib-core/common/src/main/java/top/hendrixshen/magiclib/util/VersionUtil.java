@@ -18,7 +18,8 @@ public class VersionUtil {
 
     private static boolean isVersionSatisfyPredicate(String version, String versionPredicate) {
         try {
-            Semver semver = new Semver(version);
+            Semver semver = Semver.coerce(version);
+            assert semver != null;
             return semver.satisfies(versionPredicate);
         } catch (Exception e) {
             MagicLib.getLogger().error("Failed to parse version {}: {}", version, e);

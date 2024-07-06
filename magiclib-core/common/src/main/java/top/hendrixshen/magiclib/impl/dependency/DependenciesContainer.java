@@ -1,6 +1,5 @@
 package top.hendrixshen.magiclib.impl.dependency;
 
-import com.google.common.collect.Lists;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.tree.AnnotationNode;
@@ -26,8 +25,8 @@ public class DependenciesContainer<T> {
     @Contract("_, _ -> new")
     public static <T> @NotNull DependenciesContainer<T> of(@NotNull Dependencies dependencies, T obj) {
         return new DependenciesContainer<>(
-                DependenciesContainer.generateRequirement(dependencies.require(), obj),
-                DependenciesContainer.generateRequirement(dependencies.conflict(), obj)
+                DependenciesContainer.generateDependencyList(dependencies.require(), obj),
+                DependenciesContainer.generateDependencyList(dependencies.conflict(), obj)
         );
     }
 
@@ -47,22 +46,18 @@ public class DependenciesContainer<T> {
     }
 
     public List<DependencyCheckResult> checkRequire() {
-        List<ValueContainer<DependencyCheckResult>> ret = Lists.newArrayList();
-        this.requireDependencies.forEach(dependency -> ret.add(dependency.check()));
-        return ret.stream()
+        return this.requireDependencies.stream()
+                .map(DependencyContainer::checkAsRequire)
                 .filter(ValueContainer::isPresent)
                 .map(ValueContainer::get)
-                .filter(r -> !r.isSuccess())
                 .collect(Collectors.toList());
     }
 
     public List<DependencyCheckResult> checkConflict() {
-        List<ValueContainer<DependencyCheckResult>> ret = Lists.newArrayList();
-        this.conflictDependencies.forEach(dependency -> ret.add(dependency.check()));
-        return ret.stream()
+        return this.conflictDependencies.stream()
+                .map(DependencyContainer::checkAsConflict)
                 .filter(ValueContainer::isPresent)
                 .map(ValueContainer::get)
-                .filter(DependencyCheckResult::isSuccess)
                 .collect(Collectors.toList());
     }
 
@@ -71,14 +66,16 @@ public class DependenciesContainer<T> {
     }
 
     public boolean isRequireSatisfied() {
-        return this.requireDependencies.stream().allMatch(DependencyContainer::isSatisfied);
+        return this.requireDependencies.stream()
+                .allMatch(dependency -> dependency.isSatisfied(DependencyContainer.DependencyStyle.REQUIRE));
     }
 
     public boolean isConflictSatisfied() {
-        return this.conflictDependencies.stream().noneMatch(DependencyContainer::isSatisfied);
+        return this.conflictDependencies.stream()
+                .allMatch(dependency -> dependency.isSatisfied(DependencyContainer.DependencyStyle.CONFLICT));
     }
 
-    private static <T> List<DependencyContainer<T>> generateRequirement(Dependency[] dependencies, T type) {
+    private static <T> List<DependencyContainer<T>> generateDependencyList(Dependency[] dependencies, T type) {
         return Arrays.stream(dependencies)
                 .map(dependency -> DependencyContainer.of(dependency, type))
                 .collect(Collectors.toList());

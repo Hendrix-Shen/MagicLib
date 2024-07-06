@@ -12,7 +12,7 @@ magiclib:
     gui:
       bottom_line:
         stat: "Total: %1$s (Available: %2$s + Unavailable: %3$s), Modified: %4$s"
-      dependencies_footer: "Unsatisfied dependencies:"
+      dependencies_footer: "Dependencies:"
       element:
         config_button_boolean_switch:
           enabled: Enabled
