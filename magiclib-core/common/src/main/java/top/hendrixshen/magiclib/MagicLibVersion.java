@@ -3,7 +3,7 @@ package top.hendrixshen.magiclib;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.semver4j.Semver;
+import top.hendrixshen.magiclib.api.dependency.version.SemanticVersion;
 
 public enum MagicLibVersion {
     VERSION_0_1("0.1"),
@@ -20,13 +20,13 @@ public enum MagicLibVersion {
             .toMagicLibVersion(SharedConstants.getMagiclibVersion());
 
     @Getter
-    private final Semver semver;
+    private final SemanticVersion semver;
     @Getter
     private final String originalVersion;
 
     MagicLibVersion(@NotNull String versionName) {
         this.originalVersion = versionName.trim();
-        this.semver = Semver.coerce(this.originalVersion);
+        this.semver = SemanticVersion.parse(this.originalVersion);
     }
 
     @Nullable
@@ -40,15 +40,11 @@ public enum MagicLibVersion {
         }
 
         String name = value.toString();
-        Semver semver = Semver.coerce(name);
-
-        if (semver == null) {
-            return null;
-        }
+        SemanticVersion semver = SemanticVersion.parse(name);
 
         for (MagicLibVersion version : MagicLibVersion.values()) {
-            if (version.getSemver().getMajor() == semver.getMajor() &&
-                    version.getSemver().getMinor() == semver.getMinor()) {
+            if (version.getSemver().getVersionComponent(0) == semver.getVersionComponent(0) &&
+                    version.getSemver().getVersionComponent(1) == semver.getVersionComponent(1)) {
                 return version;
             }
         }

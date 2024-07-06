@@ -2,9 +2,13 @@ package top.hendrixshen.magiclib.util;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.semver4j.Semver;
 import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.dependency.version.SemanticVersion;
+import top.hendrixshen.magiclib.api.dependency.version.Version;
+import top.hendrixshen.magiclib.api.dependency.version.VersionParsingException;
+import top.hendrixshen.magiclib.api.dependency.version.VersionPredicate;
 import top.hendrixshen.magiclib.api.i18n.I18n;
+import top.hendrixshen.magiclib.impl.dependency.version.VersionPredicateParser;
 
 import java.util.Collection;
 
@@ -17,12 +21,19 @@ public class VersionUtil {
     }
 
     private static boolean isVersionSatisfyPredicate(String version, String versionPredicate) {
+        SemanticVersion semver;
+
         try {
-            Semver semver = Semver.coerce(version);
-            assert semver != null;
-            return semver.satisfies(versionPredicate);
-        } catch (Exception e) {
+            semver = SemanticVersion.parse(version);
+        } catch (VersionParsingException e) {
             MagicLib.getLogger().error("Failed to parse version {}: {}", version, e);
+            return false;
+        }
+
+        try {
+            return VersionPredicateParser.parse(versionPredicate).test(semver);
+        } catch (VersionParsingException e) {
+            MagicLib.getLogger().error("Failed to parse version predicate {}: {}", versionPredicate, e);
         }
 
         return false;

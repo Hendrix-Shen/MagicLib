@@ -69,10 +69,6 @@ subprojects {
         compileOnly("org.apache.logging.log4j:log4j-api:${project.property("dependencies.log4j_version")}")
 
         // Shadow library
-        shade("org.semver4j:semver4j:${project.property("dependencies.semver4j_version")}") {
-            transitive(false)
-        }
-
         shade(annotationProcessor("io.github.llamalad7:mixinextras-common:${project.property("dependencies.mixinextras_version")}")) {
             transitive(false)
         }

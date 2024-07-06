@@ -16,13 +16,11 @@ import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
-import top.hendrixshen.magiclib.impl.malilib.MixinPredicates;
 
 @Environment(EnvType.CLIENT)
-@Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.Malilib_0_11_4.class))
+@Dependencies(require = @Dependency(value = "malilib", versionPredicates = "<0.11.4"))
 @Mixin(value = ConfigBooleanHotkeyed.class, remap = false)
 public abstract class MixinConfigBooleanHotkeyed extends ConfigBoolean implements IHotkeyTogglable {
     @Final
