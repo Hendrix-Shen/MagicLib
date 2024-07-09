@@ -84,6 +84,7 @@ def apiDependencies = [
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def runtimeDependencies = [
+        ["", "", false, false],
 ]
 
 dependencies {
@@ -121,12 +122,12 @@ dependencies {
     // API
     apiDependencies.forEach { item ->
         String dependencyNotation = item[0]
-        String propertyPrefix = item[1]
-        boolean shouldResolve = item[2]
+        String dependencyVersion = project.findProperty("dependencies.api.${item[1]}_version")
+        boolean shouldResolve = item[2] && dependencyVersion && dependencyVersion != "0"
         boolean shouldTransitive = item[3]
 
         if (shouldResolve) {
-            modApi("${dependencyNotation}:${project.property("dependencies.api.${propertyPrefix}_version")}") {
+            modApi("${dependencyNotation}:${dependencyVersion}") {
                 transitive(shouldTransitive)
             }
         }
@@ -135,12 +136,12 @@ dependencies {
     // Runtime Library - Make development environment comfortable.
     runtimeDependencies.forEach { item ->
         String dependencyNotation = item[0]
-        String propertyPrefix = item[1]
-        boolean shouldResolve = item[2]
+        String dependencyVersion = project.findProperty("dependencies.runtime.${item[1]}_version")
+        boolean shouldResolve = item[2] && dependencyVersion && dependencyVersion != "0"
         boolean shouldTransitive = item[3]
 
         if (shouldResolve) {
-            modRuntimeOnly("${dependencyNotation}:${project.property("dependencies.runtime.${propertyPrefix}_version")}") {
+            modRuntimeOnly("${dependencyNotation}:${dependencyVersion}") {
                 transitive(shouldTransitive)
             }
         }

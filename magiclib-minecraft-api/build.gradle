@@ -50,7 +50,9 @@ preprocess {
     // NeoForge
     Node mc_12002_neoforge = createNode("mc-api-1.20.2-neoforge", 1_20_02, "mojang")
     Node mc_12006_neoforge = createNode("mc-api-1.20.6-neoforge", 1_20_06, "mojang")
+    Node mc_12100_neoforge = createNode("mc-api-1.21.0-neoforge", 1_21_00, "mojang")
 
     mc_12002_fabric.link(mc_12002_neoforge, file("versions/mapping-1.20.2-fabric-neoforge.txt"))
     mc_12006_fabric.link(mc_12006_neoforge, file("versions/mapping-1.20.6-fabric-neoforge.txt"))
+    mc_12100_fabric.link(mc_12100_neoforge, file("versions/mapping-1.21.0-fabric-neoforge.txt"))
 }
