@@ -58,7 +58,7 @@ public class CameraPositionTransformer {
         Minecraft mc = Minecraft.getInstance();
         Camera camera = mc.gameRenderer.getMainCamera();
         Vec3 vec3 = this.pos.subtract(camera.getPosition());
-        context.pushPose();
+        context.pushMatrix();
         context.translate(vec3.x(), vec3.y(), vec3.z());
         //#if MC > 11404
         context.mulPoseMatrix(
@@ -83,7 +83,7 @@ public class CameraPositionTransformer {
             throw new RuntimeException("CameraPositionTransformer: Calling restore before calling apply");
         }
 
-        this.context.popPose();
+        this.context.popMatrix();
         this.context = null;
     }
 

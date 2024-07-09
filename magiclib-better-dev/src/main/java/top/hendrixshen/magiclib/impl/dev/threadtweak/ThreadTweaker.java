@@ -35,6 +35,10 @@ import top.hendrixshen.magiclib.mixin.dev.accessor.UtilAccessor;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//#if MC > 12006
+//$$ import net.minecraft.ReportType;
+//#endif
+
 /**
  * Reference to <a ref="https://github.com/UltimateBoomer/mc-smoothboot/blob/ce5c0482e51698a424ea3d09e994d4b71a7c71b6/src/main/java/io/github/ultimateboomer/smoothboot/mixin/UtilMixin.java">SmoothBoot</a>
  */
@@ -69,7 +73,11 @@ public class ThreadTweaker {
             }
 
             if (throwable instanceof ReportedException) {
-                Bootstrap.realStdoutPrintln(((ReportedException) throwable).getReport().getFriendlyReport());
+                Bootstrap.realStdoutPrintln(((ReportedException) throwable).getReport().getFriendlyReport(
+                        //#if MC > 12006
+                        //$$ ReportType.CRASH
+                        //#endif
+                ));
                 System.exit(-1);
             }
 

@@ -25,14 +25,22 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
 
 //#if MC > 11502
 import net.minecraft.util.FormattedCharSequence;
 //#endif
 
+//#if MC > 11404
+//#if MC < 12100
+import com.mojang.blaze3d.vertex.Tesselator;
+//#endif
+import net.minecraft.client.renderer.MultiBufferSource;
+//#endif
+
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/RenderUtil.java">TweakerMore<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/RenderUtil.java">TweakerMore<a/>
  */
 @Environment(EnvType.CLIENT)
 public class RenderUtil {
@@ -50,9 +58,28 @@ public class RenderUtil {
         return fontCompat.width(text);
     }
 
+    public static int getSizeScalingXSign() {
+        // Stupid change in 24w21a.
+        //#if MC > 12006
+        //$$ return 1;
+        //#else
+        return -1;
+        //#endif
+    }
+
     //#if MC > 11502
     public static int getRenderWidth(FormattedCharSequence text) {
         return RenderUtil.TEXT_RENDERER.width(text);
+    }
+    //#endif
+
+    //#if MC > 11404
+    public static MultiBufferSource.@NotNull BufferSource getBufferSource() {
+        //#if MC > 12006
+        //$$ return Minecraft.getInstance().renderBuffers().bufferSource();
+        //#else
+        return MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+        //#endif
     }
     //#endif
 }

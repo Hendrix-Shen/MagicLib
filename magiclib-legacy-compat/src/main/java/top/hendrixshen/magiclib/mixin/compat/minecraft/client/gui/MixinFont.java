@@ -1,6 +1,5 @@
 package top.hendrixshen.magiclib.mixin.compat.minecraft.client.gui;
 
-import com.mojang.blaze3d.vertex.Tesselator;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.Font;
@@ -14,10 +13,12 @@ import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompa
 //#if MC > 11404
 import net.minecraft.client.renderer.MultiBufferSource;
 import top.hendrixshen.magiclib.util.MiscUtil;
+import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 //#else
 //$$ import com.mojang.blaze3d.platform.GlStateManager;
 //$$ import com.mojang.blaze3d.vertex.BufferBuilder;
 //$$ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+//$$ import com.mojang.blaze3d.vertex.Tesselator;
 //$$ import org.lwjgl.opengl.GL11;
 //#endif
 
@@ -70,9 +71,8 @@ public abstract class MixinFont implements FontCompatApi {
 
     @Override
     public int drawInBatch(Component component, float x, float y, int color, boolean shadow, Matrix4f matrix4f, boolean seeThrough, int backgroundColor, int light) {
-        Tesselator tesselator = Tesselator.getInstance();
         //#if MC > 11404
-        MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(tesselator.getBuilder());
+        MultiBufferSource.BufferSource bufferSource = RenderUtil.getBufferSource();
         int ret = this.drawInBatch(
                 //#if MC > 11502
                 component,
@@ -97,6 +97,7 @@ public abstract class MixinFont implements FontCompatApi {
         //#else
         //$$ GlStateManager.pushMatrix();
         //$$ GlStateManager.multMatrix(matrix4f);
+        //$$
         //$$ if (seeThrough) {
         //$$     GlStateManager.depthMask(false);
         //$$     GlStateManager.disableDepthTest();
@@ -111,6 +112,7 @@ public abstract class MixinFont implements FontCompatApi {
         //$$ float g = (float) (backgroundColor >> 8 & 255) / 255.0F;
         //$$ float b = (float) (backgroundColor & 255) / 255.0F;
         //$$
+        //$$ Tesselator tesselator = Tesselator.getInstance();
         //$$ BufferBuilder bufferBuilder = tesselator.getBuilder();
         //$$ bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
         //$$ bufferBuilder.vertex(x - 1, y - 1, 0.01F).color(r, g, b, a).endVertex();
@@ -120,15 +122,18 @@ public abstract class MixinFont implements FontCompatApi {
         //$$ tesselator.end();
         //$$ GlStateManager.enableTexture();
         //$$ int ret;
+        //$$
         //$$ if (shadow) {
         //$$     ret = this.drawShadow(component.getColoredString(), x, y, color);
         //$$ } else {
         //$$     ret = this.draw(component.getColoredString(), x, y, color);
         //$$ }
+        //$$
         //$$ if (seeThrough) {
         //$$     GlStateManager.depthMask(true);
         //$$     GlStateManager.enableDepthTest();
         //$$ }
+        //$$
         //$$ GlStateManager.disableBlend();
         //$$ GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         //$$ GlStateManager.popMatrix();

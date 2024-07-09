@@ -17,6 +17,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.impl.event.EventManager;
 import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderLevelEvent;
 
+//#if MC > 12006
+//$$ import net.minecraft.client.DeltaTracker;
+//#endif
+
+//#if MC > 12004
+//$$ import org.joml.Matrix4fStack;
+//$$ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
+//#endif
+
 //#if MC > 11903
 //$$ import org.spongepowered.asm.mixin.injection.Slice;
 //#endif
@@ -34,29 +43,37 @@ public class LevelRendererMixin {
             )
     )
     private void preRenderLevel(
+            //#if MC > 12006
+            //$$ DeltaTracker deltaTracker,
+            //#else
             //#if MC < 12005
-            PoseStack poseStack,
+            PoseStack matrixStack,
             //#endif
             float tickDelta,
             long limitTime,
+            //#endif
             boolean renderBlockOutline,
             Camera camera,
             GameRenderer gameRenderer,
             LightTexture lightTexture,
-            Matrix4f matrix4f,
+            Matrix4f frustumMatrix,
             //#if MC > 12004
-            //$$ Matrix4f matrix4f2,
+            //$$ Matrix4f projectionMatrix,
             //#endif
             CallbackInfo ci
     ) {
         EventManager.dispatch(new RenderLevelEvent.PreRender(RenderLevelEvent.LevelRenderContext.of(
                 this.level,
                 //#if MC > 12004
-                //$$ new PoseStack(),
+                //$$ new Matrix4fStack(),
                 //#elseif MC > 11502
-                poseStack,
+                matrixStack,
                 //#endif
+                //#if MC > 12006
+                //$$ deltaTracker.getGameTimeDeltaPartialTick(false)
+                //#else
                 tickDelta
+                //#endif
         )));
     }
 
@@ -87,29 +104,38 @@ public class LevelRendererMixin {
             )
     )
     private void postRenderLevel(
+            //#if MC > 12006
+            //$$ DeltaTracker deltaTracker,
+            //#else
             //#if MC < 12005
-            PoseStack poseStack,
+            PoseStack matrixStack,
             //#endif
             float tickDelta,
             long limitTime,
+            //#endif
             boolean renderBlockOutline,
             Camera camera,
             GameRenderer gameRenderer,
             LightTexture lightTexture,
-            Matrix4f matrix4f,
+            Matrix4f frustumMatrix,
             //#if MC > 12004
-            //$$ Matrix4f matrix4f2,
+            //$$ Matrix4f projectionMatrix,
             //#endif
             CallbackInfo ci
+            //#if MC > 12004
+            //$$ , @Local Matrix4fStack matrixStack
+            //#endif
     ) {
         EventManager.dispatch(new RenderLevelEvent.PostRender(RenderLevelEvent.LevelRenderContext.of(
                 this.level,
-                //#if MC > 12004
-                //$$ new PoseStack(),
-                //#elseif MC > 11502
-                poseStack,
+                //#if MC > 11502
+                matrixStack,
                 //#endif
+                //#if MC > 12006
+                //$$ deltaTracker.getGameTimeDeltaPartialTick(false)
+                //#else
                 tickDelta
+                //#endif
         )));
     }
 }

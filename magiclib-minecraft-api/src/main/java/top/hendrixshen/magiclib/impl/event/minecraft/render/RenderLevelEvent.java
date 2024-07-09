@@ -11,7 +11,9 @@ import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
 import java.util.List;
 
-//#if MC > 11502
+//#if MC > 12004
+//$$ import org.joml.Matrix4fStack;
+//#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
@@ -26,14 +28,16 @@ public class RenderLevelEvent {
 
         public static @NotNull LevelRenderContext of(
                 ClientLevel level,
-                //#if MC > 11502
-                PoseStack poseStack,
+                //#if MC > 12004
+                //$$ @NotNull Matrix4fStack matrixStack,
+                //#elseif MC > 11502
+                @NotNull PoseStack matrixStack,
                 //#endif
                 float partialTicks
         ) {
-            return new LevelRenderContext(level, RenderContext.of(
+            return new LevelRenderContext(level, RenderContext.createWorldRenderContext(
                     //#if MC > 11502
-                    poseStack
+                    matrixStack
                     //#endif
             ), partialTicks);
         }

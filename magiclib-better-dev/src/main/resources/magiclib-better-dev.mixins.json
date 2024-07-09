@@ -13,6 +13,7 @@
     "dfu.destroy.DataFixerUpperMixin",
     "dfu.destroy.SchemaMixin",
     "dfu.lazy.DataFixersMixin",
+    "dfu.lazy.MainMixin",
     "dfu.lazy.SharedConstantsMixin",
     "threadtweak.DataFixersMixin",
     "threadtweak.MinecraftServerMixin",

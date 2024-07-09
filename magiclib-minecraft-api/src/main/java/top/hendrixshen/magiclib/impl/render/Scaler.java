@@ -55,7 +55,7 @@ public class Scaler {
      */
     public void apply(RenderContext context) {
         this.context = context;
-        this.context.pushPose();
+        this.context.pushMatrix();
         this.context.translate(-anchorX * factor, -anchorY * factor, 0);
         this.context.scale(factor, factor, 1);
         this.context.translate(anchorX / factor, anchorY / factor, 0);
@@ -69,7 +69,7 @@ public class Scaler {
             throw new RuntimeException("Scaler: Calling restore before calling apply");
         }
 
-        this.context.popPose();
+        this.context.popMatrix();
     }
 
     public RenderContext getRenderContext() {

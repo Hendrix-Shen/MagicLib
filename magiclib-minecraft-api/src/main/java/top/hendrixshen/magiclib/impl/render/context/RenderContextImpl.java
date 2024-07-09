@@ -20,48 +20,43 @@
 
 package top.hendrixshen.magiclib.impl.render.context;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.gui.GuiComponent;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
+import top.hendrixshen.magiclib.api.render.matrix.MatrixStack;
+import org.jetbrains.annotations.NotNull;
+
+//#if MC > 12004
+//$$ import top.hendrixshen.magiclib.impl.render.matrix.JomlMatrixStack;
+//$$ import org.joml.Matrix4fStack;
+//#endif
 
 //#if MC > 11502
-import com.mojang.blaze3d.vertex.PoseStack;
-import org.jetbrains.annotations.NotNull;
-//#else
-//$$ import com.mojang.blaze3d.platform.GlStateManager;
+//$$ import com.mojang.blaze3d.vertex.PoseStack;
+//$$ import org.jetbrains.annotations.NotNull;
 //#endif
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderContextImpl.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderContextImpl.java">TweakerMore</a>
  */
-//#if MC > 11502 && MC < 11700
-@SuppressWarnings("deprecation")
-//#endif
 public class RenderContextImpl implements RenderContext {
     //#if MC > 11904
     //$$ private final GuiGraphics guiGraphics;
     //#endif
 
-    //#if MC > 11502
     @NotNull
-    private final PoseStack poseStack;
-    //#endif
+    private final MatrixStack matrixStack;
 
     public RenderContextImpl(
             //#if MC > 11904
             //$$ GuiGraphics guiGraphics,
             //#endif
-            //#if MC > 11502
-            @NotNull PoseStack poseStack
-            //#endif
+            @NotNull MatrixStack matrixStack
     ) {
         //#if MC > 11904
         //$$ this.guiGraphics = guiGraphics;
         //#endif
-        //#if MC > 11502
-        this.poseStack = poseStack;
-        //#endif
+        this.matrixStack = matrixStack;
     }
 
     @Override
@@ -76,63 +71,33 @@ public class RenderContextImpl implements RenderContext {
 
     //#if MC > 11502
     @Override
-    public @NotNull PoseStack getPoseStack() {
-        return this.poseStack;
+    public @NotNull MatrixStack getMatrixStack() {
+        return this.matrixStack;
     }
     //#endif
 
     @Override
-    public void pushPose() {
-        //#if MC > 11605
-        //$$ this.poseStack.pushPose();
-        //#elseif MC > 11404
-        RenderSystem.pushMatrix();
-        //#else
-        //$$ GlStateManager.pushMatrix();
-        //#endif
+    public void pushMatrix() {
+        this.matrixStack.pushMatrix();
     }
 
     @Override
-    public void popPose() {
-        //#if MC > 11605
-        //$$ this.poseStack.popPose();
-        //#elseif MC > 11404
-        RenderSystem.pushMatrix();
-        //#else
-        //$$ GlStateManager.popMatrix();
-        //#endif
+    public void popMatrix() {
+        this.matrixStack.popMatrix();
     }
 
     @Override
     public void translate(double x, double y, double z) {
-        //#if MC > 11605
-        //$$ this.poseStack.translate(x, y, z);
-        //#elseif MC > 11404
-        RenderSystem.translated(x, y, z);
-        //#else
-        //$$ GlStateManager.translated(x, y, z);
-        //#endif
+        this.matrixStack.translate(x, y, z);
     }
 
     @Override
     public void scale(double x, double y, double z) {
-        //#if MC > 11605
-        //$$ this.poseStack.scale((float) x, (float) y, (float) z);
-        //#elseif MC > 11404
-        RenderSystem.scaled(x, y, z);
-        //#else
-        //$$ GlStateManager.scaled(x, y, z);
-        //#endif
+        this.matrixStack.scale(x, y, z);
     }
 
     @Override
     public void mulPoseMatrix(Matrix4f matrix4f) {
-        //#if MC > 11605
-        //$$ this.poseStack.mulPoseMatrix(matrix4f);
-        //#elseif MC > 11404
-        RenderSystem.multMatrix(matrix4f);
-        //#else
-        //$$ GlStateManager.multMatrix(matrix4f);
-        //#endif
+        this.matrixStack.mulMatrix(matrix4f);
     }
 }

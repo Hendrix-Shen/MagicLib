@@ -17,6 +17,10 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.event.render.impl.RenderEventHandler;
 
+//#if MC > 12006
+//$$ import net.minecraft.client.DeltaTracker;
+//#endif
+
 /**
  * The implementation for mc [1.15.2, ~)
  */
@@ -39,11 +43,15 @@ public class MixinLevelRenderer {
             )
     )
     private void postRenderLevelNormal(
+            //#if MC > 12006
+            //$$ DeltaTracker deltaTracker,
+            //#else
             //#if MC < 12005
-            PoseStack poseStack,
+            PoseStack matrixStack,
             //#endif
             float tickDelta,
             long limitTime,
+            //#endif
             boolean renderBlockOutline,
             Camera camera,
             GameRenderer gameRenderer,
@@ -59,9 +67,13 @@ public class MixinLevelRenderer {
                 //#if MC > 12004
                 //$$ new PoseStack(),
                 //#else
-                poseStack,
+                matrixStack,
                 //#endif
+                //#if MC > 12006
+                //$$ deltaTracker.getGameTimeDeltaPartialTick(false)
+                //#else
                 tickDelta
+                //#endif
         );
     }
 
@@ -86,11 +98,15 @@ public class MixinLevelRenderer {
             )
     )
     private void postRenderLevelFabulous(
+            //#if MC > 12006
+            //$$ DeltaTracker deltaTracker,
+            //#else
             //#if MC < 12005
-            PoseStack poseStack,
+            PoseStack matrixStack,
             //#endif
             float tickDelta,
             long limitTime,
+            //#endif
             boolean renderBlockOutline,
             Camera camera,
             GameRenderer gameRenderer,
@@ -106,9 +122,13 @@ public class MixinLevelRenderer {
                 //#if MC > 12004
                 //$$ new PoseStack(),
                 //#else
-                poseStack,
+                matrixStack,
                 //#endif
+                //#if MC > 12006
+                //$$ deltaTracker.getGameTimeDeltaPartialTick(false)
+                //#else
                 tickDelta
+                //#endif
         );
     }
     //#endif
