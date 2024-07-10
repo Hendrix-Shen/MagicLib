@@ -24,6 +24,7 @@ import top.hendrixshen.magiclib.impl.mixin.BuiltInPredicates;
 @Dependencies(
         require = {
                 @Dependency(dependencyType = DependencyType.MOD_ID, value = "mafglib"),
+                @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "<1.21"),
                 @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
                 @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
         },
