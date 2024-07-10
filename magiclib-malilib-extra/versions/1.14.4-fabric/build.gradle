@@ -123,10 +123,14 @@ dependencies {
     apiDependencies.forEach { item ->
         String dependencyNotation = item[0]
         String dependencyVersion = project.findProperty("dependencies.api.${item[1]}_version")
-        boolean shouldResolve = item[2] && dependencyVersion && dependencyVersion != "0"
+        boolean shouldResolve = item[2] && dependencyVersion != "0"
         boolean shouldTransitive = item[3]
 
         if (shouldResolve) {
+            if (!dependencyVersion) {
+                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
+            }
+
             modApi("${dependencyNotation}:${dependencyVersion}") {
                 transitive(shouldTransitive)
             }
@@ -137,10 +141,14 @@ dependencies {
     runtimeDependencies.forEach { item ->
         String dependencyNotation = item[0]
         String dependencyVersion = project.findProperty("dependencies.runtime.${item[1]}_version")
-        boolean shouldResolve = item[2] && dependencyVersion && dependencyVersion != "0"
+        boolean shouldResolve = item[2] && dependencyVersion != "0"
         boolean shouldTransitive = item[3]
 
         if (shouldResolve) {
+            if (!dependencyVersion) {
+                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
+            }
+
             modRuntimeOnly("${dependencyNotation}:${dependencyVersion}") {
                 transitive(shouldTransitive)
             }
