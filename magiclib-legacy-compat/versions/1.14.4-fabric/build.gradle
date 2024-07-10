@@ -190,7 +190,6 @@ loom {
         runDir("run/server")
     }
 
-
     if (fabricLike) {
         runs {
             mixinAuditClient {
@@ -212,22 +211,25 @@ loom {
     // Setup client default settings.
     runClient {
         defaultCharacterEncoding("UTF-8")
-        file("${projectDir}/run/client/config").mkdirs()
-        file("${projectDir}/run/client/options.txt").with { File f ->
-            {
-                if (!f.exists()) {
-                    f.parentFile.mkdirs()
-                    f.withWriter { BufferedWriter writer ->
-                        writer.writeLine("autoJump:false")
-                        writer.writeLine("enableVsync:false")
-                        writer.writeLine("forceUnicodeFont:true")
-                        writer.writeLine("fov:1.0")
-                        writer.writeLine("gamma:16.0")
-                        writer.writeLine("guiScale:3")
-                        writer.writeLine("lang:${Locale.getDefault().toString().toLowerCase()}")
-                        writer.writeLine("maxFps:260")
-                        writer.writeLine("renderDistance:10")
-                        writer.writeLine("soundCategory_master:0.0")
+
+        doFirst {
+            file("${projectDir}/run/client/config").mkdirs()
+            file("${projectDir}/run/client/options.txt").with { File f ->
+                {
+                    if (!f.exists()) {
+                        f.parentFile.mkdirs()
+                        f.withWriter { BufferedWriter writer ->
+                            writer.writeLine("autoJump:false")
+                            writer.writeLine("enableVsync:false")
+                            writer.writeLine("forceUnicodeFont:true")
+                            writer.writeLine("fov:1.0")
+                            writer.writeLine("gamma:16.0")
+                            writer.writeLine("guiScale:3")
+                            writer.writeLine("lang:${Locale.getDefault().toString().toLowerCase()}")
+                            writer.writeLine("maxFps:260")
+                            writer.writeLine("renderDistance:10")
+                            writer.writeLine("soundCategory_master:0.0")
+                        }
                     }
                 }
             }
@@ -238,24 +240,20 @@ loom {
     runServer {
         defaultCharacterEncoding("UTF-8")
 
-        // Agree eula before server init.
-        file("${projectDir}/run/server/eula.txt").with { File f ->
-            {
-                if (!f.exists()) {
-                    f.parentFile.mkdirs()
-                    f.withWriter { BufferedWriter writer ->
-                        writer.writeLine("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).")
-                        writer.writeLine("#${new Date()}")
-                        writer.writeLine("eula=true")
+        doFirst {
+            // Agree eula before server init.
+            file("${projectDir}/run/server/eula.txt").with { File f ->
+                {
+                    if (!f.exists()) {
+                        f.parentFile.mkdirs()
+                        f.withWriter { BufferedWriter writer ->
+                            writer.writeLine("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).")
+                            writer.writeLine("#${new Date()}")
+                            writer.writeLine("eula=true")
+                        }
                     }
                 }
             }
-        }
-        if (!new File("${projectDir}/run/server/eula.txt").exists()) {
-            new File("${projectDir}/run/server").mkdirs()
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("${projectDir}/run/server/eula.txt"))
-            bufferedWriter.writeLine("eula=true")
-            bufferedWriter.close()
         }
     }
 }
@@ -446,11 +444,31 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
     }
 }
 
+tasks.register("cleanRuns", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.client.runDir).parentFile.deleteDir()
+    }
+}
+
+tasks.register("cleanRunClient", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.client.runDir).deleteDir()
+    }
+}
+
+tasks.register("cleanRunServer", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.server.runDir).deleteDir()
+    }
+}
+
 [
+        "cleanRuns", "cleanRunClient", "cleanRunServer",
         "runClient", "runServer",
         "runMixinAuditClient", "runMixinAuditServer",
         "preprocessCode", "preprocessResources",
-        "preprocessTestCode", "preprocessTestResources"].forEach { taskName ->
+        "preprocessTestCode", "preprocessTestResources"
+].forEach { taskName ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
             it.group("${project.property("mod.id")}")
