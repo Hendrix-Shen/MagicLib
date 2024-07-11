@@ -70,7 +70,7 @@ public class MinecraftPoseStack implements MatrixStack {
         //#if MC > 11605
         //$$ this.poseStack.popPose();
         //#elseif MC > 11404
-        RenderSystem.pushMatrix();
+        RenderSystem.popMatrix();
         //#else
         //$$ GlStateManager.popMatrix();
         //#endif
