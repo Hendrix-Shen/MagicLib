@@ -21,6 +21,11 @@ public class MagicConfigOptionList extends ConfigOptionList implements MagicICon
     }
 
     @Override
+    public String getConfigGuiDisplayName() {
+        return MagicIConfigBase.super.getConfigGuiDisplayName();
+    }
+
+    @Override
     public void setValueFromJsonElement(JsonElement element) {
         IConfigOptionListEntry oldValue = this.getOptionListValue();
         super.setValueFromJsonElement(element);

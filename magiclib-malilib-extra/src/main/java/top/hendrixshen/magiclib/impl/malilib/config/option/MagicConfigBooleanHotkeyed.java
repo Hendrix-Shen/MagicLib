@@ -33,6 +33,11 @@ public class MagicConfigBooleanHotkeyed extends ConfigBooleanHotkeyed implements
         return MagicIConfigBase.super.getPrettyName();
     }
 
+    @Override
+    public String getConfigGuiDisplayName() {
+        return MagicIConfigBase.super.getConfigGuiDisplayName();
+    }
+
     /**
      * Use this instead of {@code getKeybind().setCallback} directly
      * So the config statistic can be updated correctly
