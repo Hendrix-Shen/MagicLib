@@ -16,6 +16,7 @@ allprojects {
 Project coreProject = evaluationDependsOn(":magiclib-core:${project.name}")
 
 jar {
+    outputs.upToDateWhen { false }
     dependsOn(coreProject.tasks.shadowJar)
 
     doFirst {
@@ -72,6 +73,7 @@ subprojects {
     }
 
     jar {
+        outputs.upToDateWhen { false }
         dependsOn(submodules.collect { it.tasks.remapJar })
         dependsOn(project.parent.tasks.jar)
 
