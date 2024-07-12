@@ -56,7 +56,7 @@ public class MagicConfigManagerImpl implements MagicConfigManager, IKeybindProvi
                 Object config = field.get(null);
 
                 if (!(config instanceof MagicIConfigBase)) {
-                    MagicLib.getLogger().warn("{} is not a subclass of MagicIConfigBase, skipping!", config);
+                    MagicLib.getLogger().warn("{} is not a subclass of MagicIConfigBase, skipping!", field.getName());
                     continue;
                 }
 
