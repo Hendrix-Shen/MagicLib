@@ -49,7 +49,7 @@ public interface MutableComponentCompat extends ComponentCompat {
     }
 
     default MutableComponentCompat withStyle(ChatFormatting... chatFormattings) {
-        this.getStyle().applyFormats(chatFormattings);
+        this.setStyle(this.getStyle().applyFormats(chatFormattings));
         return this;
     }
 }
