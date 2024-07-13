@@ -27,6 +27,7 @@ jobs:
           distribution: 'temurin'
           java-version: 21
       - name: Cache gradle files
+        if: ${{ inputs.build_version_type != 'PULL_REQUEST' }}
         uses: actions/cache@v4
         with:
           path: |
