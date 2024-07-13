@@ -82,7 +82,7 @@ public class JarLanguageProvider implements LanguageProvider {
             } catch (Exception e) {
                 if (e instanceof JsonSyntaxException && e.getCause() instanceof MalformedJsonException) {
                     MagicLib.getLogger().error("Failed to load language file {} from {}.",
-                            entry.getName(), jar.getName(), e.getCause());
+                            entry.getName(), jar.getName());
                     continue;
                 }
 
