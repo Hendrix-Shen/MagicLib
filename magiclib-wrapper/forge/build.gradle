@@ -84,20 +84,20 @@ subprojects {
                 .forEach { submodules.add(it) }
     }
 
+    Set<Project> submodules_publish = submodules.findAll { !it.name.contains("better-dev") }
+    Set<Project> submodules_unpublish = submodules.findAll { !(it in submodules_publish) }
+
     dependencies {
         shadeOnly(project(path: coreProject.path, configuration: "shadow")) {
             transitive(false)
         }
 
-        submodules.forEach {
+        submodules_publish.forEach {
             shadeOnly(it) {
                 transitive(false)
             }
         }
     }
-
-    Set<Project> submodules_publish = submodules.findAll { !it.name.contains("better-dev") }
-    Set<Project> submodules_unpublish = submodules.findAll { !(it in submodules_publish) }
 
     base {
         setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.name}-${project.parent.name}")
@@ -113,8 +113,10 @@ subprojects {
     }
 
     jar {
-        setArchiveClassifier('empty')
+        outputs.upToDateWhen { false }
+        dependsOn(submodules.collect { it.tasks.remapJar })
         dependsOn(tasks.shadowJar)
+        setArchiveClassifier('empty')
         exclude("**/*")
 
         doFirst {

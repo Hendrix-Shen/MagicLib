@@ -84,20 +84,20 @@ subprojects {
                 .forEach { submodules.add(it) }
     }
 
+    Set<Project> submodules_publish = submodules.findAll { !it.name.contains("better-dev") }
+    Set<Project> submodules_unpublish = submodules.findAll { !(it in submodules_publish) }
+
     dependencies {
         shadeOnly(project(path: coreProject.path, configuration: "shadow")) {
             transitive(false)
         }
 
-        submodules.forEach {
+        submodules_publish.forEach {
             shadeOnly(it) {
                 transitive(false)
             }
         }
     }
-
-    Set<Project> submodules_publish = submodules.findAll { !it.name.contains("better-dev") }
-    Set<Project> submodules_unpublish = submodules.findAll { !(it in submodules_publish) }
 
     base {
         setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.name}-${project.parent.name}")
@@ -113,8 +113,10 @@ subprojects {
     }
 
     jar {
-        setArchiveClassifier('empty')
+        outputs.upToDateWhen { false }
+        dependsOn(submodules.collect { it.tasks.remapJar })
         dependsOn(tasks.shadowJar)
+        setArchiveClassifier('empty')
         exclude("**/*")
 
         doFirst {
@@ -158,49 +160,59 @@ subprojects {
 
         from(project.parent.sourceSets.main.resources.srcDirs) {
             include("META-INF")
-            include("META-INF/mods.toml")
-            expand([
-                    "mod_description": project.property("mod.description"),
-                    "mod_homepage"   : project.property("mod.homepage"),
-                    "mod_id"         : project.property("mod.id"),
-                    "mod_license"    : project.property("mod.license"),
-                    "mod_name"       : project.property("mod.name"),
-                    "mod_sources"    : project.property("mod.sources"),
-                    "mod_version"    : project.getVersionWithCommitHash(rootProject),
-            ])
+            [
+                    "META-INF/mods.toml",
+                    "META-INF/neoforge.mods.toml"
+            ].forEach {
+                include(it)
+                expand([
+                        "mod_description": project.property("mod.description"),
+                        "mod_homepage"   : project.property("mod.homepage"),
+                        "mod_id"         : project.property("mod.id"),
+                        "mod_license"    : project.property("mod.license"),
+                        "mod_name"       : project.property("mod.name"),
+                        "mod_sources"    : project.property("mod.sources"),
+                        "mod_version"    : project.getVersionWithCommitHash(rootProject),
+                ])
+            }
         }
 
         doLast {
-            File toml_file = project.layout.buildDirectory.file("resources/main/META-INF/mods.toml").get().getAsFile()
-            Map<String, ?> toml_map = toml_file.withReader {
-                new JsonSlurper().parse(new StringReader(TomlConverter.convertTomlToJson(it))) as Map<String, ?>
-            }
-
             Set modules = new HashSet()
             modules.add(coreProject)
             modules.addAll(submodules_publish)
 
-            modules.forEach {
-                File subproject_toml_file = it.layout.buildDirectory.file("resources/main/META-INF/mods.toml").get().getAsFile()
-
-                Map<String, ?> submodule_toml_map = subproject_toml_file.withReader {
+            [
+                    "resources/main/META-INF/mods.toml",
+                    "resources/main/META-INF/neoforge.mods.toml"
+            ].forEach { String path ->
+                File toml_file = project.layout.buildDirectory.file(path).get().getAsFile()
+                Map<String, ?> toml_map = toml_file.withReader {
                     new JsonSlurper().parse(new StringReader(TomlConverter.convertTomlToJson(it))) as Map<String, ?>
                 }
 
-                submodule_toml_map.removeAll { String key, Object value -> value instanceof String }
-                submodule_toml_map.forEach { String key, Object value ->
-                    if (value instanceof List) {
-                        // mods, mixins
-                        (toml_map.computeIfAbsent(key, _ -> new ArrayList<>()) as List).addAll(value)
-                    } else if (value instanceof Map) {
-                        // dependencies
-                        (toml_map.computeIfAbsent(key, _ -> new HashMap<>()) as Map).putAll(value)
+                modules.forEach {
+                    File subproject_toml_file = it.layout.buildDirectory.file(path).get().getAsFile()
+
+                    Map<String, ?> submodule_toml_map = subproject_toml_file.withReader {
+                        new JsonSlurper().parse(new StringReader(TomlConverter.convertTomlToJson(it))) as Map<String, ?>
+                    }
+
+                    submodule_toml_map.removeAll { String key, Object value -> value instanceof String }
+                    submodule_toml_map.forEach { String key, Object value ->
+                        if (value instanceof List) {
+                            // mods, mixins
+                            (toml_map.computeIfAbsent(key, _ -> new ArrayList<>()) as List).addAll(value)
+                        } else if (value instanceof Map) {
+                            // dependencies
+                            (toml_map.computeIfAbsent(key, _ -> new HashMap<>()) as Map).putAll(value)
+                        }
                     }
                 }
-            }
 
-            toml_file.withWriter {
-                it.append(TomlConverter.convertJsonToToml(new StringReader(new JsonBuilder(toml_map).toString())))
+                toml_file.withWriter {
+                    it.append(TomlConverter.convertJsonToToml(new StringReader(new JsonBuilder(toml_map).toString())))
+                }
             }
         }
 

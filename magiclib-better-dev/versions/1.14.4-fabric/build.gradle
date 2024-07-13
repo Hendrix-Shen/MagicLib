@@ -295,8 +295,8 @@ processResources {
     [
             "fabric.mod.json"            : ["fabric"],
             "META-INF"                   : ["forge", "neoforge"],
-            "META-INF/mods.toml"         : ["forge", "neoforge", mcVersion < 12005 ? "neoforge": "none"],
-            "META-INF/neoforge.mods.toml": [mcVersion > 12004 ? "neoforge" : "none"]
+            "META-INF/mods.toml"         : ["forge", "neoforge"],
+            "META-INF/neoforge.mods.toml": ["neoforge"]
     ].forEach { file, platforms ->
         if (platforms.contains(modPlatform)) {
             filesMatching(file) {
