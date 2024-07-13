@@ -60,7 +60,7 @@ subprojects {
     Set<Project> submodules_unpublish = submodules.findAll { !(it in submodules_publish) }
 
     base {
-        setArchivesName("${project.parent.property("mod.archives_base_name")}-${project.name}-${project.parent.name}")
+        setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.name}-${project.parent.name}")
         group("${project.parent.property("mod.maven_group")}")
         version(project.getModVersion(rootProject))
     }
