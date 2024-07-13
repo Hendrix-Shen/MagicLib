@@ -61,10 +61,6 @@ repositories {
     maven {
         name("Jitpack Maven")
         url("https://jitpack.io")
-
-        content {
-            includeGroup("com.github.Nyan-Work")
-        }
     }
 
     mavenCentral()
@@ -141,26 +137,29 @@ loom {
         runDir("run/server")
     }
 
-    runs {
-        mixinAuditClient {
-            inherit(client)
-            vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
-            ideConfigGenerated(false)
-            runDir("run/client")
-        }
+    if (fabricLike) {
+        runs {
+            mixinAuditClient {
+                inherit(client)
+                vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
+                ideConfigGenerated(false)
+                runDir("run/client")
+            }
 
-        mixinAuditServer {
-            inherit(server)
-            vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
-            ideConfigGenerated(false)
-            runDir("run/server")
+            mixinAuditServer {
+                inherit(server)
+                vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
+                ideConfigGenerated(false)
+                runDir("run/server")
+            }
         }
     }
 
-    if (fabricLike) {
-        // Setup client default settings.
-        runClient {
-            defaultCharacterEncoding("UTF-8")
+    // Setup client default settings.
+    runClient {
+        defaultCharacterEncoding("UTF-8")
+
+        doFirst {
             file("${projectDir}/run/client/config").mkdirs()
             file("${projectDir}/run/client/options.txt").with { File f ->
                 {
@@ -182,11 +181,13 @@ loom {
                 }
             }
         }
+    }
 
-        // Setup server default settings.
-        runServer {
-            defaultCharacterEncoding("UTF-8")
+    // Setup server default settings.
+    runServer {
+        defaultCharacterEncoding("UTF-8")
 
+        doFirst {
             // Agree eula before server init.
             file("${projectDir}/run/server/eula.txt").with { File f ->
                 {
@@ -199,12 +200,6 @@ loom {
                         }
                     }
                 }
-            }
-            if (!new File("${projectDir}/run/server/eula.txt").exists()) {
-                new File("${projectDir}/run/server").mkdirs()
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("${projectDir}/run/server/eula.txt"))
-                bufferedWriter.writeLine("eula=true")
-                bufferedWriter.close()
             }
         }
     }
@@ -401,11 +396,31 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
     }
 }
 
+tasks.register("cleanRuns", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.client.runDir).parentFile.deleteDir()
+    }
+}
+
+tasks.register("cleanRunClient", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.client.runDir).deleteDir()
+    }
+}
+
+tasks.register("cleanRunServer", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.server.runDir).deleteDir()
+    }
+}
+
 [
+        "cleanRuns", "cleanRunClient", "cleanRunServer",
         "runClient", "runServer",
         "runMixinAuditClient", "runMixinAuditServer",
         "preprocessCode", "preprocessResources",
-        "preprocessTestCode", "preprocessTestResources"].forEach { taskName ->
+        "preprocessTestCode", "preprocessTestResources"
+].forEach { taskName ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
             it.group("${project.property("mod.id")}")

@@ -34,6 +34,11 @@ public class MagicConfigInteger extends ConfigInteger implements MagicIConfigBas
     }
 
     @Override
+    public String getConfigGuiDisplayName() {
+        return MagicIConfigBase.super.getConfigGuiDisplayName();
+    }
+
+    @Override
     public void setValueFromJsonElement(JsonElement element) {
         int oldValue = this.getIntegerValue();
         super.setValueFromJsonElement(element);

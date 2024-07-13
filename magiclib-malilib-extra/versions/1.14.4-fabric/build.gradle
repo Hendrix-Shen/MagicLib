@@ -73,13 +73,15 @@ repositories {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["maven.modrinth:malilib"         , "malilib", fabricLike && mcVersion < 12100, false],
-        ["com.github.sakura-ryoko:malilib", "malilib", fabricLike && mcVersion > 12006, false],
-        ["maven.modrinth:mafglib"         , "malilib", forgeLike                      , false],
+        ["maven.modrinth:malilib"         , "malilib"   , fabricLike && mcVersion < 12100, false],
+        ["com.github.sakura-ryoko:malilib", "malilib"   , fabricLike && mcVersion > 12006, false],
+        ["maven.modrinth:mafglib"         , "malilib"   , forgeLike                      , false],
+        ["maven.modrinth:neonetwork"      , "neonetwork", forgeLike && mcVersion > 12004 , false],
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def runtimeDependencies = [
+        ["", "", false, false],
 ]
 
 dependencies {
@@ -120,12 +122,16 @@ dependencies {
     // API
     apiDependencies.forEach { item ->
         String dependencyNotation = item[0]
-        String propertyPrefix = item[1]
-        boolean shouldResolve = item[2]
+        String dependencyVersion = project.findProperty("dependencies.api.${item[1]}_version")
+        boolean shouldResolve = item[2] && dependencyVersion != "0"
         boolean shouldTransitive = item[3]
 
         if (shouldResolve) {
-            modApi("${dependencyNotation}:${project.property("dependencies.api.${propertyPrefix}_version")}") {
+            if (!dependencyVersion) {
+                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
+            }
+
+            modApi("${dependencyNotation}:${dependencyVersion}") {
                 transitive(shouldTransitive)
             }
         }
@@ -134,12 +140,16 @@ dependencies {
     // Runtime Library - Make development environment comfortable.
     runtimeDependencies.forEach { item ->
         String dependencyNotation = item[0]
-        String propertyPrefix = item[1]
-        boolean shouldResolve = item[2]
+        String dependencyVersion = project.findProperty("dependencies.runtime.${item[1]}_version")
+        boolean shouldResolve = item[2] && dependencyVersion != "0"
         boolean shouldTransitive = item[3]
 
         if (shouldResolve) {
-            modRuntimeOnly("${dependencyNotation}:${project.property("dependencies.runtime.${propertyPrefix}_version")}") {
+            if (!dependencyVersion) {
+                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
+            }
+
+            modRuntimeOnly("${dependencyNotation}:${dependencyVersion}") {
                 transitive(shouldTransitive)
             }
         }
@@ -184,26 +194,29 @@ loom {
         runDir("run/server")
     }
 
-    runs {
-        mixinAuditClient {
-            inherit(client)
-            vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
-            ideConfigGenerated(false)
-            runDir("run/client")
-        }
+    if (fabricLike) {
+        runs {
+            mixinAuditClient {
+                inherit(client)
+                vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
+                ideConfigGenerated(false)
+                runDir("run/client")
+            }
 
-        mixinAuditServer {
-            inherit(server)
-            vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
-            ideConfigGenerated(false)
-            runDir("run/server")
+            mixinAuditServer {
+                inherit(server)
+                vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
+                ideConfigGenerated(false)
+                runDir("run/server")
+            }
         }
     }
 
-    if (fabricLike) {
-        // Setup client default settings.
-        runClient {
-            defaultCharacterEncoding("UTF-8")
+    // Setup client default settings.
+    runClient {
+        defaultCharacterEncoding("UTF-8")
+
+        doFirst {
             file("${projectDir}/run/client/config").mkdirs()
             file("${projectDir}/run/client/options.txt").with { File f ->
                 {
@@ -225,11 +238,13 @@ loom {
                 }
             }
         }
+    }
 
-        // Setup server default settings.
-        runServer {
-            defaultCharacterEncoding("UTF-8")
+    // Setup server default settings.
+    runServer {
+        defaultCharacterEncoding("UTF-8")
 
+        doFirst {
             // Agree eula before server init.
             file("${projectDir}/run/server/eula.txt").with { File f ->
                 {
@@ -242,12 +257,6 @@ loom {
                         }
                     }
                 }
-            }
-            if (!new File("${projectDir}/run/server/eula.txt").exists()) {
-                new File("${projectDir}/run/server").mkdirs()
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("${projectDir}/run/server/eula.txt"))
-                bufferedWriter.writeLine("eula=true")
-                bufferedWriter.close()
             }
         }
     }
@@ -445,11 +454,31 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
     }
 }
 
+tasks.register("cleanRuns", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.client.runDir).parentFile.deleteDir()
+    }
+}
+
+tasks.register("cleanRunClient", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.client.runDir).deleteDir()
+    }
+}
+
+tasks.register("cleanRunServer", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.server.runDir).deleteDir()
+    }
+}
+
 [
+        "cleanRuns", "cleanRunClient", "cleanRunServer",
         "runClient", "runServer",
         "runMixinAuditClient", "runMixinAuditServer",
         "preprocessCode", "preprocessResources",
-        "preprocessTestCode", "preprocessTestResources"].forEach { taskName ->
+        "preprocessTestCode", "preprocessTestResources"
+].forEach { taskName ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
             it.group("${project.property("mod.id")}")

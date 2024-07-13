@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-//#if MC > 12005 || MC < 11700 && MC > 11502
+//#if MC < 11700 && MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
@@ -57,17 +57,17 @@ import top.hendrixshen.magiclib.util.minecraft.render.TextRenderUtil;
 //#endif
 
 //#if MC > 11404
-import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderer.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderer.java">TweakerMore</a>
  */
 public class TextRenderer {
     public static final double DEFAULT_FONT_SCALE = 0.025;
+    private static final double DEFAULT_LINE_HEIGHT_RATIO = 1.0 * RenderUtil.TEXT_LINE_HEIGHT / RenderUtil.TEXT_HEIGHT;
 
     private final List<TextHolder> lines;
     @Getter
@@ -87,11 +87,26 @@ public class TextRenderer {
         return new TextRenderer();
     }
 
+    private static @NotNull RenderContext createGlobalMatrixRenderContext() {
+        // if transformation is applied to the RenderContext's matrix,
+        // and the context's matrix (instead of an identity matrix) is used in TextRenderer.draw(),
+        // then the z index might be wrongly apply, making background-ed texts really weird,
+        // so just apply the transformation on the global matrix
+        // FIXME: why
+        return RenderContext.of(
+                //#if MC > 11605
+                //$$ RenderSystem.getModelViewStack()
+                //#elseif MC > 11502
+                new PoseStack()  // dummy matrix, will not be used for transformations
+                //#endif
+        );
+    }
+
     private TextRenderer() {
         this.lines = Lists.newArrayList();
         this.shiftX = this.shiftY = 0.0;
         this.fontScale = TextRenderer.DEFAULT_FONT_SCALE;
-        this.lineHeightRatio = 1.0 * RenderUtil.TEXT_LINE_HEIGHT / RenderUtil.TEXT_HEIGHT;
+        this.lineHeightRatio = TextRenderer.DEFAULT_LINE_HEIGHT_RATIO;
         this.color = 0xFFFFFFFF;
         this.backgroundColor = 0x00000000;
         this.shadow = false;
@@ -116,19 +131,11 @@ public class TextRenderer {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        RenderContext context = RenderContext.of(
-                //#if MC > 12004
-                //$$ new PoseStack()
-                //#elseif MC > 11605
-                //$$ RenderSystem.getModelViewStack()
-                //#elseif MC > 11502
-                new PoseStack()
-                //#endif
-        );
+        RenderContext context = TextRenderer.createGlobalMatrixRenderContext();
 
         CameraPositionTransformer positionTransformer = CameraPositionTransformer.create(this.pos);
         positionTransformer.apply(context);
-        context.scale(-this.fontScale, -this.fontScale, this.fontScale);
+        context.scale(this.fontScale * RenderUtil.getSizeScalingXSign(), -this.fontScale, this.fontScale);
         //#if MC < 11700
         RenderGlobal.disableLighting();
         //#endif
@@ -173,13 +180,8 @@ public class TextRenderer {
             int backgroundColor = this.backgroundColor;
 
             while (true) {
-                MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(
-                        Tesselator.getInstance().getBuilder());
-                //#if MC > 12004
-                //$$ Matrix4f matrix4f = context.getPoseStack().last().pose();
-                //#else
+                MultiBufferSource.BufferSource immediate = RenderUtil.getBufferSource();
                 Matrix4f matrix4f = Transformation.identity().getMatrix();
-                //#endif
                 mc.font.drawInBatch(
                         holder.text,
                         textX,

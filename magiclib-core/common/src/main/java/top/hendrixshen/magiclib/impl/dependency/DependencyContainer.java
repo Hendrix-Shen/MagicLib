@@ -146,7 +146,8 @@ public class DependencyContainer<T> {
 
                 return ValueContainer.of(new DependencyCheckResult(this.optional,
                         I18n.tr("magiclib.dependency.result.mod_id." + (this.optional ?
-                                "optional.success" : "require.fail") + ".not_found", this.value, this.versionPredicates)
+                                "optional.success" : "require.fail") + ".not_found", this.value,
+                                this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates)
                 ));
             case PREDICATE:
                 boolean testResult = this.predicate.test(this.obj);

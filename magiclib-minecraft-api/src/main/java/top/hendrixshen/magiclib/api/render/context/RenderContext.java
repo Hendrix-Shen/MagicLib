@@ -23,13 +23,18 @@ package top.hendrixshen.magiclib.api.render.context;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.gui.GuiComponent;
 import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.api.render.matrix.MatrixStack;
+import top.hendrixshen.magiclib.impl.render.context.LevelRenderContextImpl;
 import top.hendrixshen.magiclib.impl.render.context.RenderContextImpl;
+import top.hendrixshen.magiclib.impl.render.matrix.MinecraftPoseStack;
+
+//#if MC > 12004
+//$$ import org.joml.Matrix4fStack;
+//$$ import top.hendrixshen.magiclib.impl.render.matrix.JomlMatrixStack;
+//#endif
 
 //#if MC > 11904
-//$$ import com.mojang.blaze3d.vertex.Tesselator;
-//$$ import net.minecraft.client.Minecraft;
-//$$ import net.minecraft.client.renderer.MultiBufferSource;
-//$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.GuiGraphicsAccessor;
+//$$ import top.hendrixshen.magiclib.util.minecraft.render.RenderContextUtil;
 //#endif
 
 //#if MC > 11502
@@ -37,7 +42,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderContext.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderContext.java">TweakerMore</a>
  */
 public interface RenderContext {
     static @NotNull RenderContext of(
@@ -45,37 +50,68 @@ public interface RenderContext {
             @NotNull PoseStack poseStack
             //#endif
     ) {
-        //#if MC > 11904
-        //$$ GuiGraphics guiGraphics = new GuiGraphics(Minecraft.getInstance(),
-        //$$         MultiBufferSource.immediate(Tesselator.getInstance().getBuilder()));
-        //$$ ((GuiGraphicsAccessor) guiGraphics).magiclib$setPose(poseStack);
-        //#endif
-
         return new RenderContextImpl(
                 //#if MC > 11904
-                //$$ guiGraphics,
+                //$$ RenderContextUtil.createDrawContext(poseStack),
                 //#endif
-                //#if MC > 11502
-                poseStack
+                new MinecraftPoseStack(
+                        //#if MC > 11502
+                        poseStack
+                        //#endif
+                )
+        );
+    }
+
+    static @NotNull LevelRenderContextImpl createWorldRenderContext(
+            //#if MC > 12004
+            //$$ @NotNull Matrix4fStack matrixStack
+            //#elseif MC > 11502
+            @NotNull PoseStack matrixStack
+            //#endif
+    ) {
+        return new LevelRenderContextImpl(
+                //#if MC > 11904
+                //$$ RenderContextUtil.createDrawContext(
+                //#if MC > 12004
+                //$$         new PoseStack()
+                //#else
+                //$$         matrixStack
+                //#endif
+                //$$ ),
+                //#endif
+                //#if MC > 12004
+                //$$ new JomlMatrixStack(matrixStack)
+                //#else
+                new MinecraftPoseStack(
+                        //#if MC > 11502
+                        matrixStack
+                        //#endif
+                )
                 //#endif
         );
     }
 
+    //#if MC > 12004
+    //$$ static RenderContext of(@NotNull Matrix4fStack matrixStack) {
+    //$$     return new RenderContextImpl(RenderContextUtil.createDrawContext(new PoseStack()), new JomlMatrixStack(matrixStack));
+    //$$ }
+    //#endif
+
     //#if MC > 11904
     //$$ static RenderContext of(@NotNull GuiGraphics guiGraphics) {
-    //$$ 	return new RenderContextImpl(guiGraphics, guiGraphics.pose());
+    //$$ 	return new RenderContextImpl(guiGraphics, new MinecraftPoseStack(guiGraphics.pose()));
     //$$ }
     //#endif
 
     GuiComponent getGuiComponent();
 
     //#if MC > 11502
-    PoseStack getPoseStack();
+    MatrixStack getMatrixStack();
     //#endif
 
-    void pushPose();
+    void pushMatrix();
 
-    void popPose();
+    void popMatrix();
 
     void translate(double x, double y, double z);
 
