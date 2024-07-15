@@ -13,7 +13,6 @@
     "dfu.destroy.DataFixerUpperMixin",
     "dfu.destroy.SchemaMixin",
     "dfu.lazy.DataFixersMixin",
-    "dfu.lazy.MainMixin",
     "dfu.lazy.SharedConstantsMixin",
     "threadtweak.DataFixersMixin",
     "threadtweak.MinecraftServerMixin",
@@ -22,6 +21,7 @@
   "client": [
     "auth.AccountProfileKeyPairManagerMixin",
     "auth.MinecraftMixin",
+    "dfu.lazy.MainMixin",
     "threadtweak.ClientMainMixin",
     "threadtweak.IntegratedServerMixin"
   ]

@@ -1,6 +1,8 @@
 package top.hendrixshen.magiclib.mixin.dev.dfu.lazy;
 
 import com.mojang.datafixers.DSL;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.main.Main;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,6 +16,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+@Environment(EnvType.CLIENT)
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.LazyDFUPredicate.class))
 @Mixin(Main.class)
 public class MainMixin {
