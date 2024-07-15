@@ -1,6 +1,8 @@
 package top.hendrixshen.magiclib.impl.platform.adapter;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
@@ -9,6 +11,7 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.util.Collection;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ForgeModList implements ModListAdapter {
     @Getter(lazy = true)
     private static final ModListAdapter instance = new ForgeModList();

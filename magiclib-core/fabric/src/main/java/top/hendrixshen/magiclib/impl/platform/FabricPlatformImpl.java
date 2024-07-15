@@ -2,7 +2,9 @@ package top.hendrixshen.magiclib.impl.platform;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Maps;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -20,6 +22,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FabricPlatformImpl implements Platform {
     @Getter(lazy = true)
     private static final Platform instance = new FabricPlatformImpl();
@@ -29,9 +32,6 @@ public final class FabricPlatformImpl implements Platform {
     );
 
     private final Map<String, ModContainerAdapter> modMap = Maps.newConcurrentMap();
-
-    private FabricPlatformImpl() {
-    }
 
     @Override
     public Path getGameFolder() {

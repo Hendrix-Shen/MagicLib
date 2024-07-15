@@ -1,6 +1,8 @@
 package top.hendrixshen.magiclib.impl.platform.adapter;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.language.IModInfo;
@@ -10,6 +12,7 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NeoForgeLoadingModList implements ModListAdapter {
     @Getter(lazy = true)
     private static final ModListAdapter instance = new NeoForgeLoadingModList();

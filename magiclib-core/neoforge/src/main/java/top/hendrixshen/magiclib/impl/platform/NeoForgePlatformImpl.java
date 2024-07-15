@@ -2,7 +2,9 @@ package top.hendrixshen.magiclib.impl.platform;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Maps;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
@@ -24,6 +26,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NeoForgePlatformImpl implements Platform {
     @Getter(lazy = true)
     private static final Platform instance = new NeoForgePlatformImpl();
@@ -33,9 +36,6 @@ public final class NeoForgePlatformImpl implements Platform {
     );
 
     private final Map<String, ModContainerAdapter> modMap = Maps.newConcurrentMap();
-
-    private NeoForgePlatformImpl() {
-    }
 
     @Override
     public Path getGameFolder() {
@@ -83,6 +83,32 @@ public final class NeoForgePlatformImpl implements Platform {
     }
 
     @Override
+    public String getModName(String modIdentifier) {
+        return NeoForgeModList.getInstance().getModFileById(modIdentifier)
+                .or(() -> NeoForgeLoadingModList.getInstance().getModFileById(modIdentifier))
+                .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
+                .getMods()
+                .stream()
+                .filter(modInfo -> modInfo.getModId().equals(modIdentifier))
+                .findFirst()
+                .map(IModInfo::getDisplayName)
+                .orElse("?");
+    }
+
+    @Override
+    public String getModVersion(String modIdentifier) {
+        return NeoForgeModList.getInstance().getModFileById(modIdentifier)
+                .or(() -> NeoForgeLoadingModList.getInstance().getModFileById(modIdentifier))
+                .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
+                .getMods()
+                .stream()
+                .filter(modInfo -> modInfo.getModId().equals(modIdentifier))
+                .findFirst()
+                .map(iModInfo -> iModInfo.getVersion().toString())
+                .orElse("?");
+    }
+
+    @Override
     public ValueContainer<ModContainerAdapter> getMod(String modIdentifier) {
         return ValueContainer.ofNullable(this.modMap.get(modIdentifier)).or(() -> {
             try {
@@ -106,8 +132,8 @@ public final class NeoForgePlatformImpl implements Platform {
 
     @Override
     public Collection<String> getModIds() {
-        return ValueContainer.ofNullable(NeoForgeModList.getInstance().getMods())
-                .orElse(NeoForgeLoadingModList.getInstance().getMods())
+        return NeoForgeModList.getInstance().getMods()
+                .or(() -> NeoForgeLoadingModList.getInstance().getMods())
                 .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
                 .stream()
                 .map(IModInfo::getModId)

@@ -2,7 +2,9 @@ package top.hendrixshen.magiclib.impl.platform;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Maps;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
@@ -25,6 +27,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ForgePlatformImpl implements Platform {
     @Getter(lazy = true)
     private static final Platform instance = new ForgePlatformImpl();
@@ -34,9 +37,6 @@ public final class ForgePlatformImpl implements Platform {
     );
 
     private final Map<String, ModContainerAdapter> modMap = Maps.newConcurrentMap();
-
-    private ForgePlatformImpl() {
-    }
 
     @Override
     public Path getGameFolder() {
@@ -86,6 +86,32 @@ public final class ForgePlatformImpl implements Platform {
     }
 
     @Override
+    public String getModName(String modIdentifier) {
+        return ForgeModList.getInstance().getModFileById(modIdentifier)
+                .or(() -> ForgeLoadingModList.getInstance().getModFileById(modIdentifier))
+                .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
+                .getMods()
+                .stream()
+                .filter(modInfo -> modInfo.getModId().equals(modIdentifier))
+                .findFirst()
+                .map(IModInfo::getDisplayName)
+                .orElse("?");
+    }
+
+    @Override
+    public String getModVersion(String modIdentifier) {
+        return ForgeModList.getInstance().getModFileById(modIdentifier)
+                .or(() -> ForgeLoadingModList.getInstance().getModFileById(modIdentifier))
+                .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
+                .getMods()
+                .stream()
+                .filter(modInfo -> modInfo.getModId().equals(modIdentifier))
+                .findFirst()
+                .map(iModInfo -> iModInfo.getVersion().toString())
+                .orElse("?");
+    }
+
+    @Override
     public ValueContainer<ModContainerAdapter> getMod(String modIdentifier) {
         return ValueContainer.ofNullable(this.modMap.get(modIdentifier)).or(() -> {
             try {
@@ -109,8 +135,8 @@ public final class ForgePlatformImpl implements Platform {
 
     @Override
     public Collection<String> getModIds() {
-        return ValueContainer.ofNullable(ForgeModList.getInstance().getMods())
-                .orElse(ForgeLoadingModList.getInstance().getMods())
+        return ForgeModList.getInstance().getMods()
+                .or(() -> ForgeLoadingModList.getInstance().getMods())
                 .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
                 .stream()
                 .map(ModInfo::getModId)
