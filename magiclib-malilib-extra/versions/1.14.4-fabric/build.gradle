@@ -399,17 +399,17 @@ publishing {
         }
 
         maven {
-            name("mavenCentralSnapshot")
-            url("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            name("nyanMavenSnapshot")
+            url("https://maven.hendrixshen.top/snapshots")
 
-            project.credentialsMavenCentral(it)
+            project.credentialsNyanMaven(it)
         }
 
         maven {
-            name("mavenCentralRelease")
-            url("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            name("nyanMavenRelease")
+            url("https://maven.hendrixshen.top/releases")
 
-            project.credentialsMavenCentral(it)
+            project.credentialsNyanMaven(it)
         }
     }
 }
@@ -425,8 +425,8 @@ tasks.withType(PublishToMavenRepository).configureEach {
         repository == publishing.repositories.mavenLocal ||
                 (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
                 (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
-                (repository == publishing.repositories.mavenCentralSnapshot && publication == publishing.publications.snapshot && project.isMavenCentralCredentialsExist()) ||
-                (repository == publishing.repositories.mavenCentralRelease && publication == publishing.publications.release && project.isMavenCentralCredentialsExist())
+                (repository == publishing.repositories.nyanMavenSnapshot && publication == publishing.publications.snapshot && project.isNyanMavenCredentialsExist()) ||
+                (repository == publishing.repositories.nyanMavenRelease && publication == publishing.publications.release && project.isNyanMavenCredentialsExist())
     }
 
     onlyIf {

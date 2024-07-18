@@ -131,17 +131,17 @@ ext {
         }
     }
 
-    String mavenCentral_username = project.getOrDefault("secrets.mavenCentral.username", project.getEnv().MAVEN_CENTRAL_USERNAME)
-    String mavenCentral_password = project.getOrDefault("secrets.mavenCentral.password", project.getEnv().MAVEN_CENTRAL_PASSWORD)
+    String nyanMaven_username = project.getOrDefault("secrets.nyanMaven.username", project.getEnv().NYAN_MAVEN_USERNAME)
+    String nyanMaven_password = project.getOrDefault("secrets.nyanMaven.password", project.getEnv().NYAN_MAVEN_PASSWORD)
 
-    isMavenCentralCredentialsExist = {
-        return mavenCentral_username && mavenCentral_password
+    isNyanMavenCredentialsExist = {
+        return nyanMaven_username && nyanMaven_password
     }
 
-    credentialsMavenCentral = { MavenArtifactRepository mavenArtifactRepository ->
+    credentialsNyanMaven = { MavenArtifactRepository mavenArtifactRepository ->
         mavenArtifactRepository.credentials { PasswordCredentials passwordCredentials ->
-            username(mavenCentral_username)
-            password(mavenCentral_password)
+            username(nyanMaven_username)
+            password(nyanMaven_password)
         }
     }
 }
@@ -159,8 +159,8 @@ tasks.register("genLocalProperties") {
             bufferedWriter.writeLine("# Secrets")
             bufferedWriter.writeLine("secrets.gpg.signingKey=")
             bufferedWriter.writeLine("secrets.gpg.signingPassword=")
-            bufferedWriter.writeLine("secrets.mavenCentral.username=")
-            bufferedWriter.writeLine("secrets.mavenCentral.password=")
+            bufferedWriter.writeLine("secrets.nyanMaven.username=")
+            bufferedWriter.writeLine("secrets.nyanMaven.password=")
             bufferedWriter.writeLine("")
             bufferedWriter.writeLine("# Overwritten configurations")
             bufferedWriter.writeLine("ow.build.environment.local=")
