@@ -31,6 +31,19 @@ public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCo
     }
 
     @Override
+    public ValueContainer<LevelCompat> getLevelCompat() {
+        return ValueContainer.ofNullable(
+                        //#if MC > 11904
+                        //$$ this.get().level()
+                        //#else
+                        this.get().level
+                        //#endif
+                )
+                .map(LevelCompat::of)
+                .or(ValueContainer::empty);
+    }
+
+    @Override
     public double getX() {
         //#if MC > 11404
         return this.get().getX();

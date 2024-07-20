@@ -7,13 +7,17 @@ import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompa
 import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
 import top.hendrixshen.magiclib.impl.compat.minecraft.world.entity.EntityCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
+import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 public interface EntityCompat extends Provider<Entity> {
     static @NotNull EntityCompat of(@NotNull Entity entity) {
         return new EntityCompatImpl(entity);
     }
 
+    @Deprecated
     LevelCompat getLevel();
+
+    ValueContainer<LevelCompat> getLevelCompat();
 
     double getX();
 
@@ -35,7 +39,6 @@ public interface EntityCompat extends Provider<Entity> {
 
     void setXRot(float xRot);
 
-    // TODO: Make BlockPos Compatible
     BlockPos getBlockPosition();
 
     boolean isOnGround();
@@ -47,8 +50,7 @@ public interface EntityCompat extends Provider<Entity> {
     float getMaxUpStep();
 
     /**
-     * This method is no longer available in MC 1.20.5 and above, and attempting to use it will throw an exception.
+     * If using in 1.20.5+, see {@link top.hendrixshen.magiclib.impl.compat.minecraft.world.entity.LivingEntityCompatImpl#setMaxUpStep(float)}.
      */
-    @Deprecated
     void setMaxUpStep(float maxUpStep);
 }
