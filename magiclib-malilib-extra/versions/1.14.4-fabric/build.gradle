@@ -68,6 +68,15 @@ repositories {
         }
     }
 
+    maven {
+        name("badasintended Maven")
+        url("https://maven2.bai.lol")
+
+        content {
+            includeGroup("lol.bai")
+        }
+    }
+
     mavenCentral()
 }
 
@@ -76,7 +85,7 @@ def apiDependencies = [
         ["maven.modrinth:malilib"         , "malilib"   , fabricLike && mcVersion < 12100, false],
         ["com.github.sakura-ryoko:malilib", "malilib"   , fabricLike && mcVersion > 12006, false],
         ["maven.modrinth:mafglib"         , "malilib"   , forgeLike                      , false],
-        ["maven.modrinth:neonetwork"      , "neonetwork", forgeLike && mcVersion > 12004 , false],
+        ["lol.bai:badpackets"             , "badpackets", forgeLike && mcVersion > 12004 , false],
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
