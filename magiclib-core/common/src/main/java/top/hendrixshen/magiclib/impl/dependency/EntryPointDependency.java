@@ -69,7 +69,7 @@ public final class EntryPointDependency {
 
         dependencies.addAll(this.getDependencies("onInitialize", entryPoint));
 
-        if (dependencies.stream().allMatch(DependenciesContainer::isSatisfied)) {
+        if (dependencies.isEmpty() || dependencies.stream().anyMatch(DependenciesContainer::isSatisfied)) {
             return null;
         }
 
