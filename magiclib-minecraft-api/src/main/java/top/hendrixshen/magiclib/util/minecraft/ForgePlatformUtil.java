@@ -3,7 +3,7 @@
 //$$
 //$$ import net.minecraft.client.gui.screens.Screen;
 //$$
-//$$ import java.util.function.Function;
+//$$ import java.util.function.UnaryOperator;
 //$$
 //#if NEO_FORGE
 //$$ import net.neoforged.fml.ModList;
@@ -30,7 +30,7 @@
 //$$         throw new AssertionError("No top.hendrixshen.magiclib.util.minecraft.ForgePlatformUtil instances for you!");
 //$$     }
 //$$
-//$$     public static void registerModConfigScreen(String modId, Function<Screen, Screen> screenFactory) {
+//$$     public static void registerModConfigScreen(String modId, UnaryOperator<Screen> screenFactory) {
 //$$         ModList.get().getModContainerById(modId)
 //$$                 .orElseThrow(RuntimeException::new)
 //$$                 .registerExtensionPoint(
