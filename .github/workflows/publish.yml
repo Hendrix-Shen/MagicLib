@@ -131,11 +131,8 @@ jobs:
             build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
           files: |
             build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
-            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
           name: ${{ format('[CI#{0}]{1} {2}.{3}+{4}', github.run_number, steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, steps.get_git_info.outputs.short_sha) }}
-          version: ${{ format('mc-{0}-{1}-v{2}.{3}', inputs.publish_mc_ver, inputs.publish_platform, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count) }}
+          version: ${{ format('v{0}.{1}-mc-{2}-{3}', steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, inputs.publish_mc_ver, inputs.publish_platform) }}
           version-type: alpha
           modrinth-changelog: ${{ steps.changelog_dev.outputs.result }}
           modrinth-name: ${{ format('[CI#{0}]{1} {2}.{3} for Minecraft {4} ({5})', github.run_number, steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, inputs.publish_mc_ver, inputs.publish_platform) }}
@@ -148,9 +145,9 @@ jobs:
           game-version-filter: any
           dependencies: |
             carpet(optional)
-            malilib(optional)
-          retry-attempts: 2
-          retry-delay: 10000
+            malilib(optional
+          retry-attempts: 3
+          retry-delay: 50000
       - name: Publish Minecraft Mods (Stable Channel)
         if: ${{ inputs.publish_channel == 'stable' }}
         uses: Kir-Antipov/mc-publish@v3.3
@@ -168,11 +165,8 @@ jobs:
             build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
           files: |
             build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
-            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-            build-artifacts/magiclib-wrapper/${{ inputs.publish_platform }}/${{ inputs.publish_mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
           name: ${{ format('{0} {1}.{2} for Minecraft {3} ({4})', steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, inputs.publish_mc_ver, inputs.publish_platform) }}
-          version: ${{ format('mc-{0}-{1}-v{2}.{3}', inputs.publish_mc_ver, inputs.publish_platform, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count) }}
+          version: ${{ format('v{0}.{1}-mc-{2}-{3}', steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, inputs.publish_mc_ver, inputs.publish_platform) }}
           version-type: release
           github-changelog: ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
           modrinth-changelog: ${{ steps.changelog_release.outputs.result }}
