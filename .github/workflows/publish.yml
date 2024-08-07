@@ -147,7 +147,7 @@ jobs:
             carpet(optional)
             malilib(optional
           retry-attempts: 3
-          retry-delay: 50000
+          retry-delay: 10000
       - name: Publish Minecraft Mods (Stable Channel)
         if: ${{ inputs.publish_channel == 'stable' }}
         uses: Kir-Antipov/mc-publish@v3.3
