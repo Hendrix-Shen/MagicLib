@@ -158,7 +158,6 @@ loom {
 
     interfaceInjection {
         enableDependencyInterfaceInjection.set(false)
-        isEnabled.set(false)
     }
 
     if (modPlatform == "forge") {
