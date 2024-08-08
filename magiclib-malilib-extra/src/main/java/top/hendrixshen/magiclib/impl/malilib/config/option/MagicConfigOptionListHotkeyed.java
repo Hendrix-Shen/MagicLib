@@ -81,7 +81,7 @@ public class MagicConfigOptionListHotkeyed extends MagicConfigOptionList impleme
         this.setOptionListValue(newValue);
         InfoUtil.displayActionBarMessage(
                 ComponentCompat.translatable("magiclib.config.message.option_list_hotkeyed.cycled_message",
-                        this.getName(), GuiBase.TXT_GOLD + newValue.getDisplayName() + GuiBase.TXT_RST).get());
+                        this.getName(), GuiBase.TXT_GOLD + newValue.getDisplayName() + GuiBase.TXT_RST));
         return true;
     }
 }

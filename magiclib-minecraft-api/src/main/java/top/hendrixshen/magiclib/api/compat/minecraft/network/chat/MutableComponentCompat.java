@@ -1,55 +1,50 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.network.chat;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.BaseComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.MutableComponentCompatImpl;
 
 import java.util.function.UnaryOperator;
 
-//#if MC > 11502
-import net.minecraft.network.chat.MutableComponent;
-//#else
-//$$ import net.minecraft.network.chat.BaseComponent;
-//#endif
-
 public interface MutableComponentCompat extends ComponentCompat {
-    static @NotNull MutableComponentCompat of(
-            //#if MC > 11502
-            @NotNull MutableComponent mutableOrBaseComponent
-            //#else
-            //$$ @NotNull BaseComponent mutableOrBaseComponent
-            //#endif
-    ) {
+    static @NotNull MutableComponentCompat of(@NotNull BaseComponent mutableOrBaseComponent) {
         return new MutableComponentCompatImpl(mutableOrBaseComponent);
     }
 
     @Override
     @NotNull
-    //#if MC > 11502
-    MutableComponent
-    //#else
-    //$$ BaseComponent
-    //#endif
-    get();
+    BaseComponent get();
 
-    void setStyle(@NotNull StyleCompat style);
+    void setStyle(@NotNull Style style);
 
-    MutableComponentCompat append(@NotNull ComponentCompat component);
+    void setStyle(@NotNull StyleCompat styleCompat);
+
+    MutableComponentCompat append(@NotNull Component component);
+
+    MutableComponentCompat append(@NotNull ComponentCompat componentCompat);
 
     default MutableComponentCompat append(String string) {
         this.append(ComponentCompat.literal(string));
         return this;
     }
 
-    MutableComponentCompat withStyle(@NotNull StyleCompat style);
+    MutableComponentCompat withStyle(@NotNull StyleCompat styleCompat);
 
-    default MutableComponentCompat withStyle(@NotNull UnaryOperator<StyleCompat> style) {
-        this.setStyle(style.apply(this.getStyle()));
+    default MutableComponentCompat withStyle(@NotNull UnaryOperator<Style> style) {
+        this.setStyle(style.apply(this.get().getStyle()));
+        return this;
+    }
+
+    default MutableComponentCompat withStyleCompat(@NotNull UnaryOperator<StyleCompat> styleCompat) {
+        this.setStyle(styleCompat.apply(this.getStyleCompat()));
         return this;
     }
 
     default MutableComponentCompat withStyle(ChatFormatting... chatFormattings) {
-        this.setStyle(this.getStyle().applyFormats(chatFormattings));
+        this.setStyle(this.getStyleCompat().applyFormats(chatFormattings));
         return this;
     }
 }

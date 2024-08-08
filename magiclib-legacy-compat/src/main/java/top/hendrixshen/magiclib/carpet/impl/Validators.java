@@ -24,7 +24,7 @@ public class Validators {
                 return newValue;
             }
 
-            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.validator.strict.validValue",
+            MessageUtil.sendMessageCompat(source, ComponentUtil.trCompat("magiclib.validator.strict.validValue",
                     ruleOption.getOptions().toString()).withStyle(style -> style.withColor(ChatFormatting.RED)));
             return null;
         }
@@ -37,7 +37,7 @@ public class Validators {
                 return newValue;
             }
 
-            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.validator.strictIgnoreCase.validValue",
+            MessageUtil.sendMessageCompat(source, ComponentUtil.trCompat("magiclib.validator.strictIgnoreCase.validValue",
                     ruleOption.getOptions().toString()).withStyle(style -> style.withColor(ChatFormatting.RED)));
             return null;
         }
@@ -57,7 +57,7 @@ public class Validators {
                 return newValue.toLowerCase(Locale.ROOT);
             }
 
-            MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.validator.command.validValue",
+            MessageUtil.sendMessageCompat(source, ComponentUtil.trCompat("magiclib.validator.command.validValue",
                     ruleOption.getOptions().toString()).withStyle(style -> style.withColor(ChatFormatting.RED)));
             return null;
         }
@@ -88,7 +88,7 @@ public class Validators {
                     (!this.canMaxEquals && number.doubleValue() >= this.max) ||
                     (this.canMinEquals && number.doubleValue() < this.min) ||
                     (!this.canMinEquals && number.doubleValue() <= this.min)) {
-                MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.validator.numeric.validValue",
+                MessageUtil.sendMessageCompat(source, ComponentUtil.trCompat("magiclib.validator.numeric.validValue",
                                 String.format("%s%s, %s%s", this.canMinEquals ? "[" : "(", this.min,
                                         this.max, this.canMaxEquals ? "]" : ")"))
                         .withStyle(style -> style.withColor(ChatFormatting.RED)));

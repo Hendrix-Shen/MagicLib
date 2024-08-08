@@ -21,6 +21,7 @@
 package top.hendrixshen.magiclib.impl.i18n.minecraft.translation;
 
 import lombok.Getter;
+import net.minecraft.network.chat.BaseComponent;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 
 /**
@@ -41,7 +42,11 @@ public class TranslationContext {
         this(new Translator(translationPath));
     }
 
-    protected MutableComponentCompat tr(String key, Object... args) {
+    protected BaseComponent tr(String key, Object... args) {
         return this.translator.tr(key, args);
+    }
+
+    protected MutableComponentCompat trCompat(String key, Object... args) {
+        return this.translator.trCompat(key, args);
     }
 }

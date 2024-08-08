@@ -1,13 +1,14 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.world.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
-import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 //#if MC > 11502 && MC < 11900
 import top.hendrixshen.magiclib.api.compat.minecraft.UtilCompat;
@@ -19,28 +20,24 @@ public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCo
     }
 
     @Override
-    public LevelCompat getLevel() {
-        return ValueContainer.ofNullable(
-                        //#if MC > 11904
-                        //$$ this.get().level()
-                        //#else
-                        this.get().level
-                        //#endif
-                ).map(LevelCompat::of)
-                .orElse(null);
+    public Level getLevel() {
+        return
+                //#if MC > 11904
+                //$$ this.get().level();
+                //#else
+                this.get().level;
+        //#endif
     }
 
     @Override
-    public ValueContainer<LevelCompat> getLevelCompat() {
-        return ValueContainer.ofNullable(
-                        //#if MC > 11904
-                        //$$ this.get().level()
-                        //#else
-                        this.get().level
-                        //#endif
-                )
-                .map(LevelCompat::of)
-                .or(ValueContainer::empty);
+    public LevelCompat getLevelCompat() {
+        return LevelCompat.of(
+                //#if MC > 11904
+                //$$ this.get().level()
+                //#else
+                this.get().level
+                //#endif
+        );
     }
 
     @Override
@@ -149,14 +146,23 @@ public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCo
     }
 
     @Override
-    public void sendSystemMessage(@NotNull ComponentCompat component) {
+    public void sendSystemMessage(@NotNull Component component) {
         //#if MC > 11802
-        //$$ this.get().sendSystemMessage(component.get());
-        //#elseif MC > 11502
-        this.get().sendMessage(component.get(), UtilCompat.NIL_UUID);
+        //$$ this.get().sendSystemMessage(component);
         //#else
-        //$$ this.get().sendMessage(component.get());
+        this.get().sendMessage(
+                component
+                //#if MC > 11502
+                , UtilCompat.NIL_UUID
+                //#endif
+        );
         //#endif
+
+    }
+
+    @Override
+    public void sendSystemMessage(@NotNull ComponentCompat component) {
+        this.sendSystemMessage(component.get());
     }
 
     @Override

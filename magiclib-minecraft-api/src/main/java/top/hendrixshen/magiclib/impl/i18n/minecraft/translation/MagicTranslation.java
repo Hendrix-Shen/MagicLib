@@ -58,20 +58,7 @@ public class MagicTranslation {
         return MutableComponentCompat.of(MagicTranslation.translateComponent(text.get(), lang));
     }
 
-    private static
-    //#if MC > 11502
-    MutableComponent
-    //#else
-    //$$ BaseComponent
-    //#endif
-    translateComponent(
-            //#if MC > 11502
-            MutableComponent text,
-            //#else
-            //$$ BaseComponent text,
-            //#endif
-            @NotNull String lang
-    ) {
+    private static BaseComponent translateComponent(BaseComponent text, @NotNull String lang) {
         // Quick scan to check if any required translation exists.
         boolean[] translationRequired = new boolean[]{false};
 
@@ -101,16 +88,12 @@ public class MagicTranslation {
                         return txt;
                     }
 
-                    //#if MC > 11502
-                    MutableComponent newText;
-                    //#else
-                    //$$ BaseComponent newText;
-                    //#endif
+                    BaseComponent newText;
 
                     try {
-                        newText = ComponentUtil.format(msgKeyString, txtArgs).get();
+                        newText = ComponentUtil.format(msgKeyString, txtArgs);
                     } catch (IllegalArgumentException e) {
-                        newText = ComponentUtil.simple(msgKeyString).get();
+                        newText = ComponentUtil.simple(msgKeyString);
                     }
 
                     // Migrating text data.
@@ -121,21 +104,8 @@ public class MagicTranslation {
                 });
     }
 
-    private static @NotNull
-    //#if MC > 11502
-    MutableComponent
-    //#else
-    //$$ BaseComponent
-    //#endif
-    forEachTranslationComponent(
-            //#if MC > 11502
-            MutableComponent text,
-            //#else
-            //$$ BaseComponent text,
-            //#endif
-            @NotNull String lang,
-            ComponentModifier modifier
-    ) {
+    private static @NotNull BaseComponent forEachTranslationComponent(BaseComponent text, @NotNull String lang,
+                                                                      ComponentModifier modifier) {
         if (ComponentUtil.getTextContent(text) instanceof
                 //#if MC > 11802
                 //$$ TranslatableContents
@@ -155,20 +125,9 @@ public class MagicTranslation {
             for (int i = 0; i < args.length; i++) {
                 Object arg = args[i];
 
-                if (arg instanceof
-                        //#if MC > 11502
-                        MutableComponent
-                    //#else
-                    //$$ BaseComponent
-                    //#endif
-                ) {
-                    //#if MC > 11502
-                    MutableComponent newText = MagicTranslation.forEachTranslationComponent((MutableComponent) arg,
+                if (arg instanceof BaseComponent) {
+                    BaseComponent newText = MagicTranslation.forEachTranslationComponent((BaseComponent) arg,
                             lang, modifier);
-                    //#else
-                    //$$ BaseComponent newText = MagicTranslation.forEachTranslationComponent((BaseComponent) arg,
-                    //$$         lang, modifier);
-                    //#endif
 
                     if (newText != arg) {
                         args[i] = newText;
@@ -198,21 +157,9 @@ public class MagicTranslation {
             //#if MC > 11502
             Object hoverText = hoverEvent.getValue(hoverEvent.getAction());
 
-            if (hoverEvent.getAction() == HoverEvent.Action.SHOW_TEXT && hoverText instanceof
-                    //#if MC > 11502
-                    MutableComponent
-                //#else
-                //$$ BaseComponent
-                //#endif
-            ) {
-                //#if MC > 11502
-                MutableComponent newText = MagicTranslation.forEachTranslationComponent((MutableComponent) hoverText,
+            if (hoverEvent.getAction() == HoverEvent.Action.SHOW_TEXT && hoverText instanceof BaseComponent) {
+                BaseComponent newText = MagicTranslation.forEachTranslationComponent((BaseComponent) hoverText,
                         lang, modifier);
-                //#else
-                //$$ BaseComponent newText = MagicTranslation.forEachTranslationComponent((BaseComponent) hoverText,
-                //$$         lang, modifier);
-                //$$
-                //#endif
 
                 if (newText != hoverText) {
                     text.setStyle(text.getStyle().withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, newText)));
@@ -234,13 +181,8 @@ public class MagicTranslation {
 
         for (int i = 0; i < siblings.size(); i++) {
             Component sibling = siblings.get(i);
-            //#if MC > 11502
-            MutableComponent newText = MagicTranslation.forEachTranslationComponent((MutableComponent) sibling,
+            BaseComponent newText = MagicTranslation.forEachTranslationComponent((BaseComponent) sibling,
                     lang, modifier);
-            //#else
-            //$$ BaseComponent newText = MagicTranslation.forEachTranslationComponent((BaseComponent) sibling,
-            //$$         lang, modifier);
-            //#endif
 
             if (newText != sibling) {
                 siblings.set(i, newText);
@@ -252,13 +194,7 @@ public class MagicTranslation {
 
     @FunctionalInterface
     private interface ComponentModifier {
-        //#if MC > 11502
-        MutableComponent
-        //#else
-        //$$ BaseComponent
-        //#endif
-
-        apply(
+        BaseComponent apply(
                 //#if MC > 11802
                 //$$ MutableComponent translatableText,
                 //#else

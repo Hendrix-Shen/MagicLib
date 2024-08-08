@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.util;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -14,15 +15,15 @@ import org.jetbrains.annotations.NotNull;
 @Environment(EnvType.CLIENT)
 public class InfoUtil {
     public static void displayClientMessage(Component component, boolean useActionBar) {
-        top.hendrixshen.magiclib.util.minecraft.InfoUtil.displayClientMessage(component, useActionBar);
+        top.hendrixshen.magiclib.util.minecraft.InfoUtil.displayClientMessage((BaseComponent) component, useActionBar);
     }
 
     public static void displayActionBarMessage(Component component) {
-        top.hendrixshen.magiclib.util.minecraft.InfoUtil.displayActionBarMessage(component);
+        top.hendrixshen.magiclib.util.minecraft.InfoUtil.displayActionBarMessage((BaseComponent) component);
     }
 
     public static void displayChatMessage(Component component) {
-        top.hendrixshen.magiclib.util.minecraft.InfoUtil.displayChatMessage(component);
+        top.hendrixshen.magiclib.util.minecraft.InfoUtil.displayChatMessage((BaseComponent) component);
     }
 
     public static void send(@NotNull String text) {

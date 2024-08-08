@@ -1,7 +1,10 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.world.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
@@ -14,10 +17,9 @@ public interface EntityCompat extends Provider<Entity> {
         return new EntityCompatImpl(entity);
     }
 
-    @Deprecated
-    LevelCompat getLevel();
+    Level getLevel();
 
-    ValueContainer<LevelCompat> getLevelCompat();
+    LevelCompat getLevelCompat();
 
     double getX();
 
@@ -44,6 +46,8 @@ public interface EntityCompat extends Provider<Entity> {
     boolean isOnGround();
 
     void setOnGround(boolean onGround);
+
+    void sendSystemMessage(@NotNull Component component);
 
     void sendSystemMessage(@NotNull ComponentCompat component);
 

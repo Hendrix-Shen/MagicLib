@@ -20,6 +20,7 @@
 
 package top.hendrixshen.magiclib.mixin.minecraft.i18n;
 
+import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -40,12 +41,6 @@ import java.util.Locale;
 //$$ import net.minecraft.server.level.ClientInformation;
 //#else
 import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
-//#endif
-
-//#if MC > 11502
-import net.minecraft.network.chat.MutableComponent;
-//#else
-//$$ import net.minecraft.network.chat.BaseComponent;
 //#endif
 
 //#if MC > 11502 && MC < 11800
@@ -112,13 +107,7 @@ public class ServerPlayerMixin implements ServerPlayerLanguage {
             argsOnly = true
     )
     private Component applyMagicTranslationToChatMessage(Component message) {
-        if (message instanceof
-                //#if MC > 11502
-                MutableComponent
-            //#else
-            //$$ BaseComponent
-            //#endif
-        ) {
+        if (message instanceof BaseComponent) {
             message = MagicTranslation.translate(MutableComponentCompat.of(MiscUtil.cast(message)),
                     (ServerPlayer) (Object) this).get();
         }

@@ -2,29 +2,44 @@ package top.hendrixshen.magiclib.util.minecraft;
 
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 //#if MC > 11802 && MC < 11903
+//$$ import net.minecraft.network.chat.Component;
+//$$ import net.minecraft.client.gui.chat.ClientChatPreview;
+//$$
 //#if MC > 11900
 //$$ import net.minecraft.Util;
 //#endif
-//$$ import net.minecraft.client.gui.chat.ClientChatPreview;
 //#endif
 
 @Environment(net.fabricmc.api.EnvType.CLIENT)
 public class InfoUtil {
-    public static void displayClientMessage(Component component, boolean useActionBar) {
+    public static void displayClientMessage(BaseComponent component, boolean useActionBar) {
         ValueContainer.ofNullable(Minecraft.getInstance().player).ifPresent(p ->
                 p.displayClientMessage(component, useActionBar));
     }
 
-    public static void displayActionBarMessage(Component component) {
+    public static void displayClientMessage(@NotNull MutableComponentCompat component, boolean useActionBar) {
+        InfoUtil.displayClientMessage(component.get(), useActionBar);
+    }
+
+    public static void displayActionBarMessage(BaseComponent component) {
         InfoUtil.displayClientMessage(component, true);
     }
 
-    public static void displayChatMessage(Component component) {
+    public static void displayActionBarMessage(MutableComponentCompat component) {
+        InfoUtil.displayClientMessage(component, true);
+    }
+
+    public static void displayChatMessage(BaseComponent component) {
+        InfoUtil.displayClientMessage(component, false);
+    }
+
+    public static void displayChatMessage(MutableComponentCompat component) {
         InfoUtil.displayClientMessage(component, false);
     }
 

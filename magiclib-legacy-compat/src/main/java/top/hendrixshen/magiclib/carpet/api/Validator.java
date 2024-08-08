@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.carpet.api;
 import carpet.settings.ParsedRule;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
 import top.hendrixshen.magiclib.carpet.impl.RuleHelper;
 import top.hendrixshen.magiclib.carpet.impl.RuleOption;
@@ -67,12 +68,12 @@ public abstract class Validator<T> extends
             return this.getValidValue(source, ruleOption, newValue, userInput);
         }
 
-        MessageUtil.sendMessageCompat(source, ComponentUtil.tr("magiclib.ui.could_not_set",
+        MessageUtil.sendMessageCompat(source, ComponentUtil.trCompat("magiclib.ui.could_not_set",
                         CarpetEntrypoint.getSettingManager().getTranslatedRuleName(source, ruleOption.getName()))
                 .withStyle(style -> style.withColor(ChatFormatting.RED)));
 
         if (this.getDescription() != null) {
-            MessageUtil.sendMessage(source, this.getDescription());
+            MessageUtil.sendMessage(source, (BaseComponent) this.getDescription());
         }
 
         return null;

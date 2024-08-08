@@ -30,11 +30,7 @@ public abstract class MixinMutableComponent implements ComponentCompatApi {
     //#endif
 
     @Override
-    //#if MC > 11802
-    //$$ public MutableComponent withStyleCompat(Style style) {
-    //#else
     public BaseComponent withStyleCompat(Style style) {
-    //#endif
         //#if MC > 11802
         //$$ return ((MutableComponent) MiscUtil.cast(this)).withStyle(style);
         //#elseif MC > 11502

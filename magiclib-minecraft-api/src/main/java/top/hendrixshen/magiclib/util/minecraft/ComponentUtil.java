@@ -41,19 +41,20 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.*;
 import top.hendrixshen.magiclib.impl.compat.minecraft.world.level.dimension.DimensionWrapper;
 import top.hendrixshen.magiclib.impl.i18n.minecraft.translation.Translator;
+import top.hendrixshen.magiclib.mixin.minecraft.accessor.DyeColorAccessor;
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.TranslatableComponentAccessor;
-import top.hendrixshen.magiclib.util.MiscUtil;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 //#if MC > 12005
 //$$ import net.minecraft.core.Holder;
@@ -79,23 +80,25 @@ public class ComponentUtil {
     public static
     //#if MC > 11802
     //$$ ComponentContents
-    //#elseif MC > 11502
-    MutableComponent
-    //#else
-    //$$ BaseComponent
+    //#else MC > 11502
+    BaseComponent
     //#endif
-    getTextContent(
-            //#if MC > 11502
-            @NotNull MutableComponent text
-            //#else
-            //$$ @NotNull BaseComponent text
-            //#endif
-    ) {
+    getTextContent(BaseComponent text) {
         //#if MC > 11802
         //$$ return text.getContents();
         //#else
         return text;
         //#endif
+    }
+
+    public static
+    //#if MC > 11802
+    //$$ ComponentContents
+    //#else MC > 11502
+    BaseComponent
+    //#endif
+    getTextContent(@NotNull MutableComponentCompat mutableComponentCompat) {
+        return ComponentUtil.getTextContent(mutableComponentCompat.get());
     }
 
     /*
@@ -104,7 +107,7 @@ public class ComponentUtil {
      * ----------------------------
      */
 
-    private static final ImmutableMap<DyeColor, Consumer<MutableComponentCompat>> DYE_COLOR_APPLIER = Util.make(() -> {
+    private static final ImmutableMap<DyeColor, Consumer<BaseComponent>> DYE_COLOR_APPLIER = Util.make(() -> {
         Map<DyeColor, ChatFormatting> map = Maps.newHashMap();
         map.put(DyeColor.WHITE, ChatFormatting.WHITE);
         map.put(DyeColor.LIGHT_GRAY, ChatFormatting.GRAY);
@@ -126,31 +129,27 @@ public class ComponentUtil {
         //$$ map.put(DyeColor.ORANGE, ChatFormatting.GOLD);
         //#endif
 
-        ImmutableMap.Builder<DyeColor, Consumer<MutableComponentCompat>> builder = new ImmutableMap.Builder<>();
+        ImmutableMap.Builder<DyeColor, Consumer<BaseComponent>> builder = new ImmutableMap.Builder<>();
         map.forEach((dyeColor, fmt) -> builder.put(dyeColor, text -> ComponentUtil.formatting(text, fmt)));
         //#if MC > 11502
         Arrays.stream(DyeColor.values())
                 .filter(dyeColor -> !map.containsKey(dyeColor))
-                .forEach(dyeColor -> builder.put(dyeColor, text ->
-                        text.setStyle(text.getStyle().withColor(TextColor.fromRgb(dyeColor.getTextColor())))));
+                .forEach(dyeColor -> builder.put(dyeColor, text -> {
+                    TextColor color = TextColor.fromRgb(((DyeColorAccessor) (Object) dyeColor).magiclib$getTextColor());
+                    text.setStyle(text.getStyle().withColor(color));
+                }));
         //#endif
         return builder.build();
     });
 
-    public static @NotNull MutableComponentCompat compose(Object @NotNull ... objects) {
-        MutableComponentCompat literal = ComponentUtil.empty();
+    public static @NotNull BaseComponent compose(Object @NotNull ... objects) {
+        BaseComponent literal = ComponentUtil.empty();
 
         for (Object o : objects) {
             if (o instanceof MutableComponentCompat) {
-                literal.append((MutableComponentCompat) o);
-            } else if (o instanceof
-                    //#if MC > 11502
-                    MutableComponent
-                //#else
-                //$$ BaseComponent
-                //#endif
-            ) {
-                literal.append(MutableComponentCompat.of(MiscUtil.cast(o)));
+                literal.append(((MutableComponentCompat) o).get());
+            } else if (o instanceof BaseComponent) {
+                literal.append((BaseComponent) o);
             } else {
                 literal.append(o.toString());
             }
@@ -159,26 +158,46 @@ public class ComponentUtil {
         return literal;
     }
 
-    // Simple Component
-    public static @NotNull MutableComponentCompat simple(@NotNull Object text) {
+    public static @NotNull MutableComponentCompat composeCompat(Object @NotNull ... objects) {
+        return MutableComponentCompat.of(ComponentUtil.compose(objects));
+    }
+
+    @NotNull
+    public static BaseComponent simple(@NotNull Object text) {
         return ComponentCompat.literal(text.toString());
     }
 
-    // Simple Component with formatting
-    public static @NotNull MutableComponentCompat simple(Object text, ChatFormatting... chatFormattings) {
+    public static @NotNull MutableComponentCompat simpleCompat(@NotNull Object text) {
+        return ComponentCompat.literalCompat(text.toString());
+    }
+
+    public static @NotNull BaseComponent simple(Object text, ChatFormatting... chatFormattings) {
         return ComponentUtil.formatting(ComponentUtil.simple(text), chatFormattings);
     }
 
-    public static @NotNull MutableComponentCompat empty() {
+    public static @NotNull MutableComponentCompat simpleCompat(Object text, ChatFormatting... chatFormattings) {
+        return ComponentUtil.formattingCompat(ComponentUtil.simpleCompat(text), chatFormattings);
+    }
+
+    public static @NotNull BaseComponent empty() {
         return ComponentUtil.simple("");
     }
 
-    public static @NotNull MutableComponentCompat newLine() {
+    public static @NotNull MutableComponentCompat emptyCompat() {
+        return ComponentUtil.simpleCompat("");
+    }
+
+
+    public static @NotNull BaseComponent newLine() {
         return ComponentUtil.simple("\n");
     }
 
-    public static MutableComponentCompat colored(MutableComponentCompat text, DyeColor value) {
-        Consumer<MutableComponentCompat> consumer = ComponentUtil.DYE_COLOR_APPLIER.get(value);
+    public static @NotNull MutableComponentCompat newLineCompat() {
+        return ComponentUtil.simpleCompat("\n");
+    }
+
+    public static BaseComponent colored(BaseComponent text, DyeColor value) {
+        Consumer<BaseComponent> consumer = ComponentUtil.DYE_COLOR_APPLIER.get(value);
 
         if (consumer != null) {
             consumer.accept(text);
@@ -187,7 +206,12 @@ public class ComponentUtil {
         return text;
     }
 
-    public static MutableComponentCompat colored(MutableComponentCompat text, Object value) {
+    public static @NotNull MutableComponentCompat coloredCompat(@NotNull MutableComponentCompat text, DyeColor value) {
+        ComponentUtil.colored(text.get());
+        return text;
+    }
+
+    public static BaseComponent colored(BaseComponent text, Object value) {
         ChatFormatting color = null;
 
         if (Boolean.TRUE.equals(value)) {
@@ -207,15 +231,28 @@ public class ComponentUtil {
         return text;
     }
 
-    public static MutableComponentCompat colored(Object value) {
+    public static @NotNull MutableComponentCompat coloredCompat(@NotNull MutableComponentCompat text, Object value) {
+        ComponentUtil.colored(text.get(), value);
+        return text;
+    }
+
+    public static BaseComponent colored(Object value) {
         return ComponentUtil.colored(ComponentUtil.simple(value), value);
     }
 
-    public static MutableComponentCompat property(Property<?> property, Object value) {
+    public static @NotNull MutableComponentCompat coloredCompat(Object value) {
+        return ComponentUtil.coloredCompat(ComponentUtil.simpleCompat(value), value);
+    }
+
+    public static BaseComponent property(Property<?> property, Object value) {
         return ComponentUtil.colored(ComponentUtil.simple(TextUtil.property(property, value)), value);
     }
 
-    public static @NotNull MutableComponentCompat tr(String key, Object... args) {
+    public static MutableComponentCompat propertyCompat(Property<?> property, Object value) {
+        return ComponentUtil.coloredCompat(ComponentUtil.simpleCompat(TextUtil.property(property, value)), value);
+    }
+
+    public static @NotNull BaseComponent tr(String key, Object @NotNull ... args) {
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof ComponentCompat) {
                 args[i] = ((ComponentCompat) args[i]).get();
@@ -225,10 +262,13 @@ public class ComponentUtil {
         return ComponentCompat.translatable(key, args);
     }
 
-    public static @NotNull MutableComponentCompat fancy(MutableComponentCompat displayText,
-                                                        MutableComponentCompat hoverText,
-                                                        ClickEventCompat clickEvent) {
-        MutableComponentCompat text = ComponentUtil.copy(displayText);
+    public static @NotNull MutableComponentCompat trCompat(String key, Object @NotNull ... args) {
+        return MutableComponentCompat.of(ComponentUtil.tr(key, args));
+    }
+
+    public static @NotNull BaseComponent fancy(BaseComponent displayText, BaseComponent hoverText,
+                                               ClickEvent clickEvent) {
+        BaseComponent text = ComponentUtil.copy(displayText);
 
         if (hoverText != null) {
             ComponentUtil.hover(text, hoverText);
@@ -241,12 +281,17 @@ public class ComponentUtil {
         return text;
     }
 
-    public static @NotNull MutableComponentCompat join(MutableComponentCompat joiner,
-                                                       @NotNull Iterable<ComponentCompat> items) {
-        MutableComponentCompat text = ComponentUtil.empty();
+    public static @NotNull MutableComponentCompat fancyCompat(
+            @NotNull MutableComponentCompat displayText, MutableComponentCompat hoverText, ClickEventCompat clickEvent) {
+        return MutableComponentCompat.of(ComponentUtil.fancy(displayText.get(),
+                hoverText == null ? null : hoverText.get(), clickEvent == null ? null : clickEvent.get()));
+    }
+
+    public static @NotNull BaseComponent join(BaseComponent joiner, @NotNull Iterable<BaseComponent> items) {
+        BaseComponent text = ComponentUtil.empty();
         boolean first = true;
 
-        for (ComponentCompat item : items) {
+        for (BaseComponent item : items) {
             if (!first) {
                 text.append(joiner);
             }
@@ -258,13 +303,43 @@ public class ComponentUtil {
         return text;
     }
 
-    public static @NotNull MutableComponentCompat join(MutableComponentCompat joiner, ComponentCompat... items) {
+    public static @NotNull MutableComponentCompat joinCompat(
+            MutableComponentCompat joiner, @NotNull Iterable<MutableComponentCompat> items) {
+        MutableComponentCompat text = ComponentUtil.emptyCompat();
+        ComponentUtil.join(text.get(), StreamSupport.stream(items.spliterator(), false)
+                .map(MutableComponentCompat::get)
+                .collect(Collectors.toList()));
+        return text;
+    }
+
+    public static @NotNull BaseComponent join(BaseComponent joiner, BaseComponent... items) {
         return ComponentUtil.join(joiner, Arrays.asList(items));
     }
 
-    public static @NotNull MutableComponentCompat format(String formatter, Object... args) {
+    public static @NotNull MutableComponentCompat joinCompat(MutableComponentCompat joiner,
+                                                             MutableComponentCompat... items) {
+        return ComponentUtil.joinCompat(joiner, Arrays.asList(items));
+    }
+
+    public static @NotNull BaseComponent joinLines(Iterable<BaseComponent> items) {
+        return ComponentUtil.join(ComponentUtil.newLine(), items);
+    }
+
+    public static @NotNull MutableComponentCompat joinLinesCompat(Iterable<MutableComponentCompat> items) {
+        return ComponentUtil.joinCompat(ComponentUtil.newLineCompat(), items);
+    }
+
+    public static @NotNull BaseComponent joinLines(BaseComponent... items) {
+        return ComponentUtil.join(ComponentUtil.newLine(), items);
+    }
+
+    public static @NotNull MutableComponentCompat joinLinesCompat(MutableComponentCompat... items) {
+        return ComponentUtil.joinCompat(ComponentUtil.newLineCompat(), items);
+    }
+
+    public static @NotNull BaseComponent format(String formatter, Object... args) {
         TranslatableComponentAccessor dummy = (TranslatableComponentAccessor) (
-                ComponentUtil.tr(formatter, args).get()
+                ComponentUtil.tr(formatter, args)
                 //#if MC > 11802
                 //$$ .getContents()
                 //#endif
@@ -282,28 +357,27 @@ public class ComponentUtil {
             return ComponentUtil.compose(
                     //#if MC > 11502
                     //#if MC > 11701
-                    //$$ segments.
+                    //$$ segments
                     //#else
-                    dummy.magiclib$getDecomposedParts().
+                    dummy.magiclib$getDecomposedParts()
                             //#endif
-                                    stream().map(formattedText -> {
-                        if (formattedText instanceof
-                                //#if MC > 11802
-                                //$$ Component
-                                //#else
-                                MutableComponent
-                            //#endif
-                        ) {
-                            //#if MC > 11802
-                            //$$ return (Component) formattedText;
-                            //#else
-                            return formattedText;
-                            //#endif
+                            .stream().map(formattedText -> {
+                                if (formattedText instanceof
+                                        //#if MC > 11802
+                                        //$$ Component
+                                        //#else
+                                        BaseComponent
+                                    //#endif
+                                ) {
+                                    //#if MC > 11802
+                                    //$$ return (Component) formattedText;
+                                    //#else
+                                    return formattedText;
+                                    //#endif
+                                }
 
-                        }
-
-                        return ComponentUtil.simple(formattedText.getString());
-                    }).toArray()
+                                return ComponentUtil.simple(formattedText.getString());
+                            }).toArray()
                     //#else
                     //$$ dummy.magiclib$getDecomposedParts().toArray(new Object[0])
                     //#endif
@@ -313,22 +387,34 @@ public class ComponentUtil {
         }
     }
 
+    public static @NotNull MutableComponentCompat formatCompat(String formatter, Object... args) {
+        return MutableComponentCompat.of(ComponentUtil.format(formatter, args));
+    }
+
     /*
      * -------------------------------
      *    Component Factories - Advanced
      * -------------------------------
      */
 
-    public static @NotNull MutableComponentCompat bool(boolean bool) {
+    public static @NotNull BaseComponent bool(boolean bool) {
         return ComponentUtil.simple(String.valueOf(bool), bool ? ChatFormatting.GREEN : ChatFormatting.RED);
     }
 
-    private static MutableComponentCompat getTeleportHint(MutableComponentCompat dest) {
+    public static @NotNull MutableComponentCompat boolCompat(boolean bool) {
+        return MutableComponentCompat.of(ComponentUtil.bool(bool));
+    }
+
+    private static BaseComponent getTeleportHint(BaseComponent dest) {
         return ComponentUtil.translator.tr("teleport_hint.hover", dest);
     }
 
-    private static @NotNull MutableComponentCompat coordinate(@Nullable DimensionWrapper dim, String posStr, String command) {
-        MutableComponentCompat hoverText = ComponentUtil.empty();
+    private static MutableComponentCompat getTeleportHintCompat(MutableComponentCompat dest) {
+        return ComponentUtil.translator.trCompat("teleport_hint.hover", dest);
+    }
+
+    private static @NotNull BaseComponent coordinate(@Nullable DimensionWrapper dim, String posStr, String command) {
+        BaseComponent hoverText = ComponentUtil.empty();
         hoverText.append(ComponentUtil.getTeleportHint(ComponentUtil.simple(posStr)));
 
         if (dim != null) {
@@ -338,58 +424,106 @@ public class ComponentUtil {
             hoverText.append(ComponentUtil.dimension(dim));
         }
 
-        return ComponentUtil.fancy(ComponentUtil.simple(posStr), hoverText, ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND, command));
+        return ComponentUtil.fancy(ComponentUtil.simple(posStr), hoverText,
+                new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
     }
 
-    public static @NotNull MutableComponentCompat coordinate(Vec3 pos, DimensionWrapper dim) {
+    private static @NotNull MutableComponentCompat coordinateCompat(@Nullable DimensionWrapper dim, String posStr, String command) {
+        return MutableComponentCompat.of(ComponentUtil.coordinate(dim, posStr, command));
+    }
+
+    public static @NotNull BaseComponent coordinate(Vec3 pos, DimensionWrapper dim) {
         return ComponentUtil.coordinate(dim, TextUtil.coordinate(pos), TextUtil.tp(pos, dim));
     }
 
-    public static @NotNull MutableComponentCompat coordinate(Vec3i pos, DimensionWrapper dim) {
+    public static @NotNull MutableComponentCompat coordinateCompat(Vec3 pos, DimensionWrapper dim) {
+        return ComponentUtil.coordinateCompat(dim, TextUtil.coordinate(pos), TextUtil.tp(pos, dim));
+    }
+
+    public static @NotNull BaseComponent coordinate(Vec3i pos, DimensionWrapper dim) {
         return ComponentUtil.coordinate(dim, TextUtil.coordinate(pos), TextUtil.tp(pos, dim));
     }
 
-    public static @NotNull MutableComponentCompat coordinate(ChunkPos pos, DimensionWrapper dim) {
+    public static @NotNull MutableComponentCompat coordinateCompat(Vec3i pos, DimensionWrapper dim) {
+        return ComponentUtil.coordinateCompat(dim, TextUtil.coordinate(pos), TextUtil.tp(pos, dim));
+    }
+
+    public static @NotNull BaseComponent coordinate(ChunkPos pos, DimensionWrapper dim) {
         return ComponentUtil.coordinate(dim, TextUtil.coordinate(pos), TextUtil.tp(pos, dim));
     }
 
-    public static @NotNull MutableComponentCompat coordinate(Vec3 pos) {
+    public static @NotNull MutableComponentCompat coordinateCompat(ChunkPos pos, DimensionWrapper dim) {
+        return ComponentUtil.coordinateCompat(dim, TextUtil.coordinate(pos), TextUtil.tp(pos, dim));
+    }
+
+    public static @NotNull BaseComponent coordinate(Vec3 pos) {
         return ComponentUtil.coordinate(null, TextUtil.coordinate(pos), TextUtil.tp(pos));
     }
 
-    public static @NotNull MutableComponentCompat coordinate(Vec3i pos) {
+    public static @NotNull MutableComponentCompat coordinateCompat(Vec3 pos) {
+        return ComponentUtil.coordinateCompat(null, TextUtil.coordinate(pos), TextUtil.tp(pos));
+    }
+
+    public static @NotNull BaseComponent coordinate(Vec3i pos) {
         return ComponentUtil.coordinate(null, TextUtil.coordinate(pos), TextUtil.tp(pos));
     }
 
-    public static @NotNull MutableComponentCompat coordinate(ChunkPos pos) {
+    public static @NotNull MutableComponentCompat coordinateCompat(Vec3i pos) {
+        return ComponentUtil.coordinateCompat(null, TextUtil.coordinate(pos), TextUtil.tp(pos));
+    }
+
+    public static @NotNull BaseComponent coordinate(ChunkPos pos) {
         return ComponentUtil.coordinate(null, TextUtil.coordinate(pos), TextUtil.tp(pos));
     }
 
-    private static @NotNull MutableComponentCompat vector(String displayText, String detailedText) {
-        return ComponentUtil.fancy(ComponentUtil.simple(displayText),
-                ComponentUtil.simple(detailedText), ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND, detailedText));
+    public static @NotNull MutableComponentCompat coordinateCompat(ChunkPos pos) {
+        return ComponentUtil.coordinateCompat(null, TextUtil.coordinate(pos), TextUtil.tp(pos));
     }
 
-    public static @NotNull MutableComponentCompat vector(Vec3 vec) {
+    private static @NotNull BaseComponent vector(String displayText, String detailedText) {
+        return ComponentUtil.fancy(ComponentUtil.simple(displayText), ComponentUtil.simple(detailedText),
+                new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, detailedText));
+    }
+
+    public static @NotNull BaseComponent vector(Vec3 vec) {
         return ComponentUtil.vector(TextUtil.vector(vec), TextUtil.vector(vec, 6));
     }
 
-    public static @NotNull MutableComponentCompat entityType(@NotNull EntityType<?> entityType) {
-        return MutableComponentCompat.of(MiscUtil.cast(entityType.getDescription()));
+    public static @NotNull MutableComponentCompat vectorCompat(Vec3 vec) {
+        return MutableComponentCompat.of(ComponentUtil.vector(vec));
     }
 
-    public static @NotNull MutableComponentCompat entityType(@NotNull Entity entity) {
+    public static @NotNull BaseComponent entityType(@NotNull EntityType<?> entityType) {
+        return (BaseComponent) entityType.getDescription();
+    }
+
+    public static @NotNull MutableComponentCompat entityTypeCompat(@NotNull EntityType<?> entityType) {
+        return MutableComponentCompat.of(ComponentUtil.entityType(entityType));
+    }
+
+    public static @NotNull BaseComponent entityType(@NotNull Entity entity) {
         return ComponentUtil.entityType(entity.getType());
     }
 
-    public static @NotNull MutableComponentCompat entity(Entity entity) {
-        MutableComponentCompat entityBaseName = ComponentUtil.entityType(entity);
-        MutableComponentCompat entityDisplayName = MutableComponentCompat.of(MiscUtil.cast(entity.getName()));
-        MutableComponentCompat hoverText = ComponentUtil.compose(ComponentUtil.translator.tr("entity_type", entityBaseName, ComponentUtil.simple(EntityType.getKey(entity.getType()).toString())), ComponentUtil.newLine(), ComponentUtil.getTeleportHint(entityDisplayName));
-        return ComponentUtil.fancy(entityDisplayName, hoverText, ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND, TextUtil.tp(entity)));
+    public static @NotNull MutableComponentCompat entityTypeCompat(@NotNull Entity entity) {
+        return ComponentUtil.entityTypeCompat(entity.getType());
     }
 
-    public static @NotNull MutableComponentCompat attribute(@NotNull Attribute attribute) {
+    public static @NotNull BaseComponent entity(Entity entity) {
+        BaseComponent entityBaseName = ComponentUtil.entityType(entity);
+        BaseComponent entityDisplayName = (BaseComponent) entity.getName();
+        BaseComponent hoverText = ComponentUtil.compose(ComponentUtil.translator.tr("entity_type",
+                entityBaseName, ComponentUtil.simple(EntityType.getKey(entity.getType()).toString())),
+                ComponentUtil.newLine(), ComponentUtil.getTeleportHint(entityDisplayName));
+        return ComponentUtil.fancy(entityDisplayName, hoverText, new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+                TextUtil.tp(entity)));
+    }
+
+    public static @NotNull MutableComponentCompat entityCompat(Entity entity) {
+        return MutableComponentCompat.of(ComponentUtil.entity(entity));
+    }
+
+    public static @NotNull BaseComponent attribute(@NotNull Attribute attribute) {
         return ComponentUtil.tr(
                 //#if MC > 11600
                 attribute.getDescriptionId()
@@ -399,13 +533,21 @@ public class ComponentUtil {
         );
     }
 
+    public static @NotNull MutableComponentCompat attributeCompat(@NotNull Attribute attribute) {
+        return MutableComponentCompat.of(ComponentUtil.attribute(attribute));
+    }
+
     //#if MC > 12004
-    //$$ public static MutableComponentCompat attribute(Holder<Attribute> attribute) {
+    //$$ public static MutableComponent attribute(Holder<Attribute> attribute) {
     //$$     return ComponentUtil.attribute(attribute.value());
+    //$$ }
+    //$$
+    //$$ public static MutableComponentCompat attributeCompat(Holder<Attribute> attribute) {
+    //$$     return MutableComponentCompat.of(ComponentUtil.attribute(attribute));
     //$$ }
     //#endif
 
-    private static final ImmutableMap<DimensionWrapper, MutableComponentCompat> DIMENSION_NAME = ImmutableMap.of(
+    private static final ImmutableMap<DimensionWrapper, BaseComponent> DIMENSION_NAME = ImmutableMap.of(
             DimensionWrapper.OVERWORLD, ComponentUtil.tr(
                     //#if MC > 11802
                     //$$ "flat_world_preset.minecraft.overworld"
@@ -415,12 +557,16 @@ public class ComponentUtil {
             ), DimensionWrapper.NETHER, ComponentUtil.tr("advancements.nether.root.title"),
             DimensionWrapper.THE_END, ComponentUtil.tr("advancements.end.root.title"));
 
-    public static MutableComponentCompat dimension(DimensionWrapper dim) {
-        MutableComponentCompat dimText = ComponentUtil.DIMENSION_NAME.get(dim);
+    public static BaseComponent dimension(DimensionWrapper dim) {
+        BaseComponent dimText = ComponentUtil.DIMENSION_NAME.get(dim);
         return dimText != null ? ComponentUtil.copy(dimText) : ComponentUtil.simple(dim.getResourceLocationString());
     }
 
-    public static @NotNull MutableComponentCompat getColoredDimensionSymbol(@NotNull DimensionWrapper dimensionType) {
+    public static MutableComponentCompat dimensionCompat(DimensionWrapper dim) {
+        return MutableComponentCompat.of(ComponentUtil.dimension(dim));
+    }
+
+    public static @NotNull BaseComponent getColoredDimensionSymbol(@NotNull DimensionWrapper dimensionType) {
         if (dimensionType.equals(DimensionWrapper.OVERWORLD)) {
             return ComponentUtil.simple("O", ChatFormatting.DARK_GREEN);
         }
@@ -436,41 +582,79 @@ public class ComponentUtil {
         return ComponentUtil.simple(dimensionType.getResourceLocationString().toUpperCase().substring(0, 1));
     }
 
-    public static @NotNull MutableComponentCompat block(@NotNull Block block) {
+    public static @NotNull MutableComponentCompat getColoredDimensionSymbolCompat(@NotNull DimensionWrapper dimensionType) {
+        return MutableComponentCompat.of(ComponentUtil.getColoredDimensionSymbol(dimensionType));
+    }
+
+    public static @NotNull BaseComponent block(@NotNull Block block) {
         return ComponentUtil.hover(ComponentUtil.tr(block.getDescriptionId()), ComponentUtil.simple(TextUtil.block(block)));
     }
 
-    public static @NotNull MutableComponentCompat block(@NotNull BlockState blockState) {
-        List<MutableComponentCompat> hovers = Lists.newArrayList();
+    public static @NotNull MutableComponentCompat blockCompat(@NotNull Block block) {
+        return MutableComponentCompat.of(ComponentUtil.block(block));
+    }
+
+    public static @NotNull BaseComponent block(@NotNull BlockState blockState) {
+        List<BaseComponent> hovers = Lists.newArrayList();
         hovers.add(ComponentUtil.simple(TextUtil.block(blockState.getBlock())));
 
         for (Property<?> property : blockState.getProperties()) {
-            hovers.add(ComponentUtil.compose(ComponentUtil.simple(property.getName()), ComponentUtil.simple(" : ").withStyle(style -> style.withColor(ChatFormatting.GRAY)), ComponentUtil.property(property, blockState.getValue(property))));
+            hovers.add(ComponentUtil.compose(
+                    ComponentUtil.simple(property.getName()),
+                    ComponentUtil.simple(" : ").withStyle(style -> style.withColor(ChatFormatting.GRAY)),
+                    ComponentUtil.property(property, blockState.getValue(property))));
         }
-        return ComponentUtil.fancy(ComponentUtil.block(blockState.getBlock()), ComponentUtil.join(ComponentUtil.newLine(), hovers.toArray(new MutableComponentCompat[0])), ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND, TextUtil.block(blockState)));
+        return ComponentUtil.fancy(ComponentUtil.block(blockState.getBlock()),
+                ComponentUtil.join(ComponentUtil.newLine(), hovers.toArray(new BaseComponent[0])),
+                new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, TextUtil.block(blockState)));
     }
 
-    public static @NotNull MutableComponentCompat fluid(@NotNull Fluid fluid) {
-        return ComponentUtil.hover(ComponentUtil.block(fluid.defaultFluidState().createLegacyBlock().getBlock()), ComponentUtil.simple(ResourceLocationUtil.id(fluid).toString()));
+    public static @NotNull MutableComponentCompat blockCompat(@NotNull BlockState blockState) {
+        return MutableComponentCompat.of(ComponentUtil.block(blockState));
     }
 
-    public static @NotNull MutableComponentCompat fluid(@NotNull FluidState fluid) {
+    public static @NotNull BaseComponent fluid(@NotNull Fluid fluid) {
+        return ComponentUtil.hover(ComponentUtil.block(fluid.defaultFluidState().createLegacyBlock().getBlock()),
+                ComponentUtil.simple(ResourceLocationUtil.id(fluid).toString()));
+    }
+
+    public static @NotNull MutableComponentCompat fluidCompat(@NotNull Fluid fluid) {
+        return MutableComponentCompat.of(ComponentUtil.fluid(fluid));
+    }
+
+    public static @NotNull BaseComponent fluid(@NotNull FluidState fluid) {
         return ComponentUtil.fluid(fluid.getType());
     }
 
-    public static @NotNull MutableComponentCompat blockEntity(@NotNull BlockEntity blockEntity) {
+    public static @NotNull MutableComponentCompat fluidCompat(@NotNull FluidState fluid) {
+        return ComponentUtil.fluidCompat(fluid.getType());
+    }
+
+    public static @NotNull BaseComponent blockEntity(@NotNull BlockEntity blockEntity) {
         ResourceLocation id = ResourceLocationUtil.id(blockEntity.getType());
         return ComponentUtil.simple(id != null ? id.toString() : // vanilla block entity
                 blockEntity.getClass().getSimpleName()  // modded block entity, assuming the class name is not obfuscated
         );
     }
 
-    public static @NotNull MutableComponentCompat item(@NotNull Item item) {
+    public static @NotNull MutableComponentCompat blockEntityCompat(@NotNull BlockEntity blockEntity) {
+        return MutableComponentCompat.of(ComponentUtil.blockEntity(blockEntity));
+    }
+
+    public static @NotNull BaseComponent item(@NotNull Item item) {
         return ComponentUtil.tr(item.getDescriptionId());
     }
 
-    public static MutableComponentCompat color(@NotNull DyeColor color) {
+    public static @NotNull MutableComponentCompat itemCompat(@NotNull Item item) {
+        return MutableComponentCompat.of(ComponentUtil.item(item));
+    }
+
+    public static BaseComponent color(@NotNull DyeColor color) {
         return ComponentUtil.translator.tr("color." + color.getName().toLowerCase());
+    }
+
+    public static MutableComponentCompat colorCompat(@NotNull DyeColor color) {
+        return MutableComponentCompat.of(ComponentUtil.color(color));
     }
 
     /*
@@ -479,26 +663,50 @@ public class ComponentUtil {
      * --------------------
      */
 
-    public static @NotNull MutableComponentCompat hover(@NotNull MutableComponentCompat text, HoverEventCompat hoverEvent) {
+    public static @NotNull BaseComponent hover(@NotNull BaseComponent text, HoverEvent hoverEvent) {
         text.withStyle(style -> style.withHoverEvent(hoverEvent));
         return text;
     }
 
-    public static @NotNull MutableComponentCompat hover(MutableComponentCompat text, MutableComponentCompat hoverText) {
-        return ComponentUtil.hover(text, HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, hoverText));
+    public static @NotNull MutableComponentCompat hoverCompat(@NotNull MutableComponentCompat text, HoverEventCompat hoverEvent) {
+        text.withStyleCompat(style -> style.withHoverEvent(hoverEvent));
+        return text;
     }
 
-    public static @NotNull MutableComponentCompat click(@NotNull MutableComponentCompat text, ClickEventCompat clickEvent) {
+    public static @NotNull BaseComponent hover(BaseComponent text, BaseComponent hoverText) {
+        return ComponentUtil.hover(text, new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText));
+    }
+
+    public static @NotNull MutableComponentCompat hoverCompat(MutableComponentCompat text, MutableComponentCompat hoverText) {
+        return ComponentUtil.hoverCompat(text, HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, hoverText));
+    }
+
+    public static @NotNull BaseComponent click(@NotNull BaseComponent text, ClickEvent clickEvent) {
         text.withStyle(style -> style.withClickEvent(clickEvent));
         return text;
     }
 
-    public static @NotNull MutableComponentCompat formatting(@NotNull MutableComponentCompat text, ChatFormatting... formattings) {
+    public static @NotNull MutableComponentCompat clickCompat(@NotNull MutableComponentCompat text, ClickEventCompat clickEvent) {
+        text.withStyleCompat(style -> style.withClickEvent(clickEvent));
+        return text;
+    }
+
+    public static @NotNull BaseComponent formatting(@NotNull BaseComponent text, ChatFormatting... formattings) {
         text.withStyle(formattings);
         return text;
     }
 
-    public static @NotNull MutableComponentCompat style(@NotNull MutableComponentCompat text, StyleCompat style) {
+    public static @NotNull MutableComponentCompat formattingCompat(@NotNull MutableComponentCompat text, ChatFormatting... formattings) {
+        text.withStyle(formattings);
+        return text;
+    }
+
+    public static @NotNull BaseComponent style(@NotNull BaseComponent text, Style style) {
+        text.setStyle(style);
+        return text;
+    }
+
+    public static @NotNull MutableComponentCompat styleCompat(@NotNull MutableComponentCompat text, StyleCompat style) {
         text.setStyle(style);
         return text;
     }
@@ -507,29 +715,13 @@ public class ComponentUtil {
         return MutableComponentCompat.of(ComponentUtil.copy(text.get()));
     }
 
-    public static @NotNull
-    //#if MC > 11502
-    MutableComponent
-    //#else
-    //$$ BaseComponent
-    //#endif
-    copy(
-            //#if MC > 11502
-            @NotNull MutableComponent text
-            //#else
-            //$$ @NotNull BaseComponent text
-            //#endif
-    ) {
-        //#if MC > 11502
-        MutableComponent copied;
-        //#else
-        //$$ BaseComponent copied;
-        //#endif
+    public static @NotNull BaseComponent copy(@NotNull BaseComponent text) {
+        BaseComponent copied;
 
         //#if MC > 11802
         //$$ copied = text.copy();
         //#elseif MC > 11502
-        copied = text.copy();
+        copied = (BaseComponent) text.copy();
         //#else
         //$$ copied = (BaseComponent) text.deepCopy();
         //#endif
@@ -552,20 +744,8 @@ public class ComponentUtil {
             Object[] args = translatableText.getArgs().clone();
 
             for (int i = 0; i < args.length; i++) {
-                if (args[i] instanceof
-                        //#if MC > 11502
-                        MutableComponent
-                    //#else
-                    //$$ BaseComponent
-                    //#endif
-                ) {
-                    args[i] = ComponentUtil.copy(
-                            //#if MC > 11502
-                            (MutableComponent) args[i]
-                            //#else
-                            //$$ (BaseComponent) args[i]
-                            //#endif
-                    );
+                if (args[i] instanceof BaseComponent) {
+                    args[i] = ComponentUtil.copy((BaseComponent) args[i]);
                 }
             }
 

@@ -1,52 +1,44 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.network.chat;
 
+import net.minecraft.network.chat.BaseComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.StyleCompat;
 
-
-//#if MC > 11502
-import net.minecraft.network.chat.MutableComponent;
-//#else
-//$$ import net.minecraft.network.chat.BaseComponent;
-//#endif
-
 public class MutableComponentCompatImpl extends ComponentCompatImpl implements MutableComponentCompat {
-    public MutableComponentCompatImpl(
-            //#if MC > 11502
-            @NotNull MutableComponent type
-            //#else
-            //$$ @NotNull BaseComponent type
-            //#endif
-    ) {
+    public MutableComponentCompatImpl(@NotNull BaseComponent type) {
         super(type);
     }
 
+    @NotNull
     @Override
     public
-    //#if MC > 11502
-    @NotNull MutableComponent
-    //#else
-    //$$ BaseComponent
-    //#endif
-    get() {
-        //#if MC > 11502
-        return (MutableComponent) super.get();
-        //#else
-        //$$ return (BaseComponent) super.get();
-        //#endif
+    BaseComponent get() {
+        return (BaseComponent) super.get();
+    }
+
+    @Override
+    public void setStyle(@NotNull Style style) {
+        this.get().setStyle(style);
     }
 
     @Override
     public void setStyle(@NotNull StyleCompat style) {
-        this.get().setStyle(style.get());
+        this.setStyle(style.get());
     }
 
     @Override
-    public MutableComponentCompat append(@NotNull ComponentCompat component) {
-        this.get().append(component.get());
+    public MutableComponentCompat append(@NotNull Component component) {
+        this.get().append(component);
         return this;
+    }
+
+    @Override
+    public MutableComponentCompat append(@NotNull ComponentCompat componentCompat) {
+        return this.append(componentCompat.get());
     }
 
     @Override

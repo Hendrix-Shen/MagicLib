@@ -6,6 +6,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
@@ -19,6 +20,10 @@ import java.util.function.Supplier;
 public interface ButtonCompat extends Provider<Button> {
     static ButtonCompat.@NotNull Builder builder(@NotNull Component message, @NotNull ButtonCompat.OnPress onPress) {
         return new ButtonCompat.Builder(message, onPress);
+    }
+
+    static ButtonCompat.@NotNull Builder builder(@NotNull ComponentCompat message, @NotNull ButtonCompat.OnPress onPress) {
+        return new ButtonCompat.Builder(message.get(), onPress);
     }
 
     @Environment(EnvType.CLIENT)
@@ -84,12 +89,13 @@ public interface ButtonCompat extends Provider<Button> {
             return this;
         }
 
-        public ButtonCompat.Builder tooltip(@Nullable
-                                            //#if MC > 11902
-                                            //$$ Tooltip tooltip
-                                            //#else
-                                            Object tooltip
-                                            //#endif
+        public ButtonCompat.Builder tooltip(
+                @Nullable
+                //#if MC > 11902
+                //$$ Tooltip tooltip
+                //#else
+                Object tooltip
+                //#endif
         ) {
             //#if MC > 11902
             //$$ this.builder.tooltip(tooltip);

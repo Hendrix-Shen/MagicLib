@@ -37,7 +37,7 @@ public class TextRenderer {
     }
 
     public TextRenderer text(String text) {
-        return this.text(ComponentCompat.literal(text).get());
+        return this.text(ComponentCompat.literal(text));
     }
 
     public TextRenderer text(Component text) {
@@ -46,7 +46,7 @@ public class TextRenderer {
     }
 
     public TextRenderer addLine(String text) {
-        return this.addLines(ComponentCompat.literal(text).get());
+        return this.addLines(ComponentCompat.literal(text));
     }
 
     public TextRenderer addLine(Component text) {
