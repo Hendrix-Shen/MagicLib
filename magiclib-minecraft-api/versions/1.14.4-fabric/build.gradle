@@ -317,16 +317,7 @@ publishing {
             artifactId("${this.project.parent.property("mod.artifact_name")}-${projectName}")
             from(this.project.components.java)
             version("${this.project.getMavenArtifactVersion(this.project.parent)}")
-            alias(false)
             this.project.addPomMetadataInformation(this.project.parent, publication)
-        }
-
-        register("snapshot", MavenPublication) { MavenPublication publication ->
-            artifactId("${this.project.parent.property("mod.artifact_name")}-${projectName}")
-            from(this.project.components.java)
-            version("${this.project.parent.property("mod.version")}-SNAPSHOT")
-            alias(true)
-            this.project.addPomMetadataInformation(this.project, publication)
         }
     }
 
@@ -336,20 +327,8 @@ publishing {
         }
 
         maven {
-            name("projectLocalSnapshot")
-            url("${rootDir}/publish/snapshot")
-        }
-
-        maven {
             name("projectLocalRelease")
             url("${rootDir}/publish/release")
-        }
-
-        maven {
-            name("nyanMavenSnapshot")
-            url("https://maven.hendrixshen.top/snapshots")
-
-            project.credentialsNyanMaven(it)
         }
 
         maven {
@@ -370,9 +349,7 @@ tasks.withType(AbstractPublishToMaven).configureEach {
 tasks.withType(PublishToMavenRepository).configureEach {
     Provider<Boolean> predicate = provider {
         repository == publishing.repositories.mavenLocal ||
-                (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
                 (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
-                (repository == publishing.repositories.nyanMavenSnapshot && publication == publishing.publications.snapshot && project.isNyanMavenCredentialsExist()) ||
                 (repository == publishing.repositories.nyanMavenRelease && publication == publishing.publications.release && project.isNyanMavenCredentialsExist())
     }
 

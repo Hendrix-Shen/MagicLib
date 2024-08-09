@@ -172,36 +172,7 @@ subprojects {
                 artifact(javadocJar)
                 artifact(sourcesJar)
                 version("${this.project.getMavenArtifactVersion(rootProject)}")
-                alias(false)
                 this.project.addPomMetadataInformation(this.project, publication)
-
-                pom.withXml { XmlProvider provider ->
-                    Node dependencies = provider.asNode().appendNode("dependencies")
-                    Node core_dependency = dependencies.appendNode("dependency")
-                    core_dependency.appendNode("groupId", coreProject.group)
-                    core_dependency.appendNode("artifactId", "${coreProject.parent.property("mod.artifact_name")}-${coreProject.name}")
-                    core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(coreProject.parent)}")
-                    core_dependency.appendNode("scope", "compile")
-                    submodules
-                            .findAll { !it.name.contains("legacy") }
-                            .forEach { Project submodule ->
-                                Node dependency = dependencies.appendNode("dependency")
-                                dependency.appendNode("groupId", submodule.group)
-                                dependency.appendNode("artifactId", "${submodule.parent.property("mod.artifact_name")}-${submodule.name.replace("${(settings.get("projects").get(submodule.parent.name) as Map<String, ?>).get("prefix")}-", "")}")
-                                dependency.appendNode("version", "${this.project.getMavenArtifactVersion(submodule.parent)}")
-                                dependency.appendNode("scope", "compile")
-                            }
-                }
-            }
-
-            register("snapshot", MavenPublication) { MavenPublication publication ->
-                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}-${project.parent.name}")
-                artifact(jar)
-                artifact(javadocJar)
-                artifact(sourcesJar)
-                version("${project.property("mod.version")}-SNAPSHOT")
-                alias(true)
-                project.addPomMetadataInformation(this.project, publication)
 
                 pom.withXml { XmlProvider provider ->
                     Node dependencies = provider.asNode().appendNode("dependencies")
@@ -229,20 +200,8 @@ subprojects {
             }
 
             maven {
-                name("projectLocalSnapshot")
-                url("${rootDir}/publish/snapshot")
-            }
-
-            maven {
                 name("projectLocalRelease")
                 url("${rootDir}/publish/release")
-            }
-
-            maven {
-                name("nyanMavenSnapshot")
-                url("https://maven.hendrixshen.top/snapshots")
-
-                project.credentialsNyanMaven(it)
             }
 
             maven {
@@ -263,9 +222,7 @@ subprojects {
     tasks.withType(PublishToMavenRepository).configureEach {
         Provider<Boolean> predicate = provider {
             repository == publishing.repositories.mavenLocal ||
-                    (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
                     (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
-                    (repository == publishing.repositories.nyanMavenSnapshot && publication == publishing.publications.snapshot && project.isNyanMavenCredentialsExist()) ||
                     (repository == publishing.repositories.nyanMavenRelease && publication == publishing.publications.release && project.isNyanMavenCredentialsExist())
         }
 
