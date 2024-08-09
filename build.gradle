@@ -143,6 +143,10 @@ ext {
             username(nyanMaven_username)
             password(nyanMaven_password)
         }
+
+        mavenArtifactRepository.authentication {
+            basic(BasicAuthentication)
+        }
     }
 }
 
