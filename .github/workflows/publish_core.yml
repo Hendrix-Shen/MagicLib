@@ -66,5 +66,5 @@ jobs:
           name: '${{ steps.mod_info.outputs.mod-name }} ${{ steps.mod_info.outputs.mod-version }}.${{ steps.get_git_info.outputs.commit_count }}+${{ steps.get_git_info.outputs.short_sha }}'
           version: ${{ steps.mod_info.outputs.mod-version }}.${{ steps.get_git_info.outputs.commit_count }}
           github-changelog: ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
-          retry-attempts: 2
+          retry-attempts: 3
           retry-delay: 10000
