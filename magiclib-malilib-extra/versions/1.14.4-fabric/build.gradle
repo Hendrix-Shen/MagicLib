@@ -60,15 +60,6 @@ repositories {
     }
 
     maven {
-        name("Jitpack Maven")
-        url("https://jitpack.io")
-
-        content {
-            includeGroup("com.github.sakura-ryoko")
-        }
-    }
-
-    maven {
         name("badasintended Maven")
         url("https://maven2.bai.lol")
 
@@ -82,8 +73,7 @@ repositories {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["maven.modrinth:malilib"         , "malilib"   , fabricLike && mcVersion < 12100, false],
-        ["com.github.sakura-ryoko:malilib", "malilib"   , fabricLike && mcVersion > 12006, false],
+        ["maven.modrinth:malilib"         , "malilib"   , fabricLike                     , false],
         ["maven.modrinth:mafglib"         , "malilib"   , forgeLike                      , false],
         ["lol.bai:badpackets"             , "badpackets", forgeLike && mcVersion > 12004 , false],
 ]
