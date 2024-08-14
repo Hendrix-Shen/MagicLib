@@ -38,7 +38,7 @@ repositories {
 
     maven {
         name("NeoForge")
-        url("https://maven.neoforged.net/releases/")
+        url("https://maven.neoforged.net/releases")
     }
 
     maven {
@@ -60,12 +60,8 @@ repositories {
     }
 
     maven {
-        name("badasintended Maven")
-        url("https://maven2.bai.lol")
-
-        content {
-            includeGroup("lol.bai")
-        }
+        name("NyanMaven Mirror")
+        url("https://maven.hendrixshen.top/mirror")
     }
 
     mavenCentral()
