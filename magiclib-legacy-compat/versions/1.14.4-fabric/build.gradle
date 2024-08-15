@@ -38,8 +38,8 @@ repositories {
     mavenLocal()
 
     maven {
-        name("NeoForge")
-        url("https://maven.neoforged.net/releases/")
+        name("NyanMaven Mirror")
+        url("https://maven.hendrixshen.top/mirror")
     }
 
     maven {
@@ -58,16 +58,6 @@ repositories {
         content {
             includeGroup("maven.modrinth")
         }
-    }
-
-    maven {
-        name("Masa Maven")
-        url("https://masa.dy.fi/maven")
-    }
-
-    maven {
-        name("Jitpack Maven")
-        url("https://jitpack.io")
     }
 
     mavenCentral()

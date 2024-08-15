@@ -37,6 +37,11 @@ repositories {
     mavenLocal()
 
     maven {
+        name("NyanMaven Mirror")
+        url("https://maven.hendrixshen.top/mirror")
+    }
+
+    maven {
         name("NeoForge")
         url("https://maven.neoforged.net/releases")
     }
@@ -57,11 +62,6 @@ repositories {
         content {
             includeGroup("maven.modrinth")
         }
-    }
-
-    maven {
-        name("NyanMaven Mirror")
-        url("https://maven.hendrixshen.top/mirror")
     }
 
     mavenCentral()

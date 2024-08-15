@@ -6,12 +6,10 @@ import java.util.regex.Pattern
 pluginManagement {
     repositories {
         mavenLocal()
-        mavenCentral()
-        gradlePluginPortal()
 
         maven {
-            name("Fabric")
-            url("https://maven.fabricmc.net")
+            name("NyanMaven Mirror")
+            url("https://maven.hendrixshen.top/mirror")
         }
 
         maven {
@@ -33,6 +31,9 @@ pluginManagement {
             name("Jitpack")
             url("https://jitpack.io")
         }
+
+        mavenCentral()
+        gradlePluginPortal()
     }
 
     resolutionStrategy {
