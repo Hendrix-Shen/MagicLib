@@ -38,12 +38,13 @@ tasks.withType(ProcessResources).configureEach {
 subprojects {
     repositories {
         mavenLocal()
-        mavenCentral()
 
         maven {
-            name("SpongePowered")
-            url("https://repo.spongepowered.org/maven")
+            name("NyanMaven Mirror")
+            url("https://maven.hendrixshen.top/mirror")
         }
+
+        mavenCentral()
     }
 
     dependencies {
