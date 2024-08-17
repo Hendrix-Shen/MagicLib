@@ -11,6 +11,7 @@ public class BlockStateCompatImpl extends AbstractCompat<BlockState> implements 
         super(type);
     }
 
+    @Override
     public boolean is(Block block) {
         //#if MC > 11502
         return this.get().is(block);
