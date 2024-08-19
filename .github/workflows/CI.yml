@@ -85,7 +85,7 @@ jobs:
       - name: Determining build info
         id: build_info
         run: |
-          if [ ${{ github.repository_owner != 'Hendrix-Shen' }} ]
+          if [ ${{ github.repository_owner }} != 'Hendrix-Shen' ]
           then
               build_publish=true
               build_version_type=FORK

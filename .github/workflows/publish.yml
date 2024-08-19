@@ -85,7 +85,7 @@ jobs:
             build-artifacts/magiclib-wrapper/fabric/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/forge/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/neoforge/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-          name: ${{ format('{1} {2}.{3}+{4} (Fork)', github.run_number, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, steps.get_git_info.outputs.short_sha) }}
+          name: ${{ format('{0} {1}.{2}+{3} (Fork)', steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, steps.get_git_info.outputs.short_sha) }}
           retry-attempts: 3
           retry-delay: 10000
   release:
@@ -281,6 +281,6 @@ jobs:
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
-          name: ${{ format('[CI#{0}]{1} {2}.{3} for Minecraft {4} ({5})', github.run_number, steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
+          name: ${{ format('{0} {1}.{2}+{3} (Fork)', steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, steps.get_git_info.outputs.short_sha) }}
           retry-attempts: 3
           retry-delay: 10000
