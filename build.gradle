@@ -29,10 +29,6 @@ ext {
         return env.get("GITHUB_ACTION") != null
     }
 
-    isJitpack = {
-        return env.get("JITPACK") != null
-    }
-
     getBuildNumber = {
         return env.GITHUB_RUN_NUMBER ? env.GITHUB_RUN_NUMBER : 0
     }
@@ -53,17 +49,15 @@ ext {
             return type
         }
 
-        if (isJitpack()) {
-            return "jitpack"
-        }
-
         type = env.BUILD_TYPE
 
         switch (type) {
-            case "RELEASE":
-                return "stable"
             case "BETA":
                 return "beta"
+            case "FORK":
+                return "fork"
+            case "RELEASE":
+                return "stable"
             case "PULL_REQUEST":
                 return "pull_request"
             default:

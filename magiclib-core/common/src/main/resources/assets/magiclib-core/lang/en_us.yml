@@ -51,5 +51,7 @@ magiclib:
     version_type:
       beta: Public Beta
       development: Development
+      fork: Third-Party Fork
+      pull_request: Pull Request
       stable: Public Release
       unknown: Unknown

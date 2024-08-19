@@ -1,4 +1,4 @@
-name: step.generate_matrix
+name: _step.generate_matrix
 on:
   workflow_call:
     inputs:

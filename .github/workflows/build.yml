@@ -57,7 +57,7 @@ jobs:
           fi
         env:
           BUILD_TYPE: ${{ inputs.build_version_type }}
-      - name: Publish Maven with Gradle
+      - name: Publish with gradle
         if: ${{ inputs.build_publish == 'true' }}
         run: |
           if [ -z "${{ inputs.target_subproject }}" ]; then
@@ -97,3 +97,5 @@ jobs:
       - name: Make build summary
         # ubuntu-22.04 uses Python 3.10.6
         run: python3 .github/workflows/scripts/summary.py
+        env:
+          TARGET_SUBPROJECT: ${{ inputs.target_subproject }}

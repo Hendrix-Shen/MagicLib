@@ -52,6 +52,10 @@ public class VersionUtil {
             return I18n.trByCode(languageCode, "magiclib.misc.version_type.beta");
         } else if (version.endsWith("dev")) {
             return I18n.trByCode(languageCode, "magiclib.misc.version_type.development");
+        } else if (version.endsWith("fork")) {
+            return I18n.trByCode(languageCode, "magiclib.misc.version_type.fork");
+        } else if (version.endsWith("pull_request")) {
+            return I18n.trByCode(languageCode, "magiclib.misc.version_type.pull_request");
         } else if (version.endsWith("stable")) {
             return I18n.trByCode(languageCode, "magiclib.misc.version_type.stable");
         }

@@ -10,7 +10,7 @@ on:
       - 'dev/**'
       - 'exp/**'
     paths:
-      - '*.gradle'
+      - '**/*.gradle'
       - '**/gradle.properties'
       - '**/src/**'
       - '**/versions/**'
@@ -44,17 +44,6 @@ jobs:
           - target_subproject: \`${{ inputs.target_subproject }}\`
           - target_release_tag: \`${{ inputs.target_release_tag }}\`
           EOF
-  generate_matrix:
-    if: ${{ github.event_name != 'pull_request' }}
-    uses: ./.github/workflows/generate_matrix.yml
-    with:
-      target_subproject: ${{ inputs.target_subproject }}
-  generate_matrix_core:
-    if: ${{ github.event_name != 'pull_request' }}
-    uses: ./.github/workflows/generate_matrix_core.yml
-    with:
-      target_subproject: ${{ inputs.target_subproject }}
-  # Ensure the input target subproject is valid.
   validate_target_subproject:
     runs-on: ubuntu-latest
     steps:
@@ -96,7 +85,12 @@ jobs:
       - name: Determining build info
         id: build_info
         run: |
-          if [ ${{ github.event_name }} == 'push' ]
+          if [ ${{ github.repository_owner != 'Hendrix-Shen' }} ]
+          then
+              build_publish=true
+              build_version_type=FORK
+              publish_channel=fork
+          elif [ ${{ github.event_name }} == 'push' ]
           then
               build_publish=true
               build_version_type=BETA
@@ -150,6 +144,8 @@ jobs:
     steps:
       - name: Checkout the sources
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
   build:
     if: ${{ contains(github.event.head_commit.message, '[build skip]') == false }}
     needs:
@@ -164,30 +160,12 @@ jobs:
       target_subproject: ${{ needs.prepare_build_info.outputs.build_target_subprojects }}
   publish:
     if: ${{ github.event_name != 'pull_request' }}
-    strategy:
-      matrix: ${{ fromJson(needs.generate_matrix.outputs.matrix) }}
     needs:
       - build
-      - generate_matrix
       - prepare_publish_info
     uses: ./.github/workflows/publish.yml
     secrets: inherit
     with:
       publish_channel: ${{ needs.prepare_publish_info.outputs.publish_channel }}
-      publish_mc_ver: ${{ matrix.mc_ver }}
-      publish_platform: ${{ matrix.platform }}
       publish_target_release_tag: ${{ needs.prepare_publish_info.outputs.publish_target_release_tag }}
-  publish_core:
-    if: ${{ github.event_name != 'pull_request' }}
-    strategy:
-      matrix: ${{ fromJson(needs.generate_matrix_core.outputs.matrix) }}
-    needs:
-      - build
-      - generate_matrix_core
-      - prepare_publish_info
-    uses: ./.github/workflows/publish_core.yml
-    secrets: inherit
-    with:
-      publish_channel: ${{ needs.prepare_publish_info.outputs.publish_channel }}
-      publish_platform: ${{ matrix.platform }}
-      publish_target_release_tag: ${{ needs.prepare_publish_info.outputs.publish_target_release_tag }}
+      target_subproject: ${{ inputs.target_subproject }}

@@ -49,7 +49,9 @@ magiclib:
         message: 谓词 %s 测试结果 = %s
   misc:
     version_type:
-      beta: 公共测试版
+      beta: 公共测试版<主线>
       development: 开发版
+      fork: 第三方分支
+      pull_request: 拉取请求
       stable: 公共发行版
       unknown: 未知版本
