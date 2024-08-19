@@ -212,11 +212,6 @@ jobs:
             Latest commit log:
             
             ${{ github.event.head_commit.message }}
-            
-            -------
-
-            ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
-
           github-files: |
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
@@ -270,7 +265,7 @@ jobs:
           retry-attempts: 3
           retry-delay: 10000
       - name: Publish Minecraft Mods (Forks)
-        if: ${{ inputs.publish_channel == 'dev' }}
+        if: ${{ inputs.publish_channel == 'fork' }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           github-tag: ${{ format('{0}.{1}', github.ref_name, matrix.mc_ver) }}
@@ -282,15 +277,11 @@ jobs:
             Latest commit log:
             
             ${{ github.event.head_commit.message }}
-            
-            -------
-            
-            ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
 
           files: |
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
-          name: ${{ format('{0} {1}.{2}+{3} (Fork)', steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, steps.get_git_info.outputs.short_sha) }}
+          name: ${{ format('{0} {1}.{2}+{3} (Fork)', steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, steps.get_git_info.outputs.short_sha) }}
           retry-attempts: 3
           retry-delay: 10000
