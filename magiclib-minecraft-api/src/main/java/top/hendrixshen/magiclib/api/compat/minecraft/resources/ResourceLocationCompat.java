@@ -13,6 +13,14 @@ public interface ResourceLocationCompat extends Provider<ResourceLocation> {
         //#endif
     }
 
+    static @NotNull ResourceLocation parse(String string) {
+        //#if MC > 12006
+        //$$ return ResourceLocation.parse(string);
+        //#else
+        return new ResourceLocation(string);
+        //#endif
+    }
+
     static @NotNull ResourceLocation withDefaultNamespace(String path) {
         //#if MC > 12006
         //$$ return ResourceLocation.withDefaultNamespace(path);
