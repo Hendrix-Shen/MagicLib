@@ -25,20 +25,23 @@ import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.gui.GuiBase;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.gui.Gui;
+import lombok.SneakyThrows;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.annotation.Statistic;
+import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.game.malilib.Configs;
 import top.hendrixshen.magiclib.impl.dependency.DependenciesContainer;
 import top.hendrixshen.magiclib.impl.dependency.DependencyCheckResult;
+import top.hendrixshen.magiclib.impl.malilib.config.comment.MarkProcessor;
+import top.hendrixshen.magiclib.impl.malilib.config.comment.TagProcessor;
 import top.hendrixshen.magiclib.impl.malilib.config.statistic.ConfigStatistic;
 import top.hendrixshen.magiclib.util.DependencyUtil;
 import top.hendrixshen.magiclib.util.collect.InfoNode;
-import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -49,25 +52,86 @@ import java.util.function.Function;
  */
 public class ConfigContainer {
     private final Config configAnnotation;
-    @NotNull
-    private final ValueContainer<Statistic> statisticAnnotation;
+    @Nullable
+    private final Statistic statisticAnnotation;
+    @Getter
+    @Nullable
+    private final MagicConfigManager configManager;
     @Getter
     private final MagicIConfigBase config;
     private final List<DependenciesContainer<ConfigContainer>> dependencies;
     @Getter
     private final ConfigStatistic statistic;
     @Nullable
-    protected Function<String, String> commentModifier = null;
+    private Function<String, String> commentModifier = null;
     @Setter
     @Getter
     private boolean appendFooterFlag = true;
 
+    public static @NotNull ConfigContainer createIsolated(Field field) {
+        return ConfigContainer.create(field, null);
+    }
+
+    public static @NotNull ConfigContainer createRegulated(Field field, MagicConfigManager configManager) {
+        return ConfigContainer.create(field, configManager);
+    }
+
+    @SneakyThrows
+    private static @NotNull ConfigContainer create(Field field, MagicConfigManager configManager) {
+        return new ConfigContainer(ConfigContainer.assertFieldValidAnnotation(field),
+                (MagicIConfigBase) ConfigContainer.assertFieldObjectValid(field).get(null), configManager);
+    }
+
+    public static boolean isValidField(@NotNull Field field) {
+        return ConfigContainer.isValidFieldAnnotation(field) && ConfigContainer.isValidFieldObject(field);
+    }
+
+    public static boolean isValidFieldAnnotation(@NotNull Field field) {
+        return field.isAnnotationPresent(Config.class);
+    }
+
+    public static boolean isValidFieldObject(Field field) {
+        try {
+            return field.get(null) instanceof MagicIConfigBase;
+        } catch (IllegalAccessException | NullPointerException e) {
+            return false;
+        }
+    }
+
+    private static Field assertFieldValid(Field field) {
+        return ConfigContainer.assertFieldObjectValid(ConfigContainer.assertFieldValidAnnotation(field));
+    }
+
+    private static Field assertFieldValidAnnotation(Field field) {
+        if (!ConfigContainer.isValidFieldAnnotation(field)) {
+            throw new IllegalArgumentException("Field " + field + " is not annotated with @Config!");
+        }
+
+        return field;
+    }
+
+    private static Field assertFieldObjectValid(Field field) {
+        if (!ConfigContainer.isValidFieldObject(field)) {
+            throw new IllegalArgumentException("Field " + field + " is not a valid MagicConfig field!");
+        }
+
+        return field;
+    }
+
+    @ApiStatus.Obsolete
     public ConfigContainer(@NotNull Config configAnnotation, @NotNull Field field, MagicIConfigBase config) {
-        this.configAnnotation = configAnnotation;
+        this(field, config, null);
+    }
+
+    private ConfigContainer(@NotNull Field field, MagicIConfigBase config, @Nullable MagicConfigManager configManager) {
+        assert ConfigContainer.isValidFieldAnnotation(field);
+
+        this.configAnnotation = field.getAnnotation(Config.class);
         this.config = config;
-        this.statisticAnnotation = ValueContainer.ofNullable(field.getAnnotation(Statistic.class));
+        this.statisticAnnotation = field.getAnnotation(Statistic.class);
         this.statistic = new ConfigStatistic();
         this.dependencies = DependencyUtil.parseDependencies(field, this);
+        this.configManager = configManager;
     }
 
     public String getCategory() {
@@ -96,12 +160,20 @@ public class ConfigContainer {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean shouldStatisticHotkey() {
-        return this.statisticAnnotation.map(Statistic::hotkey).orElse(true);
+        if (this.statisticAnnotation == null) {
+            return true;
+        }
+
+        return this.statisticAnnotation.hotkey();
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean shouldStatisticValueChange() {
-        return this.statisticAnnotation.map(Statistic::valueChanged).orElse(true);
+        if (this.statisticAnnotation == null) {
+            return true;
+        }
+
+        return this.statisticAnnotation.valueChanged();
     }
 
     public void setCommentModifier(@Nullable Function<String, String> commentModifier) {
@@ -131,6 +203,10 @@ public class ConfigContainer {
                 );
             }
         }
+
+        comment = TagProcessor.processReferences(this, comment);
+        comment = MarkProcessor.processMarks(comment);
+
 
         return comment;
     }

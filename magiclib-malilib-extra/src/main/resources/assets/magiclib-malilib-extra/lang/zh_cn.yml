@@ -62,7 +62,12 @@ magiclib:
       # ================================ 测试 ================================
       testConfigBoolean:
         name: 布尔配置测试
-        comment: ""
+        comment: |
+          标签处理器测试:
+          - 翻译: @tr#magiclib.config.category.debug.name@
+          - 引用: @config#debug@
+          标记处理器测试:
+          - 代码块: `@tr#magiclib.config.category.debug.name@`
       testConfigBooleanHotkeyed:
         name: 带热键布尔配置测试
         comment: ""

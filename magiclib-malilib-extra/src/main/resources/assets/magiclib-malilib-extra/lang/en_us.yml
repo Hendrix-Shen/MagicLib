@@ -62,7 +62,12 @@ magiclib:
       # ================================ Test ================================
       testConfigBoolean:
         name: testConfigBoolean
-        comment: ""
+        comment: |
+          Test TagProcessor:
+          - Translation: @tr#magiclib.config.category.debug.name@
+          - Reference: @config#debug@
+          Test MarkProcessor:
+          - Command: `@tr#magiclib.config.category.debug.name@`
       testConfigBooleanHotkeyed:
         name: testConfigBooleanHotkeyed
         comment: ""

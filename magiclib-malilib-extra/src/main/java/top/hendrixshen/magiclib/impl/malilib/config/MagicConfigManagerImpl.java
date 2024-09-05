@@ -9,6 +9,7 @@ import fi.dy.masa.malilib.hotkeys.IKeybindProvider;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
@@ -46,31 +47,39 @@ public class MagicConfigManagerImpl implements MagicConfigManager, IKeybindProvi
     @Override
     public final void parseConfigClass(@NotNull Class<?> configClass) {
         for (Field field : configClass.getDeclaredFields()) {
-            Config annotation = field.getAnnotation(Config.class);
-
-            if (annotation == null) {
+            if (!ConfigContainer.isValidFieldAnnotation(field)) {
                 continue;
             }
 
-            try {
-                Object config = field.get(null);
-
-                if (!(config instanceof MagicIConfigBase)) {
-                    MagicLib.getLogger().warn("{} is not a subclass of MagicIConfigBase, skipping!", field.getName());
-                    continue;
-                }
-
-                ConfigContainer configContainer = new ConfigContainer(annotation, field, (MagicIConfigBase) config);
-                this.CONTAINERS.add(configContainer);
-                this.CATEGORIES.add(configContainer.getCategory());
-                this.CATEGORY_TO_CONTAINERS.computeIfAbsent(configContainer.getCategory(),
-                        category -> Lists.newArrayList()).add(configContainer);
-                this.CONFIG_TO_CONTAINER.put(configContainer.getConfig(), configContainer);
-                this.NAME_TO_CONTAINER.put(configContainer.getName(), configContainer);
-                GlobalConfigManager.getInstance().registerConfigContainer(configContainer);
-            } catch (IllegalAccessException e) {
-                MagicLib.getLogger().error(e);
+            if (!ConfigContainer.isValidFieldObject(field)) {
+                MagicLib.getLogger().warn("{} is not a subclass of MagicIConfigBase, skipping!", field.getName());
+                continue;
             }
+
+            ConfigContainer configContainer = ConfigContainer.createRegulated(field, this);
+
+            if (MagicLibProperties.MALILIB_CHECK_CONFIG_NAME_EMPTY.getBooleanValue() && configContainer.getName().isEmpty()) {
+                MagicLib.getLogger().warn("Config name is empty (field name = {})!", field.getName());
+            }
+
+            if (MagicLibProperties.MALILIB_CHECK_CONFIG_NAME_CONSISTENCY.getBooleanValue() &&
+                    configContainer.getName().equals(field.getName())) {
+                MagicLib.getLogger().warn("Config name {} does not match field name {}!",
+                        configContainer.getName(), field.getName());
+            }
+
+            if (this.NAME_TO_CONTAINER.containsKey(configContainer.getName())) {
+                MagicLib.getLogger().error("Config {} already exists", configContainer.getName());
+                continue;
+            }
+
+            this.CONTAINERS.add(configContainer);
+            this.CATEGORIES.add(configContainer.getCategory());
+            this.CATEGORY_TO_CONTAINERS.computeIfAbsent(configContainer.getCategory(),
+                    category -> Lists.newArrayList()).add(configContainer);
+            this.CONFIG_TO_CONTAINER.put(configContainer.getConfig(), configContainer);
+            this.NAME_TO_CONTAINER.put(configContainer.getName(), configContainer);
+            GlobalConfigManager.getInstance().registerConfigContainer(configContainer);
         }
     }
 
@@ -107,8 +116,8 @@ public class MagicConfigManagerImpl implements MagicConfigManager, IKeybindProvi
     public List<IHotkey> getAllCustomHotkeys() {
         return this.CONTAINERS.stream()
                 .map(ConfigContainer::getConfig)
-                .filter(config -> config instanceof IHotkey)
-                .map(config -> (IHotkey) config)
+                .filter(IHotkey.class::isInstance)
+                .map(IHotkey.class::cast)
                 .collect(Collectors.toList());
     }
 

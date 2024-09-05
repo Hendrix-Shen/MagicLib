@@ -32,28 +32,28 @@ public final class MagicLibProperties {
     public static final Option DEV_QOL = Option.newOption(MagicLibProperties.DEV,
             Option.InheritType.INDEPENDENT, "qol");
     public static final Option DEV_QOL_AUTH = Option.newOption(MagicLibProperties.DEV_QOL,
-            Option.InheritType.INHERIT, "auth");
+            Option.InheritType.ALLOW_OVERRIDE, "auth");
     public static final Option DEV_QOL_AUTH_EMPTY_KEY = Option.newOption(MagicLibProperties.DEV_QOL_AUTH,
-            Option.InheritType.INHERIT, "emptyKey");
+            Option.InheritType.ALLOW_OVERRIDE, "emptyKey");
     public static final Option DEV_QOL_AUTH_SILENT_VERIFY_ERROR = Option.newOption(MagicLibProperties.DEV_QOL_AUTH,
-            Option.InheritType.INHERIT, "silentVerify");
+            Option.InheritType.ALLOW_OVERRIDE, "silentVerify");
     public static final Option DEV_QOL_CHUNK = Option.newOption(MagicLibProperties.DEV_QOL,
-            Option.InheritType.INHERIT, "chunk");
+            Option.InheritType.ALLOW_OVERRIDE, "chunk");
     public static final Option DEV_QOL_DFU = Option.newOption(MagicLibProperties.DEV_QOL,
-            Option.InheritType.INHERIT, "dfu");
+            Option.InheritType.ALLOW_OVERRIDE, "dfu");
     public static final Option DEV_QOL_DFU_LAZY = Option.newOption(MagicLibProperties.DEV_QOL_DFU,
-            Option.InheritType.INHERIT, "lazy");
+            Option.InheritType.ALLOW_OVERRIDE, "lazy");
     public static final Option DEV_QOL_DFU_BREAK = Option.newOption(MagicLibProperties.DEV_QOL_DFU,
             Option.InheritType.INDEPENDENT, "destroy");
     public static final Option DEV_QOL_THREAD_TWEAK = Option.newOption(MagicLibProperties.DEV_QOL,
-            Option.InheritType.INHERIT, "threadTweak");
+            Option.InheritType.ALLOW_OVERRIDE, "threadTweak");
     public static final Option DEV_QOL_THREAD_TWEAK_COUNT = Option.newOption(MagicLibProperties.DEV_QOL_THREAD_TWEAK,
             Option.InheritType.INDEPENDENT, "count");
     public static final Option DEV_QOL_THREAD_TWEAK_COUNT_BOOTSTRAP = Option.newOption(
-            MagicLibProperties.DEV_QOL_THREAD_TWEAK_COUNT, Option.InheritType.INHERIT,
+            MagicLibProperties.DEV_QOL_THREAD_TWEAK_COUNT, Option.InheritType.ALLOW_OVERRIDE,
             "bootstrap", "1");
     public static final Option DEV_QOL_THREAD_TWEAK_COUNT_MAIN = Option.newOption(
-            MagicLibProperties.DEV_QOL_THREAD_TWEAK_COUNT, Option.InheritType.INHERIT,
+            MagicLibProperties.DEV_QOL_THREAD_TWEAK_COUNT, Option.InheritType.ALLOW_OVERRIDE,
             "main", String.valueOf(MagicLibProperties.getMaxBackgroundThreads()));
     public static final Option DEV_QOL_THREAD_TWEAK_PRIORITY = Option.newOption(MagicLibProperties.DEV_QOL_THREAD_TWEAK,
             Option.InheritType.INDEPENDENT, "priority");
@@ -72,6 +72,16 @@ public final class MagicLibProperties {
     public static final Option DEV_QOL_THREAD_TWEAK_PRIORITY_MAIN = Option.newOption(
             MagicLibProperties.DEV_QOL_THREAD_TWEAK_PRIORITY, Option.InheritType.INDEPENDENT,
             "main", "1");
+    public static final Option MALILIB = Option.newOption(
+            MagicLibProperties.DEBUG, Option.InheritType.INDEPENDENT, "malilib");
+    public static final Option MALILIB_CHECK = Option.newOption(
+            MagicLibProperties.MALILIB, Option.InheritType.INDEPENDENT, "check");
+    public static final Option MALILIB_CHECK_CONFIG_NAME = Option.newOption(
+            MagicLibProperties.MALILIB, Option.InheritType.INDEPENDENT, "configName");
+    public static final Option MALILIB_CHECK_CONFIG_NAME_EMPTY = Option.newOption(
+            MagicLibProperties.MALILIB_CHECK_CONFIG_NAME, Option.InheritType.ALLOW_OVERRIDE, "empty");
+    public static final Option MALILIB_CHECK_CONFIG_NAME_CONSISTENCY = Option.newOption(
+            MagicLibProperties.MALILIB_CHECK_CONFIG_NAME, Option.InheritType.ALLOW_OVERRIDE, "consistency");
 
     @ApiStatus.Internal
     public static void printDetail() {
