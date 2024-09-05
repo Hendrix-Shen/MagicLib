@@ -13,10 +13,6 @@ import java.util.jar.JarFile
 import java.util.jar.Manifest
 
 buildscript {
-    repositories {
-        mavenCentral()
-    }
-
     dependencies {
         classpath("org.apache.groovy:groovy-toml:4.0+")
     }
@@ -27,7 +23,7 @@ plugins {
     id("maven-publish")
     id("signing")
 
-    id("com.github.johnrengelman.shadow").version("${shadow_version}")
+    id("com.gradleup.shadow").version("${shadow_version}")
 }
 
 allprojects {
@@ -35,7 +31,7 @@ allprojects {
     apply(plugin: "maven-publish")
     apply(plugin: "signing")
 
-    apply(plugin: "com.github.johnrengelman.shadow")
+    apply(plugin: "com.gradleup.shadow")
 
     configurations {
         register("shade")

@@ -3,7 +3,7 @@ plugins {
     id("maven-publish")
     id("signing")
 
-    id("com.github.johnrengelman.shadow").version("${shadow_version}")
+    id("com.gradleup.shadow").version("${shadow_version}")
     id("top.hendrixshen.replace-token").version("${replace_token_version}")
 }
 
@@ -12,7 +12,7 @@ allprojects {
     apply(plugin: "maven-publish")
     apply(plugin: "signing")
 
-    apply(plugin: "com.github.johnrengelman.shadow")
+    apply(plugin: "com.gradleup.shadow")
     apply(plugin: "top.hendrixshen.replace-token")
 
     configurations {
