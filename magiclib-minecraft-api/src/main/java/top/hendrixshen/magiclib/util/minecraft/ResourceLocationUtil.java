@@ -20,6 +20,7 @@
 
 package top.hendrixshen.magiclib.util.minecraft;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -27,12 +28,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
-
-//#if MC > 11902
-//$$ import net.minecraft.core.registries.BuiltInRegistries;
-//#else
-import net.minecraft.core.Registry;
-//#endif
 
 /**
  * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/utils/IdentifierUtil.java">Carpet-TIS-Addition</a>

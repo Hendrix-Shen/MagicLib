@@ -1,0 +1,1 @@
+net.minecraft.core.Registry net.minecraft.core.registries.BuiltInRegistries
