@@ -23,6 +23,7 @@ package top.hendrixshen.magiclib.impl.malilib.config;
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
+import net.minecraft.core.Vec3i;
 import top.hendrixshen.magiclib.impl.malilib.config.option.*;
 
 /**
@@ -142,5 +143,21 @@ public class MagicConfigFactory {
 
     public MagicConfigStringList newConfigStringList(String name, ImmutableList<String> defaultValue) {
         return new MagicConfigStringList(this.identifier, name, defaultValue);
+    }
+
+    public MagicConfigVec3i newConfigVec3i(String name) {
+        return new MagicConfigVec3i(this.identifier, name);
+    }
+
+    public MagicConfigVec3i newConfigVec3i(String name, Vec3i defaultValue) {
+        return new MagicConfigVec3i(this.identifier, name, defaultValue);
+    }
+
+    public MagicConfigVec3iList newConfigVec3iList(String name) {
+        return new MagicConfigVec3iList(this.identifier, name, ImmutableList.of());
+    }
+
+    public MagicConfigVec3iList newConfigVec3iList(String name, ImmutableList<Vec3i> defaultValue) {
+        return new MagicConfigVec3iList(this.identifier, name, defaultValue);
     }
 }

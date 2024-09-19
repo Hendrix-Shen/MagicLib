@@ -19,7 +19,10 @@ magiclib:
           disabled: 已禁用
         config_button_option_list_hovering:
           title: "可用值列表:"
-      title: "魔法类库 - 版本: %1$s (%2$s)"
+      title:
+        .: "魔法类库 - 版本: %1$s (%2$s)"
+        vec3i_edit: 编辑整数三维向量 '%1$s'
+        vec3i_list_edit: 编辑整数三维向量列表 '%1$s'
       trigger_button:
         text: 触发
         hover: |
@@ -97,6 +100,12 @@ magiclib:
         comment: ""
       testConfigStringList:
         name: 字符串列表配置测试
+        comment: ""
+      testConfigVec3i:
+        name: 整数三维向量配置测试
+        comment: ""
+      testConfigVec3iList:
+        name: 整数三维向量列表配置测试
         comment: ""
       testDependencies:
         name: 带依赖配置测试

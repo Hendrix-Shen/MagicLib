@@ -19,7 +19,10 @@ magiclib:
           disabled: Disabled
         config_button_option_list_hovering:
           title: "Available values:"
-      title: "MagicLib - Version: %1$s (%2$s)"
+      title:
+        .: "MagicLib - Version: %1$s (%2$s)"
+        vec3i_edit: Edit vec3i for '%1$s'
+        vec3i_list_edit: Edit vec3i list for '%1$s'
       trigger_button:
         text: Trigger
         hover: |
@@ -97,6 +100,12 @@ magiclib:
         comment: ""
       testConfigStringList:
         name: testConfigStringList
+        comment: ""
+      testConfigVec3i:
+        name: testConfigVec3i
+        comment: ""
+      testConfigVec3iList:
+        name: testConfigVec3iList
         comment: ""
       testDependencies:
         name: testDependencies

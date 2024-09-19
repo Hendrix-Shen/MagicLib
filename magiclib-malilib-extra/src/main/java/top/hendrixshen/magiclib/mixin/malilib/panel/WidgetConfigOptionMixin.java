@@ -36,13 +36,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.gui.ConfigButtonOptionListHovering;
-import top.hendrixshen.magiclib.api.malilib.config.option.HotkeyWithSwitch;
-import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
-import top.hendrixshen.magiclib.api.malilib.config.option.OptionListHotkeyed;
+import top.hendrixshen.magiclib.api.malilib.config.option.*;
 import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.ConfigButtonBooleanSwitch;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.HotkeyedBooleanResetListener;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.button.ConfigButtonVec3i;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.button.ConfigButtonVec3iList;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.KeybindMultiAccessor;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
 
@@ -72,6 +72,9 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
 
     @Shadow
     protected abstract void addKeybindResetButton(int x, int y, IKeybind keybind, ConfigButtonKeybind buttonHotkey);
+
+    @Shadow
+    protected abstract void addConfigButtonEntry(int xReset, int yReset, IConfigResettable config, ButtonBase optionButton);
 
     public WidgetConfigOptionMixin(int x, int y, int width, int height, WidgetListConfigOptionsBase<?, ?> parent,
                                    GuiConfigsBase.ConfigOptionWrapper entry, int listIndex) {
@@ -182,6 +185,36 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
         }
     }
     //#endif
+
+    @Inject(
+            method = "addConfigOption",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lfi/dy/masa/malilib/config/ConfigType;BOOLEAN:Lfi/dy/masa/malilib/config/ConfigType;",
+                    ordinal = 0
+            ),
+            cancellable = true
+    )
+    private void injectExtraMagicConfig(int x, int y, float zLevel, int labelWidth, int configWidth,
+                                        IConfigBase config, CallbackInfo ci) {
+        if (!this.magiclib$isMagicGui()) {
+            return;
+        }
+
+        boolean modified = true;
+
+        if (config instanceof ConfigVec3i) {
+            this.magiclib$addVec3iWidgets(x, y, configWidth, (ConfigVec3i) config);
+        } else if (config instanceof ConfigVec3iList) {
+            this.magiclib$addVec3iListWidgets(x, y, configWidth, (ConfigVec3iList) config);
+        } else {
+            modified = false;
+        }
+
+        if (modified) {
+            ci.cancel();
+        }
+    }
 
     @Inject(
             method = "addConfigButtonEntry",
@@ -296,6 +329,38 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
         ConfigButtonOptionList optionButton = new ConfigButtonOptionList(x, y, optionBtnWidth, 20, config);
         ((ConfigButtonOptionListHovering) optionButton).magiclib$setEnableValueHovering();
         this.magiclib$addValueWithKeybindWidgets(x, y, configWidth, config, optionButton);
+    }
+
+    @Unique
+    private void magiclib$addVec3iWidgets(int x, int y, int configWidth, ConfigVec3i config) {
+        ConfigButtonVec3i optionButton = new ConfigButtonVec3i(x, y, configWidth, 20, config, (MagicConfigGui) this.host, this.host.getDialogHandler());
+        //#if MC > 11701
+        //$$ x += 2;
+        //#else
+        x += 4;
+        //#endif
+        this.addConfigButtonEntry(x + configWidth, y, config, optionButton);
+        // //#if MC > 11701
+        // //$$ int resetX = x + configWidth + 2;
+        // //#else
+        // int resetX = x + configWidth + 4;
+        // //#endif
+        // ButtonGeneric resetButton = this.createResetButton(resetX, y, config);
+        // this.addWidget(new WidgetVec3i(x, y, configWidth - 2, 20, new Vec3iCallbackImpl(config, resetButton)));
+        // // Bypassing the addButton method of the target class,
+        // // since we're already handling the resetButton listener in our widget.
+        // this.addWidget(resetButton);
+    }
+
+    @Unique
+    private void magiclib$addVec3iListWidgets(int x, int y, int configWidth, ConfigVec3iList config) {
+        ConfigButtonVec3iList optionButton = new ConfigButtonVec3iList(x, y, configWidth, 20, config, (MagicConfigGui) this.host, this.host.getDialogHandler());
+        //#if MC > 11701
+        //$$ x += 2;
+        //#else
+        x += 4;
+        //#endif
+        this.addConfigButtonEntry(x + configWidth, y, config, optionButton);
     }
 
     /**

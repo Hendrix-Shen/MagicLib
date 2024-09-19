@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.game.malilib;
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
+import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
@@ -70,6 +71,12 @@ public class Configs {
 
     @Config(category = ConfigCategory.TEST, debugOnly = true)
     public static final MagicConfigStringList testConfigStringList = Configs.cf.newConfigStringList("testConfigStringList", ImmutableList.of("test1", "test2"));
+
+    @Config(category = ConfigCategory.TEST, debugOnly = true)
+    public static final MagicConfigVec3i testConfigVec3i = Configs.cf.newConfigVec3i("testConfigVec3i", new Vec3i(1, 0, -1));
+
+    @Config(category = ConfigCategory.TEST, debugOnly = true)
+    public static final MagicConfigVec3iList testConfigVec3iList = Configs.cf.newConfigVec3iList("testConfigVec3iList", ImmutableList.of(new Vec3i(1, 2, 3), new Vec3i(-1, -2, -3)));
 
     @Dependencies(
             conflict = @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "<2.0"),
