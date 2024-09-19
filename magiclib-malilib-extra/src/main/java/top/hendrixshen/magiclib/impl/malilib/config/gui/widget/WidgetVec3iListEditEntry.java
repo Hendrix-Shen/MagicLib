@@ -1,17 +1,15 @@
 package top.hendrixshen.magiclib.impl.malilib.config.gui.widget;
 
 import fi.dy.masa.malilib.gui.GuiTextFieldGeneric;
-import fi.dy.masa.malilib.gui.MaLiLibIcons;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
 import fi.dy.masa.malilib.render.RenderUtils;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import net.minecraft.core.Vec3i;
-import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.button.ListEditEntryButtonType;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,23 +47,23 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
             this.vec3iEntry = new WidgetVec3iEntry(x, y, vec3iWidth, height, initialValue, defaultValue);
             this.vec3iEntry.getTextFields().forEach(this.parent::addTextField);
             x += vec3iWidth + 2;
-            this.addListActionButton(x, iy, ButtonType.ADD);
+            this.addListActionButton(x, iy, ListEditEntryButtonType.ADD);
             x += 18;
-            this.addListActionButton(x, iy, ButtonType.REMOVE);
+            this.addListActionButton(x, iy, ListEditEntryButtonType.REMOVE);
             x += 18;
 
             if (this.canBeMoved(true)) {
-                this.addListActionButton(x, iy, ButtonType.MOVE_DOWN);
+                this.addListActionButton(x, iy, ListEditEntryButtonType.MOVE_DOWN);
             }
 
             x += 18;
 
             if (this.canBeMoved(false)) {
-                this.addListActionButton(x, iy, ButtonType.MOVE_UP);
+                this.addListActionButton(x, iy, ListEditEntryButtonType.MOVE_UP);
             }
         } else {
             this.vec3iEntry = null;
-            this.addListActionButton(x, y + 3, ButtonType.ADD);
+            this.addListActionButton(x, y + 3, ListEditEntryButtonType.ADD);
         }
     }
 
@@ -73,7 +71,7 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
         return this.listIndex < 0;
     }
 
-    protected void addListActionButton(int x, int y, ButtonType type) {
+    protected void addListActionButton(int x, int y, ListEditEntryButtonType type) {
         ButtonGeneric button = new ButtonGeneric(x, y, type.getIcon(), type.getDisplayName());
         ListenerListActions listener = new ListenerListActions(type, this);
         this.addButton(button, listener);
@@ -238,33 +236,17 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
     }
 
     @AllArgsConstructor
-    private enum ButtonType {
-        ADD(MaLiLibIcons.PLUS, "malilib.gui.button.hovertext.add"),
-        REMOVE(MaLiLibIcons.MINUS, "malilib.gui.button.hovertext.remove"),
-        MOVE_UP(MaLiLibIcons.ARROW_UP, "malilib.gui.button.hovertext.move_up"),
-        MOVE_DOWN(MaLiLibIcons.ARROW_DOWN, "malilib.gui.button.hovertext.move_down");
-
-        @Getter
-        private final MaLiLibIcons icon;
-        private final String hoverTextTrKey;
-
-        public String getDisplayName() {
-            return I18n.tr(this.hoverTextTrKey);
-        }
-    }
-
-    @AllArgsConstructor
     private static class ListenerListActions implements IButtonActionListener {
-        private final WidgetVec3iListEditEntry.ButtonType type;
+        private final ListEditEntryButtonType type;
         private final WidgetVec3iListEditEntry parent;
 
         public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
-            if (this.type == WidgetVec3iListEditEntry.ButtonType.ADD) {
+            if (this.type == ListEditEntryButtonType.ADD) {
                 this.parent.insertEntryBefore();
-            } else if (this.type == WidgetVec3iListEditEntry.ButtonType.REMOVE) {
+            } else if (this.type == ListEditEntryButtonType.REMOVE) {
                 this.parent.removeEntry();
             } else {
-                this.parent.moveEntry(this.type == WidgetVec3iListEditEntry.ButtonType.MOVE_DOWN);
+                this.parent.moveEntry(this.type == ListEditEntryButtonType.MOVE_DOWN);
             }
         }
     }

@@ -12,6 +12,12 @@ magiclib:
     gui:
       bottom_line:
         stat: "总计: %1$s (可用: %2$s + 不可用: %3$s), 已修改: %4$s"
+      button:
+        hover_text:
+          add: 添加
+          remove: 移除
+          move_up: 上移
+          move_down: 下移
       dependencies_footer: "依赖:"
       element:
         config_button_boolean_switch:
