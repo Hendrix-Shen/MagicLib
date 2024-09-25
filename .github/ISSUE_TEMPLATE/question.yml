@@ -4,7 +4,7 @@ title: "[Question] "
 labels:
   - "type: question"
   - "resolution: unresolved"
-  - "status: pending"
+  - "status: awaiting"
 body:
   - type: markdown
     attributes:
