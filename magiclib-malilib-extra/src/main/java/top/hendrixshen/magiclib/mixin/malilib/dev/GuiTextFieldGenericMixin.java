@@ -12,25 +12,32 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.mixin.BuiltInPredicates;
 
 @Dependencies(
         require = {
                 @Dependency(dependencyType = DependencyType.MOD_ID, value = "malilib", versionPredicates = "<0.18.2"),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE),
                 @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
                 @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
         }
 )
 @Dependencies(
         require = {
-                @Dependency(dependencyType = DependencyType.MOD_ID, value = "mafglib"),
-                @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "<1.21"),
+                @Dependency(dependencyType = DependencyType.MOD_ID, value = "malilib", versionPredicates = "*"),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE),
                 @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
                 @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
-        },
-        conflict = {
-                @Dependency(dependencyType = DependencyType.MOD_ID, value = "mafglib", versionPredicates = ">0.1.8"),
-                @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = ">1.20.4"),
+        }
+)
+@Dependencies(
+        require = {
+                @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "<1.20.5"),
+                @Dependency(dependencyType = DependencyType.MOD_ID, value = "mafglib", versionPredicates = "*"),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE),
+                @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.DevMixinPredicate.class),
+                @Dependency(dependencyType = DependencyType.PREDICATE, predicate = BuiltInPredicates.MojangMappingMixinPredicate.class)
         }
 )
 @Mixin(value = GuiTextFieldGeneric.class, remap = false)
