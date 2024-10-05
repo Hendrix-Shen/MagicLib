@@ -13,10 +13,15 @@ public enum DependencyType {
      */
     MOD_ID,
     /**
+     * Test if the platform satisfies the condition.
+     * (see {@link top.hendrixshen.magiclib.api.platform.PlatformType PlatformType}).
+     */
+    PLATFORM,
+    /**
      * Test if the predicate satisfies the condition.
      * (see {@link top.hendrixshen.magiclib.util.collect.SimplePredicate SimplePredicate}).
      */
-    PREDICATE,
+    PREDICATE
     ;
 
     public boolean matches(DependencyType type) {

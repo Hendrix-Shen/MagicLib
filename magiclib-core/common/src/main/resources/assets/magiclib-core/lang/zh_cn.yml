@@ -45,6 +45,13 @@ magiclib:
             not_found: 找不到模组 %1$s. 需要 %2$s!
             unsatisfied: "检测到模组 %1$s (%2$s) 需要: %3$s, 实际: %4$s!"
           success: 模组 %1$s (%2$s) 已安装!
+      platform:
+        conflict:
+          fail: "运行在非预期平台: %1$s."
+          success: "未运行在非预期平台: %1$s."
+        require:
+          fail: "运行在非预期平台, 预期: %1$s, 实际: %2$s."
+          success: "运行在预期平台: %1$s."
       predicate:
         message: 谓词 %s 测试结果 = %s
   misc:
