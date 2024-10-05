@@ -9,6 +9,7 @@ dependencies {
     compileOnly("net.minecraftforge:forge:${project.property("dependencies.forge_version")}:universal")
     compileOnly("net.minecraftforge:forge:${project.property("dependencies.forge_version")}:launcher")
     compileOnly("net.minecraftforge:forgespi:${project.property("dependencies.forgespi_version")}")
+    compileOnly("cpw.mods:modlauncher:${project.property("dependencies.modlauncher_version")}")
     compileOnly("org.apache.maven:maven-artifact:${project.property("dependencies.maven-artifact_version")}")
 }
 

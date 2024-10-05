@@ -2,11 +2,13 @@ package top.hendrixshen.magiclib.impl.platform;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Maps;
+import cpw.mods.modlauncher.api.INameMappingService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
@@ -151,11 +153,28 @@ public final class ForgePlatformImpl implements Platform {
             return name;
         }
 
-        if (!this.isDevelopmentEnvironment()) {
-            return null;
-        }
+        String className = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.CLASS,
+                "net.minecraft.src.C_3391_");
 
-        return "mojang";
+        switch (className) {
+            case "net.minecraft.client.Minecraft":
+                String methodName = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD,
+                        "func_230150_b_");
+
+                if ("updateTitle".equals(methodName)) {
+                    return "mojang";
+                } else if ("setDefaultMinecraftTitle".equals(methodName)) {
+                    return "mcp";
+                }
+
+                return "unknown";
+            case "net.minecraft.client.MinecraftClient":
+                return "yarn";
+            case "net.minecraft.src.C_3391_":
+                return null;
+            default:
+                return "unknown";
+        }
     }
 
     public Dist getCurrentEnvType() {
