@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
@@ -22,11 +21,13 @@ import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.impl.platform.adapter.ForgeLoadingModList;
 import top.hendrixshen.magiclib.impl.platform.adapter.ForgeModContainer;
 import top.hendrixshen.magiclib.impl.platform.adapter.ForgeModList;
+import top.hendrixshen.magiclib.util.ReflectionUtil;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -37,6 +38,23 @@ public final class ForgePlatformImpl implements Platform {
             DistType.CLIENT, Dist.CLIENT,
             DistType.SERVER, Dist.DEDICATED_SERVER
     );
+    // TODO: Standalone cross-platform generic remapping api.
+    private static final BiFunction<INameMappingService.Domain, String, String> remapNameMethod = (domain, srgName) -> {
+        // Minecraft Forge >1.17-
+        ValueContainer<Class<?>> helperClazz = ReflectionUtil.getClass("net.minecraftforge.fml.util.ObfuscationReflectionHelper")
+                // Minecraft Forge <1.16.5-
+                .or(() -> ReflectionUtil.getClass("net.minecraftforge.fml.common.ObfuscationReflectionHelper"));
+
+        // If no class found, just skip the calling logic.
+        if (helperClazz.isEmpty()) {
+            return srgName;
+        }
+
+        return ReflectionUtil.invokeStatic(helperClazz, "remapName",
+                        new Class[]{INameMappingService.class, String.class}, domain, srgName)
+                .map(Object::toString)
+                .orElse(srgName);
+    };
 
     private final Map<String, ModContainerAdapter> modMap = Maps.newConcurrentMap();
 
@@ -153,13 +171,11 @@ public final class ForgePlatformImpl implements Platform {
             return name;
         }
 
-        String className = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.CLASS,
-                "net.minecraft.src.C_3391_");
+        String className = ForgePlatformImpl.remapNameMethod.apply(INameMappingService.Domain.CLASS, "net.minecraft.src.C_3391_");
 
         switch (className) {
             case "net.minecraft.client.Minecraft":
-                String methodName = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD,
-                        "func_230150_b_");
+                String methodName = ForgePlatformImpl.remapNameMethod.apply(INameMappingService.Domain.METHOD, "func_230150_b_");
 
                 if ("updateTitle".equals(methodName)) {
                     return "mojang";
