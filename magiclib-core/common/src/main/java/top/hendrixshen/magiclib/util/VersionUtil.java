@@ -20,7 +20,7 @@ public class VersionUtil {
                 .allMatch((versionPredicate) -> VersionUtil.isVersionSatisfyPredicate(version, versionPredicate));
     }
 
-    private static boolean isVersionSatisfyPredicate(String version, String versionPredicate) {
+    public static boolean isVersionSatisfyPredicate(String version, String versionPredicate) {
         SemanticVersion semver;
 
         try {
