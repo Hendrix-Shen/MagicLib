@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.api.dependency.annotation;
 
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.platform.DistType;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.util.collect.SimplePredicate;
 
 import java.lang.annotation.Retention;
@@ -39,8 +40,17 @@ public @interface Dependency {
     DependencyType dependencyType() default DependencyType.MOD_ID;
 
     /**
+     * Platform type.
+     * <br/>The value is used if {@link Dependency#dependencyType()} == {@link DependencyType#PLATFORM}
+     * <p>Only if the specified platform satisfied condition.
+     */
+    PlatformType platformType() default PlatformType.ANY;
+
+    /**
      * Dist type.
-     * <p>Only if the specified dist satisfied condition.
+     * <br/>The value is used if {@link Dependency#dependencyType()} == {@link DependencyType#DIST}
+     * <p>
+     * Only if the specified dist satisfied condition.
      */
     DistType distType() default DistType.ANY;
 

@@ -13,6 +13,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.util.VersionUtil;
 import top.hendrixshen.magiclib.util.collect.SimplePredicate;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
@@ -26,17 +27,19 @@ public class DependencyContainer<T> {
     private final String value;
     private final DependencyType dependencyType;
     private final DistType distType;
+    private final PlatformType platformType;
     private final List<String> versionPredicates;
     private final SimplePredicate<T> predicate;
     private final boolean optional;
     private final T obj;
 
     private DependencyContainer(String value, DependencyType dependencyType, DistType distType,
-                                List<String> versionPredicates, SimplePredicate<T> predicate,
-                                boolean optional, T obj) {
+                                PlatformType platformType, List<String> versionPredicates,
+                                SimplePredicate<T> predicate, boolean optional, T obj) {
         this.value = value;
         this.dependencyType = dependencyType;
         this.distType = distType;
+        this.platformType = platformType;
         this.versionPredicates = versionPredicates;
         this.predicate = predicate;
         this.optional = optional;
@@ -65,8 +68,19 @@ public class DependencyContainer<T> {
             }
         }
 
+        // TODO: Remove this in the future
+        // For backward compatibility
+        PlatformType platformType;
+
+        try {
+            platformType = dependency.platformType();
+        } catch (NoSuchMethodError e) {
+            platformType = PlatformType.ANY;
+        }
+
         return new DependencyContainer<>(dependency.value(), dependency.dependencyType(), dependency.distType(),
-                Lists.newArrayList(dependency.versionPredicates()), predicate, dependency.optional(), obj);
+                platformType, Lists.newArrayList(dependency.versionPredicates()),
+                predicate, dependency.optional(), obj);
     }
 
     @SuppressWarnings("unchecked")
@@ -101,6 +115,7 @@ public class DependencyContainer<T> {
                 Annotations.getValue(annotationNode, "value"),
                 dependencyType,
                 Annotations.getValue(annotationNode, "distType", DistType.class, DistType.ANY),
+                Annotations.getValue(annotationNode, "platformType", PlatformType.class, PlatformType.ANY),
                 Lists.newArrayList(Annotations.getValue(annotationNode, "versionPredicates", Lists.newArrayList())),
                 predicate,
                 Annotations.getValue(annotationNode, "optional", Dependency.class),
@@ -147,8 +162,18 @@ public class DependencyContainer<T> {
                 return ValueContainer.of(new DependencyCheckResult(this.optional,
                         I18n.tr("magiclib.dependency.result.mod_id." + (this.optional ?
                                 "optional.success" : "require.fail") + ".not_found", this.value,
-                                this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates)
-                ));
+                                this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates)));
+            case PLATFORM:
+                PlatformType currentPlatformType = platform.getPlatformType();
+
+                if (this.platformType.matches(currentPlatformType)) {
+                    return ValueContainer.of(new DependencyCheckResult(true,
+                            I18n.tr("magiclib.dependency.result.platform.require.success", currentPlatformType)));
+                }
+
+                return ValueContainer.of(new DependencyCheckResult(false,
+                        I18n.tr("magiclib.dependency.result.platform.require.fail",
+                                this.platformType, currentPlatformType)));
             case PREDICATE:
                 boolean testResult = this.predicate.test(this.obj);
                 return ValueContainer.of(new DependencyCheckResult(testResult, I18n.tr(
@@ -196,6 +221,16 @@ public class DependencyContainer<T> {
                 return ValueContainer.of(new DependencyCheckResult(true,
                         I18n.tr("magiclib.dependency.result.mod_id.conflict.success.not_found",
                                 this.value)));
+            case PLATFORM:
+                PlatformType currentPlatformType = platform.getPlatformType();
+
+                if (this.platformType.matches(currentPlatformType)) {
+                    return ValueContainer.of(new DependencyCheckResult(false,
+                            I18n.tr("magiclib.dependency.result.platform.conflict.fail", this.platformType)));
+                }
+
+                return ValueContainer.of(new DependencyCheckResult(true,
+                        I18n.tr("magiclib.dependency.result.platform.conflict.success", this.platformType)));
             case PREDICATE:
                 boolean testResult = this.predicate.test(this.obj);
                 return ValueContainer.of(new DependencyCheckResult(!testResult,

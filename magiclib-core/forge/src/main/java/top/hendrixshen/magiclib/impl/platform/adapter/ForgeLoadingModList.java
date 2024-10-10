@@ -4,12 +4,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minecraftforge.fml.loading.LoadingModList;
-import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
-import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
+import net.minecraftforge.forgespi.language.IModFileInfo;
+import net.minecraftforge.forgespi.language.IModInfo;
 import top.hendrixshen.magiclib.api.platform.adapter.forge.ModListAdapter;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ForgeLoadingModList implements ModListAdapter {
@@ -17,17 +18,25 @@ public class ForgeLoadingModList implements ModListAdapter {
     private static final ModListAdapter instance = new ForgeLoadingModList();
 
     @Override
-    public ValueContainer<Collection<ModFileInfo>> getModFiles() {
-        return ValueContainer.ofNullable(LoadingModList.get()).map(LoadingModList::getModFiles);
+    public ValueContainer<Collection<IModFileInfo>> getModFiles() {
+        return ValueContainer.ofNullable(LoadingModList.get())
+                .map(loadingModList -> loadingModList.getModFiles()
+                        .stream()
+                        .map(IModFileInfo.class::cast)
+                        .collect(Collectors.toList()));
     }
 
     @Override
-    public ValueContainer<Collection<ModInfo>> getMods() {
-        return ValueContainer.ofNullable(LoadingModList.get()).map(LoadingModList::getMods);
+    public ValueContainer<Collection<IModInfo>> getMods() {
+        return ValueContainer.ofNullable(LoadingModList.get())
+                .map(loadingModList -> loadingModList.getMods()
+                        .stream()
+                        .map(IModInfo.class::cast)
+                        .collect(Collectors.toList()));
     }
 
     @Override
-    public ValueContainer<ModFileInfo> getModFileById(String identifier) {
+    public ValueContainer<IModFileInfo> getModFileById(String identifier) {
         return ValueContainer.ofNullable(LoadingModList.get())
                 .map(loadingModList -> loadingModList.getModFileById(identifier));
     }

@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.impl.platform;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Maps;
+import cpw.mods.modlauncher.api.INameMappingService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,10 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforgespi.language.IModInfo;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
@@ -19,6 +22,7 @@ import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.impl.platform.adapter.NeoForgeLoadingModList;
 import top.hendrixshen.magiclib.impl.platform.adapter.NeoForgeModContainer;
 import top.hendrixshen.magiclib.impl.platform.adapter.NeoForgeModList;
+import top.hendrixshen.magiclib.util.VersionUtil;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.nio.file.Path;
@@ -148,11 +152,35 @@ public final class NeoForgePlatformImpl implements Platform {
             return name;
         }
 
-        if (!this.isDevelopmentEnvironment()) {
-            return null;
+        String mcVer = MagicLib.getInstance().getCurrentPlatform().getModVersion("minecraft");
+
+        if (VersionUtil.isVersionSatisfyPredicate(mcVer, ">1.20.5-")) {
+            return this.isDevelopmentEnvironment() ? "mojang" : null;
         }
 
-        return "mojang";
+        String intermediaryMethodName;
+
+        if (VersionUtil.isVersionSatisfyPredicate(mcVer, ">1.17-")) {
+            intermediaryMethodName = "m_91341_";
+        } else {
+            intermediaryMethodName = "func_230150_b_";
+        }
+
+        String methodName = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD, intermediaryMethodName);
+
+        switch (methodName) {
+            case "updateTitle":
+                return "mojang";
+            case "updateWindowTitle":
+                return "yarn";
+            case "setDefaultMinecraftTitle":
+                return "mcp";
+            case "m_91341_": // Minecraft Forge >1.17- intermediary
+            case "func_230150_b_": // Minecraft Forge <1.16.5- intermediary
+                return null;
+            default:
+                return "unknown";
+        }
     }
 
     public Dist getCurrentEnvType() {

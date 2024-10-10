@@ -30,8 +30,8 @@ public class ReflectionUtil {
     }
 
     public static <T> @NotNull ValueContainer<T> newInstance(String className, Class<?>[] type, Object... args) {
-        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
-        return ReflectionUtil.newInstance(clazz, type, args);
+        ValueContainer<Class<?>> classContainer = ReflectionUtil.getClass(className);
+        return ReflectionUtil.newInstance(classContainer, type, args);
     }
 
     public static <T> @NotNull ValueContainer<T> newInstance(@NotNull ValueContainer<Class<?>> classContainer,
@@ -40,7 +40,7 @@ public class ReflectionUtil {
             return ValueContainer.exception(classContainer.getException());
         }
 
-        return ReflectionUtil.newInstance(classContainer.get(), type, args);
+        return classContainer.flatMap(clazz -> ReflectionUtil.newInstance(clazz, type, args));
     }
 
     public static <T> @NotNull ValueContainer<T> newInstance(@NotNull Class<?> clazz, Class<?>[] type, Object... args) {
@@ -83,8 +83,8 @@ public class ReflectionUtil {
 
     public static @NotNull ValueContainer<Boolean> setStaticFieldValue(String className, String fieldName,
                                                                        Object value) {
-        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
-        return ReflectionUtil.setDeclaredFieldValue(clazz, fieldName, null, value);
+        ValueContainer<Class<?>> classContainer = ReflectionUtil.getClass(className);
+        return ReflectionUtil.setDeclaredFieldValue(classContainer, fieldName, null, value);
     }
 
     public static ValueContainer<Boolean> setStaticFieldValue(@NotNull ValueContainer<Class<?>> classContainer,
@@ -93,7 +93,7 @@ public class ReflectionUtil {
             return ValueContainer.exception(classContainer.getException());
         }
 
-        return ReflectionUtil.setDeclaredFieldValue(classContainer.get(), fieldName, null, value);
+        return classContainer.flatMap(clazz -> ReflectionUtil.setDeclaredFieldValue(clazz, fieldName, null, value));
     }
 
     public static ValueContainer<Boolean> setStaticFieldValue(@NotNull Class<?> clazz, String fieldName, Object value) {
@@ -101,8 +101,8 @@ public class ReflectionUtil {
     }
 
     public static ValueContainer<Field> getDeclaredField(String className, String fieldName) {
-        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
-        return ReflectionUtil.getDeclaredField(clazz, fieldName);
+        ValueContainer<Class<?>> classContainer = ReflectionUtil.getClass(className);
+        return ReflectionUtil.getDeclaredField(classContainer, fieldName);
     }
 
     public static ValueContainer<Field> getDeclaredField(@NotNull ValueContainer<Class<?>> classContainer,
@@ -111,7 +111,7 @@ public class ReflectionUtil {
             return ValueContainer.exception(classContainer.getException());
         }
 
-        return ReflectionUtil.getDeclaredField(classContainer.get(), fieldName);
+        return classContainer.flatMap(clazz -> ReflectionUtil.getDeclaredField(clazz, fieldName));
     }
 
     public static @NotNull ValueContainer<Field> getDeclaredField(@NotNull Class<?> clazz, String fieldName) {
@@ -123,8 +123,8 @@ public class ReflectionUtil {
     }
 
     public static <T> ValueContainer<T> getDeclaredFieldValue(String className, String fieldName, Object instance) {
-        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
-        return ReflectionUtil.getDeclaredFieldValue(clazz, fieldName, instance);
+        ValueContainer<Class<?>> classContainer = ReflectionUtil.getClass(className);
+        return ReflectionUtil.getDeclaredFieldValue(classContainer, fieldName, instance);
     }
 
     public static <T> ValueContainer<T> getDeclaredFieldValue(@NotNull ValueContainer<Class<?>> classContainer,
@@ -133,7 +133,7 @@ public class ReflectionUtil {
             return ValueContainer.exception(classContainer.getException());
         }
 
-        return ReflectionUtil.getDeclaredFieldValue(classContainer.get(), fieldName, instance);
+        return classContainer.flatMap(clazz -> ReflectionUtil.getDeclaredFieldValue(clazz, fieldName, instance));
     }
 
     public static <T> ValueContainer<T> getDeclaredFieldValue(@NotNull Class<?> clazz, String fieldName,
@@ -151,8 +151,8 @@ public class ReflectionUtil {
 
     public static @NotNull ValueContainer<Boolean> setDeclaredFieldValue(String className, String fieldName,
                                                                          Object instance, Object value) {
-        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
-        return ReflectionUtil.setDeclaredFieldValue(clazz, fieldName, instance, value);
+        ValueContainer<Class<?>> classContainer = ReflectionUtil.getClass(className);
+        return ReflectionUtil.setDeclaredFieldValue(classContainer, fieldName, instance, value);
     }
 
     public static @NotNull ValueContainer<Boolean> setDeclaredFieldValue(
@@ -161,7 +161,7 @@ public class ReflectionUtil {
             return ValueContainer.exception(classContainer.getException());
         }
 
-        return ReflectionUtil.setDeclaredFieldValue(classContainer.get(), fieldName, instance, value);
+        return classContainer.flatMap(clazz -> ReflectionUtil.setDeclaredFieldValue(clazz, fieldName, instance, value));
     }
 
     public static ValueContainer<Boolean> setDeclaredFieldValue(@NotNull Class<?> clazz, String fieldName,
@@ -199,8 +199,8 @@ public class ReflectionUtil {
     }
 
     public static <T> ValueContainer<T> getFieldValue(String className, String fieldName, Object instance) {
-        ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
-        return ReflectionUtil.getFieldValue(clazz, fieldName, instance);
+        ValueContainer<Class<?>> classContainer = ReflectionUtil.getClass(className);
+        return ReflectionUtil.getFieldValue(classContainer, fieldName, instance);
     }
 
     public static <T> ValueContainer<T> getFieldValue(@NotNull ValueContainer<Class<?>> classContainer,
@@ -209,7 +209,7 @@ public class ReflectionUtil {
             return ValueContainer.exception(classContainer.getException());
         }
 
-        return ReflectionUtil.getFieldValue(classContainer.get(), fieldName, instance);
+        return classContainer.flatMap(clazz -> ReflectionUtil.getFieldValue(clazz, fieldName, instance));
     }
 
     public static <T> ValueContainer<T> getFieldValue(@NotNull Class<?> clazz, String fieldName, Object instance) {
@@ -236,7 +236,7 @@ public class ReflectionUtil {
             return ValueContainer.exception(classContainer.getException());
         }
 
-        return ReflectionUtil.setFieldValue(classContainer.get(), fieldName, instance, value);
+        return classContainer.flatMap(clazz -> ReflectionUtil.setFieldValue(clazz, fieldName, instance, value));
     }
 
     public static ValueContainer<Boolean> setFieldValue(@NotNull Class<?> clazz, String fieldName,
@@ -271,6 +271,18 @@ public class ReflectionUtil {
         return ReflectionUtil.invokeDeclared(clazz, methodName, null, type, args);
     }
 
+    public static <T> ValueContainer<T> invokeStatic(ValueContainer<Method> methodContainer, Object... args) {
+        if (methodContainer.isException()) {
+            return ValueContainer.exception(methodContainer.getException());
+        }
+
+        return methodContainer.flatMap(method -> ReflectionUtil.invokeStatic(method, args));
+    }
+
+    public static <T> ValueContainer<T> invokeStatic(Method method, Object... args) {
+        return ReflectionUtil.invoke(method, null, args);
+    }
+
     public static ValueContainer<Method> getDeclaredMethod(String className, String methodName, Class<?>... type) {
         ValueContainer<Class<?>> clazz = ReflectionUtil.getClass(className);
         return ReflectionUtil.getDeclaredMethod(clazz, methodName, type);
@@ -282,7 +294,7 @@ public class ReflectionUtil {
             return ValueContainer.exception(classContainer.getException());
         }
 
-        return ReflectionUtil.getDeclaredMethod(classContainer.get(), methodName, type);
+        return classContainer.flatMap(clazz -> ReflectionUtil.getDeclaredMethod(clazz, methodName, type));
     }
 
     public static ValueContainer<Method> getDeclaredMethod(@NotNull Class<?> clazz, String methodName,
@@ -309,20 +321,13 @@ public class ReflectionUtil {
             return ValueContainer.exception(classContainer.getException());
         }
 
-        return ReflectionUtil.invokeDeclared(classContainer.get(), methodName, instance, type, args);
+        return classContainer.flatMap(clazz -> ReflectionUtil.invokeDeclared(clazz, methodName, instance, type, args));
     }
 
     public static <T> ValueContainer<T> invokeDeclared(@NotNull Class<?> clazz, String methodName, Object instance,
                                                        Class<?>[] type, Object... args) {
-        try {
-            Method declaredMethod = clazz.getDeclaredMethod(methodName, type);
-            declaredMethod.setAccessible(true);
-            @SuppressWarnings("unchecked")
-            ValueContainer<T> container = ValueContainer.of((T) declaredMethod.invoke(instance, args));
-            return container;
-        } catch (Exception e) {
-            return ValueContainer.exception(e);
-        }
+        ValueContainer<Method> methodContainer = ReflectionUtil.getDeclaredMethod(clazz, methodName, type);
+        return ReflectionUtil.invoke(methodContainer, instance, args);
     }
 
     public static ValueContainer<Method> getMethod(String className, String methodName, Class<?>... type) {
@@ -336,7 +341,7 @@ public class ReflectionUtil {
             return ValueContainer.exception(classContainer.getException());
         }
 
-        return ReflectionUtil.getMethod(classContainer.get(), methodName, type);
+        return classContainer.flatMap(clazz -> ReflectionUtil.getMethod(clazz, methodName, type));
     }
 
     public static ValueContainer<Method> getMethod(@NotNull Class<?> clazz, String methodName, Class<?>... type) {
@@ -366,8 +371,20 @@ public class ReflectionUtil {
 
     public static <T> ValueContainer<T> invoke(@NotNull Class<?> clazz, String methodName, Object instance,
                                                Class<?>[] type, Object... args) {
+        ValueContainer<Method> methodContainer = ReflectionUtil.getMethod(clazz, methodName, type);
+        return ReflectionUtil.invoke(methodContainer, instance, args);
+    }
+
+    public static <T> ValueContainer<T> invoke(ValueContainer<Method> methodContainer, Object instance, Object... args) {
+        if (methodContainer.isException()) {
+            return ValueContainer.exception(methodContainer.getException());
+        }
+
+        return methodContainer.flatMap(method -> ReflectionUtil.invoke(method, instance, args));
+    }
+
+    public static <T> ValueContainer<T> invoke(Method method, Object instance, Object... args) {
         try {
-            Method method = clazz.getMethod(methodName, type);
             method.setAccessible(true);
             @SuppressWarnings("unchecked")
             ValueContainer<T> container = ValueContainer.of((T) method.invoke(instance, args));

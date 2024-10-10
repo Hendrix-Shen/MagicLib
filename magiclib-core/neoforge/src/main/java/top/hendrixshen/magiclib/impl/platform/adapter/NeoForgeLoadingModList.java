@@ -20,15 +20,19 @@ public class NeoForgeLoadingModList implements ModListAdapter {
     @Override
     public ValueContainer<Collection<IModFileInfo>> getModFiles() {
         return ValueContainer.ofNullable(LoadingModList.get())
-                .map(loadingModList -> loadingModList.getModFiles().stream()
-                        .map(modFileInfo -> (IModFileInfo) modFileInfo).collect(Collectors.toList()));
+                .map(loadingModList -> loadingModList.getModFiles()
+                        .stream()
+                        .map(IModFileInfo.class::cast)
+                        .collect(Collectors.toList()));
     }
 
     @Override
     public ValueContainer<Collection<IModInfo>> getMods() {
         return ValueContainer.ofNullable(LoadingModList.get())
-                .map(loadingModList -> loadingModList.getMods().stream()
-                        .map(modFileInfo -> (IModInfo) modFileInfo).collect(Collectors.toList()));
+                .map(loadingModList -> loadingModList.getMods()
+                        .stream()
+                        .map(IModInfo.class::cast)
+                        .collect(Collectors.toList()));
     }
 
     @Override

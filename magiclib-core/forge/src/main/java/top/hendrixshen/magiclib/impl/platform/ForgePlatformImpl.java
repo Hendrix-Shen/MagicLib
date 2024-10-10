@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.impl.platform;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Maps;
+import cpw.mods.modlauncher.api.INameMappingService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import net.minecraftforge.forgespi.language.IModInfo;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
@@ -20,11 +21,16 @@ import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.impl.platform.adapter.ForgeLoadingModList;
 import top.hendrixshen.magiclib.impl.platform.adapter.ForgeModContainer;
 import top.hendrixshen.magiclib.impl.platform.adapter.ForgeModList;
+import top.hendrixshen.magiclib.util.CommonUtil;
+import top.hendrixshen.magiclib.util.ReflectionUtil;
+import top.hendrixshen.magiclib.util.VersionUtil;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -35,6 +41,28 @@ public final class ForgePlatformImpl implements Platform {
             DistType.CLIENT, Dist.CLIENT,
             DistType.SERVER, Dist.DEDICATED_SERVER
     );
+    // TODO: Standalone cross-platform generic remapping api.
+    private static final ValueContainer<Method> remapNameMethod = CommonUtil.make(() -> {
+        // Minecraft Forge >1.17-
+        ValueContainer<Class<?>> helperClazz = ReflectionUtil.getClass("net.minecraftforge.fml.util.ObfuscationReflectionHelper")
+                // Minecraft Forge <1.16.5-
+                .or(() -> ReflectionUtil.getClass("net.minecraftforge.fml.common.ObfuscationReflectionHelper"));
+
+        if (helperClazz.isException()) {
+            return ValueContainer.exception(new RuntimeException("Unable to initialize remapping tool.", helperClazz.getException()));
+        }
+
+        return ReflectionUtil.getDeclaredMethod(helperClazz, "remapName", INameMappingService.Domain.class, String.class);
+    });
+    private static final BiFunction<INameMappingService.Domain, String, String> remapNameFunction = (domain, srgName) -> {
+        // If no class found, just skip the calling logic.
+        if (ForgePlatformImpl.remapNameMethod.isEmpty()) {
+            return srgName;
+        }
+
+        ValueContainer<String> ret = ReflectionUtil.invokeStatic(ForgePlatformImpl.remapNameMethod, domain, srgName);
+        return ret.orElse(srgName);
+    };
 
     private final Map<String, ModContainerAdapter> modMap = Maps.newConcurrentMap();
 
@@ -139,7 +167,7 @@ public final class ForgePlatformImpl implements Platform {
                 .or(() -> ForgeLoadingModList.getInstance().getMods())
                 .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
                 .stream()
-                .map(ModInfo::getModId)
+                .map(IModInfo::getModId)
                 .collect(Collectors.toList());
     }
 
@@ -151,11 +179,35 @@ public final class ForgePlatformImpl implements Platform {
             return name;
         }
 
-        if (!this.isDevelopmentEnvironment()) {
-            return null;
+        String mcVer = MagicLib.getInstance().getCurrentPlatform().getModVersion("minecraft");
+
+        if (VersionUtil.isVersionSatisfyPredicate(mcVer, ">1.20.5-")) {
+            return this.isDevelopmentEnvironment() ? "mojang" : null;
         }
 
-        return "mojang";
+        String intermediaryMethodName;
+
+        if (VersionUtil.isVersionSatisfyPredicate(mcVer, ">1.17-")) {
+            intermediaryMethodName = "m_91341_";
+        } else {
+            intermediaryMethodName = "func_230150_b_";
+        }
+
+        String methodName = ForgePlatformImpl.remapNameFunction.apply(INameMappingService.Domain.METHOD, intermediaryMethodName);
+
+        switch (methodName) {
+            case "updateTitle":
+                return "mojang";
+            case "updateWindowTitle":
+                return "yarn";
+            case "setDefaultMinecraftTitle":
+                return "mcp";
+            case "m_91341_": // Minecraft Forge >1.17- intermediary
+            case "func_230150_b_": // Minecraft Forge <1.16.5- intermediary
+                return null;
+            default:
+                return "unknown";
+        }
     }
 
     public Dist getCurrentEnvType() {

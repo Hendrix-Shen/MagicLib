@@ -9,11 +9,39 @@ import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import fi.dy.masa.malilib.util.JsonUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBooleanHotkeyed;
 
-@Dependencies(require = @Dependency(value = "malilib", versionPredicates = "<0.11.4"))
+@Dependencies(
+        require = {
+                @Dependency(value = "malilib", versionPredicates = "<0.11.4"),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+        }
+)
+@Dependencies(
+        require = {
+                @Dependency(value = "minecraft", versionPredicates = ">=1.16- <1.18-"),
+                @Dependency(value = "malilib", versionPredicates = "*"),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+        }
+)
+@Dependencies(
+        require = {
+                @Dependency(value = "minecraft", versionPredicates = "1.16.x"),
+                @Dependency(value = "mafglib", versionPredicates = "*"),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+        }
+)
+@Dependencies(
+        require = {
+                @Dependency(value = "minecraft", versionPredicates = "1.18.x"),
+                @Dependency(value = "malilib", versionPredicates = "*"),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+        }
+)
 @Mixin(value = MagicConfigBooleanHotkeyed.class, remap = false)
 public abstract class MagicConfigBooleanHotkeyedMixin extends ConfigBoolean implements IHotkeyTogglable {
     public MagicConfigBooleanHotkeyedMixin(String name, boolean defaultValue, String comment) {

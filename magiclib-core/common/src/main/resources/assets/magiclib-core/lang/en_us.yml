@@ -45,6 +45,13 @@ magiclib:
             not_found: Mod %1$s not found. Requires %2$s!
             unsatisfied: Mod %1$s (%2$s) detected. Requires %3$s, but found %4$s!
           success: Mod %1$s (%2$s) installed!
+      platform:
+        conflict:
+          fail: "Running on unexpected platform: %1$s."
+          success: "Not running on unexpected platform: %1$s."
+        require:
+          fail: Running on unexpected platform, expected %1$s, but found %2$s.
+          success: "Running on expected platform: %1$s."
       predicate:
         message: Predicate %s test result = %s
   misc:
