@@ -10,7 +10,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import net.minecraftforge.forgespi.language.IModInfo;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLib;
@@ -168,7 +167,7 @@ public final class ForgePlatformImpl implements Platform {
                 .or(() -> ForgeLoadingModList.getInstance().getMods())
                 .orElseThrow(() -> new IllegalStateException("Access ModList too early!"))
                 .stream()
-                .map(ModInfo::getModId)
+                .map(IModInfo::getModId)
                 .collect(Collectors.toList());
     }
 
