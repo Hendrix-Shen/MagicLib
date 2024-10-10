@@ -13,6 +13,7 @@ import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforgespi.language.IModInfo;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.platform.DistType;
 import top.hendrixshen.magiclib.api.platform.Platform;
@@ -21,6 +22,7 @@ import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.impl.platform.adapter.NeoForgeLoadingModList;
 import top.hendrixshen.magiclib.impl.platform.adapter.NeoForgeModContainer;
 import top.hendrixshen.magiclib.impl.platform.adapter.NeoForgeModList;
+import top.hendrixshen.magiclib.util.VersionUtil;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.nio.file.Path;
@@ -150,24 +152,31 @@ public final class NeoForgePlatformImpl implements Platform {
             return name;
         }
 
-        String className = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.CLASS,
-                "net.minecraft.src.C_3391_");
+        String mcVer = MagicLib.getInstance().getCurrentPlatform().getModVersion("minecraft");
 
-        switch (className) {
-            case "net.minecraft.client.Minecraft":
-                String methodName = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD,
-                        "func_230150_b_");
+        if (VersionUtil.isVersionSatisfyPredicate(mcVer, ">1.20.5-")) {
+            return this.isDevelopmentEnvironment() ? "mojang" : null;
+        }
 
-                if ("updateTitle".equals(methodName)) {
-                    return "mojang";
-                } else if ("setDefaultMinecraftTitle".equals(methodName)) {
-                    return "mcp";
-                }
+        String intermediaryMethodName;
 
-                return "unknown";
-            case "net.minecraft.client.MinecraftClient":
+        if (VersionUtil.isVersionSatisfyPredicate(mcVer, ">1.17-")) {
+            intermediaryMethodName = "m_91341_";
+        } else {
+            intermediaryMethodName = "func_230150_b_";
+        }
+
+        String methodName = ObfuscationReflectionHelper.remapName(INameMappingService.Domain.METHOD, intermediaryMethodName);
+
+        switch (methodName) {
+            case "updateTitle":
+                return "mojang";
+            case "updateWindowTitle":
                 return "yarn";
-            case "net.minecraft.src.C_3391_":
+            case "setDefaultMinecraftTitle":
+                return "mcp";
+            case "m_91341_": // Minecraft Forge >1.17- intermediary
+            case "func_230150_b_": // Minecraft Forge <1.16.5- intermediary
                 return null;
             default:
                 return "unknown";
