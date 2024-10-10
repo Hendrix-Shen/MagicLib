@@ -180,6 +180,11 @@ public final class ForgePlatformImpl implements Platform {
         }
 
         String mcVer = MagicLib.getInstance().getCurrentPlatform().getModVersion("minecraft");
+
+        if (VersionUtil.isVersionSatisfyPredicate(mcVer, ">1.20.5-")) {
+            return this.isDevelopmentEnvironment() ? "mojang" : null;
+        }
+
         String intermediaryMethodName;
 
         if (VersionUtil.isVersionSatisfyPredicate(mcVer, ">1.17-")) {
