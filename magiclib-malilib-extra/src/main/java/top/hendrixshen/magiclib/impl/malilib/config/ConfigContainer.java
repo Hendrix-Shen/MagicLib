@@ -155,7 +155,7 @@ public class ConfigContainer {
     }
 
     public boolean isSatisfied() {
-        return this.dependencies.stream().anyMatch(DependenciesContainer::isSatisfied);
+        return this.dependencies.isEmpty() || this.dependencies.stream().anyMatch(DependenciesContainer::isSatisfied);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
