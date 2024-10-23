@@ -37,7 +37,12 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
 
 import java.util.concurrent.Executor;
+
+//#if MC > 12101
+//$$ import net.minecraft.TracingExecutor;
+//#else
 import java.util.concurrent.ExecutorService;
+//#endif
 
 /**
  * Reference to <a href="https://github.com/UltimateBoomer/mc-smoothboot/blob/9a519ade89af24aa8b337dfed7d8eb8c0b62ec81/src/main/java/io/github/ultimateboomer/smoothboot/mixin/UtilMixin.java">SmoothBoot<a/>
@@ -65,7 +70,11 @@ public class UtilMixin {
     //$$ @Mutable
     //$$ @Shadow
     //$$ @Final
+    //#if MC > 12101
+    //$$ private static TracingExecutor DOWNLOAD_POOL;
+    //#else
     //$$ private static ExecutorService DOWNLOAD_POOL;
+    //#endif
     //#endif
     //#if MC < 11904
     @Mutable
@@ -76,12 +85,20 @@ public class UtilMixin {
     @Mutable
     @Shadow
     @Final
+    //#if MC > 12101
+    //$$ private static TracingExecutor IO_POOL;
+    //#else
     private static ExecutorService IO_POOL;
+    //#endif
     //#endif
     @Mutable
     @Shadow
     @Final
+    //#if MC > 12101
+    //$$ private static TracingExecutor BACKGROUND_EXECUTOR;
+    //#else
     private static ExecutorService BACKGROUND_EXECUTOR;
+    //#endif
 
     //#if MC > 11502
     @Shadow

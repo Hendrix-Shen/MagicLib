@@ -35,6 +35,10 @@ import top.hendrixshen.magiclib.mixin.dev.accessor.UtilAccessor;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//#if MC > 12101
+//$$ import net.minecraft.TracingExecutor;
+//#endif
+
 //#if MC > 12006
 //$$ import net.minecraft.ReportType;
 //#endif
@@ -53,9 +57,16 @@ public class ThreadTweaker {
         public static final int mainPriority = 1;
     }
 
-    public static @NotNull ExecutorService replaceForkJoinWorker(String name, int priority, int counter) {
+    public static @NotNull
+    //#if MC > 12101
+    //$$ TracingExecutor
+    //#else
+    ExecutorService
+    //#endif
+    replaceForkJoinWorker(String name, int priority, int counter) {
         AtomicInteger atomicInteger = new AtomicInteger(1);
-        return new ForkJoinPool(Mth.clamp(counter, 1, 0x7fff), (forkJoinPool) -> {
+        @SuppressWarnings("unused")
+        ExecutorService executorService = new ForkJoinPool(Mth.clamp(counter, 1, 0x7fff), forkJoinPool -> {
             //#if MC > 11502
             String workerName = "Worker-" + name + "-" + atomicInteger.getAndIncrement();
             //#else
@@ -83,12 +94,25 @@ public class ThreadTweaker {
 
             UtilAccessor.magiclib$getLogger().error(String.format("Caught exception in thread %s", thread), throwable);
         }, true);
+        return
+                //#if MC > 12101
+                //$$ new TracingExecutor(executorService);
+                //#else
+                executorService;
+                //#endif
     }
 
-    public static @NotNull ExecutorService replaceThreadWorker(
+    public static @NotNull
+    //#if MC > 12101
+    //$$ TracingExecutor
+    //#else
+    ExecutorService
+    //#endif
+    replaceThreadWorker(
             String name, int priority, Thread.UncaughtExceptionHandler uncaughtExceptionHandler) {
         AtomicInteger atomicInteger = new AtomicInteger(1);
-        return Executors.newCachedThreadPool((runnable) -> {
+        @SuppressWarnings("unused")
+        ExecutorService executorService = Executors.newCachedThreadPool((runnable) -> {
             String workerName = name + "-" + atomicInteger.getAndIncrement();
             MagicLib.getLogger().debug("Initialized " + workerName);
             Thread thread = new Thread(runnable);
@@ -98,6 +122,12 @@ public class ThreadTweaker {
             thread.setUncaughtExceptionHandler(uncaughtExceptionHandler);
             return thread;
         });
+        return
+                //#if MC > 12101
+                //$$ new TracingExecutor(executorService);
+                //#else
+                 executorService;
+                //#endif
     }
 
     public static int getBootstrapCount() {
