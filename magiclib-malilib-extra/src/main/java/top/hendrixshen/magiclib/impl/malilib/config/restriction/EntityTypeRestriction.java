@@ -11,6 +11,10 @@ import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationC
 import java.util.List;
 import java.util.Set;
 
+//#if MC > 12101
+//$$ import net.minecraft.core.Holder;
+//#endif
+
 public class EntityTypeRestriction extends UsageRestriction<EntityType<?>> {
     @Override
     protected void setValuesForList(Set<EntityType<?>> set, List<String> list) {
@@ -22,7 +26,12 @@ public class EntityTypeRestriction extends UsageRestriction<EntityType<?>> {
             } catch (Exception ignore) {
             }
 
-            EntityType<?> entity = rl != null ? Registry.ENTITY_TYPE.get(rl) : null;
+            EntityType<?> entity = rl != null ?
+                    Registry.ENTITY_TYPE.get(rl)
+                    //#if MC > 12101
+                    //$$ .map(Holder.Reference::value).orElse(null)
+                    //#endif
+                    : null;
 
             if (entity != null) {
                 set.add(entity);
