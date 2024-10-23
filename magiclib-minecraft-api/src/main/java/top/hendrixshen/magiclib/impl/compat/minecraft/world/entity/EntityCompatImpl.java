@@ -147,6 +147,7 @@ public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCo
 
     @Override
     public void sendSystemMessage(@NotNull Component component) {
+        //#if MC < 12101
         //#if MC > 11802
         //$$ this.get().sendSystemMessage(component);
         //#else
@@ -156,6 +157,7 @@ public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCo
                 , UtilCompat.NIL_UUID
                 //#endif
         );
+        //#endif
         //#endif
 
     }

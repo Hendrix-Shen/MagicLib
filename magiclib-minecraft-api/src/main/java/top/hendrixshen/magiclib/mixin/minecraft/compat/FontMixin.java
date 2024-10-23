@@ -29,7 +29,11 @@ public abstract class FontMixin implements FontAccessor {
             //#endif
             int backgroundColor,
             int packedLightCoords,
+            //#if MC > 12101
+            //$$ boolean inverseDepth
+            //#else
             boolean bidirectional
+            //#endif
     );
 
     @Shadow
@@ -48,7 +52,15 @@ public abstract class FontMixin implements FontAccessor {
             //#endif
             int backgroundColor,
             int packedLightCoords
+            //#if MC > 12101
+            //$$ , boolean inverseDepth
+            //#endif
     );
+
+    //#if MC > 12101
+    //$$ @Shadow
+    //$$ public abstract String bidirectionalShaping(String string);
+    //#endif
 
     @Override
     public int magiclib$drawInternal(
@@ -67,7 +79,16 @@ public abstract class FontMixin implements FontAccessor {
             int backgroundColor,
             int packedLightCoords,
             boolean bidirectional
+            //#if MC > 12101
+            //$$ , boolean inverseDepth
+            //#endif
     ) {
+        //#if MC > 12101
+        //$$ if (bidirectional) {
+        //$$     text = this.bidirectionalShaping(text);
+        //$$ }
+        //#endif
+
         return this.drawInternal(
                 text,
                 x,
@@ -79,7 +100,11 @@ public abstract class FontMixin implements FontAccessor {
                 seeThroughOrDisplayMode,
                 backgroundColor,
                 packedLightCoords,
+                //#if MC > 12101
+                //$$ inverseDepth
+                //#else
                 bidirectional
+                //#endif
         );
     }
 
@@ -99,6 +124,9 @@ public abstract class FontMixin implements FontAccessor {
             //#endif
             int backgroundColor,
             int packedLightCoords
+            //#if MC > 12101
+            //$$ , boolean inverseDepth
+            //#endif
     ) {
         return this.drawInternal(
                 formattedCharSequence,
@@ -111,6 +139,9 @@ public abstract class FontMixin implements FontAccessor {
                 seeThroughOrDisplayMode,
                 backgroundColor,
                 packedLightCoords
+                //#if MC > 12101
+                //$$ , inverseDepth
+                //#endif
         );
     }
 }

@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.util.minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.minecraft.UtilCompat;
@@ -36,7 +37,10 @@ public class MessageUtil {
     }
 
     public static void sendMessage(@NotNull Player player, BaseComponent message, boolean broadcastToOps) {
-        MessageUtil.sendMessage0(player.createCommandSourceStack(), message, broadcastToOps);
+        if (player instanceof ServerPlayer) {
+            ServerPlayer serverPlayer = (ServerPlayer) player;
+            MessageUtil.sendMessage0(serverPlayer.createCommandSourceStack(), message, broadcastToOps);
+        }
     }
 
     public static void sendMessageCompat(@NotNull Player player, MutableComponentCompat message, boolean broadcastToOps) {

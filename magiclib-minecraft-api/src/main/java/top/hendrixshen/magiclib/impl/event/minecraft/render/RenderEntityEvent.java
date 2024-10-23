@@ -2,9 +2,9 @@ package top.hendrixshen.magiclib.impl.event.minecraft.render;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.api.compat.minecraft.util.ProfilerCompat;
 import top.hendrixshen.magiclib.api.event.Event;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderEntityListener;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
@@ -16,8 +16,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 public class RenderEntityEvent {
-    private static final Minecraft mc = Minecraft.getInstance();
-
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class EntityRenderContext {
         private final Entity entity;
@@ -45,14 +43,14 @@ public class RenderEntityEvent {
 
         @Override
         public void dispatch(@NotNull List<RenderEntityListener> listeners) {
-            RenderEntityEvent.mc.getProfiler().push("Magiclib#PreEntityRenderHook");
+            ProfilerCompat.get().push("Magiclib#PreEntityRenderHook");
 
 
             for (RenderEntityListener listener : listeners) {
                 listener.preRenderEntity(this.context.entity, this.context.renderContext, this.context.partialTicks);
             }
 
-            RenderEntityEvent.mc.getProfiler().pop();
+            ProfilerCompat.get().pop();
         }
 
         @Override
@@ -67,13 +65,13 @@ public class RenderEntityEvent {
 
         @Override
         public void dispatch(@NotNull List<RenderEntityListener> listeners) {
-            RenderEntityEvent.mc.getProfiler().push("Magiclib#PostEntityRenderHook");
+            ProfilerCompat.get().push("Magiclib#PostEntityRenderHook");
 
             for (RenderEntityListener listener : listeners) {
                 listener.postRenderEntity(this.context.entity, this.context.renderContext, this.context.partialTicks);
             }
 
-            RenderEntityEvent.mc.getProfiler().pop();
+            ProfilerCompat.get().pop();
         }
 
         @Override

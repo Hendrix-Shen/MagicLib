@@ -183,7 +183,13 @@ public class RenderGlobal {
 
     //#if MC > 11605
     //$$ public static void setShader(Supplier<ShaderInstance> supplier) {
-    //$$     RenderSystem.setShader(supplier);
+    //$$     RenderSystem.setShader(
+    //#if MC > 12101
+    //$$             supplier.get()
+    //#else
+    //$$             supplier
+    //#endif
+    //$$     );
     //$$ }
     //#endif
 }
