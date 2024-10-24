@@ -8,6 +8,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.minecraft.api.world.entity.EntityCompatApi;
 
+//#if MC > 12101
+//$$ import net.minecraft.server.level.ServerPlayer;
+//$$ import top.hendrixshen.magiclib.util.MiscUtil;
+//#endif
+
 //#if MC > 11502
 //#if MC < 11900
 import top.hendrixshen.magiclib.compat.minecraft.api.UtilCompatApi;
@@ -78,6 +83,7 @@ public abstract class MixinEntity implements EntityCompatApi {
         //#endif
     }
 
+    //#if MC < 12102
     //#if MC > 11802
     //$$ @Shadow
     //$$ public abstract void sendSystemMessage(Component component);
@@ -89,9 +95,15 @@ public abstract class MixinEntity implements EntityCompatApi {
     //$$ @Shadow
     //$$ public abstract void sendMessage(Component component);
     //#endif
+    //#endif
+
     @Override
     public void sendSystemMessageCompat(Component component) {
-        //#if MC > 11802
+        //#if MC > 12101
+        //$$ if (MiscUtil.cast(this) instanceof ServerPlayer) {
+        //$$     ((ServerPlayer) MiscUtil.cast(this)).sendSystemMessage(component);
+        //$$ }
+        //#elseif MC > 11802
         //$$ this.sendSystemMessage(component);
         //#elseif MC > 11502
         this.sendMessage(component, UtilCompatApi.NIL_UUID);

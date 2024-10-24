@@ -2,9 +2,9 @@ package top.hendrixshen.magiclib.impl.event.minecraft.render;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.api.compat.minecraft.util.ProfilerCompat;
 import top.hendrixshen.magiclib.api.event.Event;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderLevelListener;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
@@ -18,8 +18,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 public class RenderLevelEvent {
-    public static final Minecraft mc = Minecraft.getInstance();
-
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class LevelRenderContext {
         private final ClientLevel level;
@@ -49,12 +47,13 @@ public class RenderLevelEvent {
 
         @Override
         public void dispatch(@NotNull List<RenderLevelListener> listeners) {
-            RenderLevelEvent.mc.getProfiler().push("Magiclib#PreLevelRenderHook");
+            ProfilerCompat.get().push("Magiclib#PreLevelRenderHook");
 
             for (RenderLevelListener listener : listeners) {
                 listener.preRenderLevel(this.context.level, this.context.renderContext, this.context.partialTicks);
             }
-            RenderLevelEvent.mc.getProfiler().pop();
+
+            ProfilerCompat.get().pop();
         }
 
         @Override
@@ -69,13 +68,13 @@ public class RenderLevelEvent {
 
         @Override
         public void dispatch(@NotNull List<RenderLevelListener> listeners) {
-            RenderLevelEvent.mc.getProfiler().push("Magiclib#PostLevelRenderHook");
+            ProfilerCompat.get().push("Magiclib#PostLevelRenderHook");
 
             for (RenderLevelListener listener : listeners) {
                 listener.postRenderLevel(this.context.level, this.context.renderContext, this.context.partialTicks);
             }
 
-            RenderLevelEvent.mc.getProfiler().pop();
+            ProfilerCompat.get().pop();
         }
 
         @Override

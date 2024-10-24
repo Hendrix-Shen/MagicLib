@@ -158,7 +158,9 @@ public class TextRenderer {
                 this.verticalAlignment.getTranslateY(totalTextHeight), 0);
         context.translate(this.shiftX, this.shiftY, 0);
         //#if MC > 11605
+        //#if MC < 12101
         //$$ RenderSystem.applyModelViewMatrix();
+        //#endif
         //#else
         RenderGlobal.enableAlphaTest();
         //#endif
@@ -224,7 +226,7 @@ public class TextRenderer {
         RenderGlobal.enableDepthTest();
         //#endif
         positionTransformer.restore();
-        //#if MC > 11605
+        //#if MC > 11605 && MC < 12101
         //$$ RenderSystem.applyModelViewMatrix();
         //#endif
     }

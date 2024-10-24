@@ -12,6 +12,39 @@ import net.minecraft.util.FormattedCharSequence;
 
 @Environment(EnvType.CLIENT)
 public interface FontAccessor {
+    //#if MC > 12101
+    //$$ default int magiclib$drawInternal(
+    //$$         String text,
+    //$$         float x,
+    //$$         float y,
+    //$$         int color,
+    //$$         boolean dropShadow,
+    //$$         Matrix4f matrix4f,
+    //$$         MultiBufferSource buffer,
+    //$$         Font.DisplayMode displayMode,
+    //$$         int backgroundColor,
+    //$$         int packedLightCoords,
+    //$$         boolean bidirectional
+    //$$ ) {
+    //$$     return this.magiclib$drawInternal(text, x, y, color, dropShadow, matrix4f, buffer, displayMode, backgroundColor, packedLightCoords, bidirectional, true);
+    //$$ }
+    //$$
+    //$$ default int magiclib$drawInternal(
+    //$$         FormattedCharSequence formattedCharSequence,
+    //$$         float x,
+    //$$         float y,
+    //$$         int color,
+    //$$         boolean dropShadow,
+    //$$         Matrix4f matrix4f,
+    //$$         MultiBufferSource buffer,
+    //$$         Font.DisplayMode displayMode,
+    //$$         int backgroundColor,
+    //$$         int packedLightCoords
+    //$$ ) {
+    //$$     return this.magiclib$drawInternal(formattedCharSequence, x, y, color, dropShadow, matrix4f, buffer, displayMode, backgroundColor, packedLightCoords, true);
+    //$$ }
+    //#endif
+
     int magiclib$drawInternal(
             String text,
             float x,
@@ -28,6 +61,9 @@ public interface FontAccessor {
             int backgroundColor,
             int packedLightCoords,
             boolean bidirectional
+            //#if MC > 12101
+            //$$ , boolean inverseDepth
+            //#endif
     );
 
     int magiclib$drawInternal(
@@ -45,5 +81,8 @@ public interface FontAccessor {
             //#endif
             int backgroundColor,
             int packedLightCoords
+            //#if MC > 12101
+            //$$ , boolean inverseDepth
+            //#endif
     );
 }

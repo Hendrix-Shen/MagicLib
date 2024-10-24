@@ -17,6 +17,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.impl.event.EventManager;
 import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderLevelEvent;
 
+//#if MC > 12101
+//$$ import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
+//#endif
+
 //#if MC > 12006
 //$$ import net.minecraft.client.DeltaTracker;
 //#endif
@@ -32,17 +36,15 @@ import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderLevelEvent;
 
 @Environment(EnvType.CLIENT)
 @Mixin(LevelRenderer.class)
-public class LevelRendererMixin {
+public abstract class LevelRendererMixin {
     @Shadow
     private ClientLevel level;
 
-    @Inject(
-            method = "renderLevel",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "renderLevel", at = @At("HEAD"))
     private void preRenderLevel(
+            //#if MC > 12101
+            //$$ GraphicsResourceAllocator graphicsResourceAllocator,
+            //#endif
             //#if MC > 12006
             //$$ DeltaTracker deltaTracker,
             //#else
@@ -83,8 +85,13 @@ public class LevelRendererMixin {
             //$$ slice = @Slice(
             //$$         from = @At(
             //$$                 value = "CONSTANT",
+            //#if MC > 12101
+            //$$                 args = "stringValue=framegraph",
+            //$$                 ordinal = 0
+            //#else
             //$$                 args = "stringValue=weather",
             //$$                 ordinal = 1
+            //#endif
             //$$         )
             //$$ ),
             //#endif
@@ -104,6 +111,9 @@ public class LevelRendererMixin {
             )
     )
     private void postRenderLevel(
+            //#if MC > 12101
+            //$$ GraphicsResourceAllocator graphicsResourceAllocator,
+            //#endif
             //#if MC > 12006
             //$$ DeltaTracker deltaTracker,
             //#else

@@ -11,6 +11,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.impl.event.EventManager;
 import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderEntityEvent;
 
+//#if MC > 12101
+//$$ import net.minecraft.client.renderer.entity.state.EntityRenderState;
+//$$ import org.spongepowered.asm.mixin.Unique;
+//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//#endif
+
 //#if MC > 11404
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,15 +24,20 @@ import net.minecraft.client.renderer.MultiBufferSource;
 
 @Environment(EnvType.CLIENT)
 @Mixin(EntityRenderer.class)
-public class EntityRendererMixin<T extends Entity> {
-    @Inject(
-            method = "render",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+public abstract class EntityRendererMixin {
+    //#if MC > 12101
+    //$$ @Unique
+    //$$ private Entity magiclib$entity;
+    //$$ @Unique
+    //$$ private float magiclib$tickDelta;
+    //#endif
+
+    @Inject(method = "render",at = @At("HEAD"))
     private void preRenderEntity(
-            T entity,
+            //#if MC > 12101
+            //$$ EntityRenderState entityRenderState,
+            //#else
+            Entity entity,
             //#if MC < 11500
             //$$ double x,
             //$$ double y,
@@ -34,6 +45,7 @@ public class EntityRendererMixin<T extends Entity> {
             //#endif
             float yaw,
             float tickDelta,
+            //#endif
             //#if MC > 11404
             PoseStack poseStack,
             MultiBufferSource source,
@@ -42,22 +54,28 @@ public class EntityRendererMixin<T extends Entity> {
             CallbackInfo ci
     ) {
         EventManager.dispatch(new RenderEntityEvent.PreRender(RenderEntityEvent.EntityRenderContext.of(
+                //#if MC > 12101
+                //$$ this.magiclib$entity,
+                //#else
                 entity,
+                //#endif
                 //#if MC > 11502
                 poseStack,
                 //#endif
+                //#if MC > 12101
+                //$$ this.magiclib$tickDelta
+                //#else
                 tickDelta
+                //#endif
         )));
     }
 
-    @Inject(
-            method = "render",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "render", at = @At("RETURN"))
     private void postRenderEntity(
-            T entity,
+            //#if MC > 12101
+            //$$ EntityRenderState entityRenderState,
+            //#else
+            Entity entity,
             //#if MC < 11500
             //$$ double x,
             //$$ double y,
@@ -65,6 +83,7 @@ public class EntityRendererMixin<T extends Entity> {
             //#endif
             float yaw,
             float tickDelta,
+            //#endif
             //#if MC > 11404
             PoseStack poseStack,
             MultiBufferSource source,
@@ -73,11 +92,27 @@ public class EntityRendererMixin<T extends Entity> {
             CallbackInfo ci
     ) {
         EventManager.dispatch(new RenderEntityEvent.PostRender(RenderEntityEvent.EntityRenderContext.of(
+                //#if MC > 12101
+                //$$ this.magiclib$entity,
+                //#else
                 entity,
+                //#endif
                 //#if MC > 11502
                 poseStack,
                 //#endif
+                //#if MC > 12101
+                //$$ this.magiclib$tickDelta
+                //#else
                 tickDelta
+                //#endif
         )));
     }
+
+    //#if MC > 12101
+    //$$ @Inject(method = "createRenderState(Lnet/minecraft/world/entity/Entity;F)Lnet/minecraft/client/renderer/entity/state/EntityRenderState;", at = @At("HEAD"))
+    //$$ private void recordSharedVar(Entity entity, float tickDelta, CallbackInfoReturnable<EntityRenderState> cir) {
+    //$$     this.magiclib$entity = entity;
+    //$$     this.magiclib$tickDelta = tickDelta;
+    //$$ }
+    //#endif
 }
