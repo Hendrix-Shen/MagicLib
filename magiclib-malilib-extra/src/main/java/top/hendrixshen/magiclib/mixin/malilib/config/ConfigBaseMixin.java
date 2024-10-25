@@ -63,7 +63,11 @@ public class ConfigBaseMixin {
     @Inject(
             method = "getComment",
             at = @At(
+                    //#if MC > 12101
+                    //$$ value = "RETURN"
+                    //#else
                     value = "TAIL"
+                    //#endif
             ),
             cancellable = true
     )
