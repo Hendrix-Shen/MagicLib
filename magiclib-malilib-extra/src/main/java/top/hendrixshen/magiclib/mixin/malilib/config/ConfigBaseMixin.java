@@ -64,7 +64,8 @@ public class ConfigBaseMixin {
             method = "getComment",
             at = @At(
                     //#if MC > 12101
-                    //$$ value = "RETURN"
+                    //$$ value = "RETURN",
+                    //$$ ordinal = 1
                     //#else
                     value = "TAIL"
                     //#endif
