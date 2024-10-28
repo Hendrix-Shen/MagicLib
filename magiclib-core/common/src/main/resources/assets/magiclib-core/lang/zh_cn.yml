@@ -53,7 +53,8 @@ magiclib:
           fail: "运行在非预期平台, 预期: %1$s, 实际: %2$s."
           success: "运行在预期平台: %1$s."
       predicate:
-        message: 谓词 %s 测试结果 = %s
+        test_result: 谓词 %1$s 测试结果 = %2$s
+        target_obj_not_exist: 谓词 %1$s 测试目标不存在, 已跳过.
   misc:
     version_type:
       beta: 公共测试版

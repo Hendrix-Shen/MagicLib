@@ -44,7 +44,7 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
         ClassNode targetClassNode = MixinUtil.getClassNode(targetClassName);
         ClassNode mixinClassNode = MixinUtil.getClassNode(mixinClassName);
 
-        if (targetClassNode == null || mixinClassNode == null) {
+        if (mixinClassNode == null) {
             return false;
         }
 

@@ -175,9 +175,14 @@ public class DependencyContainer<T> {
                         I18n.tr("magiclib.dependency.result.platform.require.fail",
                                 this.platformType, currentPlatformType)));
             case PREDICATE:
+                if (this.predicate == null) {
+                    return ValueContainer.of(new DependencyCheckResult(true, I18n.tr(
+                            "magiclib.dependency.result.predicate.target_obj_not_exist")));
+                }
+
                 boolean testResult = this.predicate.test(this.obj);
                 return ValueContainer.of(new DependencyCheckResult(testResult, I18n.tr(
-                        "magiclib.dependency.result.predicate.message",
+                        "magiclib.dependency.result.predicate.test_result",
                         this.predicate.getClass().getName(), testResult)));
         }
 
@@ -232,9 +237,14 @@ public class DependencyContainer<T> {
                 return ValueContainer.of(new DependencyCheckResult(true,
                         I18n.tr("magiclib.dependency.result.platform.conflict.success", this.platformType)));
             case PREDICATE:
+                if (this.predicate == null) {
+                    return ValueContainer.of(new DependencyCheckResult(false, I18n.tr(
+                            "magiclib.dependency.result.predicate.target_obj_not_exist")));
+                }
+
                 boolean testResult = this.predicate.test(this.obj);
                 return ValueContainer.of(new DependencyCheckResult(!testResult,
-                        I18n.tr("magiclib.dependency.result.predicate.message",
+                        I18n.tr("magiclib.dependency.result.predicate.test_result",
                                 this.predicate.getClass().getName(), testResult)));
         }
 

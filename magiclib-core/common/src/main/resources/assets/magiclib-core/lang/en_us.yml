@@ -53,7 +53,8 @@ magiclib:
           fail: Running on unexpected platform, expected %1$s, but found %2$s.
           success: "Running on expected platform: %1$s."
       predicate:
-        message: Predicate %s test result = %s
+        test_result: Predicate %1$s test result = %2$s
+        target_obj_not_exist: Predicate %1$s test target does not exist, skipped.
   misc:
     version_type:
       beta: Public Beta
