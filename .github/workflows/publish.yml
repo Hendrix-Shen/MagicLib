@@ -55,7 +55,7 @@ jobs:
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           github-tag: ${{ format('{0}.{1}', github.ref_name, steps.get_git_info.outputs.commit_count) }}
-          github-token: ${{ secrets.NYAN_BOT_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           github-prerelease: true
           github-generate-changelog: true
           files: |
