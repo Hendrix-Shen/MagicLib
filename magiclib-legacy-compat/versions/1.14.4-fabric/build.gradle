@@ -282,8 +282,6 @@ remapJar {
 
         exclude("${project.parent.property("mod.id")}.accesswidener")
     }
-
-    setRemapperIsolation(true)
 }
 
 replaceToken {
