@@ -70,7 +70,7 @@ jobs:
           name: Maven Local
           path: ~/.m2/repository/top/hendrixshen/
   summary:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs:
       - build
     steps:
