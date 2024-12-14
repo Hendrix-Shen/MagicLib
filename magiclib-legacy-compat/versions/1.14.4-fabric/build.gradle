@@ -207,8 +207,8 @@ loom {
         defaultCharacterEncoding("UTF-8")
 
         doFirst {
-            file("${projectDir}/run/client/config").mkdirs()
-            file("${projectDir}/run/client/options.txt").with { File f ->
+            file("${project.projectDir}/run/client/config").mkdirs()
+            file("${project.projectDir}/run/client/options.txt").with { File f ->
                 {
                     if (!f.exists()) {
                         f.parentFile.mkdirs()
@@ -236,7 +236,7 @@ loom {
 
         doFirst {
             // Agree eula before server init.
-            file("${projectDir}/run/server/eula.txt").with { File f ->
+            file("${project.projectDir}/run/server/eula.txt").with { File f ->
                 {
                     if (!f.exists()) {
                         f.parentFile.mkdirs()
