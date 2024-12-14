@@ -61,5 +61,6 @@ magiclib:
       development: Development
       fork: Third-Party Fork
       pull_request: Pull Request
+      rc: Release Candidate
       stable: Public Release
       unknown: Unknown

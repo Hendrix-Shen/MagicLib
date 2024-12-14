@@ -3,16 +3,13 @@ on:
   workflow_call:
     inputs:
       build_publish:
-        type: string
-        required: true
+        type: boolean
+        default: false
+        required: false
       build_version_type:
         type: string
-        required: true
-      target_subproject:
-        description: see CI.yml, leave it empty to build all
-        type: string
+        default: 'DEV'
         required: false
-        default: ''
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,8 +23,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
+      - name: Validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v4
       - name: Cache gradle files
-        if: ${{ inputs.build_version_type != 'PULL_REQUEST' }}
         uses: actions/cache@v4
         with:
           path: |
@@ -44,44 +42,35 @@ jobs:
           ./gradlew preprocessResources
         env:
           BUILD_TYPE: ${{ inputs.build_version_type }}
-      - name: Build with gradle
+      - name: Build and publish with gradle
+        if: ${{ inputs.build_publish == true }}
         run: |
-          chmod +x gradlew
-          if [ -z "${{ inputs.target_subproject }}" ]; then
-              echo "Building all subprojects"
-              ./gradlew build
-          else
-              args=$(echo "${{ inputs.target_subproject }}" | tr ',' '\n' | sed 's/$/:build/' | paste -sd ' ')
-              echo "Building with arguments=$args"
-              ./gradlew $args
-          fi
-        env:
-          BUILD_TYPE: ${{ inputs.build_version_type }}
-      - name: Publish with gradle
-        if: ${{ inputs.build_publish == 'true' }}
-        run: |
-          if [ -z "${{ inputs.target_subproject }}" ]; then
-              echo "Publishing all subprojects"
-              ./gradlew publish
-          else
-              args=$(echo "${{ inputs.target_subproject }}" | tr ',' '\n' | sed 's/$/:publish/' | paste -sd ' ')
-              echo "Publishing with arguments=$args"
-              ./gradlew $args
-          fi
+          ./gradlew build publish -x test --stacktrace
         env:
           BUILD_TYPE: ${{ inputs.build_version_type }}
           NYAN_MAVEN_PASSWORD: ${{ secrets.NYAN_MAVEN_PASSWORD }}
           NYAN_MAVEN_USERNAME: ${{ secrets.NYAN_MAVEN_USERNAME }}
           SIGNING_PGP_KEY: ${{ secrets.SIGNING_PGP_KEY }}
-      - name: Upload artifacts
+      - name: Build and publishToMavenLocal with gradle
+        if: ${{ inputs.build_publish == false }}
+        run: |
+          ./gradlew build publishToMavenLocal -x test --stacktrace
+        env:
+          BUILD_TYPE: ${{ inputs.build_version_type }}
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: |
             */**/build/libs/
             */**/build/tmp/submods/
+      - name: Upload MavenLocal
+        uses: actions/upload-artifact@v4
+        with:
+          name: Maven Local
+          path: ~/.m2/repository/top/hendrixshen/
   summary:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
       - build
     steps:
@@ -95,7 +84,6 @@ jobs:
           name: build-artifacts
           path: build-artifacts
       - name: Make build summary
-        # ubuntu-22.04 uses Python 3.10.6
-        run: python3 .github/workflows/scripts/summary.py
-        env:
-          TARGET_SUBPROJECT: ${{ inputs.target_subproject }}
+        run: |
+          pip install jproperties
+          python .github/workflows/scripts/summary.py

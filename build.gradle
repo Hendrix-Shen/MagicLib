@@ -56,12 +56,14 @@ ext {
                 return "beta"
             case "FORK":
                 return "fork"
+            case "RC":
+                return "rc"
             case "RELEASE":
                 return "stable"
             case "PULL_REQUEST":
                 return "pull_request"
             default:
-                return "dev"
+                return "development"
         }
     }
 

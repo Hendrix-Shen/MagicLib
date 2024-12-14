@@ -61,5 +61,6 @@ magiclib:
       development: 开发版
       fork: 第三方分支
       pull_request: 拉取请求
+      rc: 候选发布
       stable: 公共发行版
       unknown: 未知版本

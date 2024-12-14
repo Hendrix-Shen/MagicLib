@@ -2,31 +2,30 @@ name: _step.publish
 on:
   workflow_call:
     inputs:
-      publish_channel:
+      publish_platform_channel:
         type: string
         required: true
-      publish_target_release_tag:
-        description: |-
-          The tag of the release you want to append the artifact to.
+      publish_type:
         type: string
         required: true
-      target_subproject:
-        description: see CI.yml, for generating matrix entries
-        type: string
-        required: false
-        default: ''
 jobs:
   generate_matrix:
-    if: ${{ github.event_name != 'pull_request' }}
     uses: ./.github/workflows/generate_matrix.yml
-    with:
-      target_subproject: ${{ inputs.target_subproject }}
   release_core:
     runs-on: ubuntu-latest
-    # Allow the mod publish step to add asserts to release
+    # Allow the mod publish step to add assets to release
     # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
     permissions:
       contents: write
+    outputs:
+      commit_count: ${{ steps.shared_publish_info.outputs.commit_count }}
+      github_changelog: ${{ steps.shared_publish_info.outputs.github_changelog }}
+      github_tag: ${{ steps.shared_publish_info.outputs.github_tag }}
+      mod_name: ${{ steps.shared_publish_info.outputs.mod_name }}
+      mod_version: ${{ steps.shared_publish_info.outputs.mod_version }}
+      mod_full_version: ${{ steps.shared_publish_info.outputs.mod_version }}
+      release_title: ${{ steps.shared_publish_info.outputs.release_title }}
+      short_sha: ${{ steps.shared_publish_info.outputs.short_sha }}
     steps:
       - name: Checkout the sources
         uses: actions/checkout@v4
@@ -37,70 +36,98 @@ jobs:
         with:
           name: build-artifacts
           path: build-artifacts
-      - name: Get git info
-        id: get_git_info
-        run: |
-          short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
-          commit_count=$(git log | grep -e '^commit [a-zA-Z0-9]*' | wc -l)
-          echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
-          echo "commit_count=$commit_count" >> $GITHUB_OUTPUT
       - name: Read Properties mod info
         id: mod_info
         uses: christian-draeger/read-properties@1.1.1
         with:
           path: gradle.properties
           properties: 'mod.name mod.version'
+      - name: Get shared properties
+        id: shared_publish_info
+        env:
+          REPO_OWNER: ${{ github.repository_owner }}
+        run: |
+          short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
+          commit_count=$(git log | grep -e '^commit [a-zA-Z0-9]*' | wc -l)
+          mod_name=${{ steps.mod_info.outputs.mod-name }}
+          mod_version=${{ steps.mod_info.outputs.mod-version }}
+          mod_full_version="$mod_version.$commit_count+$short_sha"
+          
+          if [ "${{ inputs.publish_type }}" == 'release' ]
+          then
+              github_change_log=${{ github.event.release.body }}
+              github_tag=${{ github.event.ref }}
+              release_title=${{ github.event.release.name }}
+          elif [ "${{ inputs.publish_type }}" == "dev" ]
+          then
+              if [ "$REPO_OWNER" == 'Hendrix-Shen' ]
+              then
+                  github_tag="${{ github.ref_name }}.$commit_count"
+                  release_title="[CI#${{ github.run_number }}]$mod_name $mod_full_version"
+              elif [ "$REPO_OWNER" == 'Nyan-Work' ]
+              then
+                  github_tag="nyan-work/${{ github.ref_name }}.$commit_count"
+                  release_title="[CI#${{ github.run_number }}]$mod_name $mod_full_version (Nyan)"
+              else
+                  github_tag="$REPO_OWNER/${{ github.ref_name }}.$commit_count"
+                  release_title="[CI#${{ github.run_number }}]$mod_name $mod_full_version (Fork)"
+              fi
+          
+              github_changelog="**This version is automatically released by CI Build**
+          
+          Latest commit log:
+        
+          ${{ github.event.head_commit.message }}"
+          else
+              echo Unknown publish type ${{ inputs.publish_type }}
+              exit 1
+          fi
+          
+          echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
+          echo "github_changelog<<EOF
+          $github_changelog
+          EOF" >> "$GITHUB_OUTPUT"
+          echo "commit_count=$commit_count" >> $GITHUB_OUTPUT
+          echo "github_tag=$github_tag" >> $GITHUB_OUTPUT
+          echo "mod_name=$mod_name" >> $GITHUB_OUTPUT
+          echo "mod_version=$mod_version" >> $GITHUB_OUTPUT
+          echo "mod_full_version=$mod_full_version" >> $GITHUB_OUTPUT
+          echo "release_title=$release_title" >> $GITHUB_OUTPUT
       - name: Publish Minecraft Mods (Dev Channel)
-        if: ${{ inputs.publish_channel == 'dev' }}
+        if: ${{ inputs.publish_type == 'dev' }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          github-tag: ${{ format('{0}.{1}', github.ref_name, steps.get_git_info.outputs.commit_count) }}
+          github-tag: ${{ steps.shared_publish_info.outputs.github_tag }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-changelog: ${{ steps.shared_publish_info.outputs.github_changelog }}
           github-prerelease: true
-          github-generate-changelog: true
           files: |
             build-artifacts/magiclib-wrapper/fabric/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/forge/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/neoforge/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-          name: ${{ format('[CI#{0}]{1} {2}.{3}+{4}', github.run_number, steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, steps.get_git_info.outputs.short_sha) }}
+          name: ${{ steps.shared_publish_info.outputs.release_title }}
           retry-attempts: 3
           retry-delay: 10000
       - name: Publish Minecraft Mods (Stable Channel)
         if: ${{ inputs.publish_channel == 'stable' }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          github-tag: ${{ inputs.publish_target_release_tag }}
+          github-tag: ${{ steps.shared_publish_info.outputs.github_tag }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             build-artifacts/magiclib-wrapper/fabric/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/forge/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/neoforge/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-          changelog: ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
-          retry-attempts: 3
-          retry-delay: 10000
-      - name: Publish Minecraft Mods (Forks)
-        if: ${{ inputs.publish_channel == 'fork' }}
-        uses: Kir-Antipov/mc-publish@v3.3
-        with:
-          github-tag: ${{ format('{0}.{1}', github.ref_name, steps.get_git_info.outputs.commit_count) }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-prerelease: true
-          github-generate-changelog: true
-          files: |
-            build-artifacts/magiclib-wrapper/fabric/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-            build-artifacts/magiclib-wrapper/forge/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-            build-artifacts/magiclib-wrapper/neoforge/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-          name: ${{ format('{0} {1}.{2}+{3}', steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, steps.get_git_info.outputs.short_sha) }}
           retry-attempts: 3
           retry-delay: 10000
   release:
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.generate_matrix.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.generate_matrix.outputs.matrix) }}
     needs:
       - generate_matrix
       - release_core
-    # Allow the mod publish step to add asserts to release
+    # Allow the mod publish step to add assets to release
     # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
     permissions:
       contents: write
@@ -114,27 +141,14 @@ jobs:
         with:
           name: build-artifacts
           path: build-artifacts
-      - name: Get git info
-        id: get_git_info
+      - name: Get publish info
+        id: publish_info
         run: |
-          short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
-          commit_count=$(git log | grep -e '^commit [a-zA-Z0-9]*' | wc -l)
-          echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
-          echo "commit_count=$commit_count" >> $GITHUB_OUTPUT
-      - name: Get github release information
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        id: get_release
-        uses: cardinalby/git-get-release-action@1.2.5
+          pip install jproperties
+          python .github/workflows/scripts/publish_info.py
         env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          tag: ${{ inputs.publish_target_release_tag }}
-      - name: Read Properties mod info
-        id: mod_info
-        uses: christian-draeger/read-properties@1.1.1
-        with:
-          path: gradle.properties
-          properties: 'mod.name mod.version'
+          MOD_PLATFORM: ${{ matrix.platform }}
+          MOD_MC_VER: ${{ matrix.mc_ver }}
       - name: Prepare file information
         id: file_info
         run: |
@@ -154,38 +168,15 @@ jobs:
           echo "name=$FILE_NAME" >> $GITHUB_OUTPUT
           echo "hash=$FILE_HASH" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
-      - name: Prepare changelog (Dev Channel)
-        if: ${{ inputs.publish_channel == 'dev' }}
+      - name: Prepare changelog
         uses: actions/github-script@v7
-        id: changelog_dev
+        id: changelog
         with:
           script: return process.env.CHANGELOG
           result-encoding: string
         env:
           CHANGELOG: |-
-            **This version is automatically released by CI Build**
-            
-            Latest commit log:
-            
-            ${{ github.event.head_commit.message }}
-            
-            -------
-            
-            Build Information
-            
-            - File name: `${{ steps.file_info.outputs.name }}`
-            - SHA-256: `${{ steps.file_info.outputs.hash }}`
-            - Built from: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-      - name: Prepare changelog (Stable Channel)
-        if: ${{ inputs.publish_channel == 'stable' }}
-        uses: actions/github-script@v7
-        id: changelog_release
-        with:
-          script: return process.env.CHANGELOG
-          result-encoding: string
-        env:
-          CHANGELOG: |-
-            ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
+            ${{ needs.release_core.outputs.github_changelog }}
             
             -------
             
@@ -195,52 +186,42 @@ jobs:
             - SHA-256: `${{ steps.file_info.outputs.hash }}`
             - Built from: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       - name: Publish Minecraft Mods (Dev Channel)
-        if: ${{ inputs.publish_channel == 'dev' }}
+        if: ${{ inputs.publish_type == 'dev' }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           modrinth-id: JOGZQCse
-          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
+          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN || '${undefined}' }}
           curseforge-id: 1022790
-          curseforge-token: ${{ secrets.CF_API_TOKEN }}
-          github-tag: ${{ format('{0}.{1}', github.ref_name, steps.get_git_info.outputs.commit_count) }}
+          curseforge-token: ${{ secrets.CF_API_TOKEN || '${undefined}' }}
+          github-tag: ${{ needs.release_core.outputs.github_tag }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-prerelease: true
-          github-name: ${{ format('[CI#{0}]{1} {2}.{3}+{4}', github.run_number, steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, steps.get_git_info.outputs.short_sha) }}
-          github-changelog: |
-            **This version is automatically released by CI Build**
-            
-            Latest commit log:
-            
-            ${{ github.event.head_commit.message }}
           github-files: |
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
           files: |
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
-          changelog: ${{ steps.changelog_dev.outputs.result }}
-          name: ${{ format('[CI#{0}]{1} {2}.{3} for Minecraft {4} ({5})', github.run_number, steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
-          version: ${{ format('v{0}.{1}-mc{2}-{3}', steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
+          curseforge-changelog: ${{ steps.changelog.outputs.result }}
+          curseforge-name: ${{ needs.release_core.outputs.release_title }}
+          modrinth-changelog: ${{ steps.changelog.outputs.result }}
+          modrinth-name: ${{ needs.release_core.outputs.release_title }}
+          version: ${{ format('v{0}.{1}-mc{2}-{3}', needs.release_core.outputs.mod_version, needs.release_core.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
           version-type: alpha
-          loaders: |
-            ${{ matrix.platform }}
-          game-versions: |
-            ${{ matrix.mc_ver }}
+          loaders: ${{ steps.publish_info.outputs.publish_loaders }}
+          game-versions: ${{ steps.publish_info.outputs.publish_game_versions }}
           game-version-filter: any
-          dependencies: |
-            carpet(optional)
-            malilib(optional
+          dependencies: ${{ steps.publish_info.outputs.publish_dependencies }}
           retry-attempts: 3
           retry-delay: 10000
       - name: Publish Minecraft Mods (Stable Channel)
-        if: ${{ inputs.publish_channel == 'stable' }}
+        if: ${{ inputs.publish_type == 'stable' }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           modrinth-id: mv1zH6ln
-          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
+          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN || '${undefined}' }}
           curseforge-id: 576459
-          curseforge-token: ${{ secrets.CF_API_TOKEN }}
-          github-tag: ${{ inputs.publish_target_release_tag }}
+          curseforge-token: ${{ secrets.CF_API_TOKEN || '${undefined}' }}
+          github-tag: ${{ needs.release_core.outputs.github_tag }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-files: |
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
@@ -248,40 +229,15 @@ jobs:
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
           files: |
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
-          name: ${{ format('{0} {1}.{2} for Minecraft {3} ({4})', steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
-          version: ${{ format('v{0}.{1}mc{2}-{3}', steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
-          version-type: release
-          github-changelog: ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
-          modrinth-changelog: ${{ steps.changelog_release.outputs.result }}
-          curseforge-changelog: ${{ steps.changelog_release.outputs.result }}
-          loaders: |
-            ${{ matrix.platform }}
-          game-versions: |
-            ${{ matrix.mc_ver }}
+          curseforge-changelog: ${{ steps.changelog.outputs.result }}
+          curseforge-name: ${{ needs.release_core.outputs.release_title }}
+          modrinth-changelog: ${{ steps.changelog.outputs.result }}
+          modrinth-name: ${{ needs.release_core.outputs.release_title }}
+          version: ${{ format('v{0}.{1}-mc{2}-{3}', needs.release_core.outputs.mod_version, needs.release_core.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
+          version-type: ${{ github.event.release.prerelease && 'beta' || 'release' }}
+          loaders: ${{ steps.publish_info.outputs.publish_loaders }}
+          game-versions: ${{ steps.publish_info.outputs.publish_game_versions }}
           game-version-filter: any
-          dependencies: |
-            carpet(optional)
-            malilib(optional)
-          retry-attempts: 3
-          retry-delay: 10000
-      - name: Publish Minecraft Mods (Forks)
-        if: ${{ inputs.publish_channel == 'fork' }}
-        uses: Kir-Antipov/mc-publish@v3.3
-        with:
-          github-tag: ${{ format('{0}.{1}', github.ref_name, steps.get_git_info.outputs.commit_count) }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-prerelease: true
-          changelog: |
-            **This version is automatically released by CI Build**
-            
-            Latest commit log:
-            
-            ${{ github.event.head_commit.message }}
-
-          files: |
-            build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
-            build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
-            build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/tmp/submods/unpublish/!(*-@(dev|sources|javadoc|empty)).jar
-          name: ${{ format('{0} {1}.{2}+{3} (Fork)', steps.mod_info.outputs.mod-name, steps.mod_info.outputs.mod-version, steps.get_git_info.outputs.commit_count, steps.get_git_info.outputs.short_sha) }}
+          dependencies: ${{ steps.publish_info.outputs.publish_dependencies }}
           retry-attempts: 3
           retry-delay: 10000
