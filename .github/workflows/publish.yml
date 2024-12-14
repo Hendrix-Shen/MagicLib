@@ -55,7 +55,7 @@ jobs:
           
           if [ "${{ inputs.publish_type }}" == 'release' ]
           then
-              github_change_log=${{ github.event.release.body }}
+              github_changelog=$(printf '%q' "${{ github.event.release.body }}")
               github_tag=${{ github.event.ref }}
               release_title=${{ github.event.release.name }}
           elif [ "${{ inputs.publish_type }}" == "dev" ]
@@ -77,7 +77,7 @@ jobs:
           
           Latest commit log:
         
-          ${{ github.event.head_commit.message }}"
+          $(printf '%q' "${{ github.event.head_commit.message }}")"
           else
               echo Unknown publish type ${{ inputs.publish_type }}
               exit 1
