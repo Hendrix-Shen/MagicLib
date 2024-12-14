@@ -77,7 +77,7 @@ jobs:
           
           Latest commit log:
         
-          $(printf '%q' "${{ github.event.head_commit.message }}")"
+          $(printf '%q' ${{ github.event.head_commit.message }})"
           else
               echo Unknown publish type ${{ inputs.publish_type }}
               exit 1
