@@ -77,7 +77,7 @@ jobs:
           
           Latest commit log:
         
-          $(printf '%q' ${{ github.event.head_commit.message }})"
+          $(printf '%q' '${{ github.event.head_commit.message }}')"
           else
               echo Unknown publish type ${{ inputs.publish_type }}
               exit 1
@@ -121,7 +121,7 @@ jobs:
           retry-attempts: 3
           retry-delay: 10000
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix: ${{ fromJSON(needs.generate_matrix.outputs.matrix) }}
     needs:
