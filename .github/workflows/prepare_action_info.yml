@@ -14,7 +14,7 @@ on:
         value: ${{ jobs.prepare_build_info.outputs.publish_type }}
 jobs:
   prepare_build_info:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       build_publish: ${{ steps.build_info.outputs.build_publish }}
       build_version_type: ${{ steps.build_info.outputs.build_version_type }}
