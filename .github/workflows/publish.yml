@@ -19,7 +19,7 @@ jobs:
       contents: write
     outputs:
       commit_count: ${{ steps.shared_publish_info.outputs.commit_count }}
-      github_changelog: ${{ steps.shared_publish_info.outputs.github_changelog }}
+      github_changelog: ${{ steps.changelog.outputs.result }}
       github_tag: ${{ steps.shared_publish_info.outputs.github_tag }}
       mod_name: ${{ steps.shared_publish_info.outputs.mod_name }}
       mod_version: ${{ steps.shared_publish_info.outputs.mod_version }}
@@ -55,7 +55,6 @@ jobs:
           
           if [ "${{ inputs.publish_type }}" == 'release' ]
           then
-              github_changelog=$(printf '%q' "${{ github.event.release.body }}")
               github_tag=${{ github.event.ref }}
               release_title=${{ github.event.release.name }}
           elif [ "${{ inputs.publish_type }}" == "dev" ]
@@ -72,34 +71,45 @@ jobs:
                   github_tag="$REPO_OWNER/${{ github.ref_name }}.$commit_count"
                   release_title="[CI#${{ github.run_number }}]$mod_name $mod_full_version (Fork)"
               fi
-          
-              github_changelog="**This version is automatically released by CI Build**
-          
-          Latest commit log:
-        
-          $(printf '%q' '${{ github.event.head_commit.message }}')"
           else
               echo Unknown publish type ${{ inputs.publish_type }}
               exit 1
           fi
           
           echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
-          echo "github_changelog<<EOF
-          $github_changelog
-          EOF" >> "$GITHUB_OUTPUT"
           echo "commit_count=$commit_count" >> $GITHUB_OUTPUT
           echo "github_tag=$github_tag" >> $GITHUB_OUTPUT
           echo "mod_name=$mod_name" >> $GITHUB_OUTPUT
           echo "mod_version=$mod_version" >> $GITHUB_OUTPUT
           echo "mod_full_version=$mod_full_version" >> $GITHUB_OUTPUT
           echo "release_title=$release_title" >> $GITHUB_OUTPUT
+      - name: Prepare changelog
+        uses: actions/github-script@v7
+        id: changelog
+        with:
+          script: |
+            if ('${{ inputs.publish_type }}' === 'release') {
+                return process.env.CHANGELOG;
+            } else {
+                return process.env.CHANGELOG_DEV;
+            }
+          result-encoding: string
+        env:
+          CHANGELOG: |-
+            ${{ github.event.release.body }}
+          CHANGELOG_DEV: |-
+            This version is automatically released by CI Build**
+          
+            Latest commit log:
+            
+            ${{ github.event.head_commit.message }}
       - name: Publish Minecraft Mods (Dev Channel)
         if: ${{ inputs.publish_type == 'dev' }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           github-tag: ${{ steps.shared_publish_info.outputs.github_tag }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-changelog: ${{ steps.shared_publish_info.outputs.github_changelog }}
+          github-changelog: ${{ steps.changelog.outputs.result }}
           github-prerelease: true
           files: |
             build-artifacts/magiclib-wrapper/fabric/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
@@ -168,7 +178,7 @@ jobs:
           echo "name=$FILE_NAME" >> $GITHUB_OUTPUT
           echo "hash=$FILE_HASH" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
-      - name: Prepare changelog
+      - name: Attach file info to changelog
         uses: actions/github-script@v7
         id: changelog
         with:
