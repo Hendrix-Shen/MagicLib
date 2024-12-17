@@ -10,6 +10,8 @@ plugins {
 extensions.create("preprocess", RootPreprocessExtension.class)
 
 preprocess {
+    strictExtraMappings.set(true)
+
     // Fabric
     Node mc_11404_fabric = createNode("better-dev-1.14.4-fabric", 1_14_04, "mojang")
     Node mc_11502_fabric = createNode("better-dev-1.15.2-fabric", 1_15_02, "mojang")
