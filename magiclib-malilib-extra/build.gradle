@@ -10,7 +10,7 @@ plugins {
 extensions.create("preprocess", RootPreprocessExtension.class)
 
 preprocess {
-    strictExtraMappings.set(true)
+    strictExtraMappings.set(false)
 
     // Fabric
     Node mc_11404_fabric = createNode("malilib-1.14.4-fabric", 1_14_04, "mojang")
