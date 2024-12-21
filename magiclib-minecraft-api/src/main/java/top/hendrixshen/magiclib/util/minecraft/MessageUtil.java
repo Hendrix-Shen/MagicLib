@@ -39,7 +39,12 @@ public class MessageUtil {
     public static void sendMessage(@NotNull Player player, BaseComponent message, boolean broadcastToOps) {
         if (player instanceof ServerPlayer) {
             ServerPlayer serverPlayer = (ServerPlayer) player;
+            // Since the method has been moved and the method signature has changed, we need to disable the remapping.
+            // MC 1.21.3+: Lnet/minecraft/world/entity/Entity;createCommandSourceStack()Lnet/minecraft/commands/CommandSourceStack;
+            // MC 1.21.2-: Lnet/minecraft/server/level/ServerPlayer;createCommandSourceStack()Lnet/minecraft/commands/CommandSourceStack;
+            //#disable-remap
             MessageUtil.sendMessage0(serverPlayer.createCommandSourceStack(), message, broadcastToOps);
+            //#enable-remap
         }
     }
 
