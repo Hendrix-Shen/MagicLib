@@ -433,8 +433,23 @@ tasks.register("cleanRunServer", DefaultTask.class) {
     }
 }
 
+tasks.register("cleanJar", DefaultTask.class) {
+    doLast {
+        file(project.layout.buildDirectory.file("libs")).deleteDir()
+    }
+}
+
+// Ugly fix for arch loom 1.9+
+// Once the project is configured with the access widener converter,
+// the first build works fine, while subsequent builds fail with:
+// XXX.jar already contains an access transformer - cannot convert AWs!
+tasks.named("jar") {
+    dependsOn("cleanJar")
+}
+
 [
         "cleanRuns", "cleanRunClient", "cleanRunServer",
+        "cleanJar",
         "runClient", "runServer",
         "runMixinAuditClient", "runMixinAuditServer",
         "preprocessCode", "preprocessResources",
