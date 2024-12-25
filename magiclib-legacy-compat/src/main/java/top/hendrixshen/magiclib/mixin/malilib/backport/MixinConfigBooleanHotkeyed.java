@@ -3,7 +3,6 @@ package top.hendrixshen.magiclib.mixin.malilib.backport;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import fi.dy.masa.malilib.MaLiLib;
 import fi.dy.masa.malilib.config.IHotkeyTogglable;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
@@ -16,6 +15,7 @@ import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
@@ -72,7 +72,7 @@ public abstract class MixinConfigBooleanHotkeyed extends ConfigBoolean implement
                 super.setValueFromJsonElement(element);
             }
         } catch (Exception e) {
-            MaLiLib.logger.warn("Failed to set config value for '{}' from the JSON element '{}'", this.getName(), element, e);
+            MagicLib.getLogger().warn("Failed to set config value for '{}' from the JSON element '{}'", this.getName(), element, e);
         }
     }
 
