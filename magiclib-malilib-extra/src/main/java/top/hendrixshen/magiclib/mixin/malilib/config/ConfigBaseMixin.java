@@ -21,63 +21,51 @@
 package top.hendrixshen.magiclib.mixin.malilib.config;
 
 import fi.dy.masa.malilib.config.options.ConfigBase;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
-import top.hendrixshen.magiclib.util.MiscUtil;
-
-//#if MC > 11701
-//$$ import org.spongepowered.asm.mixin.Shadow;
-//$$ import org.spongepowered.asm.mixin.injection.ModifyArg;
-//#endif
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/config/ConfigBaseMixin.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/476a25a5458a7058bdd402683b1fd833b189ae60/src/main/java/me/fallenbreath/tweakermore/mixins/core/config/ConfigBaseMixin.java">TweakerMore</a>
  */
 @Mixin(value = ConfigBase.class, remap = false)
 public class ConfigBaseMixin {
-    //#if MC > 11701
-    //$$ @Shadow
-    //$$ private String comment;
-    //$$
-    //$$ @ModifyArg(
-    //$$         method = "getComment",
-    //$$         at = @At(
-    //$$                 value = "INVOKE",
-    //$$                 target = "Lfi/dy/masa/malilib/util/StringUtils;getTranslatedOrFallback(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;"
-    //$$         ),
-    //$$         index = 0
-    //$$ )
-    //$$ private String magicConfigCommentIsTheTranslationKey(String key) {
-    //$$     if (MiscUtil.cast(this) instanceof MagicIConfigBase) {
-    //$$         key = this.comment;
-    //$$     }
-    //$$
-    //$$     return key;
-    //$$ }
-    //#endif
+    @Shadow
+    private String comment;
 
-    @Inject(
-            method = "getComment",
-            at = @At(
-                    //#if MC > 12101
-                    //$$ value = "RETURN",
-                    //$$ ordinal = 1
-                    //#else
-                    value = "TAIL"
-                    //#endif
-            ),
-            cancellable = true
-    )
-    private void appendComment(CallbackInfoReturnable<String> cir) {
-        if (!(MiscUtil.cast(this) instanceof MagicIConfigBase)) {
-            return;
+    @Final
+    @Shadow
+    private String prettyName;
+
+    @Unique
+    private boolean magiclib$isMagicConfig() {
+        return this instanceof MagicIConfigBase;
+    }
+
+    @Inject(method = "getPrettyName", at = @At("HEAD"), cancellable = true, remap = false)
+    private void tweakerMoreUseMyPrettyName(CallbackInfoReturnable<String> cir) {
+        if (this.magiclib$isMagicConfig()) {
+            GlobalConfigManager.getInstance().getContainerByConfig((MagicIConfigBase) this)
+                    .ifPresent(configContainer -> cir.setReturnValue(I18n.tr(this.prettyName)));
         }
+    }
 
-        GlobalConfigManager.getInstance().getContainerByConfig((MagicIConfigBase) this)
-                .ifPresent(configContainer -> cir.setReturnValue(configContainer.modifyComment(cir.getReturnValue())));
+    @Inject(method = "getComment", at = @At("HEAD"), cancellable = true, remap = false)
+    private void magiclibUseMagicComment(CallbackInfoReturnable<String> cir) {
+        if (this.magiclib$isMagicConfig()) {
+            GlobalConfigManager.getInstance().getContainerByConfig((MagicIConfigBase) this)
+                    .ifPresent(configContainer -> {
+                        String translatedComment = I18n.tr(this.comment);
+                        translatedComment = configContainer.modifyComment(translatedComment);
+                        cir.setReturnValue(translatedComment);
+                    });
+        }
     }
 }
