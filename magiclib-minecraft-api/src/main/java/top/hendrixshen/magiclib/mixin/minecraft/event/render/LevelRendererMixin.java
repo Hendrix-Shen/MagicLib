@@ -57,7 +57,9 @@ public abstract class LevelRendererMixin {
             boolean renderBlockOutline,
             Camera camera,
             GameRenderer gameRenderer,
+            //#if MC < 12104
             LightTexture lightTexture,
+            //#endif
             Matrix4f frustumMatrix,
             //#if MC > 12004
             //$$ Matrix4f projectionMatrix,
@@ -126,7 +128,9 @@ public abstract class LevelRendererMixin {
             boolean renderBlockOutline,
             Camera camera,
             GameRenderer gameRenderer,
+            //#if MC < 12104
             LightTexture lightTexture,
+            //#endif
             Matrix4f frustumMatrix,
             //#if MC > 12004
             //$$ Matrix4f projectionMatrix,

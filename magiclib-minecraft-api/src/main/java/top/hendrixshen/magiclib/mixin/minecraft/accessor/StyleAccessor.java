@@ -22,6 +22,9 @@ public interface StyleAccessor {
     @Invoker(value = "<init>")
     static Style magiclib$invokeConstructor(
             @Nullable TextColor color,
+            //#if MC > 12103
+            //$$ @Nullable Integer integer,
+            //#endif
             @Nullable Boolean bold,
             @Nullable Boolean italic,
             @Nullable Boolean underlined,
