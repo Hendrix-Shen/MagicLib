@@ -140,7 +140,16 @@ public class GuiVec3iListEdit extends GuiListBase<Vec3i, WidgetVec3iListEditEntr
     }
 
     @Override
-    protected void drawScreenBackground(int mouseX, int mouseY) {
+    protected void drawScreenBackground(
+            //#if MC > 12006
+            //$$ GuiGraphics guiGraphics,
+            //#endif
+            int mouseX,
+            int mouseY
+    ) {
+        //#if MC > 12006
+        //$$ super.drawTexturedBG(guiGraphics, this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, true);
+        //#endif
         RenderUtils.drawOutlinedBox(this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, 0xFF999999);
     }
 

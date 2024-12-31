@@ -293,7 +293,7 @@ public class StyleCompatImpl extends AbstractCompat<Style> implements StyleCompa
         //$$             break;
         //$$         case RESET:
         //$$             this.style = new Style();
-        //$$             return this;
+        //$$             break;
         //$$         default:
         //$$             this.style.setColor(chatFormatting);
         //$$     }

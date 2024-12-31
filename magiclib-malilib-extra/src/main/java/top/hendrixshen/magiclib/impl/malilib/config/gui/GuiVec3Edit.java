@@ -136,7 +136,16 @@ public class GuiVec3Edit extends GuiBase {
     }
 
     @Override
-    protected void drawScreenBackground(int mouseX, int mouseY) {
+    protected void drawScreenBackground(
+            //#if MC > 12006
+            //$$ GuiGraphics guiGraphics,
+            //#endif
+            int mouseX,
+            int mouseY
+    ) {
+        //#if MC > 12006
+        //$$ super.drawTexturedBG(guiGraphics, this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, true);
+        //#endif
         RenderUtils.drawOutlinedBox(this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, 0xFF999999);
     }
 
