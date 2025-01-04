@@ -26,9 +26,7 @@ public class CarpetEntrypoint {
                                 .orElseThrow(RuntimeException::new)
                 },
                 SharedConstants.getMagiclibIdentifier(),
-                new MagicLibSettingManager(SharedConstants.getMagiclibIdentifier(),
-                        SharedConstants.getMagiclibIdentifier(),
-                        SharedConstants.getMagiclibName()),
+                new MagicLibSettingManager(),
                 ReflectionUtil.newInstance("top.hendrixshen.magiclib.impl.carpet.MagicLibAddition", null)
                         .orElseThrow(RuntimeException::new));
     }
