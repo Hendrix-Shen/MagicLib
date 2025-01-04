@@ -305,11 +305,9 @@ public class ComponentUtil {
 
     public static @NotNull MutableComponentCompat joinCompat(
             MutableComponentCompat joiner, @NotNull Iterable<MutableComponentCompat> items) {
-        MutableComponentCompat text = ComponentUtil.emptyCompat();
-        ComponentUtil.join(text.get(), StreamSupport.stream(items.spliterator(), false)
+        return MutableComponentCompat.of(ComponentUtil.join(joiner.get(), StreamSupport.stream(items.spliterator(), false)
                 .map(MutableComponentCompat::get)
-                .collect(Collectors.toList()));
-        return text;
+                .collect(Collectors.toList())));
     }
 
     public static @NotNull BaseComponent join(BaseComponent joiner, BaseComponent... items) {
