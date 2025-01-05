@@ -79,46 +79,46 @@ magiclib:
           - 代码块: `@tr#magiclib.config.category.debug.name@`
       testConfigBooleanHotkeyed:
         name: 带热键布尔配置测试
-        comment: ""
+        comment:
       testConfigColor:
         name: 颜色配置测试
-        comment: ""
+        comment:
       testConfigDouble:
         name: 实数配置测试
-        comment: ""
+        comment:
       testConfigHotkey:
         name: 热键配置测试
-        comment: ""
+        comment:
       testConfigHotkeyWithSwitch:
         name: 带开关热键测试
-        comment: ""
+        comment:
       testConfigInteger:
         name: 整数配置测试
-        comment: ""
+        comment:
       testConfigOptionList:
         name: 选项列表配置测试
-        comment: ""
+        comment:
       testConfigOptionListHotkeyed:
         name: 带热键选项列表配置测试
-        comment: ""
+        comment:
       testConfigString:
         name: 字符串配置测试
-        comment: ""
+        comment:
       testConfigStringList:
         name: 字符串列表配置测试
-        comment: ""
+        comment:
       testConfigVec3i:
         name: 整数三维向量配置测试
-        comment: ""
+        comment:
       testConfigVec3iList:
         name: 整数三维向量列表配置测试
-        comment: ""
+        comment:
       testDependencies:
         name: 带依赖配置测试
-        comment: ""
+        comment:
       testDependenciesComposite:
         name: 带复合依赖配置测试
-        comment: ""
+        comment:
       enumTest:
         value:
           TEST_A: 枚举测试 A
