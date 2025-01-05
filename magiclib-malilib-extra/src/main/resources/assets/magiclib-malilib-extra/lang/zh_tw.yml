@@ -1,0 +1,126 @@
+magiclib:
+  config:
+    category:
+      all:
+        name: 全部
+      generic:
+        name: 通用
+      debug:
+        name: 除錯
+      test:
+        name: 測試
+    gui:
+      bottom_line:
+        stat: "總計: %1$s (可用: %2$s + 不可用: %3$s), 已修改: %4$s"
+      button:
+        hover_text:
+          add: Add
+          remove: Remove
+          move_up: MoveUp
+          move_down: MoveDown
+      dependencies_footer: "依賴:"
+      element:
+        config_button_boolean_switch:
+          enabled: Enabled
+          disabled: Disabled
+        config_button_option_list_hovering:
+          title: "Available values:"
+      title:
+        .: "魔法程式庫 - 版本: %1$s (%2$s)"
+        vec3i_edit: Edit vec3i for '%1$s'
+        vec3i_list_edit: Edit vec3i list for '%1$s'
+      trigger_button:
+        text: 觸發
+        hover: |
+          點擊以觸發一次 %1$s
+          §7§o這將依次模擬快捷鍵按下與鬆開操作.§r
+      sorting_strategy:
+        label_text: Sorting strategy
+        alphabet: Alphabet
+        most_recently_used: Recently used
+        most_commonly_used: Commonly used
+      statistic:
+        title: "Statistics Data:"
+        entry:
+          lastUsedTime: Last used time
+          useAmount: Use amount
+    message:
+      option_list_hotkeyed:
+        cycled_message: Cycled option %1$s to %2$s
+    option:
+      # ================================ 通用 ================================
+      openConfigGui:
+        name: 打開組態界面
+        comment:
+      # ================================ 除錯 ================================
+      debug:
+        name: 除錯模式
+        comment: |
+          Debug mode of MagicLib
+          When enabled, debug parameter configs and configs not satisfied dependencies will be displayed
+          and debugging related functions will be enabled.
+      hideUnavailableConfigs:
+        name: hideAvailableConfigs
+        comment: Hide configs which are unavailable due to dependency relations unsatisfied in the config GUI.
+      resetAllConfigStatistic:
+        name: resetAllConfigStatistic
+        comment: Reset all statistics of configs
+      resetMagicLibConfigStatistic:
+        name: resetMagicLibConfigStatistic
+        comment: Reset statistics of configs of MagicLib
+      # ================================ 测试 ================================
+      testConfigBoolean:
+        name: 開關組態測試
+        comment: |
+          Test TagProcessor:
+          - Translation: @tr#magiclib.config.category.debug.name@
+          - Reference: @config#debug@
+          Test MarkProcessor:
+          - Command: `@tr#magiclib.config.category.debug.name@`
+      testConfigBooleanHotkeyed:
+        name: 帶快捷鍵開關組態測試
+        comment:
+      testConfigColor:
+        name: 顏色組態測試
+        comment:
+      testConfigDouble:
+        name: 實數組態測試
+        comment:
+      testConfigHotkey:
+        name: 快捷鍵組態測試
+        comment:
+      testConfigHotkeyWithSwitch:
+        name: testConfigHotkeyWithSwitch
+        comment:
+      testConfigInteger:
+        name: 整數組態測試
+        comment:
+      testConfigOptionList:
+        name: testConfigOptionList
+        comment:
+      testConfigOptionListHotkeyed:
+        name: testConfigOptionListHotkeyed
+        comment:
+      testConfigString:
+        name: 字串組態測試
+        comment:
+      testConfigStringList:
+        name: 字串列表組態測試
+        comment:
+      testConfigVec3i:
+        name: testConfigVec3i
+        comment:
+      testConfigVec3iList:
+        name: testConfigVec3iList
+        comment:
+      testDependencies:
+        name: 帶依賴組態測試
+        comment:
+      testDependenciesComposite:
+        name: 帶複合依賴組態測試
+        comment:
+      enumTest:
+        value:
+          TEST_A: 枚舉測試 A
+          TEST_B: 枚舉測試 B
+          TEST_C: 枚舉測試 C
