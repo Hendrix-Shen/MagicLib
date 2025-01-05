@@ -13,7 +13,6 @@ on:
   release:
     types:
       - published
-
 jobs:
   prepare_action_info:
     if: ${{ !startsWith(github.event.ref, 'refs/tags/') }}
