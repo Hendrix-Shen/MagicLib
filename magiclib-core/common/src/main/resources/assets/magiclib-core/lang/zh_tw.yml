@@ -1,0 +1,66 @@
+fabric:
+  gui:
+    button:
+      copyError: Copy error
+      exit: Exit
+    error:
+      header: Failed to launch!
+      missingException: No further details available
+    tab:
+      crash: Crash
+magiclib:
+  dependency:
+    checker:
+      entrypoint:
+        title: Mod %1$s (%2$s)@%3$s Dependency check not satisfied!
+      mixin:
+        title: Mixin %1$s Dependency check not satisfied! Can't apply to %2$s
+    label:
+      and: "與:"
+      composite: "複合依賴:"
+      conflict: "衝突:"
+      or: "或:"
+      require: "必要:"
+    result:
+      dist:
+        conflict:
+          fail: "Running on unexpected dist: %1$s."
+          success: "Not running on unexpected dist: %1$s."
+        require:
+          fail: Running on unexpected dist, expected %1$s, but found %2$s.
+          success: "Running on expected dist: %1$s."
+      mod_id:
+        conflict:
+          fail: Conflicted Mod %1$s (%2$s)@%3$s detected. Conflicts with %4$s!
+          success:
+            not_found: Conflicted Mod %1$s not installed!
+            unsatisfied: Mod %1$s (%2$s)@%3$s detected. [Marked as conflicted with %4$s!]
+        optional:
+          fail: Optional Mod %1$s (%2$s) detected. Requires %3$s, but found %4$s!
+          success:
+            found: Optional Mod %1$s (%2$s)@%3$s installed!
+            not_found: Optional Mod %2$s not installed!
+        require:
+          fail:
+            not_found: Mod %1$s not found. Requires %2$s!
+            unsatisfied: Mod %1$s (%2$s) detected. Requires %3$s, but found %4$s!
+          success: Mod %1$s (%2$s) installed!
+      platform:
+        conflict:
+          fail: "Running on unexpected platform: %1$s."
+          success: "Not running on unexpected platform: %1$s."
+        require:
+          fail: Running on unexpected platform, expected %1$s, but found %2$s.
+          success: "Running on expected platform: %1$s."
+      predicate:
+        test_result: Predicate %1$s test result = %2$s
+        target_obj_not_exist: Predicate %1$s test target does not exist, skipped.
+  misc:
+    version_type:
+      beta: 公共測試版
+      development: 開發版
+      fork: Third-Party Fork
+      pull_request: Pull Request
+      rc: 候選發佈
+      stable: 公共發行版
+      unknown: 未知版本
