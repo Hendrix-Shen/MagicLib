@@ -55,8 +55,8 @@ jobs:
           
           if [ "${{ inputs.publish_type }}" == 'release' ]
           then
-              github_tag=${{ github.event.ref }}
-              release_title=${{ github.event.release.name }}
+              github_tag="${{ github.ref }}"
+              release_title="${{ github.event.release.name }}"
           elif [ "${{ inputs.publish_type }}" == "dev" ]
           then
               if [ "$REPO_OWNER" == 'Hendrix-Shen' ]
