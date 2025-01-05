@@ -26,7 +26,7 @@ magiclib:
         config_button_option_list_hovering:
           title: "Available values:"
       title:
-        .: "MagicLib - Version: %1$s (%2$s)"
+        .: "魔法程式庫 - 版本: %1$s (%2$s)"
         vec3i_edit: Edit vec3i for '%1$s'
         vec3i_list_edit: Edit vec3i list for '%1$s'
       trigger_button:
@@ -50,7 +50,7 @@ magiclib:
     option:
       # ================================ 通用 ================================
       openConfigGui:
-        name: 打開配置界面
+        name: 打開組態界面
         comment:
       # ================================ 除錯 ================================
       debug:
@@ -70,7 +70,7 @@ magiclib:
         comment: Reset statistics of configs of MagicLib
       # ================================ 测试 ================================
       testConfigBoolean:
-        name: 開關測試
+        name: 開關組態測試
         comment: |
           Test TagProcessor:
           - Translation: @tr#magiclib.config.category.debug.name@
@@ -78,22 +78,22 @@ magiclib:
           Test MarkProcessor:
           - Command: `@tr#magiclib.config.category.debug.name@`
       testConfigBooleanHotkeyed:
-        name: 帶快捷鍵開關配置測試
+        name: 帶快捷鍵開關組態測試
         comment:
       testConfigColor:
-        name: 顏色配置測試
+        name: 顏色組態測試
         comment:
       testConfigDouble:
-        name: 實數配置測試
+        name: 實數組態測試
         comment:
       testConfigHotkey:
-        name: 快捷鍵配置測試
+        name: 快捷鍵組態測試
         comment:
       testConfigHotkeyWithSwitch:
         name: testConfigHotkeyWithSwitch
         comment:
       testConfigInteger:
-        name: 整數配置測試
+        name: 整數組態測試
         comment:
       testConfigOptionList:
         name: testConfigOptionList
@@ -102,10 +102,10 @@ magiclib:
         name: testConfigOptionListHotkeyed
         comment:
       testConfigString:
-        name: 字符串配置測試
+        name: 字串組態測試
         comment:
       testConfigStringList:
-        name: 字符串列表配置測試
+        name: 字串列表組態測試
         comment:
       testConfigVec3i:
         name: testConfigVec3i
@@ -114,10 +114,10 @@ magiclib:
         name: testConfigVec3iList
         comment:
       testDependencies:
-        name: 帶依賴配寘測試
+        name: 帶依賴組態測試
         comment:
       testDependenciesComposite:
-        name: 帶複合依賴配寘測試
+        name: 帶複合依賴組態測試
         comment:
       enumTest:
         value:
