@@ -51,7 +51,7 @@ magiclib:
       # ================================ Generic ================================
       openConfigGui:
         name: openConfigGui
-        comment:
+        comment: ""
       # ================================ Debug ================================
       debug:
         name: debug
@@ -79,46 +79,46 @@ magiclib:
           - Command: `@tr#magiclib.config.category.debug.name@`
       testConfigBooleanHotkeyed:
         name: testConfigBooleanHotkeyed
-        comment:
+        comment: ""
       testConfigColor:
         name: testConfigColor
-        comment:
+        comment: ""
       testConfigDouble:
         name: testConfigDouble
-        comment:
+        comment: ""
       testConfigHotkey:
         name: testConfigHotkey
-        comment:
+        comment: ""
       testConfigHotkeyWithSwitch:
         name: testConfigHotkeyWithSwitch
-        comment:
+        comment: ""
       testConfigInteger:
         name: testConfigInteger
-        comment:
+        comment: ""
       testConfigOptionList:
         name: testConfigOptionList
-        comment:
+        comment: ""
       testConfigOptionListHotkeyed:
         name: testConfigOptionListHotkeyed
-        comment:
+        comment: ""
       testConfigString:
         name: testConfigString
-        comment:
+        comment: ""
       testConfigStringList:
         name: testConfigStringList
-        comment:
+        comment: ""
       testConfigVec3i:
         name: testConfigVec3i
-        comment:
+        comment: ""
       testConfigVec3iList:
         name: testConfigVec3iList
-        comment:
+        comment: ""
       testDependencies:
         name: testDependencies
-        comment:
+        comment: ""
       testDependenciesComposite:
         name: testDependenciesComposite
-        comment:
+        comment: ""
       enumTest:
         value:
           TEST_A: Enum Test A
