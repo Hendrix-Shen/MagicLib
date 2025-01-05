@@ -120,7 +120,7 @@ jobs:
           retry-attempts: 3
           retry-delay: 10000
       - name: Publish Minecraft Mods (Stable Channel)
-        if: ${{ inputs.publish_channel == 'stable' }}
+        if: ${{ inputs.publish_channel == 'release' }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           github-tag: ${{ steps.shared_publish_info.outputs.github_tag }}
@@ -225,7 +225,7 @@ jobs:
           retry-attempts: 3
           retry-delay: 10000
       - name: Publish Minecraft Mods (Stable Channel)
-        if: ${{ inputs.publish_type == 'stable' }}
+        if: ${{ inputs.publish_type == 'release' }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           modrinth-id: mv1zH6ln
