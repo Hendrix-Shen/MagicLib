@@ -111,6 +111,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-changelog: ${{ steps.changelog.outputs.result }}
           github-prerelease: true
+          github-commitish: ${{ github.sha }}
           files: |
             build-artifacts/magiclib-wrapper/fabric/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
             build-artifacts/magiclib-wrapper/forge/build/tmp/submods/publish/!(*-@(dev|sources|javadoc|empty)).jar
