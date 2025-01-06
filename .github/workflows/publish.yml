@@ -55,7 +55,7 @@ jobs:
           
           if [ "${{ inputs.publish_type }}" == 'release' ]
           then
-              github_tag="${{ github.ref }}"
+              github_tag=""
               release_title="${{ github.event.release.name }}"
           elif [ "${{ inputs.publish_type }}" == "dev" ]
           then
@@ -120,7 +120,7 @@ jobs:
           retry-attempts: 3
           retry-delay: 10000
       - name: Publish Minecraft Mods (Stable Channel)
-        if: ${{ inputs.publish_channel == 'release' }}
+        if: ${{ inputs.publish_type == 'release' }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           github-tag: ${{ steps.shared_publish_info.outputs.github_tag }}
