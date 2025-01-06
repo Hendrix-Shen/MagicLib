@@ -1,20 +1,20 @@
 package top.hendrixshen.magiclib.impl.malilib.config.option;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.options.ConfigBase;
-import fi.dy.masa.malilib.util.JsonUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3i;
+import top.hendrixshen.magiclib.util.minecraft.serializable.Vec3iSerializer;
 
 @Getter
 @Setter
 @ApiStatus.Experimental
 public class MagicConfigVec3i extends ConfigBase<MagicConfigVec3i> implements ConfigVec3i {
+    protected static final Vec3iSerializer vec3iSerializer = new Vec3iSerializer();
     private final String translationPrefix;
     protected final Vec3i defaultVec3iValue;
     protected int x;
@@ -59,24 +59,8 @@ public class MagicConfigVec3i extends ConfigBase<MagicConfigVec3i> implements Co
     @Override
     public void setValueFromJsonElement(JsonElement element) {
         try {
-            if (element.isJsonObject()) {
-                JsonObject obj = element.getAsJsonObject();
-
-                if (JsonUtils.hasInteger(obj, "x")) {
-                    this.x = obj.get("x").getAsInt();
-                }
-
-                if (JsonUtils.hasInteger(obj, "y")) {
-                    this.y = obj.get("y").getAsInt();
-                }
-
-                if (JsonUtils.hasInteger(obj, "z")) {
-                    this.z = obj.get("z").getAsInt();
-                }
-            } else {
-                MagicLib.getLogger().warn("Failed to set config value for '{}' from the JSON element '{}'",
-                        this.getName(), element);
-            }
+            Vec3i vec3i = MagicConfigVec3i.vec3iSerializer.deserialize(element.getAsJsonObject());
+            this.setVec3i(vec3i);
         } catch (Exception e) {
             MagicLib.getLogger().warn("Failed to set config value for '{}' from the JSON element '{}'",
                     this.getName(), element, e);
@@ -85,11 +69,7 @@ public class MagicConfigVec3i extends ConfigBase<MagicConfigVec3i> implements Co
 
     @Override
     public JsonElement getAsJsonElement() {
-        JsonObject obj = new JsonObject();
-        obj.addProperty("x", this.x);
-        obj.addProperty("y", this.y);
-        obj.addProperty("z", this.z);
-        return obj;
+        return MagicConfigVec3i.vec3iSerializer.serialize(this.getVec3i());
     }
 
     @Override
