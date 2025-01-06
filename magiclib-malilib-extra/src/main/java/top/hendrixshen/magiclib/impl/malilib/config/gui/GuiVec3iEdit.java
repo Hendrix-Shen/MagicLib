@@ -19,7 +19,7 @@ import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetVec3iEdit;
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
-public class GuiVec3Edit extends GuiBase {
+public class GuiVec3iEdit extends GuiBase {
     @Getter
     protected final ConfigVec3i config;
     protected final MagicConfigGui configGui;
@@ -31,7 +31,7 @@ public class GuiVec3Edit extends GuiBase {
     protected final IDialogHandler dialogHandler;
     protected WidgetVec3iEdit widget;
 
-    public GuiVec3Edit(ConfigVec3i config, MagicConfigGui configGui, @Nullable IDialogHandler dialogHandler, Screen parent) {
+    public GuiVec3iEdit(ConfigVec3i config, MagicConfigGui configGui, @Nullable IDialogHandler dialogHandler, Screen parent) {
         super();
         this.config = config;
         this.configGui = configGui;

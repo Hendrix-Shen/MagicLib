@@ -18,6 +18,7 @@ import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.util.IntegerUtil;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -35,6 +36,10 @@ public class WidgetVec3iEdit extends WidgetContainer {
         ConfigOptionChangeListenerTextField textFieldListener = textFieldListenerFunction.apply(field);
         return new TextFieldWrapper<>(field, textFieldListener);
     };
+
+    private final String xLabel;
+    private final String yLabel;
+    private final String zLabel;
     protected final Vec3i defaultValue;
     protected final Consumer<Vec3i> valueApplier;
     protected Vec3i initialValue;
@@ -43,12 +48,21 @@ public class WidgetVec3iEdit extends WidgetContainer {
     protected TextFieldWrapper<GuiTextFieldGeneric> yTextField;
     protected TextFieldWrapper<GuiTextFieldGeneric> zTextField;
 
-    public WidgetVec3iEdit(int x, int y, int width, int height, Vec3i initialValue, Vec3i defaultValue, Consumer<Vec3i> valueApplier) {
+    public WidgetVec3iEdit(int x, int y, int width, int height, Vec3i initialValue, Vec3i defaultValue,
+                           Consumer<Vec3i> valueApplier) {
+        this(x, y, width, height, initialValue, defaultValue, valueApplier, "x:", "y:", "z:");
+    }
+
+    public WidgetVec3iEdit(int x, int y, int width, int height, Vec3i initialValue, Vec3i defaultValue,
+                           Consumer<Vec3i> valueApplier, String xLabel, String yLabel, String zLabel) {
         super(x, y, width, height);
         this.defaultValue = defaultValue;
         this.initialValue = initialValue;
         this.lastAppliedValue = initialValue;
         this.valueApplier = valueApplier;
+        this.xLabel = xLabel;
+        this.yLabel = yLabel;
+        this.zLabel = zLabel;
         this.init(x, y, width, height);
     }
 
@@ -74,17 +88,17 @@ public class WidgetVec3iEdit extends WidgetContainer {
         int xyTextFieldWidth = width / 3;
         int zTextFieldWidth = width - (xyTextFieldWidth * 2);
 
-        this.addLabel(x, y, 20, 20, 0xFFFFFFFF, "X:");
+        this.addLabel(x, y, 20, 20, 0xFFFFFFFF, this.xLabel);
         this.xTextField = WidgetVec3iEdit.textFieldMaker.make(x + 10, y, xyTextFieldWidth - 20, height, this.initialValue.getX(),
                 textField -> new ChangeListenerTextField(textField, resetButton, String.valueOf(this.defaultValue.getX())));
         x += xyTextFieldWidth;
 
-        this.addLabel(x, y, 20, 20, 0xFFFFFFFF, "Y:");
+        this.addLabel(x, y, 20, 20, 0xFFFFFFFF, this.yLabel);
         this.yTextField = WidgetVec3iEdit.textFieldMaker.make(x + 10, y, xyTextFieldWidth - 20, height, this.initialValue.getY(),
                 textField -> new ChangeListenerTextField(textField, resetButton, String.valueOf(this.defaultValue.getY())));
         x += xyTextFieldWidth;
 
-        this.addLabel(x, y, 20, 20, 0xFFFFFFFF, "Z:");
+        this.addLabel(x, y, 20, 20, 0xFFFFFFFF, this.zLabel);
         this.zTextField = WidgetVec3iEdit.textFieldMaker.make(x + 10, y, zTextFieldWidth - 20, height, this.initialValue.getZ(),
                 textField -> new ChangeListenerTextField(textField, resetButton, String.valueOf(this.defaultValue.getZ())));
     }
@@ -240,9 +254,14 @@ public class WidgetVec3iEdit extends WidgetContainer {
         private final WidgetVec3iEdit parent;
 
         public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
-            this.parent.xTextField.getTextField().setValue(String.valueOf(this.parent.defaultValue.getX()));
-            this.parent.yTextField.getTextField().setValue(String.valueOf(this.parent.defaultValue.getY()));
-            this.parent.zTextField.getTextField().setValue(String.valueOf(this.parent.defaultValue.getZ()));
+            BiConsumer<Function<WidgetVec3iEdit, TextFieldWrapper<GuiTextFieldGeneric>>, Function<Vec3i, Integer>> transformer =
+                    (wrapperTransformer, vec3iTransformer) ->
+                            wrapperTransformer.apply(this.parent).getTextField()
+                                    .setValue(String.valueOf(vec3iTransformer.apply(this.parent.initialValue)));
+
+            transformer.accept(w -> w.xTextField, Vec3i::getX);
+            transformer.accept(w -> w.yTextField, Vec3i::getY);
+            transformer.accept(w -> w.zTextField, Vec3i::getZ);
             this.resetButton.setEnabled(!this.parent.getVec3iValue().equals(this.parent.defaultValue));
         }
     }

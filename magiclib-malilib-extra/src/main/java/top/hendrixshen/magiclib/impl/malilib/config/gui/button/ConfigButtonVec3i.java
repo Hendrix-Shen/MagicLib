@@ -7,7 +7,7 @@ import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3i;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3Edit;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3iEdit;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
 
 import java.util.Collections;
@@ -31,9 +31,9 @@ public class ConfigButtonVec3i extends ButtonGeneric {
         super.onMouseClickedImpl(mouseX, mouseY, mouseButton);
 
         if (this.dialogHandler != null) {
-            this.dialogHandler.openDialog(new GuiVec3Edit(this.config, this.configGui, this.dialogHandler, null));
+            this.dialogHandler.openDialog(new GuiVec3iEdit(this.config, this.configGui, this.dialogHandler, null));
         } else {
-            GuiBase.openGui(new GuiVec3Edit(this.config, this.configGui, null, GuiUtils.getCurrentScreen()));
+            GuiBase.openGui(new GuiVec3iEdit(this.config, this.configGui, null, GuiUtils.getCurrentScreen()));
         }
 
         return true;
