@@ -16,10 +16,10 @@ import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTuple;
 @Setter
 @ApiStatus.Experimental
 public class MagicConfigVec3iTuple extends MagicConfigVec3i implements ConfigVec3iTuple {
-    protected final Vec3i defaultSecondVec3iValue;
-    protected int secondX;
-    protected int secondY;
-    protected int secondZ;
+    private final Vec3i defaultSecondVec3iValue;
+    private int secondX;
+    private int secondY;
+    private int secondZ;
 
     public MagicConfigVec3iTuple(String translationPrefix, String name) {
         this(translationPrefix, name, Vec3i.ZERO, Vec3i.ZERO);

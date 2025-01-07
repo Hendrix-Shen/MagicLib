@@ -14,12 +14,12 @@ import top.hendrixshen.magiclib.util.minecraft.serializable.Vec3iSerializer;
 @Setter
 @ApiStatus.Experimental
 public class MagicConfigVec3i extends ConfigBase<MagicConfigVec3i> implements ConfigVec3i {
-    protected static final Vec3iSerializer vec3iSerializer = new Vec3iSerializer();
+    public static final Vec3iSerializer vec3iSerializer = new Vec3iSerializer();
     private final String translationPrefix;
-    protected final Vec3i defaultVec3iValue;
-    protected int x;
-    protected int y;
-    protected int z;
+    private final Vec3i defaultVec3iValue;
+    private int x;
+    private int y;
+    private int z;
 
     public MagicConfigVec3i(String translationPrefix, String name) {
         this(translationPrefix, name, Vec3i.ZERO);
