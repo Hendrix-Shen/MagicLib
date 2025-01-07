@@ -43,13 +43,6 @@ public class WidgetVec3iTupleEdit extends WidgetContainer {
         this.secondVec3iEdit.lastAppliedValue = newSecondValue;
     }
 
-    protected static class WidgetVec3iEditEntry extends WidgetVec3iEdit {
-        public WidgetVec3iEditEntry(int x, int y, int width, int height, Vec3i initialValue, Vec3i defaultValue, int num) {
-            super(x, y, width, height, initialValue, defaultValue, null,
-                    "x" + num + ":", "y" + num + ":", "z" + num + ":");
-        }
-    }
-
     @Override
     public void render(
             int mouseX,
@@ -106,5 +99,12 @@ public class WidgetVec3iTupleEdit extends WidgetContainer {
     protected boolean onCharTypedImpl(char charIn, int modifiers) {
         return this.firstVec3iEdit.onCharTypedImpl(charIn, modifiers) ||
                 this.secondVec3iEdit.onCharTypedImpl(charIn, modifiers);
+    }
+
+    protected static class WidgetVec3iEditEntry extends WidgetVec3iEdit {
+        public WidgetVec3iEditEntry(int x, int y, int width, int height, Vec3i initialValue, Vec3i defaultValue, int num) {
+            super(x, y, width, height, initialValue, defaultValue, null,
+                    "x" + num + ":", "y" + num + ":", "z" + num + ":");
+        }
     }
 }
