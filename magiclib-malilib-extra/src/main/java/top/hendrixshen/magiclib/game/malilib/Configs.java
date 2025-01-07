@@ -76,6 +76,9 @@ public class Configs {
     public static final MagicConfigVec3i testConfigVec3i = Configs.cf.newConfigVec3i("testConfigVec3i", new Vec3i(1, 0, -1));
 
     @Config(category = ConfigCategory.TEST, debugOnly = true)
+    public static final MagicConfigVec3iTuple testConfigVec3iTuple = Configs.cf.newConfigVec3iTuple("testConfigVec3iTuple", new Vec3i(1, 0, -1), new Vec3i(5, 0, -5));
+
+    @Config(category = ConfigCategory.TEST, debugOnly = true)
     public static final MagicConfigVec3iList testConfigVec3iList = Configs.cf.newConfigVec3iList("testConfigVec3iList", ImmutableList.of(new Vec3i(1, 2, 3), new Vec3i(-1, -2, -3)));
 
     @Dependencies(

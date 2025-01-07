@@ -28,6 +28,7 @@ magiclib:
       title:
         .: "MagicLib - Version: %1$s (%2$s)"
         vec3i_edit: Edit vec3i for '%1$s'
+        vec3i_tuple_edit: Edit vec3i tuple for '%1$s'
         vec3i_list_edit: Edit vec3i list for '%1$s'
       trigger_button:
         text: Trigger
@@ -109,6 +110,9 @@ magiclib:
         comment: ""
       testConfigVec3i:
         name: testConfigVec3i
+        comment: ""
+      testConfigVec3iTuple:
+        name: testConfigVec3iTuple
         comment: ""
       testConfigVec3iList:
         name: testConfigVec3iList

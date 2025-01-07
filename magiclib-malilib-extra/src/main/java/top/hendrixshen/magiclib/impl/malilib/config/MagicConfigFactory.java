@@ -153,6 +153,14 @@ public class MagicConfigFactory {
         return new MagicConfigVec3i(this.identifier, name, defaultValue);
     }
 
+    public MagicConfigVec3iTuple newConfigVec3iTuple(String name) {
+        return new MagicConfigVec3iTuple(this.identifier, name);
+    }
+
+    public MagicConfigVec3iTuple newConfigVec3iTuple(String name, Vec3i defaultFirstValue, Vec3i defaultSecondValue) {
+        return new MagicConfigVec3iTuple(this.identifier, name, defaultFirstValue, defaultSecondValue);
+    }
+
     public MagicConfigVec3iList newConfigVec3iList(String name) {
         return new MagicConfigVec3iList(this.identifier, name, ImmutableList.of());
     }
