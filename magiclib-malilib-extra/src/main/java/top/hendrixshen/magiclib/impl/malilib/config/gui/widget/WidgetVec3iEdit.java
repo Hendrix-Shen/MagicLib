@@ -257,7 +257,7 @@ public class WidgetVec3iEdit extends WidgetContainer {
             BiConsumer<Function<WidgetVec3iEdit, TextFieldWrapper<GuiTextFieldGeneric>>, Function<Vec3i, Integer>> transformer =
                     (wrapperTransformer, vec3iTransformer) ->
                             wrapperTransformer.apply(this.parent).getTextField()
-                                    .setValue(String.valueOf(vec3iTransformer.apply(this.parent.initialValue)));
+                                    .setValue(String.valueOf(vec3iTransformer.apply(this.parent.defaultValue)));
 
             transformer.accept(w -> w.xTextField, Vec3i::getX);
             transformer.accept(w -> w.yTextField, Vec3i::getY);
