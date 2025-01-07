@@ -29,7 +29,9 @@ public class MagicConfigVec3i extends ConfigBase<MagicConfigVec3i> implements Co
         super(null, name, String.format("%s.%s.comment", translationPrefix, name));
         this.translationPrefix = translationPrefix;
         this.defaultVec3iValue = defaultValue;
-        this.resetToDefault();
+        this.x = this.defaultVec3iValue.getX();
+        this.y = this.defaultVec3iValue.getY();
+        this.z = this.defaultVec3iValue.getZ();
     }
 
     @Override
