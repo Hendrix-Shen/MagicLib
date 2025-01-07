@@ -89,17 +89,17 @@ public class WidgetVec3iEdit extends WidgetContainer {
         int zTextFieldWidth = width - (xyTextFieldWidth * 2);
 
         this.addLabel(x, y, 20, 20, 0xFFFFFFFF, this.xLabel);
-        this.xTextField = WidgetVec3iEdit.textFieldMaker.make(x + 10, y, xyTextFieldWidth - 20, height, this.initialValue.getX(),
+        this.xTextField = WidgetVec3iEdit.textFieldMaker.make(x + 15, y, xyTextFieldWidth - 20, height, this.initialValue.getX(),
                 textField -> new ChangeListenerTextField(textField, resetButton, String.valueOf(this.defaultValue.getX())));
         x += xyTextFieldWidth;
 
         this.addLabel(x, y, 20, 20, 0xFFFFFFFF, this.yLabel);
-        this.yTextField = WidgetVec3iEdit.textFieldMaker.make(x + 10, y, xyTextFieldWidth - 20, height, this.initialValue.getY(),
+        this.yTextField = WidgetVec3iEdit.textFieldMaker.make(x + 15, y, xyTextFieldWidth - 20, height, this.initialValue.getY(),
                 textField -> new ChangeListenerTextField(textField, resetButton, String.valueOf(this.defaultValue.getY())));
         x += xyTextFieldWidth;
 
         this.addLabel(x, y, 20, 20, 0xFFFFFFFF, this.zLabel);
-        this.zTextField = WidgetVec3iEdit.textFieldMaker.make(x + 10, y, zTextFieldWidth - 20, height, this.initialValue.getZ(),
+        this.zTextField = WidgetVec3iEdit.textFieldMaker.make(x + 15, y, zTextFieldWidth - 20, height, this.initialValue.getZ(),
                 textField -> new ChangeListenerTextField(textField, resetButton, String.valueOf(this.defaultValue.getZ())));
     }
 
