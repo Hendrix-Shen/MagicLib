@@ -57,13 +57,13 @@ public class MagicConfigVec3iTuple extends MagicConfigVec3i implements ConfigVec
 
                 if (JsonUtils.hasObject(obj, "first")) {
                     JsonObject firstObj = obj.getAsJsonObject("first");
-                    Vec3i firstVec3i = MagicConfigVec3i.vec3iSerializer.deserialize(firstObj);
+                    Vec3i firstVec3i = MagicConfigVec3i.vec3iSerializer.deserializeSafe(firstObj, Vec3i.ZERO);
                     this.setVec3i(firstVec3i);
                 }
 
                 if (JsonUtils.hasObject(obj, "second")) {
                     JsonObject secondObj = obj.getAsJsonObject("second");
-                    Vec3i secondVec3i = MagicConfigVec3i.vec3iSerializer.deserialize(secondObj);
+                    Vec3i secondVec3i = MagicConfigVec3i.vec3iSerializer.deserializeSafe(secondObj, Vec3i.ZERO);
                     this.setSecondVec3i(secondVec3i);
                 }
             }
