@@ -66,6 +66,9 @@ public class MagicConfigVec3iTuple extends MagicConfigVec3i implements ConfigVec
                     Vec3i secondVec3i = MagicConfigVec3i.vec3iSerializer.deserializeSafe(secondObj, Vec3i.ZERO);
                     this.setSecondVec3i(secondVec3i);
                 }
+            } else {
+                MagicLib.getLogger().warn("Failed to set config value for '{}' from the JSON element '{}'",
+                        this.getName(), element);
             }
         } catch (Exception e) {
             MagicLib.getLogger().warn("Failed to set config value for '{}' from the JSON element '{}'",
