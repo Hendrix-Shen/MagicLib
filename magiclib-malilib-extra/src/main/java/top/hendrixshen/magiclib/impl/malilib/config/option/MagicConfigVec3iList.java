@@ -22,7 +22,7 @@ public class MagicConfigVec3iList extends ConfigBase<MagicConfigVec3iList> imple
     private final List<Vec3i> vec3iList = Lists.newArrayList();
 
     public MagicConfigVec3iList(String translationPrefix, String name, ImmutableList<Vec3i> defaultVec3iList) {
-        super(null, name, String.format("%s.%s.comment", translationPrefix, name));
+        super(null, name, String.format("%s.config.option.%s.comment", translationPrefix, name));
         this.translationPrefix = translationPrefix;
         this.defaultVec3iList = defaultVec3iList;
         this.vec3iList.addAll(defaultVec3iList);

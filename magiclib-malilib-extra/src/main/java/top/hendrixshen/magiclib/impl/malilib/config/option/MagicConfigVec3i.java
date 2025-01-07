@@ -26,7 +26,7 @@ public class MagicConfigVec3i extends ConfigBase<MagicConfigVec3i> implements Co
     }
 
     public MagicConfigVec3i(String translationPrefix, String name, Vec3i defaultValue) {
-        super(null, name, String.format("%s.%s.comment", translationPrefix, name));
+        super(null, name, String.format("%s.config.option.%s.comment", translationPrefix, name));
         this.translationPrefix = translationPrefix;
         this.defaultVec3iValue = defaultValue;
         this.x = this.defaultVec3iValue.getX();
