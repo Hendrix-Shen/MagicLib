@@ -28,8 +28,8 @@ magiclib:
       title:
         .: "魔法程式庫 - 版本: %1$s (%2$s)"
         vec3i_edit: Edit vec3i for '%1$s'
-        vec3i_tuple_edit: Edit vec3i tuple for '%1$s'
         vec3i_list_edit: Edit vec3i list for '%1$s'
+        vec3i_tuple_edit: Edit vec3i tuple for '%1$s'
       trigger_button:
         text: 觸發
         hover: |
@@ -111,12 +111,12 @@ magiclib:
       testConfigVec3i:
         name: testConfigVec3i
         comment:
-      testConfigVec3iTuple:
-        name: testConfigVec3iTuple
-        comment: ""
       testConfigVec3iList:
         name: testConfigVec3iList
         comment:
+      testConfigVec3iTuple:
+        name: testConfigVec3iTuple
+        comment: ""
       testDependencies:
         name: 帶依賴組態測試
         comment:
