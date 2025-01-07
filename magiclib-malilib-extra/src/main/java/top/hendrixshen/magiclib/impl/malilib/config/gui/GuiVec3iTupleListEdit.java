@@ -13,12 +13,12 @@ import org.lwjgl.glfw.GLFW;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetListVec3iTupleListEdit;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetVec3iTupleListEditEntry;
 
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetVec3iTupleListEditEntry;
 //#endif
 
 public class GuiVec3iTupleListEdit extends GuiListBase<ConfigVec3iTupleList.Entry, WidgetVec3iTupleListEditEntry, WidgetListVec3iTupleListEdit> {
