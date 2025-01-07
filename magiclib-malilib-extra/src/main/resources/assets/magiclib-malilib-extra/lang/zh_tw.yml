@@ -30,6 +30,7 @@ magiclib:
         vec3i_edit: Edit vec3i for '%1$s'
         vec3i_list_edit: Edit vec3i list for '%1$s'
         vec3i_tuple_edit: Edit vec3i tuple for '%1$s'
+        vec3i_tuple_list_edit: Edit vec3i tuple list for '%1$s'
       trigger_button:
         text: 觸發
         hover: |
@@ -116,6 +117,9 @@ magiclib:
         comment:
       testConfigVec3iTuple:
         name: testConfigVec3iTuple
+        comment: ""
+      testConfigVec3iTupleList:
+        name: testConfigVec3iTupleList
         comment: ""
       testDependencies:
         name: 帶依賴組態測試
