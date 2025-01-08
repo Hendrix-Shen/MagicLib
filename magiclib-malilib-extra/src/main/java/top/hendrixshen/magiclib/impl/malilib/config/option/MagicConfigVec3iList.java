@@ -11,6 +11,7 @@ import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
+import top.hendrixshen.magiclib.util.minecraft.serializable.Vec3iSerializer;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class MagicConfigVec3iList extends ConfigBase<MagicConfigVec3iList> imple
     private final List<Vec3i> vec3iList = Lists.newArrayList();
 
     public MagicConfigVec3iList(String translationPrefix, String name, ImmutableList<Vec3i> defaultVec3iList) {
-        super(null, name, String.format("%s.%s.comment", translationPrefix, name));
+        super(null, name, String.format("%s.config.option.%s.comment", translationPrefix, name));
         this.translationPrefix = translationPrefix;
         this.defaultVec3iList = defaultVec3iList;
         this.vec3iList.addAll(defaultVec3iList);
@@ -70,11 +71,8 @@ public class MagicConfigVec3iList extends ConfigBase<MagicConfigVec3iList> imple
                         continue;
                     }
 
-                    JsonObject obj = array.get(i).getAsJsonObject();
-                    int x = obj.has("x") ? obj.get("x").getAsInt() : 0;
-                    int y = obj.has("y") ? obj.get("y").getAsInt() : 0;
-                    int z = obj.has("z") ? obj.get("z").getAsInt() : 0;
-                    this.vec3iList.add(new Vec3i(x, y, z));
+                    Vec3i vec3i = MagicConfigVec3i.vec3iSerializer.deserializeSafe(array.get(i).getAsJsonObject(), Vec3i.ZERO);
+                    this.vec3iList.add(vec3i);
                 }
             } else {
                 MagicLib.getLogger().warn("Failed to set config value for '{}' from the JSON element '{}'", this.getName(), element);
@@ -89,10 +87,7 @@ public class MagicConfigVec3iList extends ConfigBase<MagicConfigVec3iList> imple
         JsonArray array = new JsonArray();
 
         for (Vec3i vec3i : this.vec3iList) {
-            JsonObject obj = new JsonObject();
-            obj.addProperty("x", vec3i.getX());
-            obj.addProperty("y", vec3i.getY());
-            obj.addProperty("z", vec3i.getZ());
+            JsonObject obj = MagicConfigVec3i.vec3iSerializer.serialize(vec3i);
             array.add(obj);
         }
 

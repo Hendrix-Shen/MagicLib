@@ -43,6 +43,8 @@ import top.hendrixshen.magiclib.impl.malilib.config.gui.HotkeyedBooleanResetList
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.button.ConfigButtonVec3i;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.button.ConfigButtonVec3iList;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.button.ConfigButtonVec3iTuple;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.button.ConfigButtonVec3iTupleList;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.KeybindMultiAccessor;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
 
@@ -203,10 +205,14 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
 
         boolean modified = true;
 
-        if (config instanceof ConfigVec3i) {
+        if (config instanceof ConfigVec3iTuple) {
+            this.magiclib$addVec3iTupleWidgets(x, y, configWidth, (ConfigVec3iTuple) config);
+        } else if (config instanceof ConfigVec3i) {
             this.magiclib$addVec3iWidgets(x, y, configWidth, (ConfigVec3i) config);
         } else if (config instanceof ConfigVec3iList) {
             this.magiclib$addVec3iListWidgets(x, y, configWidth, (ConfigVec3iList) config);
+        } else if (config instanceof ConfigVec3iTupleList) {
+            this.magiclib$addVec3iTupleListWidgets(x, y, configWidth, (ConfigVec3iTupleList) config);
         } else {
             modified = false;
         }
@@ -340,21 +346,33 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
         x += 4;
         //#endif
         this.addConfigButtonEntry(x + configWidth, y, config, optionButton);
-        // //#if MC > 11701
-        // //$$ int resetX = x + configWidth + 2;
-        // //#else
-        // int resetX = x + configWidth + 4;
-        // //#endif
-        // ButtonGeneric resetButton = this.createResetButton(resetX, y, config);
-        // this.addWidget(new WidgetVec3i(x, y, configWidth - 2, 20, new Vec3iCallbackImpl(config, resetButton)));
-        // // Bypassing the addButton method of the target class,
-        // // since we're already handling the resetButton listener in our widget.
-        // this.addWidget(resetButton);
     }
 
     @Unique
     private void magiclib$addVec3iListWidgets(int x, int y, int configWidth, ConfigVec3iList config) {
         ConfigButtonVec3iList optionButton = new ConfigButtonVec3iList(x, y, configWidth, 20, config, (MagicConfigGui) this.host, this.host.getDialogHandler());
+        //#if MC > 11701
+        //$$ x += 2;
+        //#else
+        x += 4;
+        //#endif
+        this.addConfigButtonEntry(x + configWidth, y, config, optionButton);
+    }
+
+    @Unique
+    private void magiclib$addVec3iTupleWidgets(int x, int y, int configWidth, ConfigVec3iTuple config) {
+        ConfigButtonVec3iTuple optionButton = new ConfigButtonVec3iTuple(x, y, configWidth, 20, config, (MagicConfigGui) this.host, this.host.getDialogHandler());
+        //#if MC > 11701
+        //$$ x += 2;
+        //#else
+        x += 4;
+        //#endif
+        this.addConfigButtonEntry(x + configWidth, y, config, optionButton);
+    }
+
+    @Unique
+    private void magiclib$addVec3iTupleListWidgets(int x, int y, int configWidth, ConfigVec3iTupleList config) {
+        ConfigButtonVec3iTupleList optionButton = new ConfigButtonVec3iTupleList(x, y, configWidth, 20, config, (MagicConfigGui) this.host, this.host.getDialogHandler());
         //#if MC > 11701
         //$$ x += 2;
         //#else

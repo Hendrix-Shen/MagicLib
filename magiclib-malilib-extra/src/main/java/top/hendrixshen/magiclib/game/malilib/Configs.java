@@ -11,6 +11,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.annotation.Statistic;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
+import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
 import top.hendrixshen.magiclib.api.malilib.config.option.EnumOptionEntry;
 import top.hendrixshen.magiclib.impl.malilib.SharedConstants;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigFactory;
@@ -77,6 +78,12 @@ public class Configs {
 
     @Config(category = ConfigCategory.TEST, debugOnly = true)
     public static final MagicConfigVec3iList testConfigVec3iList = Configs.cf.newConfigVec3iList("testConfigVec3iList", ImmutableList.of(new Vec3i(1, 2, 3), new Vec3i(-1, -2, -3)));
+
+    @Config(category = ConfigCategory.TEST, debugOnly = true)
+    public static final MagicConfigVec3iTuple testConfigVec3iTuple = Configs.cf.newConfigVec3iTuple("testConfigVec3iTuple", new Vec3i(1, 0, -1), new Vec3i(5, 0, -5));
+
+    @Config(category = ConfigCategory.TEST, debugOnly = true)
+    public static final MagicConfigVec3iTupleList testConfigVec3iTupleList = Configs.cf.newConfigVec3iTupleList("testConfigVec3iTupleList", ImmutableList.of(new ConfigVec3iTupleList.Entry(new Vec3i(1, 2, 3), new Vec3i(-1, -2, -3))));
 
     @Dependencies(
             conflict = @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "<2.0"),

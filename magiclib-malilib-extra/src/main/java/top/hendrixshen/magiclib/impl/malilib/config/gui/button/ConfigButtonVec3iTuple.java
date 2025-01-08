@@ -6,19 +6,20 @@ import fi.dy.masa.malilib.gui.interfaces.IDialogHandler;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3i;
+import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTuple;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3iEdit;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3iTupleEdit;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
 
 import java.util.Collections;
 
-public class ConfigButtonVec3i extends ButtonGeneric {
-    private final ConfigVec3i config;
+public class ConfigButtonVec3iTuple extends ButtonGeneric {
+    private final ConfigVec3iTuple config;
     private final MagicConfigGui configGui;
     @Nullable
     private final IDialogHandler dialogHandler;
 
-    public ConfigButtonVec3i(int x, int y, int width, int height, ConfigVec3i config, MagicConfigGui configGui, @Nullable IDialogHandler dialogHandler) {
+    public ConfigButtonVec3iTuple(int x, int y, int width, int height, ConfigVec3iTuple config, MagicConfigGui configGui, @Nullable IDialogHandler dialogHandler) {
         super(x, y, width, height, "");
         this.config = config;
         this.configGui = configGui;
@@ -31,9 +32,9 @@ public class ConfigButtonVec3i extends ButtonGeneric {
         super.onMouseClickedImpl(mouseX, mouseY, mouseButton);
 
         if (this.dialogHandler != null) {
-            this.dialogHandler.openDialog(new GuiVec3iEdit(this.config, this.configGui, this.dialogHandler, null));
+            this.dialogHandler.openDialog(new GuiVec3iTupleEdit(this.config, this.configGui, this.dialogHandler, null));
         } else {
-            GuiBase.openGui(new GuiVec3iEdit(this.config, this.configGui, null, GuiUtils.getCurrentScreen()));
+            GuiBase.openGui(new GuiVec3iTupleEdit(this.config, this.configGui, null, GuiUtils.getCurrentScreen()));
         }
 
         return true;
@@ -42,7 +43,10 @@ public class ConfigButtonVec3i extends ButtonGeneric {
     @Override
     public void updateDisplayString() {
         this.displayString = StringUtils.getClampedDisplayStringRenderlen(
-                Collections.singletonList(this.config.getX() + ", " + this.config.getY() + ", " + this.config.getZ()),
+                Collections.singletonList(
+                        "<" + this.config.getFirstX() + ", " + this.config.getFirstY() + ", " + this.config.getFirstZ() + ">, " +
+                        "<" + this.config.getSecondX() + ", " + this.config.getSecondY() + ", " + this.config.getSecondZ() + ">"
+                ),
                 this.width - 10, "(", ")");
     }
 }

@@ -5,7 +5,7 @@ import net.minecraft.core.Vec3i;
 
 public interface ConfigVec3i extends IConfigResettable, MagicIConfigBase {
     default Vec3i getVec3i() {
-        return new Vec3i(getX(), getY(), getZ());
+        return new Vec3i(this.getX(), this.getY(), this.getZ());
     }
 
     default void setVec3i(Vec3i value) {
