@@ -11,7 +11,6 @@ import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
-import top.hendrixshen.magiclib.util.minecraft.serializable.Vec3iSerializer;
 
 import java.util.List;
 
@@ -60,6 +59,7 @@ public class MagicConfigVec3iList extends ConfigBase<MagicConfigVec3iList> imple
 
     @Override
     public void setValueFromJsonElement(JsonElement element) {
+        List<Vec3i> oldValue = Lists.newArrayList(this.vec3iList);
         this.vec3iList.clear();
 
         try {
@@ -79,6 +79,10 @@ public class MagicConfigVec3iList extends ConfigBase<MagicConfigVec3iList> imple
             }
         } catch (Exception e) {
             MagicLib.getLogger().warn("Failed to set config value for '{}' from the JSON element '{}'", this.getName(), element, e);
+        }
+
+        if (!oldValue.equals(this.getVec3iList())) {
+            this.onValueChanged(true);
         }
     }
 

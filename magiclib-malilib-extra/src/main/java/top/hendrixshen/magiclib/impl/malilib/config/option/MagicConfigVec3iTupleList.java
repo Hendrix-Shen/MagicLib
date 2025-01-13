@@ -10,8 +10,6 @@ import lombok.Getter;
 import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
-import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTuple;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
 
 import java.util.List;
@@ -61,6 +59,7 @@ public class MagicConfigVec3iTupleList extends ConfigBase<ConfigVec3iTupleList> 
 
     @Override
     public void setValueFromJsonElement(JsonElement element) {
+        List<Entry> oldValue = Lists.newArrayList(this.vec3iTupleList);
         this.vec3iTupleList.clear();
 
         try {
@@ -87,6 +86,10 @@ public class MagicConfigVec3iTupleList extends ConfigBase<ConfigVec3iTupleList> 
             }
         } catch (Exception e) {
             MagicLib.getLogger().warn("Failed to set config value for '{}' from the JSON element '{}'", this.getName(), element, e);
+        }
+
+        if (!oldValue.equals(this.vec3iTupleList)) {
+            this.onValueChanged(true);
         }
     }
 
