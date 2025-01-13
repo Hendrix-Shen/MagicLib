@@ -118,7 +118,10 @@ public class ConfigContainer {
         return field;
     }
 
-    @ApiStatus.Obsolete
+    /**
+     * Use {@link ConfigContainer#createIsolated} instead.
+     */
+    @Deprecated
     public ConfigContainer(@NotNull Config configAnnotation, @NotNull Field field, MagicIConfigBase config) {
         this(field, config, null);
     }
