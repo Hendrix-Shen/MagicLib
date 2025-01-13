@@ -11,7 +11,20 @@ magiclib:
         name: Test
     gui:
       bottom_line:
-        stat: "Total: %1$s (Available: %2$s + Unavailable: %3$s), Modified: %4$s"
+        stat:
+          .: "Available: %1$s, Modified: %2$s"
+          hover: |
+            §f§nConfig Statistics§r
+            §7Available: §a%1$s§r
+            §7Unavailable: §c%2$s§r
+            §7Total: §f%3$s§r
+            §f§m                    §r
+            §6Modified: %4$s§r
+            §9Debug Only: %5$s§r
+            §dDev Only: %6$s§r
+            §f§m                    §r
+            §eDebug Mode: %7$s§r
+            §eHide Unavailable: %8$s§r
       button:
         hover_text:
           add: Add
@@ -20,11 +33,11 @@ magiclib:
           move_down: MoveDown
       dependencies_footer: "Dependencies:"
       element:
-        config_button_boolean_switch:
-          enabled: Enabled
-          disabled: Disabled
         config_button_option_list_hovering:
           title: "Available values:"
+        enable_state:
+          enabled: Enabled
+          disabled: Disabled
       title:
         .: "MagicLib - Version: %1$s (%2$s)"
         vec3i_edit: Edit vec3i for '%1$s'
