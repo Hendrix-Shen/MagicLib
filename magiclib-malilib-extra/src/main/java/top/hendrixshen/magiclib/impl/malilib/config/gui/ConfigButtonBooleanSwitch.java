@@ -20,9 +20,7 @@
 
 package top.hendrixshen.magiclib.impl.malilib.config.gui;
 
-import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
-import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.option.HotkeyWithSwitch;
 import top.hendrixshen.magiclib.impl.malilib.SharedConstants;
 

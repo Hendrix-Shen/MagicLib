@@ -6,7 +6,6 @@ import fi.dy.masa.malilib.gui.interfaces.IDialogHandler;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.GuiUtils;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -19,6 +18,10 @@ import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetVec3iTupleL
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
+
+//#if MC < 11700
+import net.minecraft.client.Minecraft;
 //#endif
 
 public class GuiVec3iTupleListEdit extends GuiListBase<ConfigVec3iTupleList.Entry, WidgetVec3iTupleListEditEntry, WidgetListVec3iTupleListEdit> {

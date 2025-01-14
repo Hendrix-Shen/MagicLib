@@ -26,7 +26,6 @@ import fi.dy.masa.malilib.gui.GuiBase;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.i18n.I18n;
