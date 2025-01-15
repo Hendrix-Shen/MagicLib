@@ -87,7 +87,17 @@ for (String module_name : settings.get("projects").keySet()) {
     Map<String, ?> project_detail = settings.get("projects").get(module_name) as Map<String, ?>
     String prefix = project_detail.get("prefix")
     List<String> versions = project_detail.get("versions") as List<String>
-    String root_node_name = versions.get(0)
+    File mainProjectFile = file("${module_name}/versions/mainProject")
+
+    if (!mainProjectFile.exists()) {
+        throw new IllegalArgumentException("Missing mainProject file: ${mainProjectFile.absolutePath}")
+    }
+
+    String mainProject = new String(mainProjectFile.readBytes()).trim().replace("${prefix}-", "")
+
+    if (!versions.contains(mainProject)) {
+        throw new IllegalArgumentException("Invalid main project: ${mainProject}")
+    }
 
     for (String ver : versions) {
         Matcher matcher = Pattern.compile("^((?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)(?:_\\w+)*)-(fabric|forge|neoforge|quilt)?\$").matcher(ver)
@@ -100,7 +110,7 @@ for (String module_name : settings.get("projects").keySet()) {
         include("${project_name}")
         ProjectDescriptor proj = project(":${project_name}")
         proj.setProjectDir(file("${module_name}/versions/${ver}"))
-        proj.setBuildFileName("../${root_node_name}/build.gradle")
+        proj.setBuildFileName("../${mainProject}/build.gradle")
         wrappers.computeIfAbsent(matcher.group(2), key -> new HashSet<>()).add(matcher.group(1))
     }
 }
