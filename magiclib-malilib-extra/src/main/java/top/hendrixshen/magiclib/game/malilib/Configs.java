@@ -24,21 +24,21 @@ public class Configs {
 
     @Statistic(hotkey = false)
     @Config(category = ConfigCategory.GENERIC)
-    public static MagicConfigHotkey openConfigGui = Configs.cf.newConfigHotkey("openConfigGui", "M,A,G");
+    public static final MagicConfigHotkey openConfigGui = Configs.cf.newConfigHotkey("openConfigGui", "M,A,G");
 
     @Config(category = ConfigCategory.DEBUG)
-    public static MagicConfigBoolean debug = Configs.cf.newConfigBoolean("debug", false);
+    public static final MagicConfigBoolean debug = Configs.cf.newConfigBoolean("debug", false);
 
     @Config(category = ConfigCategory.DEBUG, debugOnly = true)
-    public static MagicConfigBoolean hideUnavailableConfigs = Configs.cf.newConfigBoolean("hideUnavailableConfigs", true);
-
-    @Statistic(hotkey = false)
-    @Config(category = ConfigCategory.DEBUG, debugOnly = true)
-    public static MagicConfigHotkey resetAllConfigStatistic = Configs.cf.newConfigHotkey("resetAllConfigStatistic");
+    public static final MagicConfigBoolean hideUnavailableConfigs = Configs.cf.newConfigBoolean("hideUnavailableConfigs", true);
 
     @Statistic(hotkey = false)
     @Config(category = ConfigCategory.DEBUG, debugOnly = true)
-    public static MagicConfigHotkey resetMagicLibConfigStatistic = Configs.cf.newConfigHotkey("resetMagicLibConfigStatistic");
+    public static final MagicConfigHotkey resetAllConfigStatistic = Configs.cf.newConfigHotkey("resetAllConfigStatistic");
+
+    @Statistic(hotkey = false)
+    @Config(category = ConfigCategory.DEBUG, debugOnly = true)
+    public static final MagicConfigHotkey resetMagicLibConfigStatistic = Configs.cf.newConfigHotkey("resetMagicLibConfigStatistic");
 
     @Config(category = ConfigCategory.TEST, debugOnly = true)
     public static final MagicConfigBoolean testConfigBoolean = Configs.cf.newConfigBoolean("testConfigBoolean", false);
@@ -90,7 +90,7 @@ public class Configs {
             require = @Dependency(dependencyType = DependencyType.MOD_ID, value = "dummy-lib", versionPredicates = "*")
     )
     @Config(category = ConfigCategory.TEST, debugOnly = true)
-    public static MagicConfigBoolean testDependencies = Configs.cf.newConfigBoolean("testDependencies", false);
+    public static final MagicConfigBoolean testDependencies = Configs.cf.newConfigBoolean("testDependencies", false);
 
     @Dependencies(
             conflict = @Dependency(dependencyType = DependencyType.MOD_ID, value = "minecraft", versionPredicates = "<2.0"),
@@ -104,7 +104,7 @@ public class Configs {
             }
     )
     @Config(category = ConfigCategory.TEST, debugOnly = true)
-    public static MagicConfigBoolean testDependenciesComposite = Configs.cf.newConfigBoolean("testDependenciesComposite", false);
+    public static final MagicConfigBoolean testDependenciesComposite = Configs.cf.newConfigBoolean("testDependenciesComposite", false);
 
     public static void init() {
         Configs.cm.parseConfigClass(Configs.class);

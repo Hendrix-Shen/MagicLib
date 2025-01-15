@@ -72,16 +72,20 @@ public final class MagicLibProperties {
     public static final Option DEV_QOL_THREAD_TWEAK_PRIORITY_MAIN = Option.newOption(
             MagicLibProperties.DEV_QOL_THREAD_TWEAK_PRIORITY, Option.InheritType.INDEPENDENT,
             "main", "1");
-    public static final Option MALILIB = Option.newOption(
-            MagicLibProperties.DEBUG, Option.InheritType.INDEPENDENT, "malilib");
-    public static final Option MALILIB_CHECK = Option.newOption(
-            MagicLibProperties.MALILIB, Option.InheritType.INDEPENDENT, "check");
+    public static final Option DEV_MALILIB = Option.newOption(
+            MagicLibProperties.DEV, Option.InheritType.INDEPENDENT, "malilib");
+    public static final Option DEV_MALILIB_CHECK = Option.newOption(
+            MagicLibProperties.DEV_MALILIB, Option.InheritType.ALLOW_OVERRIDE, "check");
+    public static final Option MALILIB_CHECK_CONFIG = Option.newOption(
+            MagicLibProperties.DEV_MALILIB_CHECK, Option.InheritType.ALLOW_OVERRIDE, "config");
     public static final Option MALILIB_CHECK_CONFIG_NAME = Option.newOption(
-            MagicLibProperties.MALILIB, Option.InheritType.INDEPENDENT, "configName");
+            MagicLibProperties.MALILIB_CHECK_CONFIG, Option.InheritType.ALLOW_OVERRIDE, "name");
     public static final Option MALILIB_CHECK_CONFIG_NAME_EMPTY = Option.newOption(
             MagicLibProperties.MALILIB_CHECK_CONFIG_NAME, Option.InheritType.ALLOW_OVERRIDE, "empty");
     public static final Option MALILIB_CHECK_CONFIG_NAME_CONSISTENCY = Option.newOption(
             MagicLibProperties.MALILIB_CHECK_CONFIG_NAME, Option.InheritType.ALLOW_OVERRIDE, "consistency");
+    public static final Option MALILIB_CHECK_CONFIG_FIELD_FINAL = Option.newOption(
+            MagicLibProperties.MALILIB_CHECK_CONFIG, Option.InheritType.ALLOW_OVERRIDE, "fieldFinal");
 
     @ApiStatus.Internal
     public static void printDetail() {
