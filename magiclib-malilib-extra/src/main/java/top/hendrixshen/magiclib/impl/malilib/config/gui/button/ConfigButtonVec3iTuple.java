@@ -7,7 +7,6 @@ import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTuple;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3iEdit;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3iTupleEdit;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
 

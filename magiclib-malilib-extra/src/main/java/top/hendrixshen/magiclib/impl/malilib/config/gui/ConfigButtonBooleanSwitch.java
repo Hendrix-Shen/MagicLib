@@ -20,10 +20,9 @@
 
 package top.hendrixshen.magiclib.impl.malilib.config.gui;
 
-import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
-import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.option.HotkeyWithSwitch;
+import top.hendrixshen.magiclib.impl.malilib.SharedConstants;
 
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/ConfigButtonBooleanSwitch.java">TweakerMore</a>
@@ -46,12 +45,6 @@ public class ConfigButtonBooleanSwitch extends ButtonGeneric {
 
     @Override
     public void updateDisplayString() {
-        if (this.config.getEnableState()) {
-            this.displayString = GuiBase.TXT_DARK_GREEN +
-                    I18n.tr("magiclib.config.gui.element.config_button_boolean_switch.enabled") + GuiBase.TXT_RST;
-        } else {
-            this.displayString = GuiBase.TXT_DARK_RED +
-                    I18n.tr("magiclib.config.gui.element.config_button_boolean_switch.disabled") + GuiBase.TXT_RST;
-        }
+        this.displayString = SharedConstants.getColoredEnableStateText(this.config.getEnableState());
     }
 }

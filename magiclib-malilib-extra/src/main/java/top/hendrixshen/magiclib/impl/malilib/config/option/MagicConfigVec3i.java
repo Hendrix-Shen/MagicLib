@@ -60,12 +60,18 @@ public class MagicConfigVec3i extends ConfigBase<MagicConfigVec3i> implements Co
 
     @Override
     public void setValueFromJsonElement(JsonElement element) {
+        Vec3i oldValue = this.getVec3i();
+
         try {
             Vec3i vec3i = MagicConfigVec3i.vec3iSerializer.deserialize(element.getAsJsonObject());
             this.setVec3i(vec3i);
         } catch (Exception e) {
             MagicLib.getLogger().warn("Failed to set config value for '{}' from the JSON element '{}'",
                     this.getName(), element, e);
+        }
+
+        if (!oldValue.equals(this.getVec3i())) {
+            this.onValueChanged(true);
         }
     }
 

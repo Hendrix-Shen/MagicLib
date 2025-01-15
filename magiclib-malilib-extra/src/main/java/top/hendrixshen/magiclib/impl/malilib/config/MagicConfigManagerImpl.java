@@ -17,6 +17,7 @@ import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -58,19 +59,23 @@ public class MagicConfigManagerImpl implements MagicConfigManager, IKeybindProvi
 
             ConfigContainer configContainer = ConfigContainer.createRegulated(field, this);
 
+            if (this.NAME_TO_CONTAINER.containsKey(configContainer.getName())) {
+                MagicLib.getLogger().error("Config {} already exists", configContainer.getName());
+                continue;
+            }
+
             if (MagicLibProperties.MALILIB_CHECK_CONFIG_NAME_EMPTY.getBooleanValue() && configContainer.getName().isEmpty()) {
                 MagicLib.getLogger().warn("Config name is empty (field name = {})!", field.getName());
             }
 
             if (MagicLibProperties.MALILIB_CHECK_CONFIG_NAME_CONSISTENCY.getBooleanValue() &&
-                    configContainer.getName().equals(field.getName())) {
+                    !configContainer.getName().equals(field.getName())) {
                 MagicLib.getLogger().warn("Config name {} does not match field name {}!",
                         configContainer.getName(), field.getName());
             }
 
-            if (this.NAME_TO_CONTAINER.containsKey(configContainer.getName())) {
-                MagicLib.getLogger().error("Config {} already exists", configContainer.getName());
-                continue;
+            if (MagicLibProperties.MALILIB_CHECK_CONFIG_FIELD_FINAL.getBooleanValue() && !Modifier.isFinal(field.getModifiers())) {
+                MagicLib.getLogger().warn("Field {} should be final!", field.getName());
             }
 
             this.CONTAINERS.add(configContainer);

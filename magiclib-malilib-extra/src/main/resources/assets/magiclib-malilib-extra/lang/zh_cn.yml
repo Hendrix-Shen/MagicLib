@@ -11,7 +11,20 @@ magiclib:
         name: 测试
     gui:
       bottom_line:
-        stat: "总计: %1$s (可用: %2$s + 不可用: %3$s), 已修改: %4$s"
+        stat:
+          .: "可用: %1$s, 已修改: %2$s"
+          hover: |
+            §f§n配置统计信息§r
+            §7可用: §a%1$s§r
+            §7不可用: §c%2$s§r
+            §7总计: §f%3$s§r
+            §f§m                    §r
+            §6已修改: %4$s§r
+            §9仅调试模式: %5$s§r
+            §d仅开发环境: %6$s§r
+            §f§m                    §r
+            §e调试模式: %7$s§r
+            §e隐藏不可用: %8$s§r
       button:
         hover_text:
           add: 添加
@@ -20,11 +33,11 @@ magiclib:
           move_down: 下移
       dependencies_footer: "依赖:"
       element:
-        config_button_boolean_switch:
-          enabled: 已启用
-          disabled: 已禁用
         config_button_option_list_hovering:
           title: "可用值列表:"
+        enable_state:
+          enabled: 已启用
+          disabled: 已禁用
       title:
         .: "魔法类库 - 版本: %1$s (%2$s)"
         vec3i_edit: 编辑整数三维向量 '%1$s'

@@ -28,6 +28,7 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.GuiTextFieldGeneric;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.widgets.WidgetBase;
+import fi.dy.masa.malilib.gui.widgets.WidgetHoverInfo;
 import fi.dy.masa.malilib.gui.widgets.WidgetSearchBar;
 import fi.dy.masa.malilib.interfaces.IStringValue;
 import lombok.Getter;
@@ -38,6 +39,7 @@ import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
+import top.hendrixshen.magiclib.impl.malilib.SharedConstants;
 import top.hendrixshen.magiclib.impl.malilib.config.ConfigContainer;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetSearchBarAccessor;
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
@@ -209,8 +211,18 @@ public class MagicConfigGui extends GuiConfigsBase {
         int available = 0;
         int unavailable = 0;
         int modified = 0;
+        int debugOnly = 0;
+        int devOnly = 0;
 
         for (ConfigContainer config : this.getCurrentContainers()) {
+            if (config.isDebugOnly()) {
+                debugOnly++;
+            }
+
+            if (config.isDevOnly()) {
+                devOnly++;
+            }
+
             if (this.isValidConfig(config) && config.isSatisfied()) {
                 if (config.getConfig() instanceof IConfigResettable &&
                         ((IConfigResettable) config.getConfig()).isModified()) {
@@ -224,12 +236,20 @@ public class MagicConfigGui extends GuiConfigsBase {
         }
 
         int total = available + unavailable;
-        String stats = I18n.tr("magiclib.config.gui.bottom_line.stat", total, available, unavailable, modified);
+        String stats = I18n.tr("magiclib.config.gui.bottom_line.stat", available, modified);
         int width = RenderUtil.getRenderWidth(stats);
         int height = RenderUtil.TEXT_HEIGHT;
         int x = 10;
         int y = this.height - height - GuiBase.TOP;
+        WidgetHoverInfo widgetHoverInfo = new WidgetHoverInfo(x, y - 2, width, height + 4,
+                I18n.tr("magiclib.config.gui.bottom_line.stat.hover",
+                        available, unavailable, total,
+                        modified, debugOnly, devOnly,
+                        SharedConstants.getColoredEnableStateText(this.isDebug()),
+                        SharedConstants.getColoredEnableStateText(this.hideUnAvailableConfigs())
+                ));
         this.addLabel(x, y, width, height, 0xFFAAAAAA, stats);
+        this.addWidget(widgetHoverInfo);
     }
 
     private int initSortingStrategyDropDownList(int x) {

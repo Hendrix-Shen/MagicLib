@@ -194,6 +194,7 @@ loom {
                 project.getOrDefault("ow.game.window.username", "dev")
         ])
         vmArgs("-Dmagiclib.debug=true")
+        vmArgs("-Dmagiclib.dev.malilib=true")
         vmArgs("-Dmagiclib.dev.qol=true")
         vmArgs("-Dmagiclib.dev.qol.dfu.destroy=true")
         runDir("run/client")

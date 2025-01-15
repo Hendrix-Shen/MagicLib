@@ -3,7 +3,9 @@ package top.hendrixshen.magiclib.impl.malilib.config;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.dy.masa.malilib.event.InputEventHandler;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
@@ -13,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GlobalConfigManager {
     @Getter(lazy = true)
     private static final GlobalConfigManager instance = new GlobalConfigManager();
@@ -21,7 +24,24 @@ public final class GlobalConfigManager {
     private final List<ConfigContainer> CONTAINERS = Lists.newArrayList();
     private final Map<MagicIConfigBase, ConfigContainer> CONFIG_TO_CONTAINER = Maps.newLinkedHashMap();
 
-    private GlobalConfigManager() {
+    public static void registerConfigManager(@NotNull MagicConfigManager configManager) {
+        if (GlobalConfigManager.getInstance().managers.containsKey(configManager.getIdentifier())) {
+            throw new IllegalArgumentException("Duplicate config manager: " + configManager.getIdentifier());
+        }
+
+        GlobalConfigManager.getInstance().managers.put(configManager.getIdentifier(), configManager);
+    }
+
+    public static @NotNull MagicConfigManager getConfigManager(String identifier) {
+        MagicConfigManager configManager = GlobalConfigManager.getInstance().managers.get(identifier);
+
+        if (configManager == null) {
+            configManager = new MagicConfigManagerImpl(identifier);
+            GlobalConfigManager.getInstance().managers.put(identifier, configManager);
+            InputEventHandler.getKeybindManager().registerKeybindProvider((MagicConfigManagerImpl) configManager);
+        }
+
+        return configManager;
     }
 
     void registerConfigContainer(ConfigContainer configContainer) {
@@ -39,17 +59,5 @@ public final class GlobalConfigManager {
 
     public boolean hasConfig(MagicIConfigBase config) {
         return this.getContainerByConfig(config).isPresent();
-    }
-
-    public static @NotNull MagicConfigManager getConfigManager(String identifier) {
-        MagicConfigManager configManager = GlobalConfigManager.getInstance().managers.get(identifier);
-
-        if (configManager == null) {
-            configManager = new MagicConfigManagerImpl(identifier);
-            GlobalConfigManager.getInstance().managers.put(identifier, configManager);
-            InputEventHandler.getKeybindManager().registerKeybindProvider((MagicConfigManagerImpl) configManager);
-        }
-
-        return configManager;
     }
 }

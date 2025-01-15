@@ -36,6 +36,10 @@ import java.util.function.Consumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
+//#if MC > 11701
+import top.hendrixshen.magiclib.api.render.context.RenderContext;
+//#endif
+
 /**
  * Reference to <a href=https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/SelectorDropDownList.java">TweakerMore</a>
  *
@@ -48,6 +52,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
  * <li>Does not respond to key input.</li>
  * <li>Supports custom null entry display.</li>
  * <li>Supports hover text, display hover text when the drop-down list is not opened.</li>
+ * <li>Fix text render depth issue in MC 1.18+.</li>
  * <p>
  * See {@link top.hendrixshen.magiclib.mixin.malilib.element.WidgetDropDownListMixin}
  */
@@ -121,9 +126,9 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
             int mouseY,
             boolean selected
             //#if MC > 11904
-            //$$ , GuiGraphics poseStackOrGuiGraphics
+            //$$ , GuiGraphics guiGraphicsOrMatrixStack
             //#elseif MC > 11502
-            , PoseStack poseStackOrGuiGraphics
+            , PoseStack guiGraphicsOrMatrixStack
             //#endif
     ) {
         super.postRenderHovered(
@@ -131,7 +136,7 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
                 mouseY,
                 selected
                 //#if MC > 11502
-                , poseStackOrGuiGraphics
+                , guiGraphicsOrMatrixStack
                 //#endif
         );
 
@@ -139,7 +144,7 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
             RenderUtils.drawHoverText(
                     mouseX, mouseY, Collections.singletonList(this.hoverText.getStringValue())
                     //#if MC > 11502
-                    , poseStackOrGuiGraphics
+                    , guiGraphicsOrMatrixStack
                     //#endif
             );
             //#if MC > 11404
@@ -155,4 +160,27 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
             this.entryChangeListener.accept(this.getSelectedEntry());
         }
     }
+
+    // Ugly fix for text render depth issue in MC 1.18+.
+    //#if MC > 11701
+    @Override
+    public void drawString(
+            int x,
+            int y,
+            int color,
+            String text,
+            //#if MC > 11904
+            //$$ GuiGraphics guiGraphicsOrMatrixStack
+            //#else
+            PoseStack guiGraphicsOrMatrixStack
+            //#endif
+
+    ) {
+        RenderContext context = RenderContext.of(guiGraphicsOrMatrixStack);
+        context.pushMatrix();
+        context.translate(0, 0, -10);
+        super.drawString(x, y, color, text, guiGraphicsOrMatrixStack);
+        context.popMatrix();
+    }
+    //#endif
 }
