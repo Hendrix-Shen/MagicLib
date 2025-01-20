@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.i18n.LanguageProvider;
 import top.hendrixshen.magiclib.util.JsonUtil;
@@ -25,7 +26,7 @@ import java.util.regex.Pattern;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JarLanguageProvider implements LanguageProvider {
     @Getter(lazy = true)
-    private final static JarLanguageProvider instance = new JarLanguageProvider();
+    private static final JarLanguageProvider instance = new JarLanguageProvider();
 
     private final Map<String, Map<String, String>> languageMap = Maps.newConcurrentMap();
     private final Pattern languageResourcePattern = Pattern.compile("^assets/([\\w-]*)/lang/([a-zA-Z\\d-_]*)\\.json$");

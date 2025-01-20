@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.language.IModInfo;
+
 import top.hendrixshen.magiclib.api.platform.adapter.forge.ModListAdapter;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 

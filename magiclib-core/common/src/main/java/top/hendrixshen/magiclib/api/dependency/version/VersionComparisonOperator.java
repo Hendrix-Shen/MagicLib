@@ -19,7 +19,7 @@ package top.hendrixshen.magiclib.api.dependency.version;
 import top.hendrixshen.magiclib.impl.dependency.version.SemanticVersionImpl;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/api/metadata/version/VersionComparisonOperator.java">FabricLoader</a>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/api/metadata/version/VersionComparisonOperator.java">FabricLoader</a>.
  */
 public enum VersionComparisonOperator {
     // order is important to match the longest substring (e.g. try >= before >)

@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.entrypoint.core;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+
 import top.hendrixshen.magiclib.impl.dependency.EntryPointDependency;
 
 public class MagicLibFabricPreLunch implements PreLaunchEntrypoint {

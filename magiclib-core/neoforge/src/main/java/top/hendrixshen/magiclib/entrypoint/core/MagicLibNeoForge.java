@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.entrypoint.core;
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import net.neoforged.fml.common.Mod;
 import org.jetbrains.annotations.ApiStatus;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.entrypoint.ModInitializer;
 import top.hendrixshen.magiclib.impl.dependency.EntryPointDependency;

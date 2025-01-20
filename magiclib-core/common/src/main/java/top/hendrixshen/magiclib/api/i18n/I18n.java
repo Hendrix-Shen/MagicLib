@@ -119,8 +119,10 @@ public class I18n {
 
     /**
      * Get whether the translation exists in specific language.
+     *
      * <p>
      * Unlike {@link I18n#exists(String, String)}, this method only check specific language.
+     * </p>
      *
      * @param code Language code.
      * @param key  Localisation key.

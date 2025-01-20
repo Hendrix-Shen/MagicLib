@@ -8,6 +8,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.util.Annotations;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.mixin.annotation.JikuTsuiho;
 import top.hendrixshen.magiclib.api.mixin.extension.jikuTsuiho.info.MixinClassInfo;

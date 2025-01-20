@@ -32,7 +32,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/conditional-mixin/blob/88cbb739c375925b134a464428a1f67ee3bd74e2/common/src/main/java/me/fallenbreath/conditionalmixin/impl/AnnotationCleanerImpl.java">conditional mixin<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/conditional-mixin/blob/88cbb739c375925b134a464428a1f67ee3bd74e2/common/src/main/java/me/fallenbreath/conditionalmixin/impl/AnnotationCleanerImpl.java">conditional mixin</a>.
  */
 @EqualsAndHashCode
 public class AnnotationRestorer {

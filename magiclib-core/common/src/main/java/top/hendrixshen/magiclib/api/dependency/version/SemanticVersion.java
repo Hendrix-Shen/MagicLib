@@ -17,6 +17,7 @@
 package top.hendrixshen.magiclib.api.dependency.version;
 
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.impl.dependency.version.VersionParser;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 

@@ -22,11 +22,12 @@ package top.hendrixshen.magiclib.api.mixin.checker;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.impl.mixin.checker.MemorizedMixinChecker;
 import top.hendrixshen.magiclib.impl.mixin.checker.SimpleMixinChecker;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/conditional-mixin/blob/88cbb739c375925b134a464428a1f67ee3bd74e2/common/src/main/java/me/fallenbreath/conditionalmixin/api/checker/RestrictionCheckers.java">conditional mixin<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/conditional-mixin/blob/88cbb739c375925b134a464428a1f67ee3bd74e2/common/src/main/java/me/fallenbreath/conditionalmixin/api/checker/RestrictionCheckers.java">conditional mixin</a>.
  */
 public class MixinDependencyCheckers {
     /**
@@ -41,8 +42,10 @@ public class MixinDependencyCheckers {
 
     /**
      * Creates a memoized version of the {@code MixinDependencyChecker}, initialized with the simple mode.
+     *
      * <p>
      * The returned checker will cache the results of the checks to avoid redundant calculations.
+     * </p>
      *
      * @return A memoized checker.
      */
@@ -53,8 +56,10 @@ public class MixinDependencyCheckers {
 
     /**
      * Creates a memoized version of the given {@code MixinDependencyChecker}.
+     *
      * <p>
      * The returned checker will cache the results of the checks to avoid redundant calculations.
+     * </p>
      *
      * @param checker The checker to be memoized.
      * @return A memoized checker.

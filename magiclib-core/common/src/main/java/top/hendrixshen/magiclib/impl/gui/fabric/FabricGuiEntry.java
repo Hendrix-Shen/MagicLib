@@ -16,26 +16,31 @@
 
 package top.hendrixshen.magiclib.impl.gui.fabric;
 
+import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.impl.gui.fabric.FabricStatusTree.FabricBasicButtonType;
 import top.hendrixshen.magiclib.impl.gui.fabric.FabricStatusTree.FabricStatusTab;
 import top.hendrixshen.magiclib.impl.gui.fabric.FabricStatusTree.FabricTreeWarningLevel;
-import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.util.fabric.LoaderUtil;
 import top.hendrixshen.magiclib.util.fabric.UrlUtil;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.GraphicsEnvironment;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Consumer;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/gui/FabricGuiEntry.java">FabricLoader<a/>
- * <p>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/gui/FabricGuiEntry.java">FabricLoader</a>.
  *
+ * <p>
  * The main entry point for all fabric-based stuff.
+ * </p>
  */
 public final class FabricGuiEntry {
     /**

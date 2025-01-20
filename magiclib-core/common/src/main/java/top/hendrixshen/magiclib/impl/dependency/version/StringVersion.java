@@ -18,10 +18,11 @@ package top.hendrixshen.magiclib.impl.dependency.version;
 
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.dependency.version.Version;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/impl/util/version/StringVersion.java">FabricLoader</a>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/impl/util/version/StringVersion.java">FabricLoader</a>.
  */
 @AllArgsConstructor
 public class StringVersion implements Version {

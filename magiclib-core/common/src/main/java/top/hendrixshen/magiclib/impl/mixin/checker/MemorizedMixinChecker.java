@@ -21,13 +21,14 @@
 package top.hendrixshen.magiclib.impl.mixin.checker;
 
 import com.google.common.collect.Maps;
+
 import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyCheckFailureCallback;
 import top.hendrixshen.magiclib.api.mixin.checker.MixinDependencyChecker;
 
 import java.util.Map;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/conditional-mixin/blob/88cbb739c375925b134a464428a1f67ee3bd74e2/common/src/main/java/me/fallenbreath/conditionalmixin/impl/MemorizedRestrictionChecker.java">conditional mixin<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/conditional-mixin/blob/88cbb739c375925b134a464428a1f67ee3bd74e2/common/src/main/java/me/fallenbreath/conditionalmixin/impl/MemorizedRestrictionChecker.java">conditional mixin</a>.
  */
 public class MemorizedMixinChecker implements MixinDependencyChecker {
     private final MixinDependencyChecker checker;

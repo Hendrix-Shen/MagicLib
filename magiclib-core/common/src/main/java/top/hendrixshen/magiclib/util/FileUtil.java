@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.util;
 
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.MagicLib;
 
 import java.io.File;
@@ -27,6 +28,7 @@ public class FileUtil {
             try {
                 set.add(urlEnumeration.nextElement().toURI());
             } catch (URISyntaxException ignore) {
+                // Ignore
             }
         }
 

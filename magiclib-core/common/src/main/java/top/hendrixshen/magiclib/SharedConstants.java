@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib;
 import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.util.VersionUtil;
 
 import java.util.regex.Pattern;

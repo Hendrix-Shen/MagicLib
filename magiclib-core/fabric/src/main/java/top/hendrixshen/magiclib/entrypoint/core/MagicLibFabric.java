@@ -5,6 +5,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.impl.mixin.audit.MixinAuditor;
 import top.hendrixshen.magiclib.impl.mixin.extension.MagicExtensions;

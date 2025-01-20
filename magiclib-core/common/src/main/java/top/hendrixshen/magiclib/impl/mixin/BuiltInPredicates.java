@@ -1,19 +1,24 @@
 package top.hendrixshen.magiclib.impl.mixin;
 
 import org.objectweb.asm.tree.ClassNode;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.mixin.MixinPredicate;
 
 /**
  * MagicLib built-in MixinDependencyPredicates.
+ *
  * <p>
  * Some basic uses of predicates are given here.
+ * </p>
  */
 public class BuiltInPredicates {
     /**
      * Predicate that implements {@link MixinPredicate} for mixin predicate checking.
+     *
      * <p>
      * This predicate always returns true.
+     * </p>
      */
     public static class TruePredicate implements MixinPredicate {
         @Override
@@ -24,8 +29,10 @@ public class BuiltInPredicates {
 
     /**
      * Predicate that implements {@link MixinPredicate} for mixin predicate checking.
+     *
      * <p>
      * This predicate returns true only if Platform is running at the development environment.
+     * </p>
      */
     public static class DevMixinPredicate implements MixinPredicate {
         @Override
@@ -36,8 +43,10 @@ public class BuiltInPredicates {
 
     /**
      * Predicate that implements {@link DevMixinPredicate} for mixin predicate checking.
+     *
      * <p>
      * This predicate returns true only if minecraft de-obfuscated by mojang mapping.
+     * </p>
      */
     public static class MojangMappingMixinPredicate implements MixinPredicate {
         @Override

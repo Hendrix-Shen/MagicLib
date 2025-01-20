@@ -6,6 +6,7 @@ import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import org.spongepowered.asm.mixin.transformer.ext.ITargetClassContext;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.mixin.extension.EmptyExtension;
 import top.hendrixshen.magiclib.api.mixin.extension.jikuTsuiho.info.MixinFieldInfo;
@@ -63,7 +64,6 @@ public class EraserExtension extends EmptyExtension {
                     }
                 }
             }
-
 
             Iterator<FieldNode> fieldNodeIterator = classNode.fields.iterator();
 

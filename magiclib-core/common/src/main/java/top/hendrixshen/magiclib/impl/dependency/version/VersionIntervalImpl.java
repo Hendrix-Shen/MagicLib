@@ -19,14 +19,19 @@ package top.hendrixshen.magiclib.impl.dependency.version;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import top.hendrixshen.magiclib.api.dependency.version.SemanticVersion;
 import top.hendrixshen.magiclib.api.dependency.version.Version;
 import top.hendrixshen.magiclib.api.dependency.version.VersionInterval;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/impl/util/version/VersionIntervalImpl.java">FabricLoader</a>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/impl/util/version/VersionIntervalImpl.java">FabricLoader</a>.
  */
 public class VersionIntervalImpl implements VersionInterval {
     private final Version min;
@@ -37,16 +42,16 @@ public class VersionIntervalImpl implements VersionInterval {
     public VersionIntervalImpl(Version min, boolean minInclusive,
                                Version max, boolean maxInclusive) {
         this.min = min;
-        this.minInclusive = min != null ? minInclusive : false;
+        this.minInclusive = min != null && minInclusive;
         this.max = max;
-        this.maxInclusive = max != null ? maxInclusive : false;
+        this.maxInclusive = max != null && maxInclusive;
 
         assert min != null || !minInclusive;
         assert max != null || !maxInclusive;
         assert min == null || min instanceof SemanticVersion || minInclusive;
         assert max == null || max instanceof SemanticVersion || maxInclusive;
-        assert min == null || max == null || min instanceof SemanticVersion &&
-                max instanceof SemanticVersion || min.equals(max);
+        assert min == null || max == null || min instanceof SemanticVersion
+                && max instanceof SemanticVersion || min.equals(max);
     }
 
     @Override
@@ -360,7 +365,7 @@ public class VersionIntervalImpl implements VersionInterval {
                     } else if (cMin == null) { // c encompasses a
                         return;
                     } else { // aMax < cMax
-                        cmp = aMax.compareTo((Version) cMin);
+                        cmp = aMax.compareTo(cMin);
 
                         if (cmp < 0 || cmp == 0 && !a.isMaxInclusive() && !c.isMinInclusive()) { // ..a..]..[..c..] or ..a..)(..c..]
                             out.add(i, a);
@@ -380,7 +385,7 @@ public class VersionIntervalImpl implements VersionInterval {
                     while (out.size() > i) out.remove(i);
                     out.add(a);
                 } else { // aMin < cMin
-                    cmp = aMax.compareTo((Version) cMin);
+                    cmp = aMax.compareTo(cMin);
 
                     if (cmp < 0 || cmp == 0 && !a.isMaxInclusive() && !c.isMinInclusive()) { // [..a..]..[..c.. or [..a..)(..c..
                         out.add(i, a);
@@ -393,8 +398,8 @@ public class VersionIntervalImpl implements VersionInterval {
             } else if ((cmp = aMin.compareTo(cMax)) < 0 || cmp == 0 && (a.isMinInclusive() || c.isMaxInclusive())) {
                 int cmp2;
 
-                if (aMax == null || cMin == null || (cmp2 = aMax.compareTo(cMin)) > 0 ||
-                        cmp2 == 0 && (a.isMaxInclusive() || c.isMinInclusive())) {
+                if (aMax == null || cMin == null || (cmp2 = aMax.compareTo(cMin)) > 0
+                        || cmp2 == 0 && (a.isMaxInclusive() || c.isMinInclusive())) {
                     int cmpMin = compareMin(a, c);
                     int cmpMax = compareMax(a, c);
 
@@ -431,8 +436,8 @@ public class VersionIntervalImpl implements VersionInterval {
             } else { // bMin != null -> a < b
                 return -1;
             }
-        } else if (bMin == null ||
-                (cmp = aMin.compareTo(bMin)) > 0 || cmp == 0 && !a.isMinInclusive() && b.isMinInclusive()) { // a > b
+        } else if (bMin == null
+                || (cmp = aMin.compareTo(bMin)) > 0 || cmp == 0 && !a.isMinInclusive() && b.isMinInclusive()) { // a > b
             return 1;
         } else if (cmp < 0 || a.isMinInclusive() && !b.isMinInclusive()) { // a < b
             return -1;
@@ -452,8 +457,8 @@ public class VersionIntervalImpl implements VersionInterval {
             } else { // bMax != null -> a > b
                 return 1;
             }
-        } else if (bMax == null || (cmp = aMax.compareTo(bMax)) < 0 ||
-                cmp == 0 && !a.isMaxInclusive() && b.isMaxInclusive()) { // a < b
+        } else if (bMax == null || (cmp = aMax.compareTo(bMax)) < 0
+                || cmp == 0 && !a.isMaxInclusive() && b.isMaxInclusive()) { // a < b
             return -1;
         } else if (cmp > 0 || a.isMaxInclusive() && !b.isMaxInclusive()) { // a > b
             return 1;
@@ -475,8 +480,8 @@ public class VersionIntervalImpl implements VersionInterval {
         } else if (interval.getMax() == null) { // x,∞) = half open towards max -> half open towards min
             return Collections.singletonList(new VersionIntervalImpl(null, false,
                     interval.getMin(), !interval.isMinInclusive()));
-        } else if (interval.getMin().equals(interval.getMax()) && !interval.isMinInclusive() &&
-                !interval.isMaxInclusive()) { // (x,x) = effectively empty interval -> infinite
+        } else if (interval.getMin().equals(interval.getMax()) && !interval.isMinInclusive()
+                && !interval.isMaxInclusive()) { // (x,x) = effectively empty interval -> infinite
             return Collections.singletonList(VersionInterval.INFINITE);
         } else { // closed interval -> 2 half open intervals on each side
             List<VersionInterval> ret = new ArrayList<>(2);

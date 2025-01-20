@@ -1,6 +1,10 @@
 package top.hendrixshen.magiclib.api.dependency.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Dependencies annotation.
@@ -11,8 +15,10 @@ import java.lang.annotation.*;
 public @interface Dependencies {
     /**
      * All conditions satisfied, test passed.
+     *
      * <p>
      * The dependencies located in this list are logical or.
+     * </p>
      *
      * @return True if all conditions are satisfied, otherwise false.
      */
@@ -20,8 +26,10 @@ public @interface Dependencies {
 
     /**
      * Any conditions satisfied, test fails.
+     *
      * <p>
      * The dependencies located in this list are logical or.
+     * </p>
      *
      * @return True if none of the conditions are satisfied, otherwise false.
      */

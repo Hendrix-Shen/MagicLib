@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.impl.platform.adapter;
 
 import net.minecraftforge.forgespi.language.IModInfo;
+
 import top.hendrixshen.magiclib.api.platform.adapter.ModMetaDataAdapter;
 
 public class ForgeModMetaData implements ModMetaDataAdapter {

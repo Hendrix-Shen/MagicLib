@@ -19,7 +19,7 @@ package top.hendrixshen.magiclib.util.fabric;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/util/LoaderUtil.java">FabricLoader<a/>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/util/LoaderUtil.java">FabricLoader</a>.
  */
 public class StringUtil {
     public static @NotNull String wrapLines(@NotNull String str, int limit) {
