@@ -1,4 +1,5 @@
 plugins {
+    id("checkstyle")
     id("java")
     id("maven-publish")
     id("signing")
@@ -8,10 +9,6 @@ plugins {
 }
 
 allprojects {
-    apply(plugin: "java")
-    apply(plugin: "maven-publish")
-    apply(plugin: "signing")
-
     apply(plugin: "com.gradleup.shadow")
     apply(plugin: "top.hendrixshen.replace-token")
 
@@ -36,6 +33,11 @@ tasks.withType(ProcessResources).configureEach {
 }
 
 subprojects {
+    apply(plugin: "checkstyle")
+    apply(plugin: "java")
+    apply(plugin: "maven-publish")
+    apply(plugin: "signing")
+
     repositories {
         mavenLocal()
 
@@ -79,6 +81,11 @@ subprojects {
         setArchivesName("${project.parent.property("mod.archives_base_name")}-${project.name}")
         group("${project.property("mod.maven_group")}")
         version(project.getModVersion(project.parent))
+    }
+
+    checkstyle {
+        configFile(rootProject.file("checkstyle.xml"))
+        toolVersion("${project.property("checkstyle_version")}")
     }
 
     java {
