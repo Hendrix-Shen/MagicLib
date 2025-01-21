@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.impl.mixin.audit;
 
 import org.jetbrains.annotations.NotNull;
+
 import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import top.hendrixshen.magiclib.MagicLib;

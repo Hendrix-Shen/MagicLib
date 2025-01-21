@@ -2,13 +2,14 @@ package top.hendrixshen.magiclib.impl.platform.adapter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.DedicatedServerModInitializer;
-import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.api.ModInitializer;
 
 import top.hendrixshen.magiclib.api.platform.adapter.ModEntryPointAdapter;
 import top.hendrixshen.magiclib.impl.platform.adapter.internal.ModMetaDataLite;

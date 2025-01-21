@@ -81,7 +81,26 @@
         <module name="UnusedImports"/>
 
         <module name="ImportOrder">
-            <property name="groups" value="*,net.minecraft,top.hendrixshen.magiclib,/^javax?\./"/>
+            <!-- import order:
+            // 1. other
+            import *;
+            // 2. Minecraft related
+            import com.mojang.*;
+            import net.minecraft.*;
+            // 3. ModLoader related
+            import cpw.mods.*;
+            import net.fabricmc.*;
+            import net.minecraftforge;
+            import net.neoforged.*;
+            // 4. Mixin related
+            import com.llamalad7.mixinextras;
+            import org.spongepowered.*
+            // 5. MagicLib related
+            import top.hendrixshen.magiclib.*;
+            // 6. Java related
+            import java.*;
+            import javax.*; -->
+            <property name="groups" value="*,/^(com\.mojang|net\.minecraft)\./,/^(cpw\.mods|net\.(fabricmc|minecraftforge|neoforged))\./,/^(com\.llamalad7\.mixinextras|org\.spongepowered)\./,top.hendrixshen.magiclib,/^javax?\./"/>
             <property name="ordered" value="true"/>
             <property name="separated" value="true"/>
             <property name="option" value="top"/>

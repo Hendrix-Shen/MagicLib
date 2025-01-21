@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
+
 import org.spongepowered.asm.util.Annotations;
 
 import java.lang.annotation.Annotation;

@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.impl.platform.adapter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.language.IModInfo;

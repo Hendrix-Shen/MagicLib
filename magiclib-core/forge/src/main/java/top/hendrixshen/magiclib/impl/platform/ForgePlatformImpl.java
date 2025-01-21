@@ -2,16 +2,17 @@ package top.hendrixshen.magiclib.impl.platform;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Maps;
-import cpw.mods.modlauncher.api.INameMappingService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Nullable;
+
+import cpw.mods.modlauncher.api.INameMappingService;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.forgespi.language.IModInfo;
-import org.jetbrains.annotations.Nullable;
 
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.MagicLibProperties;

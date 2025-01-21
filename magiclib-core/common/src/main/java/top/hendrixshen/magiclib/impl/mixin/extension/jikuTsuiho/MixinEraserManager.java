@@ -7,6 +7,7 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
+
 import org.spongepowered.asm.util.Annotations;
 
 import top.hendrixshen.magiclib.MagicLib;

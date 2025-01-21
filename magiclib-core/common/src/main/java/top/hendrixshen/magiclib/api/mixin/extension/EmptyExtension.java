@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.api.mixin.extension;
 
 import org.objectweb.asm.tree.ClassNode;
+
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.transformer.ext.IExtension;
 import org.spongepowered.asm.mixin.transformer.ext.ITargetClassContext;

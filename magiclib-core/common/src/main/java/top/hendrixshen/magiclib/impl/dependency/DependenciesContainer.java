@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.impl.dependency;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.tree.AnnotationNode;
+
 import org.spongepowered.asm.util.Annotations;
 
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
