@@ -18,21 +18,24 @@
 
 package top.hendrixshen.magiclib.mixin.dev.dfu.destroy;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixerUpper;
 import com.mojang.serialization.Dynamic;
-import org.jetbrains.annotations.NotNull;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 
 /**
- * Reference to <a href="https://github.com/magistermaks/mod-fungible/blob/9cd81f1d8ebcef43cff3df279aaef9bb68950e7c/src/main/java/net/darktree/fungible/mixin/dfu/DatafixTypesMixin.java">Fungible<a/>
+ * Reference to <a href="https://github.com/magistermaks/mod-fungible/blob/9cd81f1d8ebcef43cff3df279aaef9bb68950e7c/src/main/java/net/darktree/fungible/mixin/dfu/DatafixTypesMixin.java">Fungible</a>.
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.DestroyDFUPredicate.class))
 @Mixin(value = DataFixerUpper.class, remap = false)

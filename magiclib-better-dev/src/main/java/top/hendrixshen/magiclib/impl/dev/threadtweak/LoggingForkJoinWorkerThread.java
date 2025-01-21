@@ -24,17 +24,19 @@
 
 package top.hendrixshen.magiclib.impl.dev.threadtweak;
 
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinWorkerThread;
-
+//@formatter:off
 //#if MC > 11701
 //$$ import org.slf4j.Logger;
 //#else
 import org.apache.logging.log4j.Logger;
 //#endif
+//@formatter:on
+
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinWorkerThread;
 
 /**
- * Reference to <a href="https://github.com/UltimateBoomer/mc-smoothboot/blob/ce5c0482e51698a424ea3d09e994d4b71a7c71b6/src/main/java/io//github/ultimateboomer/smoothboot/util/LoggingForkJoinWorkerThread.java">SmoothBoot<a/>
+ * Reference to <a href="https://github.com/UltimateBoomer/mc-smoothboot/blob/ce5c0482e51698a424ea3d09e994d4b71a7c71b6/src/main/java/io//github/ultimateboomer/smoothboot/util/LoggingForkJoinWorkerThread.java">SmoothBoot</a>.
  */
 public class LoggingForkJoinWorkerThread extends ForkJoinWorkerThread {
     private final Logger logger;

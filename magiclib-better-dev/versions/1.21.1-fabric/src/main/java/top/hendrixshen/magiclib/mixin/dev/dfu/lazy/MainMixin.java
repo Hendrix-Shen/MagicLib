@@ -1,13 +1,17 @@
 package top.hendrixshen.magiclib.mixin.dev.dfu.lazy;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.datafixers.DSL;
+import net.minecraft.client.main.Main;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.main.Main;
-import org.jetbrains.annotations.NotNull;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
