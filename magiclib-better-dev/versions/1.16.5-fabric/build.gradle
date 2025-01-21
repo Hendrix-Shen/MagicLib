@@ -1,4 +1,5 @@
 plugins {
+    id("checkstyle")
     id("java")
     id("java-library")
     id("maven-publish")
@@ -253,6 +254,11 @@ base {
     setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}-${modPlatform}")
     group("${project.property("mod.maven_group")}")
     version(project.getModVersion(project.parent))
+}
+
+checkstyle {
+    configFile(rootProject.file("checkstyle-light.xml"))
+    toolVersion("${project.property("checkstyle_version")}")
 }
 
 java {
