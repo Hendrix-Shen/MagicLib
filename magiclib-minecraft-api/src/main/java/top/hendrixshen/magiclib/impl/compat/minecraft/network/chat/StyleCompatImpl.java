@@ -1,22 +1,29 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.network.chat;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11502
+import net.minecraft.network.chat.TextColor;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ClickEventCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.HoverEventCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.StyleCompat;
 
-//#if MC > 11502
-import net.minecraft.network.chat.TextColor;
-//#if MC < 11700
+// CHECKSTYLE.OFF: ImportOrder
+//#if 11700 > MC && MC > 11502
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.StyleAccessor;
 //#endif
-//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class StyleCompatImpl extends AbstractCompat<Style> implements StyleCompat {
     private Style style;
@@ -274,8 +281,8 @@ public class StyleCompatImpl extends AbstractCompat<Style> implements StyleCompa
         //#if MC > 11502
         this.style = this.style.applyFormats(chatFormattings);
         //#else
-        //$$ for(ChatFormatting chatFormatting : chatFormattings) {
-        //$$     switch(chatFormatting) {
+        //$$ for (ChatFormatting chatFormatting : chatFormattings) {
+        //$$     switch (chatFormatting) {
         //$$         case OBFUSCATED:
         //$$             this.style.setObfuscated(true);
         //$$             break;

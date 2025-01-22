@@ -1,7 +1,9 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.network.chat;
 
-import net.minecraft.network.chat.HoverEvent;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.network.chat.HoverEvent;
+
 import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.HoverEventCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 

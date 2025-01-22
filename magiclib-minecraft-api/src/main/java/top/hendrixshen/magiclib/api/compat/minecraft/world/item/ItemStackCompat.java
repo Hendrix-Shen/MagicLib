@@ -1,14 +1,18 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.world.item;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.impl.compat.minecraft.world.item.ItemStackCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
 //$$ import java.util.Objects;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public interface ItemStackCompat extends Provider<ItemStack> {
     static @NotNull ItemStackCompat of(@NotNull ItemStack itemStack) {
@@ -72,8 +76,8 @@ public interface ItemStackCompat extends Provider<ItemStack> {
     }
 
     static boolean isSameItemSameTagsIgnoreDurability(@NotNull ItemStack itemStack, @NotNull ItemStack itemStack2) {
-        return ItemStackCompat.isSameIgnoreDurability(itemStack, itemStack2) &&
-                ItemStackCompat.tagMatches(itemStack, itemStack2);
+        return ItemStackCompat.isSameIgnoreDurability(itemStack, itemStack2)
+                && ItemStackCompat.tagMatches(itemStack, itemStack2);
     }
 
     boolean is(Item item);

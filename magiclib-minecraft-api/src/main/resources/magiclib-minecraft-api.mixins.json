@@ -22,6 +22,7 @@
     "event.render.LevelRendererMixin"
   ],
   "mixins": [
+    "accessor.DyeColorAccessor",
     "accessor.ServerboundClientInformationPacketAccessor",
     "accessor.SlotAccessor",
     "accessor.StyleAccessor",

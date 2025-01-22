@@ -1,11 +1,11 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.world;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.SimpleContainer;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.AbstractCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.SimpleContainerCompat;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12004
 //$$ import net.minecraft.core.HolderLookup;
 //#endif
@@ -13,6 +13,10 @@ import top.hendrixshen.magiclib.api.compat.minecraft.world.SimpleContainerCompat
 //#if MC < 11600
 //$$ import net.minecraft.world.item.ItemStack;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.compat.AbstractCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.SimpleContainerCompat;
 
 public class SimpleContainerCompatImpl extends AbstractCompat<SimpleContainer> implements SimpleContainerCompat {
     public SimpleContainerCompatImpl(@NotNull SimpleContainer type) {
@@ -21,17 +25,25 @@ public class SimpleContainerCompatImpl extends AbstractCompat<SimpleContainer> i
 
     @Override
     public void fromTag(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             ListTag listTag
             //#if MC > 12004
             //$$ , HolderLookup.Provider provider
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         //#if MC > 11502
         this.get().fromTag(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 listTag
                 //#if MC > 12004
                 //$$ , provider
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
         //#else
         //$$ for (int i = 0; i < listTag.size(); i++) {

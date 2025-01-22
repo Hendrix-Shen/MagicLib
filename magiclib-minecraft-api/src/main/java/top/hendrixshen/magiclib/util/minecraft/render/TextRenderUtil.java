@@ -20,27 +20,44 @@
 
 package top.hendrixshen.magiclib.util.minecraft.render;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11502
 import com.google.common.collect.Lists;
-import net.minecraft.client.StringSplitter;
-import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.Style;
-import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.util.StringDecomposer;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.mixin.minecraft.accessor.StringSplitterAccessor;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
+import net.minecraft.client.Minecraft;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11502
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.StringSplitter;
+import net.minecraft.network.chat.Style;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.StringDecomposer;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11502
+import top.hendrixshen.magiclib.mixin.minecraft.accessor.StringSplitterAccessor;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11502
 import java.util.List;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderingUtil.java">TweakerMore<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderingUtil.java">TweakerMore</a>.
  */
 @Environment(EnvType.CLIENT)
 public class TextRenderUtil {

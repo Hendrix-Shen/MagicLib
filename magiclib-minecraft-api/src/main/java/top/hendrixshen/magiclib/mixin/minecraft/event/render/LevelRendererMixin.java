@@ -1,21 +1,24 @@
 package top.hendrixshen.magiclib.mixin.minecraft.event.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 12004
+//$$ import org.joml.Matrix4fStack;
+//#endif
+
+//#if MC > 11902
+//$$ import org.joml.Matrix4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 12104
 import net.minecraft.client.renderer.LightTexture;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.impl.event.EventManager;
-import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderLevelEvent;
+//#endif
 
 //#if MC > 12101
 //$$ import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
@@ -25,14 +28,36 @@ import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderLevelEvent;
 //$$ import net.minecraft.client.DeltaTracker;
 //#endif
 
+//#if MC < 12006
+import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
+
+//#if MC < 11903
+import com.mojang.math.Matrix4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12004
-//$$ import org.joml.Matrix4fStack;
 //$$ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 //#endif
 
 //#if MC > 11903
 //$$ import org.spongepowered.asm.mixin.injection.Slice;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.impl.event.EventManager;
+import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderLevelEvent;
 
 @Environment(EnvType.CLIENT)
 @Mixin(LevelRenderer.class)
@@ -113,6 +138,8 @@ public abstract class LevelRendererMixin {
             )
     )
     private void postRenderLevel(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             //#if MC > 12101
             //$$ GraphicsResourceAllocator graphicsResourceAllocator,
             //#endif
@@ -139,6 +166,8 @@ public abstract class LevelRendererMixin {
             //#if MC > 12004
             //$$ , @Local Matrix4fStack matrixStack
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         EventManager.dispatch(new RenderLevelEvent.PostRender(RenderLevelEvent.LevelRenderContext.of(
                 this.level,

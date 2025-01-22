@@ -1,8 +1,10 @@
 package top.hendrixshen.magiclib.impl.event.minecraft;
 
 import lombok.AllArgsConstructor;
-import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.server.MinecraftServer;
+
 import top.hendrixshen.magiclib.api.event.Event;
 import top.hendrixshen.magiclib.api.event.minecraft.MinecraftServerListener;
 

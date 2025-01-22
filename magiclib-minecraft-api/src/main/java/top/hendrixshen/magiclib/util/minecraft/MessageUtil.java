@@ -1,19 +1,30 @@
 package top.hendrixshen.magiclib.util.minecraft;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.minecraft.UtilCompat;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11802
+//$$ import net.minecraft.network.chat.MutableComponent;
+//#else
+import net.minecraft.network.chat.BaseComponent;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.impl.minecraft.MagicLibMinecraft;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
-import java.util.Collection;
-import java.util.stream.StreamSupport;
+// CHECKSTYLE.OFF: ImportOrder
+//#if 11900 > MC &&  MC > 11502
+import top.hendrixshen.magiclib.api.compat.minecraft.UtilCompat;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class MessageUtil {
     private static void sendMessage0(CommandSourceStack source, BaseComponent messages, boolean broadcastToOps) {
@@ -102,6 +113,9 @@ public class MessageUtil {
 
     // Component I18n cannot be processed with logger.
     public static void sendToConsole(Component message) {
+        // CHECKSTYLE.OFF: NoWhitespaceBefore
+        // CHECKSTYLE.OFF: SeparatorWrap
+        // @formatter:off
         MagicLibMinecraft.getInstance().getServer().ifPresent(server ->
                 //#if MC > 11802
                 //$$ server.sendSystemMessage(message)
@@ -113,6 +127,9 @@ public class MessageUtil {
                 )
                 //#endif
         );
+        // @formatter:on
+        // CHECKSTYLE.OFF: SeparatorWrap
+        // CHECKSTYLE.OFF: NoWhitespaceBefore
     }
 
     public static void sendToConsoleCompat(@NotNull ComponentCompat message) {

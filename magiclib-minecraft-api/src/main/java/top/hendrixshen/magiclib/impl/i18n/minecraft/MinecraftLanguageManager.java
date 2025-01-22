@@ -1,9 +1,12 @@
 package top.hendrixshen.magiclib.impl.i18n.minecraft;
 
 import lombok.Getter;
+
+import net.minecraft.client.Minecraft;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.event.minecraft.LanguageManagerListener;
 import top.hendrixshen.magiclib.api.event.minecraft.MinecraftListener;

@@ -1,20 +1,30 @@
 package top.hendrixshen.magiclib.impl.compat.mojang.math;
 
-import com.mojang.math.Vector3f;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.AbstractCompat;
-import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
-import top.hendrixshen.magiclib.api.compat.mojang.math.Vector3fCompat;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11902
 //$$ import org.joml.Quaternionf;
+//$$ import org.joml.Vector3f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11903
+import com.mojang.math.Vector3f;
 //#endif
 
 //#if MC < 11500
 //$$ import com.mojang.math.Quaternion;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import top.hendrixshen.magiclib.api.compat.AbstractCompat;
+import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
+import top.hendrixshen.magiclib.api.compat.mojang.math.Vector3fCompat;
 
 @Environment(EnvType.CLIENT)
 public class Vector3fCompatImpl extends AbstractCompat<Vector3f> implements Vector3fCompat {

@@ -1,10 +1,12 @@
 package top.hendrixshen.magiclib.impl.minecraft;
 
 import lombok.Getter;
-import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.server.MinecraftServer;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.event.minecraft.MinecraftServerListener;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
@@ -35,7 +37,7 @@ public class MagicLibMinecraft implements MinecraftServerListener {
 
     @Override
     public void onServerLevelLoaded(MinecraftServer server) {
-
+        // NO-OP
     }
 
     @Override

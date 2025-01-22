@@ -1,20 +1,25 @@
 package top.hendrixshen.magiclib.util.minecraft;
 
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.BaseComponent;
-import org.jetbrains.annotations.NotNull;
+
+import net.fabricmc.api.Environment;
+
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
-//#if MC > 11802 && MC < 11903
-//$$ import net.minecraft.network.chat.Component;
-//$$ import net.minecraft.client.gui.chat.ClientChatPreview;
-//$$
-//#if MC > 11900
+// CHECKSTYLE.OFF: ImportOrder
+//#if 11903 > MC && MC > 11900
 //$$ import net.minecraft.Util;
 //#endif
+
+//#if 11903 > MC && MC > 11802
+//$$ import net.minecraft.network.chat.Component;
+//$$ import net.minecraft.client.gui.chat.ClientChatPreview;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Environment(net.fabricmc.api.EnvType.CLIENT)
 public class InfoUtil {
@@ -81,7 +86,7 @@ public class InfoUtil {
         });
     }
 
-    //#if MC > 11802 && MC < 11903
+    //#if 11903 > MC && MC > 11802
     //$$ public static Component getSign(String text) {
     //$$     ClientChatPreview ccp = new ClientChatPreview(Minecraft.getInstance());
     //#if MC > 11900

@@ -1,18 +1,23 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.client.gui.screen;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
-import org.jetbrains.annotations.NotNull;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if FORGE || MC < 11700
+import net.minecraft.client.gui.components.AbstractWidget;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.screen.ScreenCompat;
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.ScreenAccessor;
-
-//#if MC < 11700 || FORGE_LIKE
-import net.minecraft.client.gui.components.AbstractWidget;
-//#endif
 
 @Environment(EnvType.CLIENT)
 public class ScreenCompatImpl extends AbstractCompat<Screen> implements ScreenCompat {
@@ -55,7 +60,6 @@ public class ScreenCompatImpl extends AbstractCompat<Screen> implements ScreenCo
         ((ScreenAccessor) this.get()).magiclib$getChildren().add(guiEventListener);
         return guiEventListener;
         //#endif
-
     }
 
     @Override

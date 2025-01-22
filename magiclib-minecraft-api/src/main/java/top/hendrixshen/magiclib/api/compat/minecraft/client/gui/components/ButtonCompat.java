@@ -1,20 +1,25 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.client.gui.components;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
-import java.util.function.Supplier;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11902
 //$$ import net.minecraft.client.gui.components.Tooltip;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public interface ButtonCompat extends Provider<Button> {

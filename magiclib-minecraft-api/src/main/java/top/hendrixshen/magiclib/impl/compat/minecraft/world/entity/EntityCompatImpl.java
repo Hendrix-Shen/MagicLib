@@ -1,18 +1,22 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.world.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
 
-//#if MC > 11502 && MC < 11900
+// CHECKSTYLE.OFF: ImportOrder
+//#if 11900 > MC && MC > 11502
 import top.hendrixshen.magiclib.api.compat.minecraft.UtilCompat;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCompat {
     public EntityCompatImpl(@NotNull Entity type) {
@@ -21,11 +25,10 @@ public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCo
 
     @Override
     public Level getLevel() {
-        return
-                //#if MC > 11904
-                //$$ this.get().level();
-                //#else
-                this.get().level;
+        //#if MC > 11904
+        //$$ return this.get().level();
+        //#else
+        return this.get().level;
         //#endif
     }
 
@@ -153,13 +156,16 @@ public class EntityCompatImpl extends AbstractCompat<Entity> implements EntityCo
         //#else
         this.get().sendMessage(
                 component
+                // CHECKSTYLE.OFF: SeparatorWrap
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
                 //#if MC > 11502
                 , UtilCompat.NIL_UUID
                 //#endif
+                // CHECKSTYLE.ON: NoWhitespaceBefore
+                // CHECKSTYLE.ON: SeparatorWrap
         );
         //#endif
         //#endif
-
     }
 
     @Override

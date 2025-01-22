@@ -4,8 +4,10 @@ import com.google.common.collect.Maps;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.repository.Pack;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.fake.i18n.PackAccessor;
 import top.hendrixshen.magiclib.api.i18n.LanguageProvider;
@@ -23,7 +25,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResourceLanguageProvider implements LanguageProvider {
     @Getter(lazy = true)
-    private final static ResourceLanguageProvider instance = new ResourceLanguageProvider();
+    private static final ResourceLanguageProvider instance = new ResourceLanguageProvider();
 
     private final Map<String, List<Path>> files = Maps.newConcurrentMap();
 
@@ -32,7 +34,7 @@ public class ResourceLanguageProvider implements LanguageProvider {
         Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream()
                 .filter(pack -> pack.getId().startsWith("file"))
                 .map(Pack::open)
-                .filter(pack -> pack instanceof PackAccessor)
+                .filter(PackAccessor.class::isInstance)
                 .map(pack -> ((PackAccessor) pack).magiclib$getFile().toPath())
                 .forEach(this::updateFileList);
     }
@@ -73,6 +75,7 @@ public class ResourceLanguageProvider implements LanguageProvider {
         try {
             Files.walkFileTree(path, new FileLanguageProvider.LanguageFileVisitor(path, this.files, true));
         } catch (IOException ignore) {
+            // ignore.
         }
     }
 }

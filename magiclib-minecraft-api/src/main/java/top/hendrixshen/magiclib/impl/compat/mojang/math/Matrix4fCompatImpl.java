@@ -1,18 +1,37 @@
 package top.hendrixshen.magiclib.impl.compat.mojang.math;
 
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.AbstractCompat;
-import top.hendrixshen.magiclib.api.compat.mojang.math.Matrix4fCompat;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11902
+//$$ import org.joml.Matrix4f;
+//$$ import org.joml.Quaternionf;
+//#endif
 
 //#if MC < 11500
 //$$ import org.jetbrains.annotations.ApiStatus;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11903
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Quaternion;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import top.hendrixshen.magiclib.api.compat.AbstractCompat;
+import top.hendrixshen.magiclib.api.compat.mojang.math.Matrix4fCompat;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11500
 //$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.Matrix4fAccessor;
 //$$ import top.hendrixshen.magiclib.util.MiscUtil;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Environment(EnvType.CLIENT)
 public class Matrix4fCompatImpl extends AbstractCompat<Matrix4f> implements Matrix4fCompat {

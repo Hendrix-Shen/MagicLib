@@ -1,7 +1,9 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.world.entity;
 
-import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.world.entity.LivingEntity;
+
 import top.hendrixshen.magiclib.impl.compat.minecraft.world.entity.LivingEntityCompatImpl;
 
 public interface LivingEntityCompat extends EntityCompat {

@@ -20,10 +20,23 @@
 
 package top.hendrixshen.magiclib.impl.i18n.minecraft.translation;
 
-import net.minecraft.network.chat.*;
-import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.server.level.ServerPlayer;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11802
+//$$ import net.minecraft.network.chat.MutableComponent;
+//$$ import net.minecraft.network.chat.contents.TranslatableContents;
+//#else
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.BaseComponent;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.api.fake.i18n.ServerPlayerLanguage;
@@ -33,12 +46,8 @@ import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 
 import java.util.List;
 
-//#if MC > 11802
-//$$ import net.minecraft.network.chat.contents.TranslatableContents;
-//#endif
-
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/translations/TranslationContext.java">Carpet-TIS-Addition</a>
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/translations/TranslationContext.java">Carpet-TIS-Addition</a>.
  */
 public class MagicTranslation {
     public static @NotNull MutableComponentCompat translate(MutableComponentCompat text) {
@@ -104,15 +113,19 @@ public class MagicTranslation {
                 });
     }
 
-    private static @NotNull BaseComponent forEachTranslationComponent(BaseComponent text, @NotNull String lang,
-                                                                      ComponentModifier modifier) {
+    private static @NotNull BaseComponent forEachTranslationComponent(
+            BaseComponent text, @NotNull String lang, ComponentModifier modifier) {
+        // CHECKSTYLE.OFF: OperatorWrap
+        // @formatter:off
         if (ComponentUtil.getTextContent(text) instanceof
                 //#if MC > 11802
                 //$$ TranslatableContents
                 //#else
                 TranslatableComponent
-            //#endif
+                //#endif
         ) {
+            // @formatter:on
+            // CHECKSTYLE.ON: OperatorWrap
             //#if MC > 11802
             //$$ TranslatableContents translatableText = (TranslatableContents) ComponentUtil.getTextContent(text);
             //#else

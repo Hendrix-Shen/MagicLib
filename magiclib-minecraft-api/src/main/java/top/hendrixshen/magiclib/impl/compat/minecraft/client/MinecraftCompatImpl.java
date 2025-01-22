@@ -1,11 +1,14 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.client;
 
-import com.mojang.blaze3d.platform.Window;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+
+import com.mojang.blaze3d.platform.Window;
+import net.minecraft.client.Minecraft;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 

@@ -20,27 +20,37 @@
 
 package top.hendrixshen.magiclib.util.minecraft.render;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11404
+import org.jetbrains.annotations.NotNull;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if 12100 > MC && MC > 11404
+import com.mojang.blaze3d.vertex.Tesselator;
+//#endif
 
 //#if MC > 11502
 import net.minecraft.util.FormattedCharSequence;
 //#endif
 
 //#if MC > 11404
-//#if MC < 12100
-import com.mojang.blaze3d.vertex.Tesselator;
-//#endif
 import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/RenderUtil.java">TweakerMore<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/RenderUtil.java">TweakerMore</a>.
  */
 @Environment(EnvType.CLIENT)
 public class RenderUtil {

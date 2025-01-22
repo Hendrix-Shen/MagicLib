@@ -20,22 +20,25 @@
 
 package top.hendrixshen.magiclib.mixin.minecraft.i18n;
 
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import top.hendrixshen.magiclib.api.i18n.I18n;
-import top.hendrixshen.magiclib.impl.i18n.minecraft.translation.HookTranslationManager;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11802
 //$$ import net.minecraft.network.chat.contents.TranslatableContents;
 //#else
 import net.minecraft.network.chat.TranslatableComponent;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+
+import top.hendrixshen.magiclib.api.i18n.I18n;
+import top.hendrixshen.magiclib.impl.i18n.minecraft.translation.HookTranslationManager;
 
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/mixins/translations/TranslatableTextMixin.java">Carpet-TIS-Addition</a>
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/mixins/translations/TranslatableTextMixin.java">Carpet-TIS-Addition</a>.
  */
 @Mixin(
         //#if MC > 11802
@@ -63,8 +66,8 @@ public class TranslatableText {
             )
     )
     private String applyMagicTranslation(String vanillaTranslatedFormattingString) {
-        if (HookTranslationManager.getInstance().isNamespaceRegistered(this.key) &&
-                vanillaTranslatedFormattingString.equals(this.key)) {
+        if (HookTranslationManager.getInstance().isNamespaceRegistered(this.key)
+                && vanillaTranslatedFormattingString.equals(this.key)) {
             String translated = I18n.tr(vanillaTranslatedFormattingString);
 
             if (translated != null) {

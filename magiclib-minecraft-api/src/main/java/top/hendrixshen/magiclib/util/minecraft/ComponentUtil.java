@@ -23,10 +23,16 @@ package top.hendrixshen.magiclib.util.minecraft;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.Vec3i;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableFormatException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -41,13 +47,48 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.*;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 12005
+//$$ import net.minecraft.core.Holder;
+//#endif
+
+//#if MC > 11802
+//$$ import net.minecraft.network.chat.Component;
+//$$ import net.minecraft.network.chat.MutableComponent;
+//$$ import net.minecraft.network.chat.ComponentContents;
+//$$ import net.minecraft.network.chat.contents.TranslatableContents;
+//#else
+import net.minecraft.network.chat.BaseComponent;
+//#endif
+
+//#if MC > 11701
+//$$ import net.minecraft.network.chat.FormattedText;
+//#endif
+
+//#if MC > 11502
+import net.minecraft.network.chat.TextColor;
+//#endif
+
+//#if 11900 > MC && MC > 11502
+import net.minecraft.network.chat.TranslatableComponent;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ClickEventCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.HoverEventCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.StyleCompat;
 import top.hendrixshen.magiclib.impl.compat.minecraft.world.level.dimension.DimensionWrapper;
 import top.hendrixshen.magiclib.impl.i18n.minecraft.translation.Translator;
-import top.hendrixshen.magiclib.mixin.minecraft.accessor.DyeColorAccessor;
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.TranslatableComponentAccessor;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11502
+import top.hendrixshen.magiclib.mixin.minecraft.accessor.DyeColorAccessor;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,17 +97,8 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-//#if MC > 12005
-//$$ import net.minecraft.core.Holder;
-//#endif
-
-//#if MC > 11802
-//$$ import net.minecraft.network.chat.contents.TranslatableContents;
-//$$ import net.minecraft.network.chat.contents.TranslatableFormatException;
-//#endif
-
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/utils/IdentifierUtil.java">Carpet-TIS-Addition</a>
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/utils/IdentifierUtil.java">Carpet-TIS-Addition</a>.
  */
 public class ComponentUtil {
     private static final Translator translator = new Translator("magiclib.util.minecraft");
@@ -77,6 +109,8 @@ public class ComponentUtil {
      * ----------------------------
      */
 
+    // CHECKSTYLE.OFF: Indentation
+    // @formatter:off
     public static
     //#if MC > 11802
     //$$ ComponentContents
@@ -84,6 +118,8 @@ public class ComponentUtil {
     BaseComponent
     //#endif
     getTextContent(BaseComponent text) {
+        // @formatter:on
+        // CHECKSTYLE.OFF: Indentation
         //#if MC > 11802
         //$$ return text.getContents();
         //#else
@@ -91,6 +127,8 @@ public class ComponentUtil {
         //#endif
     }
 
+    // CHECKSTYLE.OFF: Indentation
+    // @formatter:off
     public static
     //#if MC > 11802
     //$$ ComponentContents
@@ -98,6 +136,8 @@ public class ComponentUtil {
     BaseComponent
     //#endif
     getTextContent(@NotNull MutableComponentCompat mutableComponentCompat) {
+        // @formatter:on
+        // CHECKSTYLE.OFF: Indentation
         return ComponentUtil.getTextContent(mutableComponentCompat.get());
     }
 
@@ -142,7 +182,7 @@ public class ComponentUtil {
         return builder.build();
     });
 
-    public static @NotNull BaseComponent compose(Object @NotNull ... objects) {
+    public static @NotNull BaseComponent compose(@NotNull Object... objects) {
         BaseComponent literal = ComponentUtil.empty();
 
         for (Object o : objects) {
@@ -158,7 +198,7 @@ public class ComponentUtil {
         return literal;
     }
 
-    public static @NotNull MutableComponentCompat composeCompat(Object @NotNull ... objects) {
+    public static @NotNull MutableComponentCompat composeCompat(@NotNull Object... objects) {
         return MutableComponentCompat.of(ComponentUtil.compose(objects));
     }
 
@@ -186,7 +226,6 @@ public class ComponentUtil {
     public static @NotNull MutableComponentCompat emptyCompat() {
         return ComponentUtil.simpleCompat("");
     }
-
 
     public static @NotNull BaseComponent newLine() {
         return ComponentUtil.simple("\n");
@@ -252,7 +291,7 @@ public class ComponentUtil {
         return ComponentUtil.coloredCompat(ComponentUtil.simpleCompat(TextUtil.property(property, value)), value);
     }
 
-    public static @NotNull BaseComponent tr(String key, Object @NotNull ... args) {
+    public static @NotNull BaseComponent tr(String key, @NotNull Object... args) {
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof ComponentCompat) {
                 args[i] = ((ComponentCompat) args[i]).get();
@@ -262,7 +301,7 @@ public class ComponentUtil {
         return ComponentCompat.translatable(key, args);
     }
 
-    public static @NotNull MutableComponentCompat trCompat(String key, Object @NotNull ... args) {
+    public static @NotNull MutableComponentCompat trCompat(String key, @NotNull Object... args) {
         return MutableComponentCompat.of(ComponentUtil.tr(key, args));
     }
 
@@ -360,13 +399,17 @@ public class ComponentUtil {
                     dummy.magiclib$getDecomposedParts()
                             //#endif
                             .stream().map(formattedText -> {
+                                // CHECKSTYLE.OFF: OperatorWrap
+                                // @formatter:off
                                 if (formattedText instanceof
                                         //#if MC > 11802
                                         //$$ Component
                                         //#else
                                         BaseComponent
-                                    //#endif
+                                        //#endif
                                 ) {
+                                    // @formatter:on
+                                    // CHECKSTYLE.ON: OperatorWrap
                                     //#if MC > 11802
                                     //$$ return (Component) formattedText;
                                     //#else
@@ -511,7 +554,7 @@ public class ComponentUtil {
         BaseComponent entityBaseName = ComponentUtil.entityType(entity);
         BaseComponent entityDisplayName = (BaseComponent) entity.getName();
         BaseComponent hoverText = ComponentUtil.compose(ComponentUtil.translator.tr("entity_type",
-                entityBaseName, ComponentUtil.simple(EntityType.getKey(entity.getType()).toString())),
+                        entityBaseName, ComponentUtil.simple(EntityType.getKey(entity.getType()).toString())),
                 ComponentUtil.newLine(), ComponentUtil.getTeleportHint(entityDisplayName));
         return ComponentUtil.fancy(entityDisplayName, hoverText, new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
                 TextUtil.tp(entity)));
@@ -630,8 +673,8 @@ public class ComponentUtil {
 
     public static @NotNull BaseComponent blockEntity(@NotNull BlockEntity blockEntity) {
         ResourceLocation id = ResourceLocationUtil.id(blockEntity.getType());
-        return ComponentUtil.simple(id != null ? id.toString() : // vanilla block entity
-                blockEntity.getClass().getSimpleName()  // modded block entity, assuming the class name is not obfuscated
+        return ComponentUtil.simple(id != null ? id.toString()// vanilla block entity
+                : blockEntity.getClass().getSimpleName()  // modded block entity, assuming the class name is not obfuscated
         );
     }
 
@@ -727,13 +770,17 @@ public class ComponentUtil {
         // mc1.16+ doesn't make a copy of args of a TranslatableText,
         // so we need to copy that by ourselves.
         //#if MC > 11502
+        // CHECKSTYLE.OFF: OperatorWrap
+        // @formatter:off
         if (ComponentUtil.getTextContent(copied) instanceof
                 //#if MC > 11802
                 //$$ TranslatableContents
                 //#else
                 TranslatableComponent
-            //#endif
+                //#endif
         ) {
+            // @formatter:on
+            // CHECKSTYLE.OFF: OperatorWrap
             //#if MC > 11802
             //$$ TranslatableContents translatableText = (TranslatableContents) ComponentUtil.getTextContent(copied);
             //#else

@@ -1,16 +1,16 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.world.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
 import top.hendrixshen.magiclib.impl.compat.minecraft.world.entity.EntityCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
-import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 public interface EntityCompat extends Provider<Entity> {
     static @NotNull EntityCompat of(@NotNull Entity entity) {

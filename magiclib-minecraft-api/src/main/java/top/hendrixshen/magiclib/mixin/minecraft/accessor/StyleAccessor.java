@@ -1,20 +1,33 @@
 package top.hendrixshen.magiclib.mixin.minecraft.accessor;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11502
+import org.jetbrains.annotations.Nullable;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11502
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.gen.Invoker;
 //#else
 //$$ import net.minecraft.ChatFormatting;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11502
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.gen.Invoker;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Mixin(Style.class)
 public interface StyleAccessor {
@@ -54,6 +67,7 @@ public interface StyleAccessor {
     @Accessor("obfuscated")
     Boolean magiclib$getObfuscated();
 
+    // @formatter:off
     @Accessor("color")
     //#if MC > 11502
     TextColor magiclib$getColor();
@@ -62,6 +76,7 @@ public interface StyleAccessor {
     //$$ ChatFormatting magiclib$getColor();
     //#enable-remap
     //#endif
+    // @formatter:on
 
     @Accessor("hoverEvent")
     HoverEvent getHoverEvent();

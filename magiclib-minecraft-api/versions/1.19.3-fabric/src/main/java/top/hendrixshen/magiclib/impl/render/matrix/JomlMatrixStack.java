@@ -20,14 +20,16 @@
 
 package top.hendrixshen.magiclib.impl.render.matrix;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import lombok.AllArgsConstructor;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import top.hendrixshen.magiclib.api.render.matrix.MatrixStack;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/versions/1.19.3/src/main/java/me/fallenbreath/tweakermore/util/render/matrix/JomlMatrixStack.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/versions/1.19.3/src/main/java/me/fallenbreath/tweakermore/util/render/matrix/JomlMatrixStack.java">TweakerMore</a>.
  */
 @AllArgsConstructor
 public class JomlMatrixStack implements MatrixStack {
@@ -50,12 +52,12 @@ public class JomlMatrixStack implements MatrixStack {
 
     @Override
     public void translate(double x, double y, double z) {
-        this.matrixStack.translate((float)x, (float)y, (float)z);
+        this.matrixStack.translate((float) x, (float) y, (float) z);
     }
 
     @Override
     public void scale(double x, double y, double z) {
-        this.matrixStack.scale((float)x, (float)y, (float)z);
+        this.matrixStack.scale((float) x, (float) y, (float) z);
     }
 
     @Override

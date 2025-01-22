@@ -1,13 +1,17 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.client.gui;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11500
+//$$ import org.lwjgl.opengl.GL11;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.AbstractCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11502
 import net.minecraft.util.FormattedCharSequence;
 //#endif
@@ -15,15 +19,29 @@ import net.minecraft.util.FormattedCharSequence;
 //#if MC > 11404
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.renderer.MultiBufferSource;
-import top.hendrixshen.magiclib.api.fake.compat.FontAccessor;
 //#else
 //$$ import com.mojang.blaze3d.platform.GlStateManager;
 //$$ import com.mojang.blaze3d.vertex.BufferBuilder;
 //$$ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 //$$ import com.mojang.blaze3d.vertex.Tesselator;
-//$$ import org.lwjgl.opengl.GL11;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import top.hendrixshen.magiclib.api.compat.AbstractCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11502
+import top.hendrixshen.magiclib.api.fake.compat.FontAccessor;
+//#endif
+
+//#if MC < 11500
 //$$ import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Environment(EnvType.CLIENT)
 public class FontCompatImpl extends AbstractCompat<Font> implements FontCompat {

@@ -20,6 +20,8 @@
 
 package top.hendrixshen.magiclib.util.minecraft;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.Entity;
@@ -29,14 +31,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.impl.compat.minecraft.world.level.dimension.DimensionWrapper;
 
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/utils/TextUtil.java">Carpet-TIS-Addition</a>
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/utils/TextUtil.java">Carpet-TIS-Addition</a>.
  *
  * <p>
- * Minecraft related stuffs -> String
+ * Minecraft related stuffs -> String.
+ * </p>
  */
 public class TextUtil {
     public static String tp(@NotNull Vec3 pos) {

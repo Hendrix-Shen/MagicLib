@@ -1,16 +1,32 @@
 package top.hendrixshen.magiclib.impl.compat.mojang.math;
 
+import org.jetbrains.annotations.NotNull;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11902
+//$$ import org.joml.Matrix4f;
+//$$ import org.joml.Vector4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11903
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.mojang.math.Vector4fCompat;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC < 11500
 //$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.Vector4fAccessor;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Environment(EnvType.CLIENT)
 public class Vector4fCompatImpl extends AbstractCompat<Vector4f> implements Vector4fCompat {

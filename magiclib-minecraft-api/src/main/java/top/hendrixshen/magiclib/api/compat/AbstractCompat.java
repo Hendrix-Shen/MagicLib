@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.api.compat;
 
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.util.collect.Provider;
 
 import java.util.Objects;

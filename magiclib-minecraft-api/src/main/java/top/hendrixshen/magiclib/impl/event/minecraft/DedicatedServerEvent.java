@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.impl.event.minecraft;
 
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.event.Event;
 import top.hendrixshen.magiclib.api.event.minecraft.DedicatedServerListener;
 

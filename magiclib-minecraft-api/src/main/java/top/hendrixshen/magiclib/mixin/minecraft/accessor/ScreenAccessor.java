@@ -1,20 +1,24 @@
 package top.hendrixshen.magiclib.mixin.minecraft.accessor;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
-import java.util.List;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11605
 //$$ import net.minecraft.client.gui.components.Widget;
 //#else
 import net.minecraft.client.gui.components.AbstractWidget;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
+
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Screen.class)

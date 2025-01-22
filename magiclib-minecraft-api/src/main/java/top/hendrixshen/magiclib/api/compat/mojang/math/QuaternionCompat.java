@@ -1,9 +1,22 @@
 package top.hendrixshen.magiclib.api.compat.mojang.math;
 
+import org.jetbrains.annotations.NotNull;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11902
+//$$ import org.joml.Quaternionf;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11903
 import com.mojang.math.Quaternion;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.impl.compat.mojang.math.QuaternionCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 

@@ -21,16 +21,17 @@
 package top.hendrixshen.magiclib.util.minecraft;
 
 import io.netty.buffer.Unpooled;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/f407a6338363cc2ffe87c19759a36c53e1b0fec0/src/main/java/carpettisaddition/utils/NetworkUtil.java">Carpet-TIS-Addition</a>
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/f407a6338363cc2ffe87c19759a36c53e1b0fec0/src/main/java/carpettisaddition/utils/NetworkUtil.java">Carpet-TIS-Addition</a>.
  */
 public class NetworkUtil {
     /**
-     * See <a href="https://wiki.vg/NBT#Network_NBT_.28Java_Edition.29">https://wiki.vg/NBT</a>
+     * See <a href="https://wiki.vg/NBT#Network_NBT_.28Java_Edition.29">https://wiki.vg/NBT</a>.
      * for the nbt changes between mc < 1.20.2 and mc >= 1.20.2
      */
     public enum NbtStyle {
@@ -38,17 +39,16 @@ public class NetworkUtil {
         LEGACY,  // <  1.20.2
         MODERN;  // >= 1.20.2
 
-        public static final NbtStyle CURRENT = NbtStyle.
-                //#if MC >= 12002
-                //$$ MODERN;
-                //#else
-                LEGACY;
+        //#if MC >= 12002
+        //$$ public static final NbtStyle CURRENT = NbtStyle.MODERN;
+        //#else
+        public static final NbtStyle CURRENT = NbtStyle.LEGACY;
         //#endif
     }
 
     private static final int TAG_ID_COMPOUND = 0x0A;
 
-    // Notes: reader index untouched
+    // Notes: reader index untouched.
     public static NbtStyle guessNbtStyle(@NotNull FriendlyByteBuf buf) {
         int n = buf.readableBytes();
         int prevReaderIndex = buf.readerIndex();
@@ -76,13 +76,11 @@ public class NetworkUtil {
                 byte[] bytes = new byte[2];
                 buf.readBytes(bytes);
 
-                // Double 0x00 for the empty root tag name
+                // Double 0x00 for the empty root tag name.
                 if (bytes[0] == 0 && bytes[1] == 0) {
                     return NbtStyle.LEGACY;
-                }
-
-                // A valid nbt type id
-                else if (0 <= bytes[0] && bytes[0] < 13) {
+                } else if (0 <= bytes[0] && bytes[0] < 13) {
+                    // A valid nbt type id.
                     return NbtStyle.MODERN;
                 }
             }
@@ -94,10 +92,11 @@ public class NetworkUtil {
     }
 
     /**
-     * Read an NBT from a {@link FriendlyByteBuf}
+     * Read an NBT from a {@link FriendlyByteBuf}.
      *
      * <p>
      * Compatible with both mc >= 1.20.2 and mc < 1.20.2 formats.
+     * </p>
      */
     public static CompoundTag readNbt(FriendlyByteBuf buf) {
         NbtStyle nbtStyle = NetworkUtil.guessNbtStyle(buf);

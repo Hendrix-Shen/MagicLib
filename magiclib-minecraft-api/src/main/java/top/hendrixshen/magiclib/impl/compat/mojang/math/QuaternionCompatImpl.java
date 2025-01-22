@@ -1,17 +1,35 @@
 package top.hendrixshen.magiclib.impl.compat.mojang.math;
 
-import com.mojang.math.Quaternion;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.AbstractCompat;
-import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11902
+//$$ import org.joml.Quaternionf;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11903
+import com.mojang.math.Quaternion;
+//#endif
 
 //#if MC < 11500
 //$$ import net.minecraft.util.Mth;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import top.hendrixshen.magiclib.api.compat.AbstractCompat;
+import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11500
 //$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.QuaternionAccessor;
 //$$ import top.hendrixshen.magiclib.util.MiscUtil;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Environment(EnvType.CLIENT)
 public class QuaternionCompatImpl extends AbstractCompat<Quaternion> implements QuaternionCompat {
@@ -37,8 +55,8 @@ public class QuaternionCompatImpl extends AbstractCompat<Quaternion> implements 
         this.get().normalize();
         //#else
         //$$ Quaternion quaternion = this.get();
-        //$$ float k = quaternion.i() * quaternion.i() + quaternion.j() * quaternion.j() +
-        //$$         quaternion.k() * quaternion.k() + quaternion.r() * quaternion.r();
+        //$$ float k = quaternion.i() * quaternion.i() + quaternion.j() * quaternion.j()
+        //$$         + quaternion.k() * quaternion.k() + quaternion.r() * quaternion.r();
         //$$
         //$$ if (k > 1.0E-6F) {
         //$$     this.mul((float) Mth.fastInvSqrt(k));

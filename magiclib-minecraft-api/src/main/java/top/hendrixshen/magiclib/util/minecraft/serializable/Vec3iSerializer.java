@@ -1,8 +1,10 @@
 package top.hendrixshen.magiclib.util.minecraft.serializable;
 
 import com.google.gson.JsonObject;
-import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.core.Vec3i;
+
 import top.hendrixshen.magiclib.util.serializable.JsonSerializable;
 
 public class Vec3iSerializer implements JsonSerializable<Vec3i, JsonObject> {

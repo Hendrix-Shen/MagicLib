@@ -1,13 +1,19 @@
 package top.hendrixshen.magiclib.api.compat.mojang.blaze3d.vertex;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-//#if MC > 11605
-//$$ import com.mojang.blaze3d.vertex.VertexFormat;
-//#else
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11700
 import org.lwjgl.opengl.GL11;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11605
+//$$ import com.mojang.blaze3d.vertex.VertexFormat;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public interface VertexFormatCompat {

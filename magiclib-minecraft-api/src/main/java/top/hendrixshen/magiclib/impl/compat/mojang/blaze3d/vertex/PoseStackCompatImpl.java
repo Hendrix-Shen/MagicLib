@@ -1,16 +1,29 @@
 package top.hendrixshen.magiclib.impl.compat.mojang.blaze3d.vertex;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import top.hendrixshen.magiclib.api.compat.mojang.blaze3d.vertex.PoseStackCompat;
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11605
+//$$ import org.jetbrains.annotations.NotNull;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11605
 //$$ import com.mojang.blaze3d.vertex.PoseStack;
-//$$ import org.jetbrains.annotations.NotNull;
-//$$ import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 //#else
 import com.mojang.blaze3d.systems.RenderSystem;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import top.hendrixshen.magiclib.api.compat.mojang.blaze3d.vertex.PoseStackCompat;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11605
+//$$ import top.hendrixshen.magiclib.api.compat.AbstractCompat;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Environment(EnvType.CLIENT)
 public class PoseStackCompatImpl
