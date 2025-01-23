@@ -3,9 +3,11 @@ package top.hendrixshen.magiclib.impl.platform.adapter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.language.IModInfo;
+
 import top.hendrixshen.magiclib.api.platform.adapter.forge.ModListAdapter;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 

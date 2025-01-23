@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib;
 
 import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
+
 import top.hendrixshen.magiclib.impl.mixin.audit.MixinAuditor;
 import top.hendrixshen.magiclib.util.SystemUtil;
 import top.hendrixshen.magiclib.util.SystemUtil.Option;

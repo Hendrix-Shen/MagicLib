@@ -24,21 +24,11 @@
 
 package top.hendrixshen.magiclib.mixin.dev.threadtweak;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.server.level.progress.ChunkProgressListenerFactory;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.api.dependency.DependencyType;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
-import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
-import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11802
 //$$ import net.minecraft.server.Services;
 //#else
@@ -55,15 +45,31 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.ServerResources;
 import net.minecraft.world.level.storage.WorldData;
 //#endif
+
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.level.storage.LevelStorageSource;
 //#else
 //$$ import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 //$$ import net.minecraft.world.level.LevelSettings;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import top.hendrixshen.magiclib.api.dependency.DependencyType;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
+import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
 
 /**
- * Reference to <a href="https://github.com/UltimateBoomer/mc-smoothboot/blob/9a519ade89af24aa8b337dfed7d8eb8c0b62ec81/src/main/java/io/github/ultimateboomer/smoothboot/mixin/client/IntegratedServerMixin.java">SmoothBoot<a/>
+ * Reference to <a href="https://github.com/UltimateBoomer/mc-smoothboot/blob/9a519ade89af24aa8b337dfed7d8eb8c0b62ec81/src/main/java/io/github/ultimateboomer/smoothboot/mixin/client/IntegratedServerMixin.java">SmoothBoot</a>.
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.TheadTweakPredicate.class))
 @Environment(EnvType.CLIENT)

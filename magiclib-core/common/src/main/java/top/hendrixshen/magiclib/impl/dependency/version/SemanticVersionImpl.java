@@ -17,6 +17,7 @@
 package top.hendrixshen.magiclib.impl.dependency.version;
 
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.dependency.version.SemanticVersion;
 import top.hendrixshen.magiclib.api.dependency.version.Version;
 import top.hendrixshen.magiclib.api.dependency.version.VersionParsingException;
@@ -184,8 +185,8 @@ public class SemanticVersionImpl implements SemanticVersion {
             throw new RuntimeException("Tried to access negative version number component!");
         } else if (pos >= this.components.length) {
             // Repeat "x" if x-range, otherwise repeat "0".
-            return this.components[this.components.length - 1] == SemanticVersion.COMPONENT_WILDCARD ?
-                    SemanticVersion.COMPONENT_WILDCARD : 0;
+            return this.components[this.components.length - 1] == SemanticVersion.COMPONENT_WILDCARD
+                    ? SemanticVersion.COMPONENT_WILDCARD : 0;
         } else {
             return this.components[pos];
         }
@@ -227,9 +228,9 @@ public class SemanticVersionImpl implements SemanticVersion {
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(this.components) * 73 +
-                (this.prerelease != null ? this.prerelease.hashCode() * 11 : 0) +
-                (this.build != null ? this.build.hashCode() : 0);
+        return Arrays.hashCode(this.components) * 73
+                + (this.prerelease != null ? this.prerelease.hashCode() * 11 : 0)
+                + (this.build != null ? this.build.hashCode() : 0);
     }
 
     @Override

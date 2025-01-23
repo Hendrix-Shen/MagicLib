@@ -24,17 +24,13 @@
 
 package top.hendrixshen.magiclib.impl.dev.threadtweak;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.ReportedException;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.MagicLibProperties;
-import top.hendrixshen.magiclib.mixin.dev.accessor.UtilAccessor;
 
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12101
 //$$ import net.minecraft.TracingExecutor;
 //#endif
@@ -42,9 +38,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 //#if MC > 12006
 //$$ import net.minecraft.ReportType;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.MagicLibProperties;
+import top.hendrixshen.magiclib.mixin.dev.accessor.UtilAccessor;
+
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinWorkerThread;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Reference to <a ref="https://github.com/UltimateBoomer/mc-smoothboot/blob/ce5c0482e51698a424ea3d09e994d4b71a7c71b6/src/main/java/io/github/ultimateboomer/smoothboot/mixin/UtilMixin.java">SmoothBoot</a>
+ * Reference to <a href="https://github.com/UltimateBoomer/mc-smoothboot/blob/ce5c0482e51698a424ea3d09e994d4b71a7c71b6/src/main/java/io/github/ultimateboomer/smoothboot/mixin/UtilMixin.java">SmoothBoot</a>.
  */
 public class ThreadTweaker {
     public static class Default {
@@ -57,6 +65,7 @@ public class ThreadTweaker {
         public static final int mainPriority = 1;
     }
 
+    // CHECKSTYLE.OFF: Indentation
     public static @NotNull
     //#if MC > 12101
     //$$ TracingExecutor
@@ -64,6 +73,7 @@ public class ThreadTweaker {
     ExecutorService
     //#endif
     replaceForkJoinWorker(String name, int priority, int counter) {
+        // CHECKSTYLE.ON: Indentation
         AtomicInteger atomicInteger = new AtomicInteger(1);
         @SuppressWarnings("unused")
         ExecutorService executorService = new ForkJoinPool(Mth.clamp(counter, 1, 0x7fff), forkJoinPool -> {
@@ -99,17 +109,18 @@ public class ThreadTweaker {
                 //$$ new TracingExecutor(executorService);
                 //#else
                 executorService;
-                //#endif
+        //#endif
     }
 
+    // CHECKSTYLE.OFF: Indentation
     public static @NotNull
     //#if MC > 12101
     //$$ TracingExecutor
     //#else
     ExecutorService
     //#endif
-    replaceThreadWorker(
-            String name, int priority, Thread.UncaughtExceptionHandler uncaughtExceptionHandler) {
+    replaceThreadWorker(String name, int priority, Thread.UncaughtExceptionHandler uncaughtExceptionHandler) {
+        // CHECKSTYLE.ON: Indentation
         AtomicInteger atomicInteger = new AtomicInteger(1);
         @SuppressWarnings("unused")
         ExecutorService executorService = Executors.newCachedThreadPool((runnable) -> {
@@ -126,8 +137,8 @@ public class ThreadTweaker {
                 //#if MC > 12101
                 //$$ new TracingExecutor(executorService);
                 //#else
-                 executorService;
-                //#endif
+                executorService;
+        //#endif
     }
 
     public static int getBootstrapCount() {

@@ -6,15 +6,13 @@ import fi.dy.masa.malilib.gui.interfaces.IDialogHandler;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.GuiUtils;
 import lombok.Getter;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
-import top.hendrixshen.magiclib.api.i18n.I18n;
-import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetListVec3iListEdit;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetVec3iListEditEntry;
 
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.Vec3i;
+
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
@@ -24,6 +22,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 //#if MC < 11700
 import net.minecraft.client.Minecraft;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.i18n.I18n;
+import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetListVec3iListEdit;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetVec3iListEditEntry;
 
 public class GuiVec3iListEdit extends GuiListBase<Vec3i, WidgetVec3iListEditEntry, WidgetListVec3iListEdit> {
     @Getter

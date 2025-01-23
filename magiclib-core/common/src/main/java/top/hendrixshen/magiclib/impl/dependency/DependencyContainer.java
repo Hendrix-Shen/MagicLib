@@ -6,7 +6,9 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
+
 import org.spongepowered.asm.util.Annotations;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
@@ -146,23 +148,26 @@ public class DependencyContainer<T> {
 
                     if (VersionUtil.isVersionSatisfyPredicates(loadedVersion, this.versionPredicates)) {
                         return ValueContainer.of(new DependencyCheckResult(true,
-                                I18n.tr("magiclib.dependency.result.mod_id." + (this.optional ?
-                                                "optional.success.found" : "require.success"),
-                                        platform.getModName(this.value), this.value, this.versionPredicates.isEmpty() ?
-                                                "[*]" : this.versionPredicates)));
+                                I18n.tr("magiclib.dependency.result.mod_id." + (this.optional
+                                                ? "optional.success.found" : "require.success"),
+                                        platform.getModName(this.value), this.value, this.versionPredicates.isEmpty()
+                                                ? "[*]" : this.versionPredicates)));
                     }
 
                     return ValueContainer.of(new DependencyCheckResult(false,
-                            I18n.tr("magiclib.dependency.result.mod_id." + (this.optional ?
-                                            "optional.fail" : "require.fail.unsatisfied"), platform.getModName(this.value),
-                                    this.value, this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates,
+                            I18n.tr("magiclib.dependency.result.mod_id." + (this.optional
+                                            ? "optional.fail" : "require.fail.unsatisfied"),
+                                    platform.getModName(this.value),
+                                    this.value, this.versionPredicates.isEmpty()
+                                            ? "[*]" : this.versionPredicates,
                                     loadedVersion)));
                 }
 
                 return ValueContainer.of(new DependencyCheckResult(this.optional,
-                        I18n.tr("magiclib.dependency.result.mod_id." + (this.optional ?
-                                "optional.success" : "require.fail") + ".not_found", this.value,
-                                this.versionPredicates.isEmpty() ? "[*]" : this.versionPredicates)));
+                        I18n.tr("magiclib.dependency.result.mod_id." + (this.optional
+                                        ? "optional.success" : "require.fail") + ".not_found", this.value,
+                                this.versionPredicates.isEmpty()
+                                        ? "[*]" : this.versionPredicates)));
             case PLATFORM:
                 PlatformType currentPlatformType = platform.getPlatformType();
 

@@ -1,14 +1,22 @@
 //#if FABRIC
+
 package top.hendrixshen.magiclib.api.compat.modmenu;
 
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import net.minecraft.client.gui.screens.Screen;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11404
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
-//#else
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.minecraft.client.gui.screens.Screen;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11500
 //$$ import java.util.function.Function;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public interface ModMenuApiCompat extends ModMenuApi {
     ConfigScreenFactoryCompat<?> getConfigScreenFactoryCompat();
@@ -22,14 +30,17 @@ public interface ModMenuApiCompat extends ModMenuApi {
     //$$ }
     //#endif
 
+    // CHECKSTYLE.OFF: Indentation
+    // @formatter:off
     @Override
     default
     //#if MC > 11404
-    ConfigScreenFactory<? extends Screen> getModConfigScreenFactory()
+    ConfigScreenFactory<? extends Screen> getModConfigScreenFactory() {
     //#else
-    //$$ Function<Screen, ? extends Screen> getConfigScreenFactory()
+    //$$ Function<Screen, ? extends Screen> getConfigScreenFactory() {
     //#endif
-    {
+    // CHECKSTYLE.ON: Indentation
+        // @formatter:on
         return (screen) -> this.getConfigScreenFactoryCompat().create(screen);
     }
 

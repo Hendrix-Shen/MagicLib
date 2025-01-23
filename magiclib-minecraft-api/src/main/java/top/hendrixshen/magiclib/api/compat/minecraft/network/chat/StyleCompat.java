@@ -1,17 +1,21 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.network.chat;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.StyleCompatImpl;
-import top.hendrixshen.magiclib.util.collect.Provider;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11502
 import net.minecraft.network.chat.TextColor;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.StyleCompatImpl;
+import top.hendrixshen.magiclib.util.collect.Provider;
 
 public interface StyleCompat extends Provider<Style> {
     static @NotNull StyleCompat of(@NotNull Style style) {

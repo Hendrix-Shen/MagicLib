@@ -5,7 +5,9 @@ import lombok.Getter;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.tree.FieldNode;
+
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+
 import top.hendrixshen.magiclib.api.mixin.extension.jikuTsuiho.info.MixinFieldInfo;
 
 @AllArgsConstructor

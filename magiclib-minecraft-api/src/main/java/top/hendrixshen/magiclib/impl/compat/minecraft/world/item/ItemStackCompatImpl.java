@@ -1,8 +1,10 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.world.item;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.item.ItemStackCompat;
 

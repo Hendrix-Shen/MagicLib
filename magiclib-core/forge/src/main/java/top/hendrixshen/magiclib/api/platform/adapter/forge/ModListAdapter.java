@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.api.platform.adapter.forge;
 
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.language.IModInfo;
+
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.util.Collection;

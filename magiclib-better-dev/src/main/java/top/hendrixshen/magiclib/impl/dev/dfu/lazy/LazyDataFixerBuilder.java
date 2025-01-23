@@ -30,7 +30,7 @@ import com.mojang.datafixers.DataFixerBuilder;
 import java.util.concurrent.Executor;
 
 /**
- * Reference to <a href="https://github.com/astei/lazydfu/blob/385764a6fb4cf57b7a39e0ff367a704f74f12497/src/main/java/me/steinborn/lazydfu/mod/LazyDataFixerBuilder.java">LazyDFU</a>
+ * Reference to <a href="https://github.com/astei/lazydfu/blob/385764a6fb4cf57b7a39e0ff367a704f74f12497/src/main/java/me/steinborn/lazydfu/mod/LazyDataFixerBuilder.java">LazyDFU</a>.
  */
 public class LazyDataFixerBuilder extends DataFixerBuilder {
     private static final Executor NO_OP_EXECUTOR = command -> {

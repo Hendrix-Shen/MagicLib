@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.impl.dependency.DependenciesContainer;
 import top.hendrixshen.magiclib.impl.dependency.DependencyCheckResult;

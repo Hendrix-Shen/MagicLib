@@ -2,18 +2,22 @@ package top.hendrixshen.magiclib.impl.event.minecraft.render;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.world.entity.Entity;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11502
+import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.api.compat.minecraft.util.ProfilerCompat;
 import top.hendrixshen.magiclib.api.event.Event;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderEntityListener;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
 import java.util.List;
-
-//#if MC > 11502
-import com.mojang.blaze3d.vertex.PoseStack;
-//#endif
 
 public class RenderEntityEvent {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -44,7 +48,6 @@ public class RenderEntityEvent {
         @Override
         public void dispatch(@NotNull List<RenderEntityListener> listeners) {
             ProfilerCompat.get().push("Magiclib#PreEntityRenderHook");
-
 
             for (RenderEntityListener listener : listeners) {
                 listener.preRenderEntity(this.context.entity, this.context.renderContext, this.context.partialTicks);

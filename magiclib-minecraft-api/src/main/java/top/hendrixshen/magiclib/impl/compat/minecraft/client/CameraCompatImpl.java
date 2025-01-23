@@ -1,17 +1,22 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.client;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.Camera;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.AbstractCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.client.CameraCompat;
-import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
 
+import net.minecraft.client.Camera;
+
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC < 11500
 //$$ import com.mojang.math.Quaternion;
 //$$ import com.mojang.math.Vector3f;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import top.hendrixshen.magiclib.api.compat.AbstractCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.CameraCompat;
+import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
 
 @Environment(EnvType.CLIENT)
 public class CameraCompatImpl extends AbstractCompat<Camera> implements CameraCompat {

@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.impl.platform.adapter;
 
 import net.neoforged.neoforgespi.language.IModInfo;
+
 import top.hendrixshen.magiclib.api.platform.adapter.ModMetaDataAdapter;
 
 public class NeoForgeModMetaData implements ModMetaDataAdapter {

@@ -24,11 +24,11 @@ import fi.dy.masa.malilib.config.IConfigBoolean;
 import fi.dy.masa.malilib.hotkeys.IHotkey;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/options/IHotkeyWithSwitch.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/options/IHotkeyWithSwitch.java">TweakerMore</a>.
  */
 public interface HotkeyWithSwitch extends IConfigBoolean, IHotkey {
     /**
-     * If the hotkey is enabled
+     * If the hotkey is enabled.
      */
     boolean getEnableState();
 

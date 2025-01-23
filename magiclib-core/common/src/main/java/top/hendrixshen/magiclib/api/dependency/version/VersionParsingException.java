@@ -17,7 +17,7 @@
 package top.hendrixshen.magiclib.api.dependency.version;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/api/VersionParsingException.java">FabricLoader</a>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/api/VersionParsingException.java">FabricLoader</a>.
  */
 public class VersionParsingException extends RuntimeException {
     public VersionParsingException() {

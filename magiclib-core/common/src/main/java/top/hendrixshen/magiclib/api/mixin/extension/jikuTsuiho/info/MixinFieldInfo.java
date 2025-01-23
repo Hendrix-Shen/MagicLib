@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 public interface MixinFieldInfo {
     /**
-     * Get the MixinInfo
+     * Get the MixinInfo.
      *
      * @return {@link IMixinInfo} object.
      */

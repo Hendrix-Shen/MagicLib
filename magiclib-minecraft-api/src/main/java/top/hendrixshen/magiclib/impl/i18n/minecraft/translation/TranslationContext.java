@@ -21,14 +21,17 @@
 package top.hendrixshen.magiclib.impl.i18n.minecraft.translation;
 
 import lombok.Getter;
+
 import net.minecraft.network.chat.BaseComponent;
+
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/translations/TranslationContext.java">Carpet-TIS-Addition</a>
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/translations/TranslationContext.java">Carpet-TIS-Addition</a>.
  *
  * <p>
- * With this you can use {@link TranslationContext#tr(String, Object...)} freely in your target class
+ * With this you can use {@link TranslationContext#tr(String, Object...)} freely in your target class.
+ * </p>
  */
 @Getter
 public class TranslationContext {

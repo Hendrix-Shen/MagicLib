@@ -5,6 +5,7 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
+
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.lang.annotation.Annotation;

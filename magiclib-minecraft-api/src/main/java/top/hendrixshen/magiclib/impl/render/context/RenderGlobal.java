@@ -21,16 +21,29 @@
 package top.hendrixshen.magiclib.impl.render.context;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11605
 //$$ import net.minecraft.client.renderer.ShaderInstance;
-//$$ import java.util.function.Supplier;
 //#endif
 
+//#if MC > 11404
+import com.mojang.blaze3d.systems.RenderSystem;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11605
+//$$ import java.util.function.Supplier;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
  */
+//#if 11700 > MC && MC > 11404
+@SuppressWarnings("deprecation")
+//#endif
 public class RenderGlobal {
     //#if MC < 11700
     public static void disableAlphaTest() {

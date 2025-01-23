@@ -20,35 +20,47 @@
 
 package top.hendrixshen.magiclib.mixin.minecraft.i18n;
 
-import net.minecraft.network.chat.BaseComponent;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
-import top.hendrixshen.magiclib.api.fake.i18n.ServerPlayerLanguage;
-import top.hendrixshen.magiclib.impl.i18n.minecraft.translation.MagicTranslation;
-import top.hendrixshen.magiclib.util.MiscUtil;
 
-import java.util.Locale;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12001
 //$$ import net.minecraft.server.level.ClientInformation;
 //#else
 import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
 //#endif
 
-//#if MC > 11502 && MC < 11800
+//#if MC > 11802
+//$$ import net.minecraft.network.chat.MutableComponent;
+//#else
+import net.minecraft.network.chat.BaseComponent;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
+import top.hendrixshen.magiclib.api.fake.i18n.ServerPlayerLanguage;
+import top.hendrixshen.magiclib.impl.i18n.minecraft.translation.MagicTranslation;
+import top.hendrixshen.magiclib.util.MiscUtil;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if 11800 > MC && MC > 11502
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.ServerboundClientInformationPacketAccessor;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import java.util.Locale;
 
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/mixins/translations/ServerPlayerEntityMixin.java">Carpet-TIS-Addition</a>
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/mixins/translations/ServerPlayerEntityMixin.java">Carpet-TIS-Addition</a>.
  */
 @Mixin(ServerPlayer.class)
 public class ServerPlayerMixin implements ServerPlayerLanguage {
@@ -87,7 +99,7 @@ public class ServerPlayerMixin implements ServerPlayerLanguage {
     }
 
     /**
-     * This handle all Magic translation on chat messages
+     * This handle all Magic translation on chat messages.
      */
     @ModifyVariable(
             method = {

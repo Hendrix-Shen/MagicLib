@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.impl.platform.adapter;
 
 import net.fabricmc.loader.api.metadata.ModMetadata;
+
 import top.hendrixshen.magiclib.api.platform.adapter.ModMetaDataAdapter;
 
 public class FabricModMetaData implements ModMetaDataAdapter {

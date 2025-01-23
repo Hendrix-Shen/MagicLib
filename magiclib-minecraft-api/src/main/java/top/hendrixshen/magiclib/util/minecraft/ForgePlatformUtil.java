@@ -1,10 +1,10 @@
 //#if FORGE_LIKE
+//$$
 //$$ package top.hendrixshen.magiclib.util.minecraft;
 //$$
 //$$ import net.minecraft.client.gui.screens.Screen;
 //$$
-//$$ import java.util.function.UnaryOperator;
-//$$
+//$$ // CHECKSTYLE.OFF: ImportOrder
 //#if NEO_FORGE
 //$$ import net.neoforged.fml.ModList;
 //$$
@@ -24,6 +24,9 @@
 //$$ import net.minecraftforge.fmlclient.ConfigGuiHandler;
 //#endif
 //#endif
+//$$ // CHECKSTYLE.ON: ImportOrder
+//$$
+//$$ import java.util.function.UnaryOperator;
 //$$
 //$$ public class ForgePlatformUtil {
 //$$     private ForgePlatformUtil() {

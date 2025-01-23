@@ -29,7 +29,7 @@ import fi.dy.masa.malilib.hotkeys.IHotkey;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/HotkeyedResetListener.java">TweakerMore<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/HotkeyedResetListener.java">TweakerMore</a>.
  */
 public class HotkeyedBooleanResetListener extends ConfigOptionChangeListenerKeybind {
     private final IHotkey config;

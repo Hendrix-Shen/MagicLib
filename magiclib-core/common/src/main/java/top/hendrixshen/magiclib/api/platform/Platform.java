@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.api.platform;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
@@ -62,8 +63,10 @@ public interface Platform {
 
     /**
      * Check if the Mod is loaded.
+     *
      * <p>
      * In forge-like, this is only true if the module is actually loaded.
+     * </p>
      *
      * @return True if mod loaded.
      */
@@ -71,12 +74,15 @@ public interface Platform {
 
     /**
      * Check if the Mod is existed.
+     *
      * <p>
      * In fabric-like, the behaviour is consistent with
      * {@link Platform#isModLoaded(String) Platform#isModLoaded(String)}.
+     * </p>
      *
      * <p>
      * In forge-like, the mod holds when it is discovered.
+     * </p>
      *
      * @return True if mod loaded.
      */

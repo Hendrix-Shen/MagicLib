@@ -18,12 +18,24 @@ package top.hendrixshen.magiclib.impl.gui.fabric;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.util.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
+import java.util.StringJoiner;
 import java.util.function.UnaryOperator;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/gui/FabricMainWindow.java">FabricLoader<a/>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/gui/FabricMainWindow.java">FabricLoader</a>.
  */
 public final class FabricStatusTree {
     public enum FabricTreeWarningLevel {
@@ -55,7 +67,7 @@ public final class FabricStatusTree {
         /**
          * Sends the status message to the main application, remains enabled.
          */
-        CLICK_MANY;
+        CLICK_MANY
     }
 
     /**

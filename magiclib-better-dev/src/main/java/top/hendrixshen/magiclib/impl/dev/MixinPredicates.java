@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.impl.dev;
 
 import org.objectweb.asm.tree.ClassNode;
+
 import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.mixin.MixinPredicate;
 

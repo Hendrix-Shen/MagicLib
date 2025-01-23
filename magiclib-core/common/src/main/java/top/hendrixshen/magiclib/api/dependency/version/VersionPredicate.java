@@ -17,13 +17,14 @@
 package top.hendrixshen.magiclib.api.dependency.version;
 
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.impl.dependency.version.VersionPredicateParser;
 
 import java.util.Collection;
 import java.util.function.Predicate;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/api/metadata/version/VersionPredicate.java">FabricLoader</a>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/api/metadata/version/VersionPredicate.java">FabricLoader</a>.
  */
 public interface VersionPredicate extends Predicate<Version> {
     /**

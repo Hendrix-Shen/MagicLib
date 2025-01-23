@@ -5,12 +5,15 @@ import top.hendrixshen.magiclib.api.platform.DistType;
 
 /**
  * Fabric style ModInitializer
+ *
  * <p>
  * Provide a Fabric-style ModInitializer for cross-platform mod.
+ * </p>
  *
  * <p>
  * If you want to use the custom dependency checker provided by MagicLib on Forge,
  * you must implement this interface.
+ * </p>
  */
 public interface ModInitializer {
     /**

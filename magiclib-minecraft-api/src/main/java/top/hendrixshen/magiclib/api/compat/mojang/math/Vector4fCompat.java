@@ -1,10 +1,24 @@
 package top.hendrixshen.magiclib.api.compat.mojang.math;
 
+import org.jetbrains.annotations.NotNull;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11902
+//$$ import org.joml.Matrix4f;
+//$$ import org.joml.Vector4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11903
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.impl.compat.mojang.math.Vector4fCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 

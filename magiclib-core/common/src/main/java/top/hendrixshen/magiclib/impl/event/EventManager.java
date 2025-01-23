@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.event.Event;
 import top.hendrixshen.magiclib.api.event.Listener;
@@ -47,8 +48,8 @@ public class EventManager {
             listenersCopy.removeIf(Objects::isNull);
             event.dispatch(listenersCopy);
         } catch (Throwable t) {
-            throw new RuntimeException("Exception occurs while delegating events.\n  Event class: " +
-                    event.getClass().getName(), t);
+            throw new RuntimeException("Exception occurs while delegating events.\n  Event class: "
+                    + event.getClass().getName(), t);
         }
     }
 
@@ -58,8 +59,8 @@ public class EventManager {
             List<L> listeners = (List<L>) this.listeners.computeIfAbsent(type, k -> Lists.newArrayList());
             listeners.add(listener);
         } catch (Throwable t) {
-            throw new RuntimeException("Exception occurs while register event.\n  Listener class: " +
-                    listener.getClass().getName(), t);
+            throw new RuntimeException("Exception occurs while register event.\n  Listener class: "
+                    + listener.getClass().getName(), t);
         }
     }
 
@@ -74,8 +75,8 @@ public class EventManager {
 
             listeners.remove(listener);
         } catch (Throwable t) {
-            throw new RuntimeException("Exception occurs while unregister event.\n  Listener class: " +
-                    listener.getClass().getName(), t);
+            throw new RuntimeException("Exception occurs while unregister event.\n  Listener class: "
+                    + listener.getClass().getName(), t);
         }
     }
 }

@@ -4,9 +4,11 @@ import com.google.common.collect.Lists;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.language.IModInfo;
+
 import top.hendrixshen.magiclib.api.platform.adapter.forge.ModListAdapter;
 import top.hendrixshen.magiclib.util.CommonUtil;
 import top.hendrixshen.magiclib.util.ReflectionUtil;

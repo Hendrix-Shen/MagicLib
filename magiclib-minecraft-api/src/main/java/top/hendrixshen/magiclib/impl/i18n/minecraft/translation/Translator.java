@@ -22,22 +22,23 @@ package top.hendrixshen.magiclib.impl.i18n.minecraft.translation;
 
 import com.google.common.base.Strings;
 import lombok.Getter;
+
 import net.minecraft.network.chat.BaseComponent;
+
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/translations/Translator.java">Carpet-TIS-Addition</a>
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/translations/Translator.java">Carpet-TIS-Addition</a>.
  */
 @Getter
 public class Translator {
     private final String translationPath;
 
     public Translator(String translationPath) {
-        if (
-                Strings.isNullOrEmpty(translationPath) ||
-                        translationPath.startsWith(".") ||
-                        translationPath.endsWith(".")) {
+        if (Strings.isNullOrEmpty(translationPath)
+                || translationPath.startsWith(".")
+                || translationPath.endsWith(".")) {
             throw new RuntimeException("Invalid translation path: " + translationPath);
         }
 

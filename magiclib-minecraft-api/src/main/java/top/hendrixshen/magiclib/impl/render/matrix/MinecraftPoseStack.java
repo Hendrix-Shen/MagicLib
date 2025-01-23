@@ -20,17 +20,34 @@
 
 package top.hendrixshen.magiclib.impl.render.matrix;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.math.Matrix4f;
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11902
+//$$ import org.joml.Matrix4f;
+//#endif
+
+//#if MC > 11502
 import lombok.AllArgsConstructor;
-import top.hendrixshen.magiclib.api.render.matrix.MatrixStack;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11903
+import com.mojang.math.Matrix4f;
+//#endif
+
+//#if MC < 11700
+import com.mojang.blaze3d.systems.RenderSystem;
+//#endif
 
 //#if MC > 11404
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.render.matrix.MatrixStack;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/matrix/McMatrixStack.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/matrix/McMatrixStack.java">TweakerMore</a>.
  */
 //#if MC > 11502
 @AllArgsConstructor

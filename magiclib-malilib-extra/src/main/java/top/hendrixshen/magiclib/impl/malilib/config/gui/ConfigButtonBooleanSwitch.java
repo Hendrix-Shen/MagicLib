@@ -21,11 +21,12 @@
 package top.hendrixshen.magiclib.impl.malilib.config.gui;
 
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.HotkeyWithSwitch;
 import top.hendrixshen.magiclib.impl.malilib.SharedConstants;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/ConfigButtonBooleanSwitch.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/ConfigButtonBooleanSwitch.java">TweakerMore</a>.
  */
 public class ConfigButtonBooleanSwitch extends ButtonGeneric {
     private final HotkeyWithSwitch config;

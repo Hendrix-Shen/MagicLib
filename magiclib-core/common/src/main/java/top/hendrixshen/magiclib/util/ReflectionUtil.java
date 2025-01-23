@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.util;
 
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.lang.annotation.Annotation;

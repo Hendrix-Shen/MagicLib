@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.impl.malilib.config.gui.button;
 import fi.dy.masa.malilib.gui.MaLiLibIcons;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 import top.hendrixshen.magiclib.api.i18n.I18n;
 
 @AllArgsConstructor

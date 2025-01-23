@@ -1,10 +1,19 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.network.chat;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import org.jetbrains.annotations.NotNull;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11802
+//$$ import net.minecraft.network.chat.MutableComponent;
+//#else
+import net.minecraft.network.chat.BaseComponent;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.MutableComponentCompatImpl;
 
 import java.util.function.UnaryOperator;

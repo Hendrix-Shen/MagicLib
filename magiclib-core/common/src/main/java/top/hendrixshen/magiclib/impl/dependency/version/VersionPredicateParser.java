@@ -17,12 +17,23 @@
 package top.hendrixshen.magiclib.impl.dependency.version;
 
 import com.google.common.collect.Lists;
-import top.hendrixshen.magiclib.api.dependency.version.*;
 
-import java.util.*;
+import top.hendrixshen.magiclib.api.dependency.version.SemanticVersion;
+import top.hendrixshen.magiclib.api.dependency.version.Version;
+import top.hendrixshen.magiclib.api.dependency.version.VersionComparisonOperator;
+import top.hendrixshen.magiclib.api.dependency.version.VersionInterval;
+import top.hendrixshen.magiclib.api.dependency.version.VersionParsingException;
+import top.hendrixshen.magiclib.api.dependency.version.VersionPredicate;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/impl/util/version/VersionPredicateParser.java">FabricLoader</a>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/impl/util/version/VersionPredicateParser.java">FabricLoader</a>.
  */
 public class VersionPredicateParser {
     private static final VersionComparisonOperator[] OPERATORS = VersionComparisonOperator.values();

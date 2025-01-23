@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.impl.minecraft;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.util.VersionUtil;
 
 public class SharedConstants {

@@ -21,21 +21,25 @@
 package top.hendrixshen.magiclib.mixin.malilib.element;
 
 import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if FABRIC_LIKE
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 //#else
 //$$ import org.spongepowered.asm.mixin.injection.ModifyArg;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/element/WidgetDropDownListMixin.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/element/WidgetDropDownListMixin.java">TweakerMore</a>.
  */
 @Mixin(value = WidgetDropDownList.class, remap = false)
 public class WidgetDropDownListMixin {

@@ -14,8 +14,7 @@ public enum PlatformType {
     FORGE_LIKE("forge_like"),
     NEOFORGE("neoforge"),
     QUILT("quilt"),
-    UNKNOWN("unknown")
-    ;
+    UNKNOWN("unknown");
 
     private final String name;
 
@@ -50,13 +49,13 @@ public enum PlatformType {
             return true;
         }
 
-        if (type == PlatformType.FABRIC_LIKE && this.isFabricLike() ||
-                this == PlatformType.FABRIC_LIKE && type.isFabricLike()) {
+        if (type == PlatformType.FABRIC_LIKE && this.isFabricLike()
+                || this == PlatformType.FABRIC_LIKE && type.isFabricLike()) {
             return true;
         }
 
-        if (type == PlatformType.FORGE_LIKE && this.isForgeLike() ||
-                this == PlatformType.FORGE_LIKE && type.isForgeLike()) {
+        if (type == PlatformType.FORGE_LIKE && this.isForgeLike()
+                || this == PlatformType.FORGE_LIKE && type.isForgeLike()) {
             return true;
         }
 

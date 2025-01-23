@@ -24,6 +24,7 @@ import fi.dy.masa.malilib.config.IConfigOptionList;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.button.ConfigButtonOptionList;
 import fi.dy.masa.malilib.gui.interfaces.IGuiIcon;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,10 +32,11 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import top.hendrixshen.magiclib.api.malilib.config.gui.ConfigButtonOptionListHovering;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/element/ConfigButtonOptionListMixin.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/element/ConfigButtonOptionListMixin.java">TweakerMore</a>.
  */
 @Mixin(value = ConfigButtonOptionList.class, remap = false)
 public abstract class ConfigButtonOptionListMixin extends ButtonGeneric implements ConfigButtonOptionListHovering {

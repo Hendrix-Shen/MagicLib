@@ -18,15 +18,25 @@ package top.hendrixshen.magiclib.impl.gui.fabric;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.impl.gui.fabric.FabricStatusTree.*;
+
+import top.hendrixshen.magiclib.impl.gui.fabric.FabricStatusTree.FabricBasicButtonType;
+import top.hendrixshen.magiclib.impl.gui.fabric.FabricStatusTree.FabricStatusButton;
+import top.hendrixshen.magiclib.impl.gui.fabric.FabricStatusTree.FabricStatusNode;
+import top.hendrixshen.magiclib.impl.gui.fabric.FabricStatusTree.FabricStatusTab;
+import top.hendrixshen.magiclib.impl.gui.fabric.FabricStatusTree.FabricTreeWarningLevel;
 import top.hendrixshen.magiclib.util.fabric.StringUtil;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -35,12 +45,37 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTree;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/gui/FabricMainWindow.java">FabricLoader<a/>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/1a833267b54beea5eb635222df4af149f8a6a1d6/src/main/java/net/fabricmc/loader/impl/gui/FabricMainWindow.java">FabricLoader</a>.
  */
 class FabricMainWindow {
     static Icon missingIcon = null;
@@ -489,7 +524,7 @@ class FabricMainWindow {
         @Override
         public Enumeration<CustomTreeNode> children() {
             return new Enumeration<CustomTreeNode>() {
-                Iterator<CustomTreeNode> it = CustomTreeNode.this.displayedChildren.iterator();
+                final Iterator<CustomTreeNode> it = CustomTreeNode.this.displayedChildren.iterator();
 
                 @Override
                 public boolean hasMoreElements() {

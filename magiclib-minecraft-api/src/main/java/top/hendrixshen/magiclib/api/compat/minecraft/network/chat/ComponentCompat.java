@@ -1,7 +1,20 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.network.chat;
 
-import net.minecraft.network.chat.*;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11802
+//$$ import net.minecraft.network.chat.MutableComponent;
+//#else
+import net.minecraft.network.chat.BaseComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.ComponentCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 

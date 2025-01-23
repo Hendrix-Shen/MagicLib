@@ -1,15 +1,18 @@
 package top.hendrixshen.magiclib.impl.malilib.config.gui.widget;
 
 import fi.dy.masa.malilib.gui.widgets.WidgetContainer;
+
 import net.minecraft.core.Vec3i;
 
-import java.util.function.BiConsumer;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import java.util.function.BiConsumer;
 
 public class WidgetVec3iTupleEdit extends WidgetContainer {
     protected final WidgetVec3iEditEntry firstVec3iEdit;
@@ -25,7 +28,6 @@ public class WidgetVec3iTupleEdit extends WidgetContainer {
         this.secondVec3iEdit = new WidgetVec3iEditEntry(x, y + 22, width, height, initialSecondValue, defaultSecondValue, 2);
         this.valueApplier = valueApplier;
     }
-
 
     public boolean wasConfigModified() {
         return this.firstVec3iEdit.wasConfigModified() || this.secondVec3iEdit.wasConfigModified();
@@ -45,6 +47,8 @@ public class WidgetVec3iTupleEdit extends WidgetContainer {
 
     @Override
     public void render(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             int mouseX,
             int mouseY,
             boolean selected
@@ -53,31 +57,45 @@ public class WidgetVec3iTupleEdit extends WidgetContainer {
             //#elseif MC > 11502
             , PoseStack poseStackOrGuiGraphics
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         this.firstVec3iEdit.render(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 mouseX,
                 mouseY,
                 selected
                 //#if MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
         this.secondVec3iEdit.render(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 mouseX,
                 mouseY,
                 selected
                 //#if MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
 
         super.render(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 mouseX,
                 mouseY,
                 selected
                 //#if MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
     }
 
@@ -91,14 +109,14 @@ public class WidgetVec3iTupleEdit extends WidgetContainer {
 
     @Override
     public boolean onKeyTypedImpl(int keyCode, int scanCode, int modifiers) {
-        return this.firstVec3iEdit.onKeyTypedImpl(keyCode, scanCode, modifiers) ||
-                this.secondVec3iEdit.onKeyTypedImpl(keyCode, scanCode, modifiers);
+        return this.firstVec3iEdit.onKeyTypedImpl(keyCode, scanCode, modifiers)
+                || this.secondVec3iEdit.onKeyTypedImpl(keyCode, scanCode, modifiers);
     }
 
     @Override
     protected boolean onCharTypedImpl(char charIn, int modifiers) {
-        return this.firstVec3iEdit.onCharTypedImpl(charIn, modifiers) ||
-                this.secondVec3iEdit.onCharTypedImpl(charIn, modifiers);
+        return this.firstVec3iEdit.onCharTypedImpl(charIn, modifiers)
+                || this.secondVec3iEdit.onCharTypedImpl(charIn, modifiers);
     }
 
     protected static class WidgetVec3iEditEntry extends WidgetVec3iEdit {

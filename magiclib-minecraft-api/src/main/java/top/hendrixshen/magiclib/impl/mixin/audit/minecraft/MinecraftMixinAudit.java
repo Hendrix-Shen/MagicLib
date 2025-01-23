@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.impl.mixin.audit.minecraft;
 
 import lombok.Getter;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.event.minecraft.DedicatedServerListener;
 import top.hendrixshen.magiclib.api.event.minecraft.MinecraftListener;

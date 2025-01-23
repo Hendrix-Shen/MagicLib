@@ -1,26 +1,36 @@
 package top.hendrixshen.magiclib.mixin.minecraft.event.render;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.impl.event.EventManager;
-import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderEntityEvent;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12101
 //$$ import net.minecraft.client.renderer.entity.state.EntityRenderState;
-//$$ import org.spongepowered.asm.mixin.Unique;
-//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //#endif
 
 //#if MC > 11404
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 12101
+//$$ import org.spongepowered.asm.mixin.Unique;
+//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.impl.event.EventManager;
+import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderEntityEvent;
 
 @Environment(EnvType.CLIENT)
 @Mixin(EntityRenderer.class)
@@ -32,7 +42,7 @@ public abstract class EntityRendererMixin {
     //$$ private float magiclib$tickDelta;
     //#endif
 
-    @Inject(method = "render",at = @At("HEAD"))
+    @Inject(method = "render", at = @At("HEAD"))
     private void preRenderEntity(
             //#if MC > 12101
             //$$ EntityRenderState entityRenderState,

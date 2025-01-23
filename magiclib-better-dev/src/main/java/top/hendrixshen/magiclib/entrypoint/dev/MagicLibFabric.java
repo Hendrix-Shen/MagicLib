@@ -1,4 +1,5 @@
 //#if FABRIC
+
 package top.hendrixshen.magiclib.entrypoint.dev;
 
 import net.fabricmc.api.ClientModInitializer;

@@ -26,15 +26,12 @@ import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
-import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
 
-import java.util.function.Function;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if FABRIC_LIKE
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
@@ -44,9 +41,16 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 //$$ import org.spongepowered.asm.mixin.injection.ModifyArg;
 //$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
+import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
+
+import java.util.function.Function;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/panel/dropDownListRedraw/WidgetListBaseMixin.java">TweakerMore<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/panel/dropDownListRedraw/WidgetListBaseMixin.java">TweakerMore</a>.
  */
 @Mixin(value = WidgetConfigOption.class, remap = false)
 public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
@@ -58,8 +62,8 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @Unique
     private boolean magiclib$isMagicGui() {
-        return this.parent instanceof WidgetListConfigOptions &&
-                ((WidgetListConfigOptionsAccessor) this.parent).magiclib$getParent() instanceof MagicConfigGui;
+        return this.parent instanceof WidgetListConfigOptions
+                && ((WidgetListConfigOptionsAccessor) this.parent).magiclib$getParent() instanceof MagicConfigGui;
     }
 
     //#if FABRIC_LIKE

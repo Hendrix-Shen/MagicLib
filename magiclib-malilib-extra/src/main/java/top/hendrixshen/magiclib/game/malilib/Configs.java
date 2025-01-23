@@ -3,8 +3,10 @@ package top.hendrixshen.magiclib.game.malilib;
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
-import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.core.Vec3i;
+
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
@@ -15,7 +17,21 @@ import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
 import top.hendrixshen.magiclib.api.malilib.config.option.EnumOptionEntry;
 import top.hendrixshen.magiclib.impl.malilib.SharedConstants;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigFactory;
-import top.hendrixshen.magiclib.impl.malilib.config.option.*;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBoolean;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBooleanHotkeyed;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigColor;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigDouble;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigHotkey;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigHotkeyWithSwitch;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigInteger;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigOptionList;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigOptionListHotkeyed;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigString;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigStringList;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigVec3i;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigVec3iList;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigVec3iTuple;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigVec3iTupleList;
 import top.hendrixshen.magiclib.impl.malilib.debug.MagicLibDebugHelper;
 
 public class Configs {

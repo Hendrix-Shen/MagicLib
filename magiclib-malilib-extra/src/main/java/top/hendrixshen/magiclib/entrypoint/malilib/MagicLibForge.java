@@ -1,7 +1,9 @@
 //#if FORGE
+//$$
 //$$ package top.hendrixshen.magiclib.entrypoint.malilib;
 //$$
 //$$ import net.minecraftforge.fml.common.Mod;
+//$$
 //$$ import top.hendrixshen.magiclib.api.entrypoint.ModInitializer;
 //$$ import top.hendrixshen.magiclib.game.malilib.MalilibStuffsInitializer;
 //$$

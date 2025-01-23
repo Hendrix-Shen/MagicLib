@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.impl.mixin;
 
 import org.spongepowered.asm.mixin.MixinEnvironment;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyCheckException;
 import top.hendrixshen.magiclib.api.mixin.EmptyMixinPlugin;

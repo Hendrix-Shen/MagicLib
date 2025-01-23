@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.util.serializable;
 
 import com.google.gson.JsonElement;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.MagicLib;
 
 public interface JsonSerializable<O, J extends JsonElement> {

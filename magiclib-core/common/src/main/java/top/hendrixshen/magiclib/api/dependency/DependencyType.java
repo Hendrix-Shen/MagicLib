@@ -21,8 +21,7 @@ public enum DependencyType {
      * Test if the predicate satisfies the condition.
      * (see {@link top.hendrixshen.magiclib.util.collect.SimplePredicate SimplePredicate}).
      */
-    PREDICATE
-    ;
+    PREDICATE;
 
     public boolean matches(DependencyType type) {
         return type == this;

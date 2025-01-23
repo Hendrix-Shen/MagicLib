@@ -21,6 +21,7 @@
 package top.hendrixshen.magiclib.mixin.malilib.config;
 
 import fi.dy.masa.malilib.config.options.ConfigBase;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,12 +29,13 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/476a25a5458a7058bdd402683b1fd833b189ae60/src/main/java/me/fallenbreath/tweakermore/mixins/core/config/ConfigBaseMixin.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/476a25a5458a7058bdd402683b1fd833b189ae60/src/main/java/me/fallenbreath/tweakermore/mixins/core/config/ConfigBaseMixin.java">TweakerMore</a>.
  */
 @Mixin(value = ConfigBase.class, remap = false)
 public class ConfigBaseMixin {

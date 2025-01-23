@@ -2,11 +2,10 @@ package top.hendrixshen.magiclib.util;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.version.SemanticVersion;
-import top.hendrixshen.magiclib.api.dependency.version.Version;
 import top.hendrixshen.magiclib.api.dependency.version.VersionParsingException;
-import top.hendrixshen.magiclib.api.dependency.version.VersionPredicate;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.impl.dependency.version.VersionPredicateParser;
 

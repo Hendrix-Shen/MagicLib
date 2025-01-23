@@ -1,14 +1,17 @@
 package top.hendrixshen.magiclib.mixin.malilib.dev;
 
 import fi.dy.masa.malilib.gui.GuiTextFieldGeneric;
-import net.minecraft.client.gui.components.EditBox;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.client.gui.components.EditBox;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;

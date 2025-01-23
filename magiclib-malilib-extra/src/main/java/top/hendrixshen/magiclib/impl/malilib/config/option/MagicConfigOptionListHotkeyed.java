@@ -8,16 +8,18 @@ import fi.dy.masa.malilib.hotkeys.IKeybind;
 import fi.dy.masa.malilib.hotkeys.KeyAction;
 import fi.dy.masa.malilib.hotkeys.KeybindMulti;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.malilib.config.option.OptionListHotkeyed;
 import top.hendrixshen.magiclib.util.minecraft.InfoUtil;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/TweakerMore">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/TweakerMore">TweakerMore</a>.
  *
  * <p>
- * OptionList with a hotkey to cycle the value
+ * OptionList with a hotkey to cycle the value.
+ * </p>
  */
 public class MagicConfigOptionListHotkeyed extends MagicConfigOptionList implements OptionListHotkeyed {
     protected final IKeybind keybind;

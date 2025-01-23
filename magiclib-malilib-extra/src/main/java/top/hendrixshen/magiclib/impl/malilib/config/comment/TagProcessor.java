@@ -26,6 +26,7 @@ package top.hendrixshen.magiclib.impl.malilib.config.comment;
 import com.google.common.collect.ImmutableMap;
 import fi.dy.masa.malilib.gui.GuiBase;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.impl.malilib.config.ConfigContainer;
 
@@ -34,7 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/1459fbdcaaa47fa1c505c0629a4722710d1f975d/src/main/java/me/fallenbreath/tweakermore/config/comment/TagProcessor.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/1459fbdcaaa47fa1c505c0629a4722710d1f975d/src/main/java/me/fallenbreath/tweakermore/config/comment/TagProcessor.java">TweakerMore</a>.
  */
 public class TagProcessor {
     private static final Map<String, Transformer> TRANSFORMERS = ImmutableMap.of(

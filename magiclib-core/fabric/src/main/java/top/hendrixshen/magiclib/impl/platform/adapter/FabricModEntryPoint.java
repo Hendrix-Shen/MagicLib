@@ -2,19 +2,25 @@ package top.hendrixshen.magiclib.impl.platform.adapter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.DedicatedServerModInitializer;
-import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.api.ModInitializer;
+
 import top.hendrixshen.magiclib.api.platform.adapter.ModEntryPointAdapter;
 import top.hendrixshen.magiclib.impl.platform.adapter.internal.ModMetaDataLite;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 import top.hendrixshen.magiclib.util.mixin.MixinUtil;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class FabricModEntryPoint implements ModEntryPointAdapter {
@@ -40,10 +46,9 @@ public class FabricModEntryPoint implements ModEntryPointAdapter {
     @Override
     public Collection<ClassNode> getMagicEntryPoints() {
         return this.entryPoints.stream()
-                .filter(classNode ->
-                        classNode.interfaces.contains(Type.getType(ModInitializer.class).getInternalName()) ||
-                                classNode.interfaces.contains(Type.getType(ClientModInitializer.class).getInternalName()) ||
-                                classNode.interfaces.contains(Type.getType(DedicatedServerModInitializer.class).getInternalName()))
+                .filter(classNode -> classNode.interfaces.contains(Type.getType(ModInitializer.class).getInternalName())
+                        || classNode.interfaces.contains(Type.getType(ClientModInitializer.class).getInternalName())
+                        || classNode.interfaces.contains(Type.getType(DedicatedServerModInitializer.class).getInternalName()))
                 .collect(Collectors.toList());
     }
 

@@ -3,11 +3,18 @@ package top.hendrixshen.magiclib.impl.mixin.extension;
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.*;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.AnnotationNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
+
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.transformer.ext.ITargetClassContext;
 import org.spongepowered.asm.mixin.transformer.meta.MixinMerged;
 import org.spongepowered.asm.util.Annotations;
+
 import top.hendrixshen.magiclib.api.mixin.annotation.MagicInit;
 import top.hendrixshen.magiclib.api.mixin.annotation.SuperInit;
 import top.hendrixshen.magiclib.api.mixin.annotation.ThisInit;

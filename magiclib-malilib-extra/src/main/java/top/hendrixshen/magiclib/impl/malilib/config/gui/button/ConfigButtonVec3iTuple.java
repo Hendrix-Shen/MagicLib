@@ -6,6 +6,7 @@ import fi.dy.masa.malilib.gui.interfaces.IDialogHandler;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
 import org.jetbrains.annotations.Nullable;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTuple;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3iTupleEdit;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
@@ -42,9 +43,12 @@ public class ConfigButtonVec3iTuple extends ButtonGeneric {
     @Override
     public void updateDisplayString() {
         this.displayString = StringUtils.getClampedDisplayStringRenderlen(
-                Collections.singletonList(
-                        "<" + this.config.getFirstX() + ", " + this.config.getFirstY() + ", " + this.config.getFirstZ() + ">, " +
-                        "<" + this.config.getSecondX() + ", " + this.config.getSecondY() + ", " + this.config.getSecondZ() + ">"
+                Collections.singletonList("<"
+                        + this.config.getFirstX() + ", " + this.config.getFirstY() + ", " + this.config.getFirstZ()
+                        + ">, "
+                        + "<"
+                        + this.config.getSecondX() + ", " + this.config.getSecondY() + ", " + this.config.getSecondZ()
+                        + ">"
                 ),
                 this.width - 10, "(", ")");
     }

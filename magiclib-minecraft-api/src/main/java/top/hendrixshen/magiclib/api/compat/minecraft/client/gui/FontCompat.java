@@ -1,15 +1,12 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.client.gui;
 
-import com.mojang.math.Matrix4f;
 import lombok.Getter;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.impl.compat.minecraft.client.gui.FontCompatImpl;
-import top.hendrixshen.magiclib.util.collect.Provider;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11605
 //$$ import com.google.common.collect.ImmutableBiMap;
 //#endif
@@ -19,8 +16,16 @@ import net.minecraft.util.FormattedCharSequence;
 //#endif
 
 //#if MC > 11404
+import com.mojang.math.Matrix4f;
 import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import top.hendrixshen.magiclib.impl.compat.minecraft.client.gui.FontCompatImpl;
+import top.hendrixshen.magiclib.util.collect.Provider;
 
 @Environment(EnvType.CLIENT)
 public interface FontCompat extends Provider<Font> {

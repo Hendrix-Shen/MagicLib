@@ -4,8 +4,10 @@ import com.google.gson.JsonElement;
 import fi.dy.masa.malilib.config.options.ConfigBase;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.core.Vec3i;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3i;
 import top.hendrixshen.magiclib.util.minecraft.serializable.Vec3iSerializer;
@@ -46,9 +48,9 @@ public class MagicConfigVec3i extends ConfigBase<MagicConfigVec3i> implements Co
 
     @Override
     public boolean isModified() {
-        return this.x != this.defaultVec3iValue.getX() ||
-                this.y != this.defaultVec3iValue.getY() ||
-                this.z != this.defaultVec3iValue.getZ();
+        return this.x != this.defaultVec3iValue.getX()
+                || this.y != this.defaultVec3iValue.getY()
+                || this.z != this.defaultVec3iValue.getZ();
     }
 
     @Override

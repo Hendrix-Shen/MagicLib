@@ -1,7 +1,9 @@
 package top.hendrixshen.magiclib.impl.mixin.audit;
 
 import org.jetbrains.annotations.NotNull;
+
 import org.spongepowered.asm.mixin.MixinEnvironment;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.MagicLibProperties;
 
@@ -16,8 +18,8 @@ public class MixinAuditor {
     }
 
     public static void trigger(@NotNull String trigger) {
-        if (trigger.equalsIgnoreCase(MagicLibProperties.MIXIN_AUDITOR_TRIGGER.getStringValue()) &&
-                MixinAuditor.triggered.compareAndSet(false, true)) {
+        if (trigger.equalsIgnoreCase(MagicLibProperties.MIXIN_AUDITOR_TRIGGER.getStringValue())
+                && MixinAuditor.triggered.compareAndSet(false, true)) {
             MixinAuditor.runMixinAudit();
         }
     }
@@ -51,7 +53,6 @@ public class MixinAuditor {
                 break;
             default:
                 throw new IllegalStateException();
-
         }
 
         if (exit) {

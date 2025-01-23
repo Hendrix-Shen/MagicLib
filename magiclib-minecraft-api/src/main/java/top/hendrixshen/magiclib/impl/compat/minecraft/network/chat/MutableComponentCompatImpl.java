@@ -1,9 +1,18 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.network.chat;
 
-import net.minecraft.network.chat.BaseComponent;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import org.jetbrains.annotations.NotNull;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11802
+//$$ import net.minecraft.network.chat.MutableComponent;
+//#else
+import net.minecraft.network.chat.BaseComponent;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.StyleCompat;
@@ -15,8 +24,7 @@ public class MutableComponentCompatImpl extends ComponentCompatImpl implements M
 
     @NotNull
     @Override
-    public
-    BaseComponent get() {
+    public BaseComponent get() {
         return (BaseComponent) super.get();
     }
 

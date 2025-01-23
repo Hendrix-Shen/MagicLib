@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import fi.dy.masa.malilib.config.options.ConfigColor;
 import fi.dy.masa.malilib.util.Color4f;
 import lombok.Getter;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 
 import java.util.Objects;

@@ -20,24 +20,27 @@
 
 package top.hendrixshen.magiclib.impl.render.context;
 
-import com.mojang.math.Matrix4f;
-import net.minecraft.client.gui.GuiComponent;
-import top.hendrixshen.magiclib.api.render.context.RenderContext;
-import top.hendrixshen.magiclib.api.render.matrix.MatrixStack;
 import org.jetbrains.annotations.NotNull;
 
-//#if MC > 12004
-//$$ import top.hendrixshen.magiclib.impl.render.matrix.JomlMatrixStack;
-//$$ import org.joml.Matrix4fStack;
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11902
+//$$ import org.joml.Matrix4f;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
-//#if MC > 11502
-//$$ import com.mojang.blaze3d.vertex.PoseStack;
-//$$ import org.jetbrains.annotations.NotNull;
+import net.minecraft.client.gui.GuiComponent;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11903
+import com.mojang.math.Matrix4f;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.render.context.RenderContext;
+import top.hendrixshen.magiclib.api.render.matrix.MatrixStack;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderContextImpl.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderContextImpl.java">TweakerMore</a>.
  */
 public class RenderContextImpl implements RenderContext {
     //#if MC > 11904

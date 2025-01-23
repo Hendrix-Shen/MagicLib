@@ -1,10 +1,12 @@
 package top.hendrixshen.magiclib.api.compat.minecraft;
 
-import java.util.UUID;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11502
 import net.minecraft.Util;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import java.util.UUID;
 
 public interface UtilCompat {
     //#if MC > 11502

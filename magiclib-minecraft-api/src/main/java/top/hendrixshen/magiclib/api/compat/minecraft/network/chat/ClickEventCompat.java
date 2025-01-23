@@ -1,7 +1,9 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.network.chat;
 
-import net.minecraft.network.chat.ClickEvent;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.network.chat.ClickEvent;
+
 import top.hendrixshen.magiclib.impl.compat.minecraft.network.chat.ClickEventCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 

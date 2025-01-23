@@ -2,17 +2,21 @@ package top.hendrixshen.magiclib.mixin.minecraft.event;
 
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.server.packs.resources.ResourceManager;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11904
+import net.minecraft.client.resources.language.LanguageInfo;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import top.hendrixshen.magiclib.impl.event.EventManager;
 import top.hendrixshen.magiclib.impl.event.minecraft.LanguageManagerEvent.LanguageReloadEvent;
 import top.hendrixshen.magiclib.impl.event.minecraft.LanguageManagerEvent.LanguageSelectEvent;
-
-//#if MC < 11904
-import net.minecraft.client.resources.language.LanguageInfo;
-//#endif
 
 @Mixin(LanguageManager.class)
 public class LanguageManagerMixin {

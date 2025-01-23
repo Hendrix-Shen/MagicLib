@@ -1,14 +1,26 @@
 package top.hendrixshen.magiclib.api.fake.compat;
 
-import com.mojang.math.Matrix4f;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11902
+//$$ import org.joml.Matrix4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.FormattedCharSequence;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11903
 //$$ import net.minecraft.client.gui.Font;
 //#endif
+
+//#if MC < 11903
+import com.mojang.math.Matrix4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public interface FontAccessor {
@@ -46,6 +58,8 @@ public interface FontAccessor {
     //#endif
 
     int magiclib$drawInternal(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             String text,
             float x,
             float y,
@@ -64,9 +78,13 @@ public interface FontAccessor {
             //#if MC > 12101
             //$$ , boolean inverseDepth
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     );
 
     int magiclib$drawInternal(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             FormattedCharSequence formattedCharSequence,
             float x,
             float y,
@@ -84,5 +102,7 @@ public interface FontAccessor {
             //#if MC > 12101
             //$$ , boolean inverseDepth
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     );
 }

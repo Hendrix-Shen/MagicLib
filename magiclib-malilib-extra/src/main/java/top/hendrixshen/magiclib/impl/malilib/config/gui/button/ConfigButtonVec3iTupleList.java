@@ -6,6 +6,7 @@ import fi.dy.masa.malilib.gui.interfaces.IDialogHandler;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
 import org.jetbrains.annotations.Nullable;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3iTupleListEdit;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
@@ -42,9 +43,12 @@ public class ConfigButtonVec3iTupleList extends ButtonGeneric {
     @Override
     public void updateDisplayString() {
         this.displayString = StringUtils.getClampedDisplayStringRenderlen(this.config.getVec3iTupleList().stream()
-                .map(tuple ->
-                        "(<" + tuple.getFirstVec3i().getX() + ", " + tuple.getFirstVec3i().getY() + ", " + tuple.getFirstVec3i().getZ() + "), " + "(" +
-                        "(<" + tuple.getSecondVec3i().getX() + ", " + tuple.getSecondVec3i().getY() + ", " + tuple.getSecondVec3i().getZ() + ">)")
+                .map(tuple -> "(<"
+                        + tuple.getFirstVec3i().getX() + ", " + tuple.getFirstVec3i().getY() + ", " + tuple.getFirstVec3i().getZ()
+                        + ">, "
+                        + "<"
+                        + tuple.getSecondVec3i().getX() + ", " + tuple.getSecondVec3i().getY() + ", " + tuple.getSecondVec3i().getZ()
+                        + ">)")
                 .collect(Collectors.toList()), this.width - 10, "[ ", " ]");
     }
 }

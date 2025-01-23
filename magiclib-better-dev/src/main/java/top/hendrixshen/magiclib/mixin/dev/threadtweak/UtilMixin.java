@@ -25,10 +25,16 @@
 package top.hendrixshen.magiclib.mixin.dev.threadtweak;
 
 import net.minecraft.Util;
-import org.spongepowered.asm.mixin.*;
+
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
@@ -38,14 +44,16 @@ import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
 
 import java.util.concurrent.Executor;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12101
 //$$ import net.minecraft.TracingExecutor;
 //#else
 import java.util.concurrent.ExecutorService;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 /**
- * Reference to <a href="https://github.com/UltimateBoomer/mc-smoothboot/blob/9a519ade89af24aa8b337dfed7d8eb8c0b62ec81/src/main/java/io/github/ultimateboomer/smoothboot/mixin/UtilMixin.java">SmoothBoot<a/>
+ * Reference to <a href="https://github.com/UltimateBoomer/mc-smoothboot/blob/9a519ade89af24aa8b337dfed7d8eb8c0b62ec81/src/main/java/io/github/ultimateboomer/smoothboot/mixin/UtilMixin.java">SmoothBoot</a>.
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.TheadTweakPredicate.class))
 @Mixin(Util.class)

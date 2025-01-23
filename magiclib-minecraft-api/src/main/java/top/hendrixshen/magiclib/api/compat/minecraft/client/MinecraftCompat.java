@@ -1,10 +1,13 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.client;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.platform.Window;
+import net.minecraft.client.Minecraft;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.impl.compat.minecraft.client.MinecraftCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 

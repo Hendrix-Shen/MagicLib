@@ -1,8 +1,10 @@
 package top.hendrixshen.magiclib.impl.platform.adapter;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.platform.adapter.ModContainerAdapter;
 import top.hendrixshen.magiclib.api.platform.adapter.ModEntryPointAdapter;
 import top.hendrixshen.magiclib.api.platform.adapter.ModMetaDataAdapter;

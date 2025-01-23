@@ -23,12 +23,28 @@ package top.hendrixshen.magiclib.impl.malilib.config;
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
+
 import net.minecraft.core.Vec3i;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
-import top.hendrixshen.magiclib.impl.malilib.config.option.*;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBoolean;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBooleanHotkeyed;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigColor;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigDouble;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigHotkey;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigHotkeyWithSwitch;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigInteger;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigOptionList;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigOptionListHotkeyed;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigString;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigStringList;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigVec3i;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigVec3iList;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigVec3iTuple;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigVec3iTupleList;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/ConfigFactory.java">TweakerMore<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/ConfigFactory.java">TweakerMore</a>.
  */
 public class MagicConfigFactory {
     private final String identifier;

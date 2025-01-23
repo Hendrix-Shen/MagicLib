@@ -5,13 +5,12 @@ import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.interfaces.IDialogHandler;
 import fi.dy.masa.malilib.render.RenderUtils;
 import lombok.Getter;
-import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
-import top.hendrixshen.magiclib.api.i18n.I18n;
-import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3i;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetVec3iEdit;
 
+import net.minecraft.client.gui.screens.Screen;
+
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
@@ -21,6 +20,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 //#if MC < 11700
 import net.minecraft.client.Minecraft;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.i18n.I18n;
+import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3i;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetVec3iEdit;
 
 public class GuiVec3iEdit extends GuiBase {
     @Getter

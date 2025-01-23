@@ -21,25 +21,17 @@
 package top.hendrixshen.magiclib.impl.render;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.GlStateManager;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.render.context.RenderContext;
-import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
-import top.hendrixshen.magiclib.util.minecraft.PositionUtil;
-import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
-//#if MC < 11700 && MC > 11502
+// CHECKSTYLE.OFF: ImportOrder
+//#if 11700 > MC && MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
@@ -53,7 +45,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 //#if MC > 11502
 import net.minecraft.util.FormattedCharSequence;
-import top.hendrixshen.magiclib.util.minecraft.render.TextRenderUtil;
 //#endif
 
 //#if MC > 11404
@@ -61,9 +52,26 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.render.context.RenderContext;
+import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
+import top.hendrixshen.magiclib.util.minecraft.PositionUtil;
+import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11502
+import top.hendrixshen.magiclib.util.minecraft.render.TextRenderUtil;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderer.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderer.java">TweakerMore</a>.
  */
 public class TextRenderer {
     public static final double DEFAULT_FONT_SCALE = 0.025;
@@ -117,12 +125,16 @@ public class TextRenderer {
 
     /**
      * Draw given lines with centered format.
+     *
      * <p>
      * Reference: {@link net.minecraft.client.renderer.debug.DebugRenderer#renderFloatingText(String, double,
      * double, double, int, float, boolean, float, boolean)}
+     * </p>
+     *
      * <p>
      * Note:
      * <li>shadow=true + seeThrough=false might result in weird rendering.</li>
+     * </p>
      */
     @SuppressWarnings("UnnecessaryLocalVariable")
     public void render() {
@@ -211,9 +223,9 @@ public class TextRenderer {
             }
             //#else
             //$$ if (this.shadow) {
-            //$$ 	mc.font.drawShadow(holder.text, textX, textY, this.color);
+            //$$     mc.font.drawShadow(holder.text, textX, textY, this.color);
             //$$ } else {
-            //$$ 	mc.font.draw(holder.text, textX, textY, this.color);
+            //$$     mc.font.draw(holder.text, textX, textY, this.color);
             //$$ }
             //#endif
         }
@@ -388,7 +400,6 @@ public class TextRenderer {
         }
 
         //#if MC > 11502
-        @Contract("_ -> new")
         public static @NotNull TextHolder of(String text) {
             return TextHolder.of(TextRenderUtil.string2formattedCharSequence(text));
         }

@@ -21,12 +21,13 @@
 package top.hendrixshen.magiclib.api.malilib.config.option;
 
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
+
 import top.hendrixshen.magiclib.api.i18n.I18n;
 
 import java.util.Arrays;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/options/listentries/EnumOptionEntry.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/options/listentries/EnumOptionEntry.java">TweakerMore</a>.
  */
 public interface EnumOptionEntry extends IConfigOptionListEntry {
     String name();

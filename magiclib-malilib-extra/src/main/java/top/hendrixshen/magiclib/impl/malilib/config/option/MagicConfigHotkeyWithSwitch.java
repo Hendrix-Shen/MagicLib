@@ -4,11 +4,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import fi.dy.masa.malilib.util.JsonUtils;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.option.HotkeyWithSwitch;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/TweakerMore">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/235a9e13127dd537aa3b646c42f8eb267a9020cf/src/main/java/me/fallenbreath/tweakermore/config/options/TweakerMoreConfigHotkeyWithSwitch.java">TweakerMore</a>.
  */
 public class MagicConfigHotkeyWithSwitch extends MagicConfigHotkey implements HotkeyWithSwitch {
     private final boolean defaultEnableState;

@@ -2,20 +2,28 @@ package top.hendrixshen.magiclib.impl.event.minecraft.render;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import net.minecraft.client.multiplayer.ClientLevel;
 import org.jetbrains.annotations.NotNull;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 12004
+//$$ import org.joml.Matrix4fStack;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.minecraft.client.multiplayer.ClientLevel;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if 12005 > MC && MC > 11502
+import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.api.compat.minecraft.util.ProfilerCompat;
 import top.hendrixshen.magiclib.api.event.Event;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderLevelListener;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
 import java.util.List;
-
-//#if MC > 12004
-//$$ import org.joml.Matrix4fStack;
-//#elseif MC > 11502
-import com.mojang.blaze3d.vertex.PoseStack;
-//#endif
 
 public class RenderLevelEvent {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -25,6 +33,7 @@ public class RenderLevelEvent {
         private final float partialTicks;
 
         public static @NotNull LevelRenderContext of(
+                // CHECKSTYLE.OFF: Indentation
                 ClientLevel level,
                 //#if MC > 12004
                 //$$ @NotNull Matrix4fStack matrixStack,
@@ -32,6 +41,7 @@ public class RenderLevelEvent {
                 @NotNull PoseStack matrixStack,
                 //#endif
                 float partialTicks
+                // CHECKSTYLE.ON: Indentation
         ) {
             return new LevelRenderContext(level, RenderContext.createWorldRenderContext(
                     //#if MC > 11502

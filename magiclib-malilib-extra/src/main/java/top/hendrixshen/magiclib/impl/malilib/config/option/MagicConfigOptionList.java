@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import lombok.Getter;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 
 @Getter

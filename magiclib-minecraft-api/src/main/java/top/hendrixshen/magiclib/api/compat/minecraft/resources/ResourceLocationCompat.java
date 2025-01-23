@@ -1,7 +1,9 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.resources;
 
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.resources.ResourceLocation;
+
 import top.hendrixshen.magiclib.util.collect.Provider;
 
 public interface ResourceLocationCompat extends Provider<ResourceLocation> {

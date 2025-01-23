@@ -1,13 +1,27 @@
 package top.hendrixshen.magiclib.mixin.minecraft.compat;
 
-import com.mojang.math.Matrix4f;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11902
+//$$ import org.joml.Matrix4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.FormattedCharSequence;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11903
+import com.mojang.math.Matrix4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+
 import top.hendrixshen.magiclib.api.fake.compat.FontAccessor;
 
 @Environment(EnvType.CLIENT)
@@ -38,6 +52,8 @@ public abstract class FontMixin implements FontAccessor {
 
     @Shadow
     protected abstract int drawInternal(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             FormattedCharSequence formattedCharSequence,
             float x,
             float y,
@@ -55,6 +71,8 @@ public abstract class FontMixin implements FontAccessor {
             //#if MC > 12101
             //$$ , boolean inverseDepth
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     );
 
     //#if MC > 12101
@@ -64,6 +82,8 @@ public abstract class FontMixin implements FontAccessor {
 
     @Override
     public int magiclib$drawInternal(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             String text,
             float x,
             float y,
@@ -82,6 +102,8 @@ public abstract class FontMixin implements FontAccessor {
             //#if MC > 12101
             //$$ , boolean inverseDepth
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         //#if MC > 12101
         //$$ if (bidirectional) {
@@ -110,6 +132,8 @@ public abstract class FontMixin implements FontAccessor {
 
     @Override
     public int magiclib$drawInternal(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             FormattedCharSequence formattedCharSequence,
             float x,
             float y,
@@ -127,8 +151,12 @@ public abstract class FontMixin implements FontAccessor {
             //#if MC > 12101
             //$$ , boolean inverseDepth
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         return this.drawInternal(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 formattedCharSequence,
                 x,
                 y,
@@ -142,6 +170,8 @@ public abstract class FontMixin implements FontAccessor {
                 //#if MC > 12101
                 //$$ , inverseDepth
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
     }
 }

@@ -21,7 +21,7 @@
 package top.hendrixshen.magiclib.api.mixin.checker;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/conditional-mixin/blob/88cbb739c375925b134a464428a1f67ee3bd74e2/common/src/main/java/me/fallenbreath/conditionalmixin/api/checker/RestrictionChecker.java">conditional mixin<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/conditional-mixin/blob/88cbb739c375925b134a464428a1f67ee3bd74e2/common/src/main/java/me/fallenbreath/conditionalmixin/api/checker/RestrictionChecker.java">conditional mixin</a>.
  */
 public interface MixinDependencyChecker {
     boolean check(String targetClassName, String mixinClassName);

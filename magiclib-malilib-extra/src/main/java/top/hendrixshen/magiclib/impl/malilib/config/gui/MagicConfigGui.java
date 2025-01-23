@@ -34,6 +34,15 @@ import fi.dy.masa.malilib.interfaces.IStringValue;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#elseif MC > 11502
+import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
@@ -45,19 +54,18 @@ import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetSearchBarAccessor;
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 import top.hendrixshen.magiclib.util.serializable.JsonSaveAble;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-//#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11502
-import com.mojang.blaze3d.vertex.PoseStack;
-//#endif
-
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/TweakerMoreConfigGui.java">TweakerMore<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/TweakerMoreConfigGui.java">TweakerMore</a>.
  */
 public class MagicConfigGui extends GuiConfigsBase {
     private final String identifier;
@@ -166,10 +174,11 @@ public class MagicConfigGui extends GuiConfigsBase {
                                                           @NotNull Consumer<SelectorDropDownList<T>> postProcessor) {
         int y = this.getListY() + 3;
         int height = 16;
-        int maxTextWidth = entries.stream().
-                filter(Objects::nonNull).
-                mapToInt(e -> this.getStringWidth(e.getStringValue())).
-                max().orElse(-1);
+        int maxTextWidth = entries.stream()
+                .filter(Objects::nonNull)
+                .mapToInt(e -> this.getStringWidth(e.getStringValue()))
+                .max()
+                .orElse(-1);
         // constant 20 reference: fi.dy.masa.malilib.gui.widgets.WidgetDropDownList.getRequiredWidth
         int width = Math.max(maxTextWidth, 40) + 20;
         SelectorDropDownList<T> dd = new SelectorDropDownList<>(x - width, y, width, height,
@@ -224,8 +233,8 @@ public class MagicConfigGui extends GuiConfigsBase {
             }
 
             if (this.isValidConfig(config) && config.isSatisfied()) {
-                if (config.getConfig() instanceof IConfigResettable &&
-                        ((IConfigResettable) config.getConfig()).isModified()) {
+                if (config.getConfig() instanceof IConfigResettable
+                        && ((IConfigResettable) config.getConfig()).isModified()) {
                     modified++;
                 }
 
@@ -298,13 +307,20 @@ public class MagicConfigGui extends GuiConfigsBase {
             //#elseif MC > 11502
             PoseStack poseStackOrGuiGraphics,
             //#endif
-            int mouseX, int mouseY
+            int mouseX,
+            int mouseY
     ) {
         this.hoveringWidgets.forEach(widget -> widget.render(
-                mouseX, mouseY, widget.isMouseOver(mouseX, mouseY)
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
+                mouseX,
+                mouseY,
+                widget.isMouseOver(mouseX, mouseY)
                 //#if MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         ));
     }
 

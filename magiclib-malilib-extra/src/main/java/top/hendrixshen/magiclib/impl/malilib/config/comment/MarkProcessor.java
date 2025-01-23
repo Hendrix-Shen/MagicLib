@@ -27,7 +27,7 @@ import fi.dy.masa.malilib.gui.GuiBase;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/1459fbdcaaa47fa1c505c0629a4722710d1f975d/src/main/java/me/fallenbreath/tweakermore/config/comment/MarkProcessor.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/1459fbdcaaa47fa1c505c0629a4722710d1f975d/src/main/java/me/fallenbreath/tweakermore/config/comment/MarkProcessor.java">TweakerMore</a>.
  */
 public class MarkProcessor {
     public static String processMarks(String text) {

@@ -12,8 +12,7 @@ public enum DistType {
     /**
      * Match server distribution type.
      */
-    SERVER,
-    ;
+    SERVER;
 
     public boolean matches(DistType type) {
         return this == DistType.ANY || type == DistType.ANY || type == this;

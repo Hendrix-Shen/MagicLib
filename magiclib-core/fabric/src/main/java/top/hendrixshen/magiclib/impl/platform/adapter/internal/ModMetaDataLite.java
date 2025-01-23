@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonToken;
 import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.util.FileUtil;
 

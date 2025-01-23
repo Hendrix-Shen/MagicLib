@@ -20,22 +20,29 @@
 
 package top.hendrixshen.magiclib.impl.render;
 
-import com.mojang.math.Matrix4f;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
-import java.util.Objects;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC < 11500
 //$$ import com.mojang.blaze3d.platform.GlStateManager;
 //$$ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 //#endif
 
+//#if MC > 11404
+import com.mojang.math.Matrix4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.render.context.RenderContext;
+
+import java.util.Objects;
+
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/InWorldPositionTransformer.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/InWorldPositionTransformer.java">TweakerMore</a>.
  */
 public class CameraPositionTransformer {
     private final Vec3 pos;
@@ -51,7 +58,7 @@ public class CameraPositionTransformer {
     }
 
     /**
-     * Pose stack of renderContext will be pushed
+     * Pose stack of renderContext will be pushed.
      */
     public void apply(@NotNull RenderContext context) {
         this.context = context;
@@ -76,7 +83,7 @@ public class CameraPositionTransformer {
     }
 
     /**
-     * Pose stack of renderContext will be popped
+     * Pose stack of renderContext will be popped.
      */
     public void restore() {
         if (this.context == null) {

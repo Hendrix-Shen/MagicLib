@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Reference to <a href="https://github.com/SpongePowered/Mixin/blob/1f34ee908abd27ba18b4a5a0de608ca2de316060/src/main/java/org/spongepowered/asm/mixin/MixinEnvironment.java"><a/>
+ * Reference to <a href="https://github.com/SpongePowered/Mixin/blob/1f34ee908abd27ba18b4a5a0de608ca2de316060/src/main/java/org/spongepowered/asm/mixin/MixinEnvironment.java"></a>.
  */
 public class SystemUtil {
     private static final List<Option> PROPERTIES = Lists.newArrayList();
@@ -46,29 +46,29 @@ public class SystemUtil {
 
     public static final class Option {
         /**
-         * Parent option to this option, if non-null then this option is enabled if
+         * Parent option to this option, if non-null then this option is enabled if.
          */
         @Getter
         private final Option parent;
         /**
-         * Inheritance behaviour for this option
+         * Inheritance behaviour for this option.
          */
         private final InheritType inheritType;
         /**
-         * Java property name
+         * Java property name.
          */
         @Getter
         private final String property;
         /**
-         * Default value for string properties
+         * Default value for string properties.
          */
         private final String defaultValue;
         /**
-         * Whether this property is boolean or not
+         * Whether this property is boolean or not.
          */
         private final boolean isFlag;
         /**
-         * Number of parents
+         * Number of parents.
          */
         @Getter
         private final int depth;

@@ -1,11 +1,14 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.client.gui.screen;
 
+import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.Screen;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.components.Widget;
-import net.minecraft.client.gui.screens.Screen;
-import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.impl.compat.minecraft.client.gui.screen.ScreenCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
