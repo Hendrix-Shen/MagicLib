@@ -31,6 +31,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/gradle.properties', '**/*.accesswidener', 'settings.json') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+          lookup-only: true
       - name: Init with gradle
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
