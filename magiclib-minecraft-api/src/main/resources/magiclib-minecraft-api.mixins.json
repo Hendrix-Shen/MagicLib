@@ -9,7 +9,9 @@
   },
   "client": [
     "accessor.GuiGraphicsAccessor",
+    "accessor.LegacyPackResourcesAdapterAccessor",
     "accessor.Matrix4fAccessor",
+    "accessor.PackResourcesAdapterV4Accessor",
     "accessor.QuaternionAccessor",
     "accessor.ScreenAccessor",
     "accessor.StringSplitterAccessor",
