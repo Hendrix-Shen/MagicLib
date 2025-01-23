@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with TweakerMore.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 package top.hendrixshen.magiclib.api.malilib.config.gui;
 
 import com.google.common.collect.Lists;
@@ -29,10 +30,11 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/ConfigButtonOptionListHovering.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/ConfigButtonOptionListHovering.java">TweakerMore</a>.
  *
  * <p>
  * See class {@link fi.dy.masa.malilib.gui.button.ConfigButtonOptionList} for the implementation details.
+ * </p>
  */
 public interface ConfigButtonOptionListHovering {
     void magiclib$setEnableValueHovering();
@@ -49,9 +51,7 @@ public interface ConfigButtonOptionListHovering {
         List<IConfigOptionListEntry> entries = Lists.newArrayList();
         boolean allEnum = true;
 
-        for (IConfigOptionListEntry entry = head;
-             (cnt == 0 || entry != head) && cnt < MAX_ENTRIES && entry != null;
-             entry = entry.cycle(true)) {
+        for (IConfigOptionListEntry entry = head; (cnt == 0 || entry != head) && cnt < MAX_ENTRIES && entry != null; entry = entry.cycle(true)) {
             cnt++;
             entries.add(entry);
             allEnum &= entry instanceof Enum<?>;

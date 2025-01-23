@@ -5,6 +5,7 @@ import fi.dy.masa.malilib.hotkeys.IHotkeyCallback;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 
 @Getter
@@ -34,8 +35,8 @@ public class MagicConfigHotkey extends ConfigHotkey implements MagicIConfigBase 
     }
 
     /**
-     * Use this instead of {@code getKeybind().setCallback} directly
-     * So the config statistic can be updated correctly
+     * Use this instead of {@code getKeybind().setCallback} directly.
+     * So the config statistic can be updated correctly.
      */
     public void setCallBack(@Nullable IHotkeyCallback callback) {
         if (callback == null || !this.getMagicContainer().shouldStatisticHotkey()) {

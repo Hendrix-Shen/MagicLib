@@ -1,19 +1,23 @@
 package top.hendrixshen.magiclib.impl.malilib.config.restriction;
 
 import fi.dy.masa.malilib.util.restrictions.UsageRestriction;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 12101
+//$$ import net.minecraft.core.Holder;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
 
 import java.util.List;
 import java.util.Set;
-
-//#if MC > 12101
-//$$ import net.minecraft.core.Holder;
-//#endif
 
 public class EntityTypeRestriction extends UsageRestriction<EntityType<?>> {
     @Override
@@ -24,10 +28,11 @@ public class EntityTypeRestriction extends UsageRestriction<EntityType<?>> {
             try {
                 rl = ResourceLocationCompat.parse(name);
             } catch (Exception ignore) {
+                // ignore.
             }
 
-            EntityType<?> entity = rl != null ?
-                    Registry.ENTITY_TYPE.get(rl)
+            EntityType<?> entity = rl != null
+                    ? Registry.ENTITY_TYPE.get(rl)
                     //#if MC > 12101
                     //$$ .map(Holder.Reference::value).orElse(null)
                     //#endif

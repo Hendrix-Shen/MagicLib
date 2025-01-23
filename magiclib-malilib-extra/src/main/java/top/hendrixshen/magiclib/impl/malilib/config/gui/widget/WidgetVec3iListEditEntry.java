@@ -7,18 +7,22 @@ import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
 import fi.dy.masa.malilib.render.RenderUtils;
 import lombok.AllArgsConstructor;
+
 import net.minecraft.core.Vec3i;
-import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.button.ListEditEntryButtonType;
 
-import java.util.Collections;
-import java.util.List;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.button.ListEditEntryButtonType;
+
+import java.util.Collections;
+import java.util.List;
 
 public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
     protected final WidgetListVec3iListEdit parent;
@@ -156,7 +160,6 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
                 this.parent.refreshEntries();
             }
         }
-
     }
 
     private boolean canBeMoved(boolean down) {
@@ -166,6 +169,8 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
 
     @Override
     public void render(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             int mouseX,
             int mouseY,
             boolean selected
@@ -174,6 +179,8 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
             //#elseif MC > 11502
             , PoseStack poseStackOrGuiGraphics
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -184,27 +191,39 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
         }
 
         this.drawSubWidgets(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 mouseX,
                 mouseY
                 //#if MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
         this.vec3iEntry.render(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 mouseX,
                 mouseY,
                 selected
                 //#if MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
         super.render(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 mouseX,
                 mouseY,
                 selected
                 //#if MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
     }
 

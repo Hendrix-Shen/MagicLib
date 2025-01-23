@@ -5,8 +5,10 @@ import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.util.JsonUtils;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.core.Vec3i;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTuple;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList.Entry;
@@ -34,10 +36,10 @@ public class MagicConfigVec3iTuple extends MagicConfigVec3i implements ConfigVec
 
     @Override
     public boolean isModified() {
-        return super.isModified() ||
-                this.secondX != this.defaultSecondVec3iValue.getX() ||
-                this.secondY != this.defaultSecondVec3iValue.getY() ||
-                this.secondZ != this.defaultSecondVec3iValue.getZ();
+        return super.isModified()
+                || this.secondX != this.defaultSecondVec3iValue.getX()
+                || this.secondY != this.defaultSecondVec3iValue.getY()
+                || this.secondZ != this.defaultSecondVec3iValue.getZ();
     }
 
     @Override

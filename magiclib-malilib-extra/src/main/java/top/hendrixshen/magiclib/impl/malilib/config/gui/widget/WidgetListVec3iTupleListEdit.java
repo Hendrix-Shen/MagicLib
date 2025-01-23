@@ -2,6 +2,7 @@ package top.hendrixshen.magiclib.impl.malilib.config.gui.widget;
 
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
 import lombok.Getter;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3iTupleListEdit;
 
@@ -41,8 +42,8 @@ public class WidgetListVec3iTupleListEdit extends WidgetListConfigOptionsBase<Co
         ConfigVec3iTupleList config = this.parent.getConfig();
 
         if (listIndex >= 0 && listIndex < config.getVec3iTupleList().size()) {
-            ConfigVec3iTupleList.Entry defaultValue = config.getDefaultVec3iTupleList().size() > listIndex ?
-                    config.getDefaultVec3iTupleList().get(listIndex) : ConfigVec3iTupleList.Entry.ZERO;
+            ConfigVec3iTupleList.Entry defaultValue = config.getDefaultVec3iTupleList().size() > listIndex
+                    ? config.getDefaultVec3iTupleList().get(listIndex) : ConfigVec3iTupleList.Entry.ZERO;
             return new WidgetVec3iTupleListEditEntry(x, y, this.browserEntryWidth, this.browserEntryHeight, listIndex,
                     isOdd, config.getVec3iTupleList().get(listIndex), defaultValue, this);
         } else {

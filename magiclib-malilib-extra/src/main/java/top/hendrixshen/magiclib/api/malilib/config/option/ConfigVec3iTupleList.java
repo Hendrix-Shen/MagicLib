@@ -2,7 +2,11 @@ package top.hendrixshen.magiclib.api.malilib.config.option;
 
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigResettable;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
 import net.minecraft.core.Vec3i;
 
 import java.util.List;

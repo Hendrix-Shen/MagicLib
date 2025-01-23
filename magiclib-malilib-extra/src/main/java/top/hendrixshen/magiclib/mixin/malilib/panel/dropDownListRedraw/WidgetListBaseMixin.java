@@ -24,27 +24,31 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.gui.widgets.WidgetListEntryBase;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
-import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
-import top.hendrixshen.magiclib.util.MiscUtil;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
+import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
+import top.hendrixshen.magiclib.util.MiscUtil;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/panel/dropDownListRedraw/WidgetListBaseMixin.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/panel/dropDownListRedraw/WidgetListBaseMixin.java">TweakerMore</a>.
  */
 @Mixin(value = WidgetListBase.class, remap = false)
 public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBase<TYPE>> {
-    // To make sure it only once gets rendered
+    // To make sure it only once gets rendered.
     @Unique
     private boolean magiclib$shouldRenderMagicConfigGuiDropDownList = false;
 
@@ -61,6 +65,8 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
 
     @Unique
     private void magiclib$drawMagicConfigGuiDropDownListAgain(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             //#if MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
             //#elseif MC > 11502
@@ -68,17 +74,23 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
             //#endif
             int mouseX,
             int mouseY
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         if (this.magiclib$isMagicConfigGui() && this.magiclib$shouldRenderMagicConfigGuiDropDownList) {
             GuiConfigsBase guiConfig = ((WidgetListConfigOptionsAccessor) this).magiclib$getParent();
 
             // Render it again to make sure it's on the top but below hovering widgets.
             ((MagicConfigGui) guiConfig).renderDropDownList(
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
                     //#if MC > 11600
                     poseStackOrGuiGraphics,
                     //#endif
                     mouseX,
                     mouseY
+                    // CHECKSTYLE.ON: SeparatorWrap
+                    // CHECKSTYLE.ON: NoWhitespaceBefore
             );
 
             this.magiclib$shouldRenderMagicConfigGuiDropDownList = false;
@@ -99,6 +111,8 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
     @Inject(
             method = "drawContents",
             at = @At(
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
                     value = "INVOKE",
                     //#if MC > 11502
                     target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLcom/mojang/blaze3d/vertex/PoseStack;)V"
@@ -108,6 +122,8 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
                     //#else
                     //$$ target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZ)V"
                     //#endif
+                    // CHECKSTYLE.ON: SeparatorWrap
+                    // CHECKSTYLE.ON: NoWhitespaceBefore
             )
     )
     private void drawMagicConfigGuiDropDownListAgainBeforeHover(

@@ -1,6 +1,7 @@
 package top.hendrixshen.magiclib.api.malilib.config.option;
 
 import fi.dy.masa.malilib.config.IConfigResettable;
+
 import net.minecraft.core.Vec3i;
 
 public interface ConfigVec3i extends IConfigResettable, MagicIConfigBase {

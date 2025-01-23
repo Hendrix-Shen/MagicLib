@@ -24,24 +24,29 @@ import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
 import fi.dy.masa.malilib.interfaces.IStringValue;
 import fi.dy.masa.malilib.render.RenderUtils;
 import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.api.i18n.I18n;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Consumer;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
+import top.hendrixshen.magiclib.api.i18n.I18n;
+
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11701
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
- * Reference to <a href=https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/SelectorDropDownList.java">TweakerMore</a>
+ * Reference to <a href=https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/gui/SelectorDropDownList.java">TweakerMore</a>.
  *
  * <p>
  * Compares to WidgetDropDownList:
@@ -53,8 +58,11 @@ import top.hendrixshen.magiclib.api.render.context.RenderContext;
  * <li>Supports custom null entry display.</li>
  * <li>Supports hover text, display hover text when the drop-down list is not opened.</li>
  * <li>Fix text render depth issue in MC 1.18+.</li>
+ * </p>
+ *
  * <p>
  * See {@link top.hendrixshen.magiclib.mixin.malilib.element.WidgetDropDownListMixin}
+ * </p>
  */
 public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDownList<T> {
     @Nullable
@@ -118,10 +126,12 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
     }
 
     /**
-     * Hover text rendering logic reference: {@link fi.dy.masa.malilib.gui.button.ButtonBase#postRenderHovered}
+     * Hover text rendering logic reference: {@link fi.dy.masa.malilib.gui.button.ButtonBase#postRenderHovered}.
      */
     @Override
     public void postRenderHovered(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             int mouseX,
             int mouseY,
             boolean selected
@@ -130,22 +140,34 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
             //#elseif MC > 11502
             , PoseStack guiGraphicsOrMatrixStack
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         super.postRenderHovered(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 mouseX,
                 mouseY,
                 selected
                 //#if MC > 11502
                 , guiGraphicsOrMatrixStack
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
 
         if (this.hoverText != null && this.isMouseOver(mouseX, mouseY) && !this.isOpen) {
             RenderUtils.drawHoverText(
-                    mouseX, mouseY, Collections.singletonList(this.hoverText.getStringValue())
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
+                    mouseX,
+                    mouseY,
+                    Collections.singletonList(this.hoverText.getStringValue())
                     //#if MC > 11502
                     , guiGraphicsOrMatrixStack
                     //#endif
+                    // CHECKSTYLE.ON: SeparatorWrap
+                    // CHECKSTYLE.ON: NoWhitespaceBefore
             );
             //#if MC > 11404
             RenderUtils.disableDiffuseLighting();

@@ -20,23 +20,51 @@
 
 package top.hendrixshen.magiclib.mixin.malilib.panel;
 
-import fi.dy.masa.malilib.config.*;
+import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.config.IConfigOptionListEntry;
+import fi.dy.masa.malilib.config.IConfigResettable;
+import fi.dy.masa.malilib.config.IHotkeyTogglable;
 import fi.dy.masa.malilib.config.gui.ConfigOptionChangeListenerButton;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
-import fi.dy.masa.malilib.gui.button.*;
+import fi.dy.masa.malilib.gui.button.ButtonBase;
+import fi.dy.masa.malilib.gui.button.ButtonGeneric;
+import fi.dy.masa.malilib.gui.button.ConfigButtonBoolean;
+import fi.dy.masa.malilib.gui.button.ConfigButtonKeybind;
+import fi.dy.masa.malilib.gui.button.ConfigButtonOptionList;
 import fi.dy.masa.malilib.gui.interfaces.IKeybindConfigGui;
-import fi.dy.masa.malilib.gui.widgets.*;
-import fi.dy.masa.malilib.hotkeys.*;
+import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
+import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
+import fi.dy.masa.malilib.gui.widgets.WidgetKeybindSettings;
+import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
+import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
+import fi.dy.masa.malilib.hotkeys.IHotkey;
+import fi.dy.masa.malilib.hotkeys.IHotkeyCallback;
+import fi.dy.masa.malilib.hotkeys.IKeybind;
+import fi.dy.masa.malilib.hotkeys.KeyAction;
+import fi.dy.masa.malilib.hotkeys.KeybindMulti;
+import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.*;
+
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.gui.ConfigButtonOptionListHovering;
-import top.hendrixshen.magiclib.api.malilib.config.option.*;
+import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3i;
+import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
+import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTuple;
+import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
+import top.hendrixshen.magiclib.api.malilib.config.option.HotkeyWithSwitch;
+import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
+import top.hendrixshen.magiclib.api.malilib.config.option.OptionListHotkeyed;
 import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.ConfigButtonBooleanSwitch;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.HotkeyedBooleanResetListener;
@@ -51,7 +79,7 @@ import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAc
 import java.util.Objects;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/6b126681084526b295e268330ca9053dda3b63a9/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/panel/WidgetListConfigOptionMixin.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/6b126681084526b295e268330ca9053dda3b63a9/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/panel/WidgetListConfigOptionMixin.java">TweakerMore</a>.
  */
 @Mixin(value = WidgetConfigOption.class, remap = false)
 public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
@@ -86,8 +114,8 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @Unique
     private boolean magiclib$isMagicGui() {
-        return this.parent instanceof WidgetListConfigOptions &&
-                ((WidgetListConfigOptionsAccessor) this.parent).magiclib$getParent() instanceof MagicConfigGui;
+        return this.parent instanceof WidgetListConfigOptions
+                && ((WidgetListConfigOptionsAccessor) this.parent).magiclib$getParent() instanceof MagicConfigGui;
     }
 
     //#if MC > 11701
@@ -236,7 +264,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     }
 
     /**
-     * For regular IHotkey
+     * For regular IHotkey.
      */
     @Unique
     private void magiclib$addButtonAndHotkeyWidgets(int x, int y, int configWidth, @NotNull IHotkey config) {
@@ -279,8 +307,8 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     }
 
     /**
-     * Common logic used for IHotkeyTogglable, IHotkeyWithSwitch and IOptionListHotkeyed
-     * whose layouts all are [some button] [keybind button] [reset button]
+     * Common logic used for {@code IHotkeyTogglable}, {@code IHotkeyWithSwitch} and {@code IOptionListHotkeyed},
+     * whose layouts all are [some button] [keybind button] [reset button].
      */
     @Unique
     private void magiclib$addValueWithKeybindWidgets(int x, int y, int configWidth,
@@ -382,8 +410,8 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     }
 
     /**
-     * Stolen from malilib 1.18 v0.11.4
-     * to make IHotkeyWithSwitch and IOptionListHotkeyed option panel works
+     * Stolen from malilib 1.18 v0.11.4,
+     * to make IHotkeyWithSwitch and IOptionListHotkeyed option panel works,
      * and also to make compact ConfigBooleanHotkeyed option panel works in <1.18.
      */
     @Inject(
@@ -422,25 +450,25 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     private void specialJudgeCustomConfigBooleanHotkeyed(CallbackInfoReturnable<Boolean> cir) {
         IConfigBase config = this.wrapper.getConfig();
 
-        if (!(config instanceof MagicIConfigBase) ||
-                !GlobalConfigManager.getInstance().hasConfig((MagicIConfigBase) config)) {
+        if (!(config instanceof MagicIConfigBase)
+                || !GlobalConfigManager.getInstance().hasConfig((MagicIConfigBase) config)) {
             return;
         }
 
         if (config instanceof HotkeyWithSwitch) {
             HotkeyWithSwitch cfg = (HotkeyWithSwitch) config;
             IKeybind keybind = cfg.getKeybind();
-            cir.setReturnValue(this.magiclib$initialBoolean != cfg.getEnableState() ||
-                    !Objects.equals(this.initialStringValue, keybind.getStringValue()) ||
-                    !Objects.equals(this.initialKeybindSettings, keybind.getSettings()));
+            cir.setReturnValue(this.magiclib$initialBoolean != cfg.getEnableState()
+                    || !Objects.equals(this.initialStringValue, keybind.getStringValue())
+                    || !Objects.equals(this.initialKeybindSettings, keybind.getSettings()));
         }
 
         if (config instanceof OptionListHotkeyed) {
             OptionListHotkeyed cfg = (OptionListHotkeyed) config;
             IKeybind keybind = cfg.getKeybind();
-            cir.setReturnValue(!Objects.equals(this.magiclib$initialOptionListEntry, cfg.getOptionListValue()) ||
-                    !Objects.equals(this.initialStringValue, keybind.getStringValue()) ||
-                    !Objects.equals(this.initialKeybindSettings, keybind.getSettings()));
+            cir.setReturnValue(!Objects.equals(this.magiclib$initialOptionListEntry, cfg.getOptionListValue())
+                    || !Objects.equals(this.initialStringValue, keybind.getStringValue())
+                    || !Objects.equals(this.initialKeybindSettings, keybind.getSettings()));
         }
     }
 }

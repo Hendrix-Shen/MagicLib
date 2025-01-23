@@ -1,4 +1,5 @@
 //#if FABRIC
+
 package top.hendrixshen.magiclib.game.malilib;
 
 import top.hendrixshen.magiclib.api.compat.modmenu.ModMenuApiCompat;

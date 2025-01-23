@@ -8,6 +8,7 @@ import fi.dy.masa.malilib.hotkeys.IKeybindManager;
 import fi.dy.masa.malilib.hotkeys.IKeybindProvider;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.MagicLibProperties;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
@@ -18,7 +19,11 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MagicConfigManagerImpl implements MagicConfigManager, IKeybindProvider {
@@ -68,8 +73,8 @@ public class MagicConfigManagerImpl implements MagicConfigManager, IKeybindProvi
                 MagicLib.getLogger().warn("Config name is empty (field name = {})!", field.getName());
             }
 
-            if (MagicLibProperties.MALILIB_CHECK_CONFIG_NAME_CONSISTENCY.getBooleanValue() &&
-                    !configContainer.getName().equals(field.getName())) {
+            if (MagicLibProperties.MALILIB_CHECK_CONFIG_NAME_CONSISTENCY.getBooleanValue()
+                    && !configContainer.getName().equals(field.getName())) {
                 MagicLib.getLogger().warn("Config name {} does not match field name {}!",
                         configContainer.getName(), field.getName());
             }

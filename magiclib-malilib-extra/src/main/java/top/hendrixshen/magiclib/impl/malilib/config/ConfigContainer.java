@@ -28,6 +28,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.annotation.Statistic;
@@ -47,7 +48,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/TweakerMoreOption.java">TweakerMore<a/>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/TweakerMoreOption.java">TweakerMore</a>.
  */
 public class ConfigContainer {
     private final Config configAnnotation;
@@ -198,17 +199,16 @@ public class ConfigContainer {
             List<String> lines = this.statistic.getDisplayLines();
 
             if (Configs.debug.getBooleanValue()) {
-                comment += "\n" + GuiBase.TXT_GRAY + I18n.tr("magiclib.config.gui.statistic.title") + GuiBase.TXT_RST
-                        + "\n" + Joiner.on('\n').join(lines.stream().
-                        map(line -> GuiBase.TXT_DARK_GRAY + " " + GuiBase.TXT_GRAY + line + GuiBase.TXT_RST).
-                        toArray()
+                comment += "\n" + GuiBase.TXT_GRAY + I18n.tr("magiclib.config.gui.statistic.title") + GuiBase.TXT_RST;
+                comment += "\n" + Joiner.on('\n').join(lines.stream()
+                        .map(line -> GuiBase.TXT_DARK_GRAY + " " + GuiBase.TXT_GRAY + line + GuiBase.TXT_RST)
+                        .toArray()
                 );
             }
         }
 
         comment = TagProcessor.processReferences(this, comment);
         comment = MarkProcessor.processMarks(comment);
-
 
         return comment;
     }
@@ -217,8 +217,8 @@ public class ConfigContainer {
             @NotNull List<DependenciesContainer<ConfigContainer>> dependencies, InfoNode rootNode) {
         boolean first = true;
         boolean composite = false;
-        InfoNode compositeNode = new InfoNode(null, GuiBase.TXT_GRAY +
-                I18n.tr("magiclib.dependency.label.composite") + GuiBase.TXT_RST);
+        InfoNode compositeNode = new InfoNode(null, GuiBase.TXT_GRAY
+                + I18n.tr("magiclib.dependency.label.composite") + GuiBase.TXT_RST);
 
         for (DependenciesContainer<?> dependenciesContainer : dependencies) {
             List<DependencyCheckResult> conflict = dependenciesContainer.checkConflict();
@@ -237,8 +237,8 @@ public class ConfigContainer {
                     composite = true;
                 }
 
-                orNode = new InfoNode(rootNode, GuiBase.TXT_GRAY +
-                        I18n.tr("magiclib.dependency.label.or") + GuiBase.TXT_RST);
+                orNode = new InfoNode(rootNode, GuiBase.TXT_GRAY
+                        + I18n.tr("magiclib.dependency.label.or") + GuiBase.TXT_RST);
             }
 
             if (!conflict.isEmpty()) {
@@ -246,8 +246,8 @@ public class ConfigContainer {
                         GuiBase.TXT_GRAY + I18n.tr("magiclib.dependency.label.conflict"));
 
                 for (DependencyCheckResult result : conflict) {
-                    new InfoNode(conflictNode, (result.isSuccess() ? GuiBase.TXT_GREEN : GuiBase.TXT_RED) +
-                            result.getReason());
+                    new InfoNode(conflictNode, (result.isSuccess() ? GuiBase.TXT_GREEN : GuiBase.TXT_RED)
+                            + result.getReason());
                 }
             }
 
@@ -256,8 +256,8 @@ public class ConfigContainer {
                         GuiBase.TXT_GRAY + I18n.tr("magiclib.dependency.label.require"));
 
                 for (DependencyCheckResult result : require) {
-                    new InfoNode(requireNode, (result.isSuccess() ? GuiBase.TXT_GREEN : GuiBase.TXT_RED) +
-                            result.getReason());
+                    new InfoNode(requireNode, (result.isSuccess() ? GuiBase.TXT_GREEN : GuiBase.TXT_RED)
+                            + result.getReason());
                 }
             }
         }

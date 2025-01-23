@@ -10,6 +10,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11800
+import com.google.gson.JsonParser;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
@@ -17,23 +24,25 @@ import top.hendrixshen.magiclib.impl.malilib.config.statistic.ConfigStatisticSav
 import top.hendrixshen.magiclib.util.FileUtil;
 import top.hendrixshen.magiclib.util.serializable.JsonSaveAble;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11700
+import top.hendrixshen.magiclib.MagicLib;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-//#if MC < 11800
-import com.google.gson.JsonParser;
-//#endif
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC < 11700
-import top.hendrixshen.magiclib.MagicLib;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class MagicConfigHandler implements IConfigHandler {
     @Getter

@@ -2,7 +2,9 @@ package top.hendrixshen.magiclib.impl.malilib.config.gui.widget;
 
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
 import lombok.Getter;
+
 import net.minecraft.core.Vec3i;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3iListEdit;
 

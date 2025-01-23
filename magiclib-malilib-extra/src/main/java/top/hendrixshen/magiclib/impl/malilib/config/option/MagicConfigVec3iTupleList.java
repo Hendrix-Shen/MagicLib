@@ -7,8 +7,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.options.ConfigBase;
 import lombok.Getter;
-import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.core.Vec3i;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
 
@@ -76,12 +78,12 @@ public class MagicConfigVec3iTupleList extends ConfigBase<ConfigVec3iTupleList> 
                 }
 
                 JsonObject vec3iTuple = array.get(i).getAsJsonObject();
-                Vec3i firstVec3i = vec3iTuple.has("first") ?
-                        MagicConfigVec3i.vec3iSerializer.deserializeSafe(vec3iTuple.get("first").getAsJsonObject(), Vec3i.ZERO) :
-                        Vec3i.ZERO;
-                Vec3i secondVec3i = vec3iTuple.has("second") ?
-                        MagicConfigVec3i.vec3iSerializer.deserializeSafe(vec3iTuple.get("second").getAsJsonObject(), Vec3i.ZERO) :
-                        Vec3i.ZERO;
+                Vec3i firstVec3i = vec3iTuple.has("first")
+                        ? MagicConfigVec3i.vec3iSerializer.deserializeSafe(vec3iTuple.get("first").getAsJsonObject(), Vec3i.ZERO)
+                        : Vec3i.ZERO;
+                Vec3i secondVec3i = vec3iTuple.has("second")
+                        ? MagicConfigVec3i.vec3iSerializer.deserializeSafe(vec3iTuple.get("second").getAsJsonObject(), Vec3i.ZERO)
+                        : Vec3i.ZERO;
                 this.vec3iTupleList.add(new ConfigVec3iTupleList.Entry(firstVec3i, secondVec3i));
             }
         } catch (Exception e) {

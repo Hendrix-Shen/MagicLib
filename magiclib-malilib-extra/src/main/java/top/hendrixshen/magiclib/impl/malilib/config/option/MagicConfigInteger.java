@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.impl.malilib.config.option;
 import com.google.gson.JsonElement;
 import fi.dy.masa.malilib.config.options.ConfigInteger;
 import lombok.Getter;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 
 @Getter

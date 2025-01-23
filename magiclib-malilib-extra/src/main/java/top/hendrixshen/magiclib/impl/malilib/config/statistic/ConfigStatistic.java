@@ -23,6 +23,7 @@ package top.hendrixshen.magiclib.impl.malilib.config.statistic;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 
@@ -32,7 +33,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/statistic/OptionStatistic.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/statistic/OptionStatistic.java">TweakerMore</a>.
  */
 public class ConfigStatistic {
     private static final int USE_AMOUNT_INCREASE_COOLDOWN = 1000;  // ms
@@ -80,8 +81,9 @@ public class ConfigStatistic {
     public List<String> getDisplayLines() {
         Function<String, String> tr = name -> I18n.tr("magiclib.config.gui.statistic.entry." + name);
 
-        String lastUsedTimeText = this.lastUsedTime <= 0 ?
-                "N/A" : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(this.lastUsedTime));
+        String lastUsedTimeText = this.lastUsedTime <= 0
+                ? "N/A"
+                : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(this.lastUsedTime));
 
         return Lists.newArrayList(
                 String.format("%s: %s", tr.apply("lastUsedTime"), lastUsedTimeText),

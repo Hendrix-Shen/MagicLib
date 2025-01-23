@@ -6,14 +6,12 @@ import fi.dy.masa.malilib.gui.interfaces.IDialogHandler;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.GuiUtils;
 import lombok.Getter;
-import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
-import top.hendrixshen.magiclib.api.i18n.I18n;
-import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetListVec3iTupleListEdit;
-import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetVec3iTupleListEditEntry;
 
+import net.minecraft.client.gui.screens.Screen;
+
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
@@ -23,6 +21,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 //#if MC < 11700
 import net.minecraft.client.Minecraft;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.i18n.I18n;
+import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTupleList;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetListVec3iTupleListEdit;
+import top.hendrixshen.magiclib.impl.malilib.config.gui.widget.WidgetVec3iTupleListEditEntry;
 
 public class GuiVec3iTupleListEdit extends GuiListBase<ConfigVec3iTupleList.Entry, WidgetVec3iTupleListEditEntry, WidgetListVec3iTupleListEdit> {
     @Getter

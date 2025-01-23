@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import fi.dy.masa.malilib.config.options.ConfigStringList;
 import lombok.Getter;
+
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 
 import java.util.List;

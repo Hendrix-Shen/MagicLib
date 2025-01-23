@@ -22,12 +22,13 @@ package top.hendrixshen.magiclib.impl.malilib.config.statistic;
 
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
+
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.ConfigContainer;
 import top.hendrixshen.magiclib.util.serializable.JsonSaveAble;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/statistic/OptionStatisticSaver.java">TweakerMore</a>
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/config/statistic/OptionStatisticSaver.java">TweakerMore</a>.
  */
 public class ConfigStatisticSaver implements JsonSaveAble {
     private final MagicConfigManager configManager;

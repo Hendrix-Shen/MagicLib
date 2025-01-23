@@ -7,8 +7,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.options.ConfigBase;
 import lombok.Getter;
-import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.core.Vec3i;
+
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iList;
 

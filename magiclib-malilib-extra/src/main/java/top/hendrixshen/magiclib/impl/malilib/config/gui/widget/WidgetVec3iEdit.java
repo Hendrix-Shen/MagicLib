@@ -11,9 +11,19 @@ import fi.dy.masa.malilib.gui.widgets.WidgetBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetContainer;
 import fi.dy.masa.malilib.gui.wrappers.TextFieldWrapper;
 import lombok.AllArgsConstructor;
+import org.lwjgl.glfw.GLFW;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Vec3i;
-import org.lwjgl.glfw.GLFW;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#elseif MC > 11502
+import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.util.IntegerUtil;
 
@@ -21,12 +31,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
-//#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11502
-import com.mojang.blaze3d.vertex.PoseStack;
-//#endif
 
 public class WidgetVec3iEdit extends WidgetContainer {
     public static TextFieldMaker textFieldMaker = (x, y, width, height, initialValue, textFieldListenerFunction) -> {
@@ -131,6 +135,8 @@ public class WidgetVec3iEdit extends WidgetContainer {
 
     @Override
     public void render(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             int mouseX,
             int mouseY,
             boolean selected
@@ -139,22 +145,32 @@ public class WidgetVec3iEdit extends WidgetContainer {
             //#elseif MC > 11502
             , PoseStack poseStackOrGuiGraphics
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         this.drawTextFields(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 mouseX,
                 mouseY
                 //#if MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
 
         super.render(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 mouseX,
                 mouseY,
                 selected
                 //#if MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
     }
 
@@ -196,9 +212,9 @@ public class WidgetVec3iEdit extends WidgetContainer {
             return wrapper.onKeyTyped(keyCode, scanCode, modifiers);
         };
 
-        return keyTypedImpl.apply(this.xTextField) ||
-                keyTypedImpl.apply(this.yTextField) ||
-                keyTypedImpl.apply(this.zTextField);
+        return keyTypedImpl.apply(this.xTextField)
+                || keyTypedImpl.apply(this.yTextField)
+                || keyTypedImpl.apply(this.zTextField);
     }
 
     @Override
@@ -215,6 +231,8 @@ public class WidgetVec3iEdit extends WidgetContainer {
     }
 
     protected void drawTextFields(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             int mouseX,
             int mouseY
             //#if MC > 11904
@@ -222,6 +240,8 @@ public class WidgetVec3iEdit extends WidgetContainer {
             //#elseif MC > 11502
             , PoseStack poseStackOrGuiGraphics
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         if (this.xTextField == null || this.yTextField == null || this.zTextField == null) {
             return;
@@ -229,12 +249,16 @@ public class WidgetVec3iEdit extends WidgetContainer {
 
         Consumer<TextFieldWrapper<? extends GuiTextFieldGeneric>> drawTextField = wrapper -> wrapper.getTextField()
                 .render(
+                        // CHECKSTYLE.OFF: NoWhitespaceBefore
+                        // CHECKSTYLE.OFF: SeparatorWrap
                         //#if MC > 11502
                         poseStackOrGuiGraphics,
                         //#endif
                         mouseX,
                         mouseY,
                         0.0F
+                        // CHECKSTYLE.ON: SeparatorWrap
+                        // CHECKSTYLE.ON: NoWhitespaceBefore
                 );
 
         drawTextField.accept(this.xTextField);
