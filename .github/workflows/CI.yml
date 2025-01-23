@@ -26,11 +26,20 @@ jobs:
     with:
       build_publish: ${{ fromJSON(needs.prepare_action_info.outputs.build_publish) }}
       build_version_type: ${{ needs.prepare_action_info.outputs.build_version_type }}
+  checkstyle:
+    if: ${{ !contains(github.event.head_commit.message, '[build skip]') }}
+    uses: ./.github/workflows/checkstyle.yml
+    secrets: inherit
+    needs:
+      - prepare_action_info
+    with:
+      build_version_type: ${{ needs.prepare_action_info.outputs.build_version_type }}
   publish:
     if: ${{ fromJSON(needs.prepare_action_info.outputs.publish_enable) }}
     uses: ./.github/workflows/publish.yml
     secrets: inherit
     needs:
+      - checkstyle
       - build
       - prepare_action_info
     with:
