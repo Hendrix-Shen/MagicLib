@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/prepare_action_info.yml
   cache:
     if: ${{ !contains(github.event.head_commit.message, '[build skip]') }}
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/cache.yml
     secrets: inherit
     needs:
       - prepare_action_info
