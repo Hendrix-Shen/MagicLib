@@ -6,13 +6,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.packs.FilePackResources;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.repository.Pack;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11902
+//$$ import net.minecraft.server.packs.PathPackResources;
+//#else
+import net.minecraft.server.packs.FolderPackResources;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.fake.i18n.PackAccessor;
 import top.hendrixshen.magiclib.api.i18n.LanguageProvider;
-import top.hendrixshen.magiclib.impl.i18n.provider.FileLanguageProvider;
+import top.hendrixshen.magiclib.impl.i18n.provider.FileLanguageProvider.LanguageFileVisitor;
+import top.hendrixshen.magiclib.impl.i18n.provider.JarLanguageProvider;
 import top.hendrixshen.magiclib.util.JsonUtil;
 
 // CHECKSTYLE.OFF: ImportOrder
@@ -25,6 +35,7 @@ import top.hendrixshen.magiclib.mixin.minecraft.accessor.LegacyPackResourcesAdap
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -32,29 +43,31 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResourceLanguageProvider implements LanguageProvider {
     @Getter(lazy = true)
     private static final ResourceLanguageProvider instance = new ResourceLanguageProvider();
 
-    private final Map<String, List<Path>> files = Maps.newConcurrentMap();
+    private final Map<String, Map<String, String>> languageMap = Maps.newConcurrentMap();
 
     @Override
     public void init() {
+        this.languageMap.clear();
         Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream()
                 .filter(pack -> pack.getId().startsWith("file"))
                 .map(Pack::open)
                 .map(this::adaptPack)
                 .filter(Objects::nonNull)
-                .map(pack -> pack.magiclib$getFile().toPath())
-                .forEach(this::updateFileList);
+                .forEach(this::initLanguageMap);
     }
 
     @Override
     public void reload() {
-        this.files.clear();
         this.init();
     }
 
@@ -70,18 +83,7 @@ public class ResourceLanguageProvider implements LanguageProvider {
 
     @Override
     public Map<String, String> getLanguage(String languageCode) {
-        Map<String, String> result = Maps.newConcurrentMap();
-
-        this.files.getOrDefault(languageCode, Collections.emptyList()).forEach(file -> {
-            try (InputStream inputStream = Files.newInputStream(file)) {
-                JsonUtil.loadStringMapFromJson(inputStream, result::put);
-                MagicLib.getLogger().debug("Loaded language file {}.", file);
-            } catch (Exception e) {
-                MagicLib.getLogger().error("Failed to load language file {}.", file, e);
-            }
-        });
-
-        return result;
+        return this.languageMap.getOrDefault(languageCode, Collections.emptyMap());
     }
 
     private PackAccessor adaptPack(PackResources packResources) {
@@ -122,11 +124,53 @@ public class ResourceLanguageProvider implements LanguageProvider {
         return null;
     }
 
-    private void updateFileList(Path path) {
+    private void initLanguageMap(PackAccessor pack) {
+        if (pack instanceof FolderPackResources) {
+            this.loadFromFolderPack(pack.magiclib$getFile().toPath());
+        } else if (pack instanceof FilePackResources) {
+            this.loadFromZipPack(pack.magiclib$getFile());
+        } else {
+            MagicLib.getLogger().error("Unknown resource the type of pack {}.", ((PackResources) pack).getName());
+        }
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    private void loadFromZipPack(File file) {
+        try (ZipFile zipFile = new ZipFile(file)) {
+            for (ZipEntry entry : Collections.list(zipFile.entries())) {
+                try (InputStream inputStream = zipFile.getInputStream(entry)) {
+                    if (JarLanguageProvider.loadFromEntry(entry, inputStream, languageCode ->
+                            this.languageMap.computeIfAbsent(languageCode, k -> Maps.newConcurrentMap()))) {
+                        MagicLib.getLogger().debug("Loaded language file {} from {}.", entry.getName(), file.getName());
+                    }
+                } catch (IOException e) {
+                    MagicLib.getLogger().error("Failed to load language file {} from {}.",
+                            entry.getName(), zipFile.getName(), e);
+                }
+            }
+        } catch (IOException e) {
+            MagicLib.getLogger().error("Failed to load language file from {}.", file.getName(), e);
+        }
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    private void loadFromFolderPack(Path path) {
         try {
-            Files.walkFileTree(path, new FileLanguageProvider.LanguageFileVisitor(path, this.files, true));
-        } catch (IOException ignore) {
-            // ignore.
+            Map<String, List<Path>> files = Maps.newConcurrentMap();
+            Files.walkFileTree(path, new LanguageFileVisitor(path, files, true));
+
+            for (Entry<String, List<Path>> entry : files.entrySet()) {
+                Map<String, String> map = this.languageMap.computeIfAbsent(entry.getKey(), k -> Maps.newConcurrentMap());
+
+                for (Path p : entry.getValue()) {
+                    try (InputStream inputStream = Files.newInputStream(p)) {
+                        JsonUtil.loadStringMapFromJson(inputStream, map::put);
+                        MagicLib.getLogger().debug("Loaded language file {}.", path);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            MagicLib.getLogger().error("Failed to load language file {}.", path, e);
         }
     }
 }
