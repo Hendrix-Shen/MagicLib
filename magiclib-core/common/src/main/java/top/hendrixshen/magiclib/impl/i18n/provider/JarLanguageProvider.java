@@ -1,11 +1,10 @@
 package top.hendrixshen.magiclib.impl.i18n.provider;
 
 import com.google.common.collect.Maps;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.MalformedJsonException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
 
 import top.hendrixshen.magiclib.MagicLib;
@@ -18,10 +17,10 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
-import java.util.jar.JarEntry;
+import java.util.function.Function;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JarLanguageProvider implements LanguageProvider {
@@ -29,7 +28,6 @@ public class JarLanguageProvider implements LanguageProvider {
     private static final JarLanguageProvider instance = new JarLanguageProvider();
 
     private final Map<String, Map<String, String>> languageMap = Maps.newConcurrentMap();
-    private final Pattern languageResourcePattern = Pattern.compile("^assets/([\\w-]*)/lang/([a-zA-Z\\d-_]*)\\.json$");
 
     @Override
     public void init() {
@@ -68,28 +66,34 @@ public class JarLanguageProvider implements LanguageProvider {
     }
 
     private void loadFromJar(@NotNull JarFile jar) {
-        for (JarEntry entry : Collections.list(jar.entries())) {
-            Matcher matcher = languageResourcePattern.matcher(entry.getName());
-
-            if (!matcher.find()) {
-                continue;
-            }
-
-            Map<String, String> language = this.getLanguage(matcher.group(2));
-
+        for (ZipEntry entry : Collections.list(jar.entries())) {
             try (InputStream inputStream = jar.getInputStream(entry)) {
-                JsonUtil.loadStringMapFromJson(inputStream, language::put);
-                MagicLib.getLogger().debug("Loaded language file {} from {}.", entry.getName(), jar.getName());
-            } catch (Exception e) {
-                if (e instanceof JsonSyntaxException && e.getCause() instanceof MalformedJsonException) {
-                    MagicLib.getLogger().error("Failed to load language file {} from {}.",
-                            entry.getName(), jar.getName());
-                    continue;
+                if (JarLanguageProvider.loadFromEntry(entry, inputStream, this::getLanguage)) {
+                    MagicLib.getLogger().debug("Loaded language file {} from {}.", entry.getName(), jar.getName());
                 }
-
+            } catch (IOException e) {
                 MagicLib.getLogger().error("Failed to load language file {} from {}.",
                         entry.getName(), jar.getName(), e);
             }
+        }
+    }
+
+    @Internal
+    public static boolean loadFromEntry(@NotNull ZipEntry entry, InputStream inputStream,
+                                     Function<String, Map<String, String>> languageMapGetter) {
+        Matcher matcher = LanguageProvider.LANGUAGE_PATH_PATTERN.matcher(entry.getName());
+
+        if (!matcher.find()) {
+            return false;
+        }
+
+        Map<String, String> language = languageMapGetter.apply(matcher.group(2));
+
+        try {
+            JsonUtil.loadStringMapFromJson(inputStream, language::put);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

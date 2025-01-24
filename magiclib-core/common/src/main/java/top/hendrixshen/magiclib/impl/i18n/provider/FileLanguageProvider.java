@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileLanguageProvider implements LanguageProvider {
@@ -37,7 +36,6 @@ public class FileLanguageProvider implements LanguageProvider {
     private static final FileLanguageProvider instance = new FileLanguageProvider();
 
     private final Map<String, List<Path>> files = Maps.newConcurrentMap();
-    private final Pattern languageResourcePattern = Pattern.compile("^assets/([\\w-]*)/lang/([a-zA-Z\\d-_]*)\\.json$");
 
     @Override
     public void init() {
@@ -100,32 +98,31 @@ public class FileLanguageProvider implements LanguageProvider {
         private final boolean prefix;
 
         @Override
-        public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+        public @NotNull FileVisitResult preVisitDirectory(Path dir, @NotNull BasicFileAttributes attrs) {
             return FileVisitResult.CONTINUE;
         }
 
         @Override
-        public FileVisitResult visitFile(@NotNull Path file, BasicFileAttributes attrs) {
+        public @NotNull FileVisitResult visitFile(@NotNull Path file, @NotNull BasicFileAttributes attrs) {
             String name = (prefix ? "" : "assets/") + this.basePath.relativize(file).toString()
                     .replace("\\", "/");
-            Matcher matcher = FileLanguageProvider.getInstance().languageResourcePattern.matcher(name);
+            Matcher matcher = LanguageProvider.LANGUAGE_PATH_PATTERN.matcher(name);
 
             if (!matcher.find()) {
                 return FileVisitResult.CONTINUE;
             }
 
-            this.files.computeIfAbsent(matcher.group(2), key ->
-                    Lists.newArrayList()).add(file);
+            this.files.computeIfAbsent(matcher.group(2), key -> Lists.newArrayList()).add(file);
             return FileVisitResult.CONTINUE;
         }
 
         @Override
-        public FileVisitResult visitFileFailed(Path file, IOException exc) {
+        public @NotNull FileVisitResult visitFileFailed(Path file, @NotNull IOException exc) {
             return FileVisitResult.CONTINUE;
         }
 
         @Override
-        public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
+        public @NotNull FileVisitResult postVisitDirectory(Path dir, IOException exc) {
             return FileVisitResult.CONTINUE;
         }
     }
