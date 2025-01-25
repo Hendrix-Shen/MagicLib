@@ -20,16 +20,22 @@ public class JsonUtil {
 
     public static void loadStringMapFromJson(InputStream inputStream, BiConsumer<String, String> biConsumer,
                                              boolean failSoft) {
-        JsonObject jsonObject = GsonUtil.GSON.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8),
-                JsonObject.class);
+        try {
+            JsonObject jsonObject = GsonUtil.GSON.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8),
+                    JsonObject.class);
 
-        for (Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-            JsonElement element = entry.getValue();
+            for (Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                JsonElement element = entry.getValue();
 
-            if (element.isJsonPrimitive()) {
-                biConsumer.accept(entry.getKey(), element.getAsString());
-            } else if (!failSoft) {
-                throw new JsonSyntaxException("Expected string value for " + entry.getKey() + " but got " + element);
+                if (element.isJsonPrimitive()) {
+                    biConsumer.accept(entry.getKey(), element.getAsString());
+                } else if (!failSoft) {
+                    throw new JsonSyntaxException("Expected string value for " + entry.getKey() + " but got " + element);
+                }
+            }
+        } catch (JsonSyntaxException e) {
+            if (!failSoft) {
+                throw e;
             }
         }
     }

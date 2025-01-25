@@ -73,7 +73,7 @@ public class FileLanguageProvider implements LanguageProvider {
 
         this.files.getOrDefault(languageCode, Collections.emptyList()).forEach(file -> {
             try (InputStream inputStream = Files.newInputStream(file)) {
-                JsonUtil.loadStringMapFromJson(inputStream, result::put, false);
+                JsonUtil.loadStringMapFromJson(inputStream, result::put, true);
                 MagicLib.getLogger().debug("Loaded language file {}.", file);
             } catch (Exception e) {
                 MagicLib.getLogger().error("Failed to load language file {}.", file, e);
