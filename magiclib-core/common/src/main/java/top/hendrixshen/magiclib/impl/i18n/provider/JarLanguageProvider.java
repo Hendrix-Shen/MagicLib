@@ -88,7 +88,7 @@ public class JarLanguageProvider implements LanguageProvider {
         }
 
         Map<String, String> language = languageMapGetter.apply(matcher.group(2));
-        JsonUtil.loadStringMapFromJson(inputStream, language::put, true);
+        JsonUtil.loadLanguageMapFromJson(inputStream, language::put);
         return true;
     }
 }
