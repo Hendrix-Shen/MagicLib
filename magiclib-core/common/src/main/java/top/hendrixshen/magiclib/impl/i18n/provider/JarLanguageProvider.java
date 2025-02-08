@@ -80,7 +80,7 @@ public class JarLanguageProvider implements LanguageProvider {
 
     @Internal
     public static boolean loadFromEntry(@NotNull ZipEntry entry, InputStream inputStream,
-                                     Function<String, Map<String, String>> languageMapGetter) {
+                                        Function<String, Map<String, String>> languageMapGetter) {
         Matcher matcher = LanguageProvider.LANGUAGE_PATH_PATTERN.matcher(entry.getName());
 
         if (!matcher.find()) {
@@ -88,12 +88,7 @@ public class JarLanguageProvider implements LanguageProvider {
         }
 
         Map<String, String> language = languageMapGetter.apply(matcher.group(2));
-
-        try {
-            JsonUtil.loadStringMapFromJson(inputStream, language::put);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        JsonUtil.loadLanguageMapFromJson(inputStream, language::put);
+        return true;
     }
 }

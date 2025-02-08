@@ -2,8 +2,6 @@ package top.hendrixshen.magiclib.impl.i18n.provider;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.MalformedJsonException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -75,14 +73,9 @@ public class FileLanguageProvider implements LanguageProvider {
 
         this.files.getOrDefault(languageCode, Collections.emptyList()).forEach(file -> {
             try (InputStream inputStream = Files.newInputStream(file)) {
-                JsonUtil.loadStringMapFromJson(inputStream, result::put);
+                JsonUtil.loadLanguageMapFromJson(inputStream, result::put);
                 MagicLib.getLogger().debug("Loaded language file {}.", file);
             } catch (Exception e) {
-                if (e instanceof JsonSyntaxException && e.getCause() instanceof MalformedJsonException) {
-                    MagicLib.getLogger().error("Failed to load language file {}.", file);
-                    return;
-                }
-
                 MagicLib.getLogger().error("Failed to load language file {}.", file, e);
             }
         });
