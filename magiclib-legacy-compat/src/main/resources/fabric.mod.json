@@ -37,13 +37,11 @@
     ],
     "server": [
       "top.hendrixshen.magiclib.entrypoint.legacy.MagicLibFabric"
-    ],
-    "modmenu": [
-      "top.hendrixshen.magiclib.game.malilib.ModMenuImpl"
     ]
   },
   "mixins": [
     "${mod_id}-carpet.mixins.json",
+    "${mod_id}-cloth-config.mixins.json",
     "${mod_id}-malilib.mixins.json",
     "${mod_id}-minecraft-compat-api.mixins.json"
   ],
