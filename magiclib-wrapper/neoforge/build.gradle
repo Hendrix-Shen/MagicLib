@@ -44,24 +44,25 @@ allprojects {
 Project coreProject = evaluationDependsOn(":magiclib-core:${project.name}")
 
 jar {
-    delete(project.layout.buildDirectory.file("tmp/submods"))
-
-    copy {
-        from {
-            coreProject.tasks.shadowJar.outputs.files
-        }
-
-        into(project.layout.buildDirectory.file("tmp/submods/publish"))
-    }
+    dependsOn("copyPublishModule")
 }
 
+tasks.register("copyPublishModule", Copy.class) { Copy copyTask ->
+    copyTask.setGroup("${project.property("mod.id")}")
+
+    from {
+        coreProject.tasks.shadowJar.outputs.files
+    }
+
+    into(project.layout.buildDirectory.file("tmp/submods/publish"))
+}
 
 tasks.withType(AbstractPublishToMaven).configureEach {
-    enabled(false)
+    enabled = false
 }
 
 tasks.withType(ProcessResources).configureEach {
-    enabled(false)
+    enabled = false
 }
 
 subprojects {
@@ -85,62 +86,41 @@ subprojects {
 
     dependencies {
         shadeOnly(project(path: coreProject.path, configuration: "shadow")) {
-            transitive(false)
+            transitive = false
         }
 
         submodules_publish.forEach {
             shadeOnly(it) {
-                transitive(false)
+                transitive = false
             }
         }
     }
 
     base {
         setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.name}-${project.parent.name}")
-        group("${project.property("mod.maven_group")}")
-        version(project.getModVersion(rootProject))
+        setGroup("${project.property("mod.maven_group")}")
+        setVersion(project.getModVersion(rootProject))
     }
 
     java {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
         withSourcesJar()
         withJavadocJar()
     }
 
     jar {
         outputs.upToDateWhen { false }
-        dependsOn(submodules.collect { it.tasks.remapJar })
+        dependsOn("copyPublishModule")
+        dependsOn("copyUnpublishModule")
         dependsOn(tasks.shadowJar)
         setArchiveClassifier('empty')
         exclude("**/*")
-
-        doFirst {
-            delete(project.layout.buildDirectory.file("tmp/submods"))
-
-            copy {
-                from {
-                    submodules_publish.collect {
-                        it.tasks.remapJar.outputs.files
-                    }
-                }
-
-                into(project.layout.buildDirectory.file("tmp/submods/publish"))
-            }
-
-            copy {
-                from {
-                    submodules_unpublish.collect {
-                        it.tasks.remapJar.outputs.files
-                    }
-                }
-
-                into(project.layout.buildDirectory.file("tmp/submods/unpublish"))
-            }
-        }
     }
 
     shadowJar {
+        dependsOn("processMetadataLegacy")
+        dependsOn("processMetadata")
         setArchiveClassifier(null)
         setConfigurations([project.configurations.shade, project.configurations.shadeOnly])
         exclude("META-INF/maven/**/*")
@@ -173,45 +153,6 @@ subprojects {
             }
         }
 
-        doLast {
-            Set modules = new HashSet()
-            modules.add(coreProject)
-            modules.addAll(submodules_publish)
-
-            [
-                    "resources/main/META-INF/mods.toml",
-                    "resources/main/META-INF/neoforge.mods.toml"
-            ].forEach { String path ->
-                File toml_file = project.layout.buildDirectory.file(path).get().getAsFile()
-                Map<String, ?> toml_map = toml_file.withReader {
-                    new JsonSlurper().parse(new StringReader(TomlConverter.convertTomlToJson(it))) as Map<String, ?>
-                }
-
-                modules.forEach {
-                    File subproject_toml_file = it.layout.buildDirectory.file(path).get().getAsFile()
-
-                    Map<String, ?> submodule_toml_map = subproject_toml_file.withReader {
-                        new JsonSlurper().parse(new StringReader(TomlConverter.convertTomlToJson(it))) as Map<String, ?>
-                    }
-
-                    submodule_toml_map.removeAll { String key, Object value -> value instanceof String }
-                    submodule_toml_map.forEach { String key, Object value ->
-                        if (value instanceof List) {
-                            // mods, mixins
-                            (toml_map.computeIfAbsent(key, _ -> new ArrayList<>()) as List).addAll(value)
-                        } else if (value instanceof Map) {
-                            // dependencies
-                            (toml_map.computeIfAbsent(key, _ -> new HashMap<>()) as Map).putAll(value)
-                        }
-                    }
-                }
-
-                toml_file.withWriter {
-                    it.append(TomlConverter.convertJsonToToml(new StringReader(new JsonBuilder(toml_map).toString())))
-                }
-            }
-        }
-
         from("${rootDir}/LICENSE")
         from("${rootDir}/icon.png") {
             into("assets/${project.property("mod.id")}")
@@ -221,11 +162,7 @@ subprojects {
     signing {
         String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getEnv().SIGNING_PGP_KEY)
         String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getEnv().SIGNING_PGP_PASSWORD)
-
-        required {
-            signingKey
-        }
-
+        required = signingKey
         useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
         sign(publishing.publications)
     }
@@ -233,15 +170,15 @@ subprojects {
     publishing {
         publications { PublicationContainer publications ->
             register("release", MavenPublication) { MavenPublication publication ->
-                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}-${project.parent.name}")
+                artifactId = "${project.parent.property("mod.artifact_name")}-${project.name}-${project.parent.name}"
 
                 artifact(jar) {
-                    classifier(null)
+                    classifier = null
                 }
 
                 artifact(sourcesJar)
                 artifact(javadocJar)
-                version("${this.project.getMavenArtifactVersion(rootProject)}")
+                version = "${this.project.getMavenArtifactVersion(rootProject)}"
                 this.project.addPomMetadataInformation(this.project, publication)
 
                 pom.withXml { XmlProvider provider ->
@@ -264,17 +201,17 @@ subprojects {
 
         repositories { RepositoryHandler repositoryHandler ->
             mavenLocal {
-                name("mavenLocal")
+                name = "mavenLocal"
             }
 
             maven {
-                name("projectLocalRelease")
-                url("${rootDir}/publish/release")
+                name = "projectLocalRelease"
+                url = "${rootDir}/publish/release"
             }
 
             maven {
-                name("nyanMavenRelease")
-                url("https://maven.hendrixshen.top/releases")
+                name = "nyanMavenRelease"
+                url = "https://maven.hendrixshen.top/releases"
 
                 project.credentialsNyanMaven(it)
             }
@@ -296,6 +233,110 @@ subprojects {
 
         onlyIf {
             predicate.get()
+        }
+    }
+
+    tasks.register("copyPublishModule", Copy.class) { Copy copyTask ->
+        copyTask.dependsOn(submodules.collect { it.tasks.remapJar })
+        copyTask.setGroup("${project.property("mod.id")}")
+
+        from {
+            submodules_publish.collect {
+                it.tasks.remapJar.outputs.files
+            }
+        }
+
+        into(project.layout.buildDirectory.file("tmp/submods/publish"))
+    }
+
+    tasks.register("copyUnpublishModule", Copy.class) { Copy copyTask ->
+        copyTask.dependsOn(submodules.collect { it.tasks.remapJar })
+        copyTask.setGroup("${project.property("mod.id")}")
+
+        from {
+            submodules_unpublish.collect {
+                it.tasks.remapJar.outputs.files
+            }
+        }
+
+        into(project.layout.buildDirectory.file("tmp/submods/unpublish"))
+    }
+
+    tasks.register("processMetadataLegacy", ProcessMetadata.class) { ProcessMetadata processTask ->
+        processTask.dependsOn(tasks.processResources)
+        processTask.setGroup("${project.property("mod.id")}")
+        processTask.setForgeMetadataFile(file(project.layout.buildDirectory.file("resources/main/META-INF/mods.toml")))
+        processTask.setCoreProject(coreProject)
+        processTask.submodules(submodules_publish)
+    }
+
+    tasks.register("processMetadata", ProcessMetadata.class) { ProcessMetadata processTask ->
+        processTask.dependsOn(tasks.processResources)
+        processTask.setGroup("${project.property("mod.id")}")
+        processTask.setForgeMetadataFile(file(project.layout.buildDirectory.file("resources/main/META-INF/neoforge.mods.toml")))
+        processTask.setCoreProject(coreProject)
+        processTask.submodules(submodules_publish)
+    }
+}
+
+class ProcessMetadata extends DefaultTask {
+    private final Property<File> forgeMetadataFile = project.objects.property(File.class)
+    private final Property<Project> coreProject = project.objects.property(Project.class)
+    private final Set<Project> submodules = new HashSet<>()
+
+    void submodules(Set<Project> submodules) {
+        this.submodules.addAll(submodules)
+    }
+
+    void setForgeMetadataFile(File forgeMetadataFile) {
+        this.forgeMetadataFile.set(forgeMetadataFile)
+    }
+
+    void setCoreProject(Project coreProject) {
+        this.coreProject.set(coreProject)
+    }
+
+    @TaskAction
+    void runTask() {
+        try {
+            this.runTaskImpl();
+        } catch (Exception e) {
+            this.getLogger().error("Failed to execute ProcessMetadata task.", e);
+            throw e;
+        }
+    }
+
+    private void runTaskImpl() {
+        File toml_file = this.forgeMetadataFile.get()
+        Map<String, ?> toml_map = toml_file.withReader {
+            new JsonSlurper().parse(new StringReader(TomlConverter.convertTomlToJson(it))) as Map<String, ?>
+        }
+
+        Set modules = new HashSet()
+        modules.add(this.coreProject.get())
+        modules.addAll(this.submodules)
+
+        modules.forEach {
+            File subproject_toml_file = it.layout.buildDirectory.file("resources/main/META-INF/mods.toml").get().getAsFile()
+
+            Map<String, ?> submodule_toml_map = subproject_toml_file.withReader {
+                new JsonSlurper().parse(new StringReader(TomlConverter.convertTomlToJson(it))) as Map<String, ?>
+            }
+
+            submodule_toml_map.removeAll { String key, Object value -> value instanceof String }
+            submodule_toml_map.forEach { String key, Object value ->
+                if (value instanceof List) {
+                    // mods, mixins
+                    (toml_map.computeIfAbsent(key, _ -> new ArrayList<>()) as List).addAll(value)
+                } else if (value instanceof Map) {
+                    // dependencies
+                    (toml_map.computeIfAbsent(key, _ -> new HashMap<>()) as Map).putAll(value)
+                }
+            }
+        }
+
+        toml_file.withWriter {
+            it.append(TomlConverter.convertJsonToToml(new StringReader(new JsonBuilder(toml_map).toString())))
         }
     }
 }

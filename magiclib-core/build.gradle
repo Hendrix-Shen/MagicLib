@@ -21,15 +21,15 @@ allprojects {
 }
 
 tasks.withType(AbstractPublishToMaven).configureEach {
-    enabled(false)
+    enabled = false
 }
 
 tasks.withType(Jar).configureEach {
-    enabled(false)
+    enabled = false
 }
 
 tasks.withType(ProcessResources).configureEach {
-    enabled(false)
+    enabled = false
 }
 
 subprojects {
@@ -42,8 +42,8 @@ subprojects {
         mavenLocal()
 
         maven {
-            name("NyanMaven Mirror")
-            url("https://maven.hendrixshen.top/mirror")
+            name = "NyanMaven Mirror"
+            url = "https://maven.hendrixshen.top/mirror"
         }
 
         mavenCentral()
@@ -73,24 +73,24 @@ subprojects {
 
         // Shadow library
         shade(annotationProcessor("io.github.llamalad7:mixinextras-common:${project.property("dependencies.mixinextras_version")}")) {
-            transitive(false)
+            transitive = false
         }
     }
 
     base {
         setArchivesName("${project.parent.property("mod.archives_base_name")}-${project.name}")
-        group("${project.property("mod.maven_group")}")
-        version(project.getModVersion(project.parent))
+        setGroup("${project.property("mod.maven_group")}")
+        setVersion(project.getModVersion(project.parent))
     }
 
     checkstyle {
-        configFile(rootProject.file("checkstyle.xml"))
-        toolVersion("${project.property("checkstyle_version")}")
+        configFile = rootProject.file("checkstyle.xml")
+        toolVersion = "${project.property("checkstyle_version")}"
     }
 
     java {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
         withSourcesJar()
         withJavadocJar()
     }
@@ -125,11 +125,7 @@ subprojects {
     signing {
         String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getEnv().SIGNING_PGP_KEY)
         String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getEnv().SIGNING_PGP_PASSWORD)
-
-        required {
-            signingKey
-        }
-
+        required = signingKey
         useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
         sign(publishing.publications)
     }
@@ -137,29 +133,29 @@ subprojects {
     publishing {
         publications { PublicationContainer publications ->
             register("release", MavenPublication) { MavenPublication publication ->
-                artifactId("${project.parent.property("mod.artifact_name")}-${project.name}")
+                artifactId = "${project.parent.property("mod.artifact_name")}-${project.name}"
                 artifact(jar)
                 artifact(javadocJar)
                 artifact(sourcesJar)
                 artifact(shadowJar)
-                version("${project.getMavenArtifactVersion(this.project)}")
+                version = "${project.getMavenArtifactVersion(this.project)}"
                 project.addPomMetadataInformation(this.project, publication)
             }
         }
 
         repositories { RepositoryHandler repositoryHandler ->
             mavenLocal {
-                name("mavenLocal")
+                name = "mavenLocal"
             }
 
             maven {
-                name("projectLocalRelease")
-                url("${rootDir}/publish/release")
+                name = "projectLocalRelease"
+                url = "${rootDir}/publish/release"
             }
 
             maven {
-                name("nyanMavenRelease")
-                url("https://maven.hendrixshen.top/releases")
+                name = "nyanMavenRelease"
+                url = "https://maven.hendrixshen.top/releases"
 
                 project.credentialsNyanMaven(it)
             }
@@ -187,12 +183,12 @@ subprojects {
     tasks.withType(Javadoc).configureEach { Javadoc task ->
         include("**/api/**")
 
-        task.options.encoding("UTF-8")
+        task.options.encoding = "UTF-8"
         (task.options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
     }
 
     tasks.withType(JavaCompile).configureEach { JavaCompile task ->
-        task.options.encoding("UTF-8")
+        task.options.encoding = "UTF-8"
     }
 
     if (project.name != "common") {

@@ -1,7 +1,7 @@
 repositories {
     maven {
-        name("Forge")
-        url("https://maven.minecraftforge.net")
+        name = "Forge"
+        url = "https://maven.minecraftforge.net"
     }
 }
 

@@ -1,7 +1,7 @@
 repositories {
     maven {
-        name("NeoForge")
-        url("https://maven.neoforged.net")
+        name = "NeoForge"
+        url = "https://maven.neoforged.net"
     }
 }
 
@@ -12,8 +12,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility(JavaVersion.VERSION_17)
-    targetCompatibility(JavaVersion.VERSION_17)
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 processResources {

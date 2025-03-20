@@ -8,28 +8,28 @@ pluginManagement {
         mavenLocal()
 
         maven {
-            name("NyanMaven Mirror")
-            url("https://maven.hendrixshen.top/mirror")
+            name = "NyanMaven Mirror"
+            url = "https://maven.hendrixshen.top/mirror"
         }
 
         maven {
-            name("Architectury")
-            url("https://maven.architectury.dev")
+            name = "Architectury"
+            url = "https://maven.architectury.dev"
         }
 
         maven {
-            name("MinecraftForge")
-            url("https://files.minecraftforge.net/maven")
+            name = "MinecraftForge"
+            url = "https://files.minecraftforge.net/maven"
         }
 
         maven {
-            name("NeoForge")
-            url("https://maven.neoforged.net/releases")
+            name = "NeoForge"
+            url = "https://maven.neoforged.net/releases"
         }
 
         maven {
-            name("Jitpack")
-            url("https://jitpack.io")
+            name = "Jitpack"
+            url = "https://jitpack.io"
         }
 
         mavenCentral()

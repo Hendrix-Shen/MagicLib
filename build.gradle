@@ -136,8 +136,8 @@ ext {
 
     credentialsNyanMaven = { MavenArtifactRepository mavenArtifactRepository ->
         mavenArtifactRepository.credentials { PasswordCredentials passwordCredentials ->
-            username(nyanMaven_username)
-            password(nyanMaven_password)
+            username = nyanMaven_username
+            password = nyanMaven_password
         }
 
         mavenArtifactRepository.authentication { AuthenticationContainer authentications ->
@@ -147,7 +147,7 @@ ext {
 }
 
 tasks.register("genLocalProperties") {
-    it.group("${project.property("mod.id")}")
+    it.setGroup("${project.property("mod.id")}")
 
     doFirst {
         File localPropsFile = file("${rootDir}/local.properties")

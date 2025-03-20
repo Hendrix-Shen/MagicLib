@@ -1,7 +1,7 @@
 repositories {
     maven {
-        name("FabricMC")
-        url("https://maven.fabricmc.net")
+        name = "FabricMC"
+        url = "https://maven.fabricmc.net"
     }
 }
 

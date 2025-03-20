@@ -37,18 +37,18 @@ repositories {
     mavenLocal()
 
     maven {
-        name("NyanMaven Mirror")
-        url("https://maven.hendrixshen.top/mirror")
+        name = "NyanMaven Mirror"
+        url = "https://maven.hendrixshen.top/mirror"
     }
 
     maven {
-        name("NeoForge")
-        url("https://maven.neoforged.net/releases")
+        name = "NeoForge"
+        url = "https://maven.neoforged.net/releases"
     }
 
     maven {
-        name("Curse Maven")
-        url("https://www.cursemaven.com")
+        name = "Curse Maven"
+        url = "https://www.cursemaven.com"
 
         content {
             includeGroup("curse.maven")
@@ -56,8 +56,8 @@ repositories {
     }
 
     maven {
-        name("Modrinth Maven")
-        url("https://api.modrinth.com/maven")
+        name = "Modrinth Maven"
+        url = "https://api.modrinth.com/maven"
 
         content {
             includeGroup("maven.modrinth")
@@ -163,7 +163,7 @@ loom {
 
     // Setup client default settings.
     runClient {
-        defaultCharacterEncoding("UTF-8")
+        defaultCharacterEncoding = "UTF-8"
 
         doFirst {
             file("${project.projectDir}/run/client/config").mkdirs()
@@ -191,7 +191,7 @@ loom {
 
     // Setup server default settings.
     runServer {
-        defaultCharacterEncoding("UTF-8")
+        defaultCharacterEncoding = "UTF-8"
 
         doFirst {
             // Agree eula before server init.
@@ -213,28 +213,28 @@ loom {
 
 base {
     setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}-${modPlatform}")
-    group("${project.property("mod.maven_group")}")
-    version(project.getModVersion(project.parent))
+    setGroup("${project.property("mod.maven_group")}")
+    setVersion(project.getModVersion(project.parent))
 }
 
 checkstyle {
-    configFile(rootProject.file("checkstyle-light.xml"))
-    toolVersion("${project.property("checkstyle_version")}")
+    configFile = rootProject.file("checkstyle-light.xml")
+    toolVersion = "${project.property("checkstyle_version")}"
 }
 
 java {
-    if (mcVersion > 12004) {
-        sourceCompatibility(JavaVersion.VERSION_21)
-        targetCompatibility(JavaVersion.VERSION_21)
+    if (mcVersion > 11204) {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     } else if (mcVersion > 11701) {
-        sourceCompatibility(JavaVersion.VERSION_17)
-        targetCompatibility(JavaVersion.VERSION_17)
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     } else if (mcVersion > 11605) {
-        sourceCompatibility(JavaVersion.VERSION_16)
-        targetCompatibility(JavaVersion.VERSION_16)
+        sourceCompatibility = JavaVersion.VERSION_16
+        targetCompatibility = JavaVersion.VERSION_16
     } else {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     withSourcesJar()
@@ -262,6 +262,19 @@ replaceToken {
 }
 
 processResources {
+    inputs.property("minecraft_dependency", project.property("dependencies.minecraft_dependency"))
+    inputs.property("mod_alias"           , project.parent.property("mod.id"))
+    inputs.property("mod_description"     , project.parent.property("mod.description"))
+    inputs.property("mod_homepage"        , project.parent.property("mod.homepage"))
+    inputs.property("mod_id"              , project.parent.property("mod.id").toString().replace("-", "_"))
+    inputs.property("mod_license"         , project.parent.property("mod.license"))
+    inputs.property("mod_name"            , project.parent.property("mod.name"))
+    inputs.property("mod_sources"         , project.parent.property("mod.sources"))
+    inputs.property("mod_version"         , project.getVersionWithCommitHash(this.project.parent))
+    inputs.property("root_mod_id"         , rootProject.property("mod.id"))
+    inputs.property("root_mod_name"       , rootProject.property("mod.name"))
+    inputs.property("root_mod_description", rootProject.property("mod.description"))
+
     [
             "fabric.mod.json"            : ["fabric"],
             "META-INF"                   : ["forge", "neoforge"],
@@ -271,18 +284,18 @@ processResources {
         if (platforms.contains(modPlatform)) {
             filesMatching(file) {
                 expand([
-                        "minecraft_dependency": project.property("dependencies.minecraft_dependency"),
-                        "mod_alias"           : project.parent.property("mod.id"),
-                        "mod_description"     : project.parent.property("mod.description"),
-                        "mod_homepage"        : project.parent.property("mod.homepage"),
-                        "mod_id"              : project.parent.property("mod.id").toString().replace("-", "_"),
-                        "mod_license"         : project.parent.property("mod.license"),
-                        "mod_name"            : project.parent.property("mod.name"),
-                        "mod_sources"         : project.parent.property("mod.sources"),
-                        "mod_version"         : project.getVersionWithCommitHash(this.project.parent),
-                        "root_mod_id"         : rootProject.property("mod.id"),
-                        "root_mod_name"       : rootProject.property("mod.name"),
-                        "root_mod_description": rootProject.property("mod.description"),
+                        "minecraft_dependency": inputs.properties.get("minecraft_dependency"),
+                        "mod_alias"           : inputs.properties.get("mod_alias"),
+                        "mod_description"     : inputs.properties.get("mod_description"),
+                        "mod_homepage"        : inputs.properties.get("mod_homepage"),
+                        "mod_id"              : inputs.properties.get("mod_id"),
+                        "mod_license"         : inputs.properties.get("mod_license"),
+                        "mod_name"            : inputs.properties.get("mod_name"),
+                        "mod_sources"         : inputs.properties.get("mod_sources"),
+                        "mod_version"         : inputs.properties.get("mod_version"),
+                        "root_mod_id"         : inputs.properties.get("root_mod_id"),
+                        "root_mod_name"       : inputs.properties.get("root_mod_name"),
+                        "root_mod_description": inputs.properties.get("root_mod_description"),
                 ])
             }
         } else {
@@ -306,11 +319,7 @@ yamlang {
 signing {
     String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getEnv().SIGNING_PGP_KEY)
     String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getEnv().SIGNING_PGP_PASSWORD)
-
-    required {
-        signingKey
-    }
-
+    required = signingKey
     useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
     sign(publishing.publications)
 }
@@ -318,26 +327,26 @@ signing {
 publishing {
     publications { PublicationContainer publications ->
         register("release", MavenPublication) { MavenPublication publication ->
-            artifactId("${this.project.parent.property("mod.artifact_name")}-${projectName}")
+            artifactId = "${this.project.parent.property("mod.artifact_name")}-${projectName}"
             from(this.project.components.java)
-            version("${this.project.getMavenArtifactVersion(this.project.parent)}")
+            version = "${this.project.getMavenArtifactVersion(this.project.parent)}"
             this.project.addPomMetadataInformation(this.project.parent, publication)
         }
     }
 
     repositories { RepositoryHandler repositoryHandler ->
         mavenLocal {
-            name("mavenLocal")
+            name = "mavenLocal"
         }
 
         maven {
-            name("projectLocalRelease")
-            url("${rootDir}/publish/release")
+            name = "projectLocalRelease"
+            url = "${rootDir}/publish/release"
         }
 
         maven {
-            name("nyanMavenRelease")
-            url("https://maven.hendrixshen.top/releases")
+            name = "nyanMavenRelease"
+            url = "https://maven.hendrixshen.top/releases"
 
             project.credentialsNyanMaven(it)
         }
@@ -364,14 +373,14 @@ tasks.withType(PublishToMavenRepository).configureEach {
 
 tasks.withType(Javadoc).configureEach { Javadoc task ->
     include("**/api/**")
-    task.options.encoding("UTF-8")
+    task.options.encoding = "UTF-8"
     (task.options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
 }
 
 tasks.withType(JavaCompile).configureEach { JavaCompile task ->
-    task.options.encoding("UTF-8")
+    task.options.encoding = "UTF-8"
 
-    if (mcVersion > 12004) {
+    if (mcVersion > 12005) {
         task.options.release.set(21)
     } else if (mcVersion > 11701) {
         task.options.release.set(17)
@@ -379,44 +388,32 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
         task.options.release.set(16)
     } else {
         task.options.release.set(8)
+        task.options.compilerArgs << '-Xlint:-options'
     }
 }
 
-tasks.register("cleanRuns", DefaultTask.class) {
-    doLast {
-        file(loom.runConfigs.client.runDir).parentFile.deleteDir()
-    }
+tasks.register("cleanRuns", Delete.class) { Delete cleanTask ->
+    dependsOn("cleanRunClient", "cleanRunServer")
+    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.delete(file(loom.runConfigs.client.runDir).parentFile)
 }
 
-tasks.register("cleanRunClient", DefaultTask.class) {
-    doLast {
-        file(loom.runConfigs.client.runDir).deleteDir()
-    }
+tasks.register("cleanRunClient", Delete.class) { Delete cleanTask ->
+    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.delete(loom.runConfigs.client.runDir)
 }
 
-tasks.register("cleanRunServer", DefaultTask.class) {
-    doLast {
-        file(loom.runConfigs.server.runDir).deleteDir()
-    }
+tasks.register("cleanRunServer", Delete.class) { Delete cleanTask ->
+    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.delete(loom.runConfigs.server.runDir)
 }
 
-tasks.register("cleanJar", DefaultTask.class) {
-    doLast {
-        file(project.layout.buildDirectory.file("libs")).deleteDir()
-    }
-}
-
-// Ugly fix for arch loom 1.9+
-// Once the project is configured with the access widener converter,
-// the first build works fine, while subsequent builds fail with:
-// XXX.jar already contains an access transformer - cannot convert AWs!
-tasks.named("jar") {
-    dependsOn("cleanJar")
+tasks.register("cleanJar", Delete.class) { Delete cleanTask ->
+    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.delete(project.layout.buildDirectory.dir("libs"))
 }
 
 [
-        "cleanRuns", "cleanRunClient", "cleanRunServer",
-        "cleanJar",
         "runClient", "runServer",
         "runMixinAuditClient", "runMixinAuditServer",
         "preprocessCode", "preprocessResources",
@@ -424,7 +421,7 @@ tasks.named("jar") {
 ].forEach { taskName ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
-            it.group("${project.property("mod.id")}")
+            it.setGroup("${project.property("mod.id")}")
         }
     }
 }
