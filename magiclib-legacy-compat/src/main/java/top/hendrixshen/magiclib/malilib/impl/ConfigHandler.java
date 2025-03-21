@@ -13,7 +13,11 @@ import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.MagicLibReference;
+import top.hendrixshen.magiclib.util.GsonUtil;
+import top.hendrixshen.magiclib.util.JsonUtil;
 import top.hendrixshen.magiclib.util.MiscUtil;
 
 import java.io.File;
@@ -65,17 +69,13 @@ public class ConfigHandler implements IConfigHandler {
     public ConfigHandler(String modId, Path configPath, ConfigManager configManager, int configVersion,
                          @Nullable Consumer<ConfigHandler> preDeserializeCallback,
                          @Nullable Consumer<ConfigHandler> postSerializeCallback) {
-        this.configPath = FileUtils.getConfigDirectory().toPath().resolve(configPath);
-        this.configManager = configManager;
+        this(modId, configPath, configManager, configVersion);
         this.preDeserializeCallback = preDeserializeCallback;
         this.postSerializeCallback = postSerializeCallback;
-        this.configVersion = configVersion;
-        this.jsonObject = new JsonObject();
-        this.modId = modId;
     }
 
     public ConfigHandler(String modId, Path configPath, ConfigManager configManager, int configVersion) {
-        this.configPath = FileUtils.getConfigDirectory().toPath().resolve(configPath);
+        this.configPath = MagicLib.getInstance().getCurrentPlatform().getConfigFolder().resolve(configPath);
         this.configManager = configManager;
         this.configVersion = configVersion;
         this.jsonObject = new JsonObject();
@@ -119,7 +119,7 @@ public class ConfigHandler implements IConfigHandler {
 
             try {
                 InputStreamReader inputStreamReader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);
-                JsonElement element = MiscUtil.GSON.fromJson(inputStreamReader, JsonElement.class);
+                JsonElement element = GsonUtil.GSON.fromJson(inputStreamReader, JsonElement.class);
                 inputStreamReader.close();
                 return element;
             } catch (Exception e) {
