@@ -2,8 +2,15 @@ package top.hendrixshen.magiclib.impl.malilib.config.option;
 
 import com.google.gson.JsonElement;
 import fi.dy.masa.malilib.config.options.ConfigColor;
-import fi.dy.masa.malilib.util.Color4f;
 import lombok.Getter;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 12104
+//$$ import fi.dy.masa.malilib.util.data.Color4f;
+//#else
+import fi.dy.masa.malilib.util.Color4f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 
