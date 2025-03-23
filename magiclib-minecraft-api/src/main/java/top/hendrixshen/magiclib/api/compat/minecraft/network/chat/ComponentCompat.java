@@ -32,13 +32,7 @@ public interface ComponentCompat extends Provider<Component> {
     }
 
     static @NotNull MutableComponentCompat literalCompat(String text) {
-        return MutableComponentCompat.of(
-                //#if MC > 11802
-                //$$ Component.literal(text)
-                //#else
-                new TextComponent(text)
-                //#endif
-        );
+        return MutableComponentCompat.of(ComponentCompat.literal(text));
     }
 
     static @NotNull BaseComponent translatable(String text, Object... objects) {
@@ -50,13 +44,7 @@ public interface ComponentCompat extends Provider<Component> {
     }
 
     static @NotNull MutableComponentCompat translatableCompat(String text, Object... objects) {
-        return MutableComponentCompat.of(
-                //#if MC > 11802
-                //$$ Component.translatable(text, objects)
-                //#else
-                new TranslatableComponent(text, objects)
-                //#endif
-        );
+        return MutableComponentCompat.of(ComponentCompat.translatable(text));
     }
 
     Style getStyle();

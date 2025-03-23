@@ -24,7 +24,6 @@ import com.google.common.collect.Lists;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -178,13 +177,7 @@ public class TextRenderer {
         //#endif
         // Enable transparent-able text rendering.
         RenderGlobal.enableBlend();
-        RenderGlobal.blendFunc(
-                //#if MC > 11404
-                GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
-                //#else
-                //$$ GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
-                //#endif
-        );
+        RenderGlobal.blendFuncForAlpha();
 
         for (int i = 0; i < lineNum; i++) {
             TextHolder holder = this.lines.get(i);
@@ -195,7 +188,11 @@ public class TextRenderer {
 
             while (true) {
                 MultiBufferSource.BufferSource immediate = RenderUtil.getBufferSource();
+                //#if MC > 12104
+                //$$ Matrix4f matrix4f = new Matrix4f(Transformation.identity().getMatrix());
+                //#else
                 Matrix4f matrix4f = Transformation.identity().getMatrix();
+                //#endif
                 mc.font.drawInBatch(
                         holder.text,
                         textX,

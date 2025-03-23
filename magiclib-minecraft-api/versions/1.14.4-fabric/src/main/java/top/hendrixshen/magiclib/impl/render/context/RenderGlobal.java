@@ -24,121 +24,88 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-
-// CHECKSTYLE.OFF: ImportOrder
-//#if MC > 11605
-//$$ import net.minecraft.client.renderer.ShaderInstance;
-//#endif
-// CHECKSTYLE.ON: ImportOrder
-
-// CHECKSTYLE.OFF: ImportOrder
-//#if MC > 11605
-//$$ import java.util.function.Supplier;
-//#endif
-// CHECKSTYLE.ON: ImportOrder
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/353b69cc3138ce0d767854c77776abe04b056369/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/348904161f9fff2fcb9aeb44dee05d8c994e8c21/versions/1.14.4/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
  */
-//#if 11700 > MC && MC < 11700
-@SuppressWarnings("deprecation")
-//#endif
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RenderGlobal {
-    //#if MC < 11700
     public static void disableAlphaTest() {
-        RenderSystem.disableAlphaTest();
+        GlStateManager.disableAlphaTest();
     }
 
     public static void enableAlphaTest() {
-        RenderSystem.enableAlphaTest();
+        GlStateManager.enableAlphaTest();
     }
 
     public static void disableLighting() {
-        RenderSystem.disableLighting();
+        GlStateManager.disableLighting();
     }
 
     public static void enableLighting() {
-        RenderSystem.enableLighting();
+        GlStateManager.enableLighting();
     }
-    //#endif
 
     public static void disableDepthTest() {
-        RenderSystem.disableDepthTest();
+        GlStateManager.disableDepthTest();
     }
 
     public static void enableDepthTest() {
-        RenderSystem.enableDepthTest();
+        GlStateManager.enableDepthTest();
     }
 
     public static void depthMask(boolean mask) {
-        RenderSystem.depthMask(mask);
+        GlStateManager.depthMask(mask);
     }
 
     public static void enableBlend() {
-        RenderSystem.enableBlend();
+        GlStateManager.enableBlend();
     }
 
     public static void disableBlend() {
-        RenderSystem.disableBlend();
+        GlStateManager.disableBlend();
     }
 
     public static void blendFunc(GlStateManager.SourceFactor srcFactor, GlStateManager.DestFactor dstFactor) {
-        RenderSystem.blendFunc(srcFactor, dstFactor);
+        GlStateManager.blendFunc(srcFactor, dstFactor);
     }
 
     public static void blendFuncSeparate(
             GlStateManager.SourceFactor sourceFactor, GlStateManager.DestFactor destFactor,
             GlStateManager.SourceFactor sourceFactorAlpha, GlStateManager.DestFactor destFactorAlpha
     ) {
-        RenderGlobal.blendFuncSeparate(sourceFactor.value, destFactor.value, sourceFactorAlpha.value, destFactorAlpha.value);
+        GlStateManager.blendFuncSeparate(sourceFactor, destFactor, sourceFactorAlpha, destFactorAlpha);
     }
 
     public static void blendFuncSeparate(int sourceFactor, int destFactor,
                                          int sourceFactorAlpha, int destFactorAlpha) {
-        RenderSystem.blendFuncSeparate(sourceFactor, destFactor, sourceFactorAlpha, destFactorAlpha);
+        GlStateManager.blendFuncSeparate(sourceFactor, destFactor, sourceFactorAlpha, destFactorAlpha);
     }
 
     public static void blendFuncForAlpha() {
         RenderGlobal.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
     }
 
-    //#if MC < 11904
     public static void enableTexture() {
-        RenderSystem.enableTexture();
+        GlStateManager.enableTexture();
     }
 
     public static void disableTexture() {
-        RenderSystem.disableTexture();
+        GlStateManager.disableTexture();
     }
-    //#endif
 
     public static void colorMask(boolean red, boolean green, boolean blue, boolean alpha) {
-        RenderSystem.colorMask(red, green, blue, alpha);
+        GlStateManager.colorMask(red, green, blue, alpha);
     }
 
     public static void color4f(float red, float green, float blue, float alpha) {
-        //#if MC > 11605
-        //$$ RenderSystem.setShaderColor(red, green, blue, alpha);
-        //#else
-        RenderSystem.color4f(red, green, blue, alpha);
-        //#endif
+        GlStateManager.color4f(red, green, blue, alpha);
     }
 
     public static void defaultBlendFunc() {
-        RenderSystem.defaultBlendFunc();
+        RenderGlobal.blendFuncSeparate(
+                GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+                GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO
+        );
     }
-
-    //#if MC > 11605
-    //$$ public static void setShader(Supplier<ShaderInstance> supplier) {
-    //$$     RenderSystem.setShader(
-    //#if MC > 12101
-    //$$             supplier.get()
-    //#else
-    //$$             supplier
-    //#endif
-    //$$     );
-    //$$ }
-    //#endif
 }

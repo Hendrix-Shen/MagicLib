@@ -42,12 +42,13 @@ import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableCompone
 import top.hendrixshen.magiclib.api.fake.i18n.ServerPlayerLanguage;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.StyleAccessor;
+import top.hendrixshen.magiclib.util.CommonUtil;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 
 import java.util.List;
 
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/translations/TranslationContext.java">Carpet-TIS-Addition</a>.
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/be45c2589ad8e6cd9063dca71920ad8a873fc050/src/main/java/carpettisaddition/translations/TISAdditionTranslations.java">Carpet-TIS-Addition</a>.
  */
 public class MagicTranslation {
     public static @NotNull MutableComponentCompat translate(MutableComponentCompat text) {
@@ -166,27 +167,34 @@ public class MagicTranslation {
         // Translate hover text.
         HoverEvent hoverEvent = ((StyleAccessor) text.getStyle()).getHoverEvent();
 
-        if (hoverEvent != null) {
-            //#if MC > 11502
-            Object hoverText = hoverEvent.getValue(hoverEvent.getAction());
+        BaseComponent oldHoverText = CommonUtil.make(() -> {
+            //#if MC > 12104
+            //$$ if (hoverEvent instanceof HoverEvent.ShowText(Component hoverEventText) && hoverEventText instanceof MutableComponent) {
+            //$$     return (MutableComponent) hoverEventText;
+            //$$ }
+            //#elseif MC > 11502
+            Object hoverEventText = hoverEvent.getValue(hoverEvent.getAction());
 
-            if (hoverEvent.getAction() == HoverEvent.Action.SHOW_TEXT && hoverText instanceof BaseComponent) {
-                BaseComponent newText = MagicTranslation.forEachTranslationComponent((BaseComponent) hoverText,
-                        lang, modifier);
-
-                if (newText != hoverText) {
-                    text.setStyle(text.getStyle().withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, newText)));
-                }
+            if (hoverEvent.getAction() == HoverEvent.Action.SHOW_TEXT && hoverEventText instanceof BaseComponent) {
+                return (BaseComponent) hoverEventText;
             }
             //#else
-            //$$ Component hoverText = hoverEvent.getValue();
-            //$$ BaseComponent newText = MagicTranslation.forEachTranslationComponent((BaseComponent) hoverText,
-            //$$         lang, modifier);
+            //$$ Component hoverEventText = hoverEvent.getValue();
             //$$
-            //$$ if (newText != hoverText) {
-            //$$     text.getStyle().setHoverEvent(new HoverEvent(hoverEvent.getAction(), newText));
+            //$$ if (hoverEvent.getAction() == HoverEvent.Action.SHOW_TEXT && hoverEventText instanceof BaseComponent) {
+            //$$     return (BaseComponent) hoverEventText;
             //$$ }
             //#endif
+
+            return null;
+        });
+
+        if (oldHoverText != null) {
+            BaseComponent newHoverText = MagicTranslation.forEachTranslationComponent(oldHoverText, lang, modifier);
+
+            if (newHoverText != oldHoverText) {
+                ComponentUtil.hover(text, newHoverText);
+            }
         }
 
         // Translate sibling texts.

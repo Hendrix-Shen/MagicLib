@@ -457,10 +457,8 @@ public class WrappedSettingManager extends SettingsManager {
                 ComponentUtil.simpleCompat(this.getTranslatedRuleName(source, ruleOption.getName()))
                         .withStyleCompat(style -> style
                                 .withBold(true)
-                                .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND,
-                                        String.format("/%s %s", this.identifier, ruleOption.getName())))
-                                .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
-                                        ComponentUtil.trCompat("magiclib.ui.hover.refresh")
+                                .withClickEvent(ClickEventCompat.runCommand(String.format("/%s %s", this.identifier, ruleOption.getName())))
+                                .withHoverEvent(HoverEventCompat.showTextCompat(ComponentUtil.trCompat("magiclib.ui.hover.refresh")
                                                 .withStyleCompat(style1 -> style1.withColor(ChatFormatting.GRAY))))));
 
         String descTranslationKey = String.format("%s.rule.%s.desc", this.identifier, ruleOption.getName());
@@ -479,10 +477,8 @@ public class WrappedSettingManager extends SettingsManager {
                         ComponentUtil.tr(String.format("%s.category.%s", this.identifier, category)),
                         ComponentUtil.simple("]")).withStyleCompat(style -> style
                         .withColor(ChatFormatting.AQUA)
-                        .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND,
-                                String.format("/%s list %s", this.identifier, category)))
-                        .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
-                                ComponentUtil.trCompat("magiclib.ui.hover.list_all_category", category)))))
+                        .withClickEvent(ClickEventCompat.runCommand(String.format("/%s list %s", this.identifier, category)))
+                        .withHoverEvent(HoverEventCompat.showTextCompat(ComponentUtil.trCompat("magiclib.ui.hover.list_all_category", category)))))
                 .collect(Collectors.toList())));
 
         if (categories.size() < 2) {
@@ -512,11 +508,9 @@ public class WrappedSettingManager extends SettingsManager {
                                         ruleOption.getDefaultStringValue().equals(option) ? ChatFormatting.DARK_GREEN :
                                                 ChatFormatting.YELLOW)
                                 .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null :
-                                        ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND,
-                                                String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
+                                        ClickEventCompat.suggestCommand(String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
                                 .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null :
-                                        HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
-                                                ComponentUtil.trCompat("magiclib.ui.hover.switch_to", option)))))
+                                        HoverEventCompat.showTextCompat(ComponentUtil.trCompat("magiclib.ui.hover.switch_to", option)))))
                         .collect(Collectors.toList())),
                 ComponentUtil.simple(" ]").withStyle(style -> style.withColor(ChatFormatting.YELLOW))));
         return 1;
@@ -543,10 +537,9 @@ public class WrappedSettingManager extends SettingsManager {
                                 ComponentUtil.tr("magiclib.ui.change_permanently"),
                                 ComponentUtil.simple("]")).withStyleCompat(style -> style
                                 .withColor(ChatFormatting.AQUA)
-                                .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND,
-                                        String.format("/%s setDefault %s %s",
+                                .withClickEvent(ClickEventCompat.runCommand(String.format("/%s setDefault %s %s",
                                                 this.identifier, ruleOption.getName(), newValue)))
-                                .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
+                                .withHoverEvent(HoverEventCompat.showTextCompat(
                                         ComponentUtil.trCompat("magiclib.ui.hover.change_permanently",
                                                 String.format("%s.conf", this.identifier))))))));
         return 1;
@@ -644,8 +637,8 @@ public class WrappedSettingManager extends SettingsManager {
         for (RuleOption ruleOption : ruleOptions) {
             List<MutableComponentCompat> components = Lists.newArrayList();
             components.add(ComponentCompat.literalCompat(String.format("- %s", this.getTranslatedRuleName(ruleOption.getName()))).withStyleCompat(style -> style
-                    .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND, String.format("/%s %s", this.identifier, ruleOption.getName())))
-                    .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literalCompat(this.trRuleDesc(ruleOption.getName())).withStyle(style1 -> style1.withColor(ChatFormatting.YELLOW))))));
+                    .withClickEvent(ClickEventCompat.runCommand(String.format("/%s %s", this.identifier, ruleOption.getName())))
+                    .withHoverEvent(HoverEventCompat.showTextCompat(ComponentCompat.literalCompat(this.trRuleDesc(ruleOption.getName())).withStyle(style1 -> style1.withColor(ChatFormatting.YELLOW))))));
             components.add(ComponentCompat.literalCompat(" "));
             List<String> options = new ArrayList<>(ruleOption.getOptions());
 
@@ -657,8 +650,8 @@ public class WrappedSettingManager extends SettingsManager {
                 components.add(ComponentCompat.literalCompat(String.format("[%s]", option)).withStyleCompat(style ->
                         style.withUnderlined(ruleOption.getStringValue().equals(option))
                                 .withColor(ruleOption.isDefault() ? ChatFormatting.GRAY : ruleOption.getDefaultStringValue().equals(option) ? ChatFormatting.DARK_GREEN : ChatFormatting.YELLOW)
-                                .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND, String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
-                                .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, ComponentCompat.literalCompat(this.trUI("hover.switch_to", option))))));
+                                .withClickEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : ClickEventCompat.suggestCommand(String.format("/%s %s %s", this.identifier, ruleOption.getName(), option)))
+                                .withHoverEvent(ruleOption.getStringValue().equals(option) || this.locked() ? null : HoverEventCompat.showTextCompat(ComponentCompat.literalCompat(this.trUI("hover.switch_to", option))))));
                 components.add(ComponentCompat.literalCompat(" "));
             }
 
@@ -678,13 +671,11 @@ public class WrappedSettingManager extends SettingsManager {
                     List<MutableComponentCompat> components = Lists.newArrayList();
                     components.add(ComponentUtil.composeCompat("- ",
                             this.getTranslatedRuleName(source, option.getName())).withStyleCompat(style -> {
-                        style.withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND,
-                                String.format("/%s %s", this.identifier, option.getName())));
+                        style.withClickEvent(ClickEventCompat.runCommand(String.format("/%s %s", this.identifier, option.getName())));
                         String descTranslationKey = String.format("%s.rule.%s.desc", this.identifier, option.getName());
 
                         if (I18n.exists(descTranslationKey)) {
-                            style.withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
-                                    ComponentUtil.trCompat(descTranslationKey)
+                            style.withHoverEvent(HoverEventCompat.showTextCompat(ComponentUtil.trCompat(descTranslationKey)
                                             .withStyleCompat(style1 -> style1.withColor(ChatFormatting.YELLOW))));
                         }
 
@@ -704,10 +695,9 @@ public class WrappedSettingManager extends SettingsManager {
                                             o.equals(option.getDefaultStringValue()) ? ChatFormatting.DARK_GREEN :
                                                     ChatFormatting.YELLOW)
                                     .withClickEvent(o.equals(option.getStringValue()) || this.locked() ? null :
-                                            ClickEventCompat.of(ClickEvent.Action.SUGGEST_COMMAND,
-                                                    String.format("/%s %s %s", this.identifier, option.getName(), o)))
+                                            ClickEventCompat.suggestCommand(String.format("/%s %s %s", this.identifier, option.getName(), o)))
                                     .withHoverEvent(o.equals(option.getStringValue()) || this.locked() ? null :
-                                            HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
+                                            HoverEventCompat.showTextCompat(
                                                     ComponentUtil.trCompat("magiclib.ui.hover.switch_to", o)))))
                             .collect(Collectors.toList())));
                     ret.add(ComponentUtil.joinCompat(ComponentUtil.emptyCompat(), components));
@@ -748,10 +738,8 @@ public class WrappedSettingManager extends SettingsManager {
                                 ComponentUtil.tr(String.format("%s.category.%s", this.identifier, category)),
                                 "]").withStyleCompat(style -> style
                                 .withColor(ChatFormatting.AQUA)
-                                .withClickEvent(ClickEventCompat.of(ClickEvent.Action.RUN_COMMAND,
-                                        String.format("/%s list %s", this.identifier, category)))
-                                .withHoverEvent(HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT,
-                                        ComponentUtil.trCompat("magiclib.ui.hover.list_all_category", category)))));
+                                .withClickEvent(ClickEventCompat.runCommand(String.format("/%s list %s", this.identifier, category)))
+                                .withHoverEvent(HoverEventCompat.showTextCompat(ComponentUtil.trCompat("magiclib.ui.hover.list_all_category", category)))));
                     }
                 });
 
