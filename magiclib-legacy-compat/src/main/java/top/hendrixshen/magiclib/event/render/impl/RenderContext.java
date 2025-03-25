@@ -1,13 +1,14 @@
 package top.hendrixshen.magiclib.event.render.impl;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import com.mojang.math.Matrix4f;
 
 import lombok.Getter;
+
+import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
 
 @Environment(EnvType.CLIENT)
 public class RenderContext {
@@ -43,46 +44,44 @@ public class RenderContext {
     }
 
     public void enableDepthTest() {
-        RenderSystem.enableDepthTest();
+        RenderGlobal.enableDepthTest();
     }
 
     public void disableDepthTest() {
-        RenderSystem.disableDepthTest();
+        RenderGlobal.disableDepthTest();
     }
 
     public void depthMask(boolean mask) {
-        RenderSystem.depthMask(mask);
+        RenderGlobal.depthMask(mask);
     }
 
     public void enableBlend() {
-        RenderSystem.enableBlend();
+        RenderGlobal.enableBlend();
     }
 
+    //#if MC < 12105
     public void blendFunc(GlStateManager.SourceFactor srcFactor, GlStateManager.DestFactor dstFactor) {
-        RenderSystem.blendFunc(srcFactor, dstFactor);
+        RenderGlobal.blendFunc(srcFactor, dstFactor);
     }
+    //#endif
 
     public void color4f(float red, float green, float blue, float alpha) {
-        //#if MC > 11605
-        //$$ RenderSystem.setShaderColor(red, green, blue, alpha);
-        //#else
-        RenderSystem.color4f(red, green, blue, alpha);
-        //#endif
+        RenderGlobal.color4f(red, green, blue, alpha);
     }
 
     //#if MC < 11904
     public void enableTexture() {
-        RenderSystem.enableTexture();
+        RenderGlobal.enableTexture();
     }
     //#endif
 
     //#if MC < 11700
     public void enableAlphaTest() {
-        RenderSystem.enableAlphaTest();
+        RenderGlobal.enableAlphaTest();
     }
 
     public void disableLighting() {
-       RenderSystem.disableLighting();
+        RenderGlobal.disableLighting();
     }
     //#endif
 }

@@ -147,6 +147,9 @@ public class ConfigManager implements IKeybindProvider {
      *
      * @param configClass Your configuration class.
      */
+    //#if MC > 12104
+    //$$ @SuppressWarnings("removal")
+    //#endif
     public void parseConfigClass(@NotNull Class<?> configClass) {
         for (Field field : configClass.getDeclaredFields()) {
             Config annotation = field.getAnnotation(Config.class);
@@ -220,6 +223,20 @@ public class ConfigManager implements IKeybindProvider {
 
                         ((IMagicConfigBase) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigColor) c).getColor()));
+                    //#if MC > 12104
+                    //$$ } else if (configFieldObj instanceof fi.dy.masa.malilib.util.data.Color4f) {
+                    //$$     config = new MagicConfigColor(String.format("%s.config.%s", this.identifier, annotation.category()),
+                    //$$             field.getName(), ((fi.dy.masa.malilib.util.data.Color4f) configFieldObj).toHexString());
+                    //$$     option = new ConfigOption(annotation, config);
+                    //$$
+                    //$$     config.setValueChangeCallback(c -> {
+                    //$$         setFieldValue(field, null, ((ConfigColor) c).getColor());
+                    //$$         option.getValueChangeCallback().accept(option);
+                    //$$     });
+                    //$$
+                    //$$     ((IMagicConfigBase) config).setValueChangedFromJsonCallback(
+                    //$$             c -> setFieldValue(field, null, ((ConfigColor) c).getColor()));
+                    //#endif
                     } else if (configFieldObj instanceof Double) {
                         Numeric numeric = field.getAnnotation(Numeric.class);
 
