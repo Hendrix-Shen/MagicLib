@@ -61,10 +61,12 @@ preprocess {
     Node mc_12101_neoforge = createNode("better-dev-1.21.1-neoforge", 1_21_01, "mojang")
     Node mc_12103_neoforge = createNode("better-dev-1.21.3-neoforge", 1_21_03, "mojang")
     Node mc_12104_neoforge = createNode("better-dev-1.21.4-neoforge", 1_21_04, "mojang")
+    Node mc_12105_neoforge = createNode("better-dev-1.21.5-neoforge", 1_21_05, "mojang")
 
     mc_12002_fabric.link(mc_12002_neoforge, file("versions/mapping-1.20.2-fabric-neoforge.txt"))
     mc_12006_fabric.link(mc_12006_neoforge, file("versions/mapping-1.20.6-fabric-neoforge.txt"))
     mc_12101_fabric.link(mc_12101_neoforge, file("versions/mapping-1.21.1-fabric-neoforge.txt"))
     mc_12103_fabric.link(mc_12103_neoforge, file("versions/mapping-1.21.3-fabric-neoforge.txt"))
     mc_12104_fabric.link(mc_12104_neoforge, file("versions/mapping-1.21.4-fabric-neoforge.txt"))
+    mc_12105_fabric.link(mc_12105_neoforge, file("versions/mapping-1.21.5-fabric-neoforge.txt"))
 }

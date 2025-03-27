@@ -28,7 +28,8 @@
         "1.20.6-neoforge",
         "1.21.1-neoforge",
         "1.21.3-neoforge",
-        "1.21.4-neoforge"
+        "1.21.4-neoforge",
+        "1.21.5-neoforge"
       ]
     },
     "magiclib-legacy-compat": {
