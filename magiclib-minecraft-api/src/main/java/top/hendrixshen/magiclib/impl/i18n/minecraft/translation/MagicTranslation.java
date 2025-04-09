@@ -167,33 +167,35 @@ public class MagicTranslation {
         // Translate hover text.
         HoverEvent hoverEvent = ((StyleAccessor) text.getStyle()).getHoverEvent();
 
-        BaseComponent oldHoverText = CommonUtil.make(() -> {
-            //#if MC > 12104
-            //$$ if (hoverEvent instanceof HoverEvent.ShowText(Component hoverEventText) && hoverEventText instanceof MutableComponent) {
-            //$$     return (MutableComponent) hoverEventText;
-            //$$ }
-            //#elseif MC > 11502
-            Object hoverEventText = hoverEvent.getValue(hoverEvent.getAction());
+        if (hoverEvent != null) {
+            BaseComponent oldHoverText = CommonUtil.make(() -> {
+                //#if MC > 12104
+                //$$ if (hoverEvent instanceof HoverEvent.ShowText(Component hoverEventText) && hoverEventText instanceof MutableComponent) {
+                //$$     return (MutableComponent) hoverEventText;
+                //$$ }
+                //#elseif MC > 11502
+                Object hoverEventText = hoverEvent.getValue(hoverEvent.getAction());
 
-            if (hoverEvent.getAction() == HoverEvent.Action.SHOW_TEXT && hoverEventText instanceof BaseComponent) {
-                return (BaseComponent) hoverEventText;
-            }
-            //#else
-            //$$ Component hoverEventText = hoverEvent.getValue();
-            //$$
-            //$$ if (hoverEvent.getAction() == HoverEvent.Action.SHOW_TEXT && hoverEventText instanceof BaseComponent) {
-            //$$     return (BaseComponent) hoverEventText;
-            //$$ }
-            //#endif
+                if (hoverEvent.getAction() == HoverEvent.Action.SHOW_TEXT && hoverEventText instanceof BaseComponent) {
+                    return (BaseComponent) hoverEventText;
+                }
+                //#else
+                //$$ Component hoverEventText = hoverEvent.getValue();
+                //$$
+                //$$ if (hoverEvent.getAction() == HoverEvent.Action.SHOW_TEXT && hoverEventText instanceof BaseComponent) {
+                //$$     return (BaseComponent) hoverEventText;
+                //$$ }
+                //#endif
 
-            return null;
-        });
+                return null;
+            });
 
-        if (oldHoverText != null) {
-            BaseComponent newHoverText = MagicTranslation.forEachTranslationComponent(oldHoverText, lang, modifier);
+            if (oldHoverText != null) {
+                BaseComponent newHoverText = MagicTranslation.forEachTranslationComponent(oldHoverText, lang, modifier);
 
-            if (newHoverText != oldHoverText) {
-                ComponentUtil.hover(text, newHoverText);
+                if (newHoverText != oldHoverText) {
+                    ComponentUtil.hover(text, newHoverText);
+                }
             }
         }
 
