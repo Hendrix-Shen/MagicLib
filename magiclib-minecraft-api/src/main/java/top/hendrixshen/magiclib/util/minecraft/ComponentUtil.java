@@ -465,8 +465,7 @@ public class ComponentUtil {
             hoverText.append(ComponentUtil.dimension(dim));
         }
 
-        return ComponentUtil.fancy(ComponentUtil.simple(posStr), hoverText,
-                new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
+        return ComponentUtil.fancy(ComponentUtil.simple(posStr), hoverText, ClickEventCompat.suggestCommand(command));
     }
 
     private static @NotNull MutableComponentCompat coordinateCompat(@Nullable DimensionWrapper dim, String posStr, String command) {
@@ -523,7 +522,7 @@ public class ComponentUtil {
 
     private static @NotNull BaseComponent vector(String displayText, String detailedText) {
         return ComponentUtil.fancy(ComponentUtil.simple(displayText), ComponentUtil.simple(detailedText),
-                new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, detailedText));
+                ClickEventCompat.suggestCommand(detailedText));
     }
 
     public static @NotNull BaseComponent vector(Vec3 vec) {
@@ -556,8 +555,7 @@ public class ComponentUtil {
         BaseComponent hoverText = ComponentUtil.compose(ComponentUtil.translator.tr("entity_type",
                         entityBaseName, ComponentUtil.simple(EntityType.getKey(entity.getType()).toString())),
                 ComponentUtil.newLine(), ComponentUtil.getTeleportHint(entityDisplayName));
-        return ComponentUtil.fancy(entityDisplayName, hoverText, new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-                TextUtil.tp(entity)));
+        return ComponentUtil.fancy(entityDisplayName, hoverText, ClickEventCompat.suggestCommand(TextUtil.tp(entity)));
     }
 
     public static @NotNull MutableComponentCompat entityCompat(Entity entity) {
@@ -647,7 +645,7 @@ public class ComponentUtil {
         }
         return ComponentUtil.fancy(ComponentUtil.block(blockState.getBlock()),
                 ComponentUtil.join(ComponentUtil.newLine(), hovers.toArray(new BaseComponent[0])),
-                new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, TextUtil.block(blockState)));
+                ClickEventCompat.suggestCommand(TextUtil.block(blockState)));
     }
 
     public static @NotNull MutableComponentCompat blockCompat(@NotNull BlockState blockState) {
@@ -715,11 +713,11 @@ public class ComponentUtil {
     }
 
     public static @NotNull BaseComponent hover(BaseComponent text, BaseComponent hoverText) {
-        return ComponentUtil.hover(text, new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText));
+        return ComponentUtil.hover(text, HoverEventCompat.showText(hoverText));
     }
 
     public static @NotNull MutableComponentCompat hoverCompat(MutableComponentCompat text, MutableComponentCompat hoverText) {
-        return ComponentUtil.hoverCompat(text, HoverEventCompat.of(HoverEvent.Action.SHOW_TEXT, hoverText));
+        return ComponentUtil.hoverCompat(text, HoverEventCompat.showTextCompat(hoverText));
     }
 
     public static @NotNull BaseComponent click(@NotNull BaseComponent text, ClickEvent clickEvent) {
