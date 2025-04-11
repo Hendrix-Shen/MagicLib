@@ -2,5 +2,25 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "dev.architectury.loom",
+        "com.replaymod.preprocess",
+        "com.replaymod.preprocess:com.replaymod.preprocess.gradle.plugin",
+
+        "net.minecraftforge:forge",
+        "net.minecraftforge:forgespi",
+        "cpw.mods:modlauncher",
+
+        "net.neoforged.fancymodloader:core",
+        "net.neoforged.fancymodloader:language-java",
+        "net.neoforged.fancymodloader:loader",
+        
+        "com.mojang:minecraft"
+      ],
+      "enabled": false
+    }
   ]
 }
