@@ -49,7 +49,11 @@ public class WidgetDropDownListMixin {
             method = "render",
             at = @At(
                     value = "INVOKE",
+                    //#if MC > 12104
+                    //$$ target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIIIZ)V"
+                    //#else
                     target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIII)V"
+                    //#endif
             )
     )
     private void selectorDropDownListMakeOpaque(Args args) {
@@ -70,7 +74,11 @@ public class WidgetDropDownListMixin {
     //$$         method = "render",
     //$$         at = @At(
     //$$                 value = "INVOKE",
+    //#if MC > 12104
+    //$$                 target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIIIZ)V"
+    //#else
     //$$                 target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIII)V"
+    //#endif
     //$$         ),
     //$$         index = 4
     //$$ )
@@ -89,7 +97,11 @@ public class WidgetDropDownListMixin {
     //$$         method = "render",
     //$$         at = @At(
     //$$                 value = "INVOKE",
+    //#if MC > 12104
+    //$$                 target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIIIZ)V"
+    //#else
     //$$                 target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIII)V"
+    //#endif
     //$$         ),
     //$$         index = 0
     //$$ )
