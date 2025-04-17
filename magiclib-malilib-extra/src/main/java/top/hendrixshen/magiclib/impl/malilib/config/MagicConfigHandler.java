@@ -49,12 +49,16 @@ public class MagicConfigHandler implements IConfigHandler {
     private final MagicConfigManager configManager;
     @Getter
     private final String identifier;
+    @Getter
     private final File configFile;
+    @Getter
+    private final int configVersion;
+    @Getter
     private JsonObject loadedJson = new JsonObject();
-    private final Map<String, JsonSaveAble> internalDataSavers = Maps.newHashMap();
-    private final Map<String, JsonSaveAble> externalDataSavers = Maps.newHashMap();
     @Getter
     private final GlobalConfig globalConfig = new GlobalConfig();
+    private final Map<String, JsonSaveAble> internalDataSavers = Maps.newHashMap();
+    private final Map<String, JsonSaveAble> externalDataSavers = Maps.newHashMap();
 
     @Setter
     @Nullable
@@ -73,6 +77,8 @@ public class MagicConfigHandler implements IConfigHandler {
         this.identifier = configManager.getIdentifier();
         this.configFile = FileUtil.getConfigFile(this.identifier);
         this.configManager = configManager;
+        this.configVersion = configVersion;
+        this.getGlobalConfig().setConfigVersion(configVersion);
         this.internalDataSavers.put("global", this.globalConfig);
         this.internalDataSavers.put("config_gui", this.configManager.getGuiSetting());
         this.internalDataSavers.put("configStatistic", new ConfigStatisticSaver(this.configManager));
@@ -224,6 +230,8 @@ public class MagicConfigHandler implements IConfigHandler {
         //#endif
     }
 
+    @Getter
+    @Setter
     private static class GlobalConfig implements JsonSaveAble {
         private int configVersion = 0;
 
