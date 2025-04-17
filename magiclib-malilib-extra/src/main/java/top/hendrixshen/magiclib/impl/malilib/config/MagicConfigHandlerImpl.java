@@ -53,6 +53,7 @@ public class MagicConfigHandlerImpl implements MagicConfigHandler {
     private final File configFile;
     @Getter
     private final int handlerVersion;
+    @Getter
     private JsonObject loadedJson = new JsonObject();
     @Getter
     private final GlobalConfig globalConfig = new GlobalConfig();

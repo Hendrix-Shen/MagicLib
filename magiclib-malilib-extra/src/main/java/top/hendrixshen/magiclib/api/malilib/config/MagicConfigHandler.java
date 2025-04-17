@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.api.malilib.config;
 
+import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.IConfigHandler;
 
 import top.hendrixshen.magiclib.util.serializable.JsonSaveAble;
@@ -45,6 +46,12 @@ public interface MagicConfigHandler extends IConfigHandler {
      * @return File object representing the configuration file
      */
     File getConfigFile();
+
+    /**
+     * Gets the JSON object containing the loaded configuration data.
+     * @return JSON object.
+     */
+    JsonObject getLoadedJson();
 
     /**
      * Gets the version of this configuration handler.
