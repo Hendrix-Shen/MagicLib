@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.ConfigUtils;
-import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.util.JsonUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,7 +43,7 @@ import java.nio.file.StandardCopyOption;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-public class MagicConfigHandler implements IConfigHandler {
+public class MagicConfigHandler implements top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler {
     @Getter
     private final MagicConfigManager configManager;
     @Getter
@@ -52,8 +51,7 @@ public class MagicConfigHandler implements IConfigHandler {
     @Getter
     private final File configFile;
     @Getter
-    private final int configVersion;
-    @Getter
+    private final int handlerVersion;
     private JsonObject loadedJson = new JsonObject();
     @Getter
     private final GlobalConfig globalConfig = new GlobalConfig();
@@ -62,28 +60,29 @@ public class MagicConfigHandler implements IConfigHandler {
 
     @Setter
     @Nullable
-    private Consumer<MagicConfigHandler> preDeserializeCallback;
+    private Consumer<top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler> preDeserializeCallback;
     @Setter
     @Nullable
-    private Consumer<MagicConfigHandler> postDeserializeCallback;
+    private Consumer<top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler> postDeserializeCallback;
     @Setter
     @Nullable
-    private Consumer<MagicConfigHandler> preSerializeCallback;
+    private Consumer<top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler> preSerializeCallback;
     @Setter
     @Nullable
-    private Consumer<MagicConfigHandler> postSerializeCallback;
+    private Consumer<top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler> postSerializeCallback;
 
-    public MagicConfigHandler(@NotNull MagicConfigManager configManager, int configVersion) {
+    public MagicConfigHandler(@NotNull MagicConfigManager configManager, int handlerVersion) {
         this.identifier = configManager.getIdentifier();
         this.configFile = FileUtil.getConfigFile(this.identifier);
         this.configManager = configManager;
-        this.configVersion = configVersion;
-        this.getGlobalConfig().setConfigVersion(configVersion);
+        this.handlerVersion = handlerVersion;
+        this.getGlobalConfig().setConfigVersion(handlerVersion);
         this.internalDataSavers.put("global", this.globalConfig);
         this.internalDataSavers.put("config_gui", this.configManager.getGuiSetting());
         this.internalDataSavers.put("configStatistic", new ConfigStatisticSaver(this.configManager));
     }
 
+    @Override
     public boolean registerExternalData(String namespace, JsonSaveAble data) {
         if (this.externalDataSavers.containsKey(namespace)) {
             return false;
@@ -93,6 +92,7 @@ public class MagicConfigHandler implements IConfigHandler {
         return true;
     }
 
+    @Override
     public boolean unregisterExternalData(String namespace) {
         if (!this.externalDataSavers.containsKey(namespace)) {
             return false;
@@ -100,6 +100,11 @@ public class MagicConfigHandler implements IConfigHandler {
 
         this.externalDataSavers.remove(namespace);
         return true;
+    }
+
+    @Override
+    public int getConfigVersion() {
+        return this.globalConfig.configVersion;
     }
 
     public void loadConfig(JsonObject root) {
