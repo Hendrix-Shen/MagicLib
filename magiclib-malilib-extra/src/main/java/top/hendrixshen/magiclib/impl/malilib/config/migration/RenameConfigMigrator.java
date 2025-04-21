@@ -52,15 +52,22 @@ public class RenameConfigMigrator implements ConfigMigrator {
                 String oldName = entry.getKey();
                 String newName = entry.getValue();
 
-                if (obj.has(oldName) && !obj.has(newName)) {
-                    obj.add(newName, obj.get(oldName));
-                    ret = true;
-                    MagicLib.getLogger().info("[RenameConfigMigrator-{}]Renamed config: {}.{} -> {}.{}",
+                if (!obj.has(oldName)) {
+                    MagicLib.getLogger().warn("[RenameConfigMigrator-{}]Skipped renaming config, because source config does not exist(source={}.{}, destination={}.{}).",
                             configHandler.getIdentifier(), category, oldName, category, newName);
-                } else {
+                    continue;
+                }
+
+                if (obj.has(newName)) {
                     MagicLib.getLogger().warn("[RenameConfigMigrator-{}]Skipped renaming config, because destination config already exists(source={}.{}, destination={}.{}).",
                             configHandler.getIdentifier(), category, oldName, category, newName);
+                    continue;
                 }
+
+                obj.add(newName, obj.get(oldName));
+                ret = true;
+                MagicLib.getLogger().info("[RenameConfigMigrator-{}]Renamed config: {}.{} -> {}.{}",
+                        configHandler.getIdentifier(), category, oldName, category, newName);
             }
         }
 
