@@ -31,11 +31,11 @@ public class ConfigRelocationMigrator implements ConfigMigrator {
         this.migratePredicate = migratePredicate;
     }
 
-    public void addRelocationMapping(String oldName, String oldCategory, String newName, String newCategory) {
+    public void addMigrateMapping(String oldName, String oldCategory, String newName, String newCategory) {
         this.migrateMapping.add(new MigrationMapping(oldName, oldCategory, newName, newCategory));
     }
 
-    public void addRelocationMapping(List<MigrationMapping> migrateMapping) {
+    public void addMigrateMapping(List<MigrationMapping> migrateMapping) {
         this.migrateMapping.addAll(migrateMapping);
     }
 

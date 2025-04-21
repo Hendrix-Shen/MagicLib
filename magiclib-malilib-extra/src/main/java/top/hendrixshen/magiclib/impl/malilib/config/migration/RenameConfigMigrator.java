@@ -20,20 +20,20 @@ import java.util.Map.Entry;
  * </p>
  */
 public class RenameConfigMigrator implements ConfigMigrator {
-    private final Map<String, String> renameMapping = Maps.newHashMap();
+    private final Map<String, String> migrateMapping = Maps.newLinkedHashMap();
     private final SimplePredicate<MagicConfigHandler> migratePredicate;
 
-    public RenameConfigMigrator(Map<String, String> renameMapping, SimplePredicate<MagicConfigHandler> migratePredicate) {
-        this.renameMapping.putAll(renameMapping);
+    public RenameConfigMigrator(Map<String, String> migrateMapping, SimplePredicate<MagicConfigHandler> migratePredicate) {
+        this.migrateMapping.putAll(migrateMapping);
         this.migratePredicate = migratePredicate;
     }
 
-    public void addRenameMapping(String oldName, String newName) {
-        this.renameMapping.put(oldName, newName);
+    public void addMigrateMapping(String oldName, String newName) {
+        this.migrateMapping.put(oldName, newName);
     }
 
-    public void addRenameMapping(Map<String, String> renameMapping) {
-        this.renameMapping.putAll(renameMapping);
+    public void addMigrateMapping(Map<String, String> renameMapping) {
+        this.migrateMapping.putAll(renameMapping);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class RenameConfigMigrator implements ConfigMigrator {
                 continue;
             }
 
-            for (Entry<String, String> entry : this.renameMapping.entrySet()) {
+            for (Entry<String, String> entry : this.migrateMapping.entrySet()) {
                 String oldName = entry.getKey();
                 String newName = entry.getValue();
 
