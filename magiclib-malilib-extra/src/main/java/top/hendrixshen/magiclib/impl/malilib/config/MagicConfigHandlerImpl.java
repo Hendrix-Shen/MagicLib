@@ -1,5 +1,6 @@
 package top.hendrixshen.magiclib.impl.malilib.config;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -19,6 +20,7 @@ import com.google.gson.JsonParser;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
+import top.hendrixshen.magiclib.api.malilib.config.migration.ConfigMigrator;
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.impl.malilib.config.statistic.ConfigStatisticSaver;
 import top.hendrixshen.magiclib.util.FileUtil;
@@ -59,6 +61,7 @@ public class MagicConfigHandlerImpl implements MagicConfigHandler {
     private final GlobalConfig globalConfig = new GlobalConfig();
     private final Map<String, JsonSaveAble> internalDataSavers = Maps.newHashMap();
     private final Map<String, JsonSaveAble> externalDataSavers = Maps.newHashMap();
+    private final List<ConfigMigrator> migrators = Lists.newArrayList();
 
     @Setter
     @Nullable
@@ -104,6 +107,24 @@ public class MagicConfigHandlerImpl implements MagicConfigHandler {
         return true;
     }
 
+    public boolean registerMigrator(ConfigMigrator migrator) {
+        return this.registerMigrator(migrator, false);
+    }
+
+    public boolean registerMigrator(ConfigMigrator migrator, boolean priority) {
+        if (migrator == null) {
+            return false;
+        }
+
+        if (priority) {
+            this.migrators.add(0, migrator);
+        } else {
+            this.migrators.add(migrator);
+        }
+
+        return true;
+    }
+
     @Override
     public int getConfigVersion() {
         return this.globalConfig.configVersion;
@@ -138,19 +159,31 @@ public class MagicConfigHandlerImpl implements MagicConfigHandler {
         this.loadedJson = new JsonParser().parse(root.toString()).getAsJsonObject();
         //#endif
 
+        boolean migrated = false;
+
+        for (ConfigMigrator migrator : this.migrators) {
+            if (migrator.shouldMigrate(this)) {
+                migrated |= migrator.migrate(this);
+            }
+        }
+
         if (this.preDeserializeCallback != null) {
             this.preDeserializeCallback.accept(this);
         }
 
-        this.loadConfig(root);
-        this.loadInternal(root);
-        this.loadExternal(root);
+        this.loadConfig(this.loadedJson);
+        this.loadInternal(this.loadedJson);
+        this.loadExternal(this.loadedJson);
 
         if (this.postDeserializeCallback != null) {
             this.postDeserializeCallback.accept(this);
         }
 
         this.configManager.onConfigLoaded();
+
+        if (migrated) {
+            this.save();
+        }
     }
 
     public final void saveToJson() {

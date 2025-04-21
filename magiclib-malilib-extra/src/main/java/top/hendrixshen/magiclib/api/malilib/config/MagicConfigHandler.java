@@ -12,7 +12,7 @@ public interface MagicConfigHandler extends IConfigHandler {
     /**
      * Registers external JSON-serializable data to the configuration handler.
      *
-     * @param namespace Unique identifier for the data.
+     * @param namespace The identifier for the data.
      * @param data      Data object implementing JsonSaveAble interface.
      * @return true if registration succeeded, false otherwise.
      */
@@ -34,7 +34,7 @@ public interface MagicConfigHandler extends IConfigHandler {
     MagicConfigManager getConfigManager();
 
     /**
-     * Gets the unique identifier for this configuration handler.
+     * Gets the identifier for this configuration handler.
      *
      * @return Handler identifier.
      */

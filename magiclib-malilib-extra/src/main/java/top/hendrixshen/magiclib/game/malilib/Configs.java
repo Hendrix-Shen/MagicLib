@@ -124,6 +124,7 @@ public class Configs {
 
     public static void init() {
         Configs.cm.parseConfigClass(Configs.class);
+        ConfigMigration.setup();
         IValueChangeCallback<ConfigBoolean> redrawConfigGui = newValue -> ConfigGui.getCurrentInstance()
                 .ifPresent(ConfigGui::reDraw);
 
