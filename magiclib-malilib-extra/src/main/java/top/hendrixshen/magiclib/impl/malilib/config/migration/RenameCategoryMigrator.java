@@ -2,7 +2,6 @@ package top.hendrixshen.magiclib.impl.malilib.config.migration;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
-import fi.dy.masa.malilib.util.JsonUtils;
 
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler;
@@ -43,22 +42,19 @@ public class RenameCategoryMigrator implements ConfigMigrator {
         for (Map.Entry<String, String> entry : this.renameMapping.entrySet()) {
             String oldCategory = entry.getKey();
             String newCategory = entry.getValue();
-            JsonObject oldCategoryObj = JsonUtils.getNestedObject(loadedJson, oldCategory, false);
-            JsonObject newCategoryObj = JsonUtils.getNestedObject(loadedJson, newCategory, false);
 
-            if (oldCategoryObj == null) {
+            if (!loadedJson.has(oldCategory)) {
                 MagicLib.getLogger().warn("[RenameCategoryMigrator-{}]Skipped category renaming because source category {} does not exist.",
                         configHandler.getIdentifier(), oldCategory);
                 continue;
             }
 
-            if (newCategoryObj != null) {
+            if (loadedJson.has(newCategory)) {
                 MagicLib.getLogger().warn("[RenameCategoryMigrator-{}]Skipped category renaming because destination category {} already exists.",
                         configHandler.getIdentifier(), newCategory);
-                continue;
             }
 
-            loadedJson.add(newCategory, oldCategoryObj);
+            loadedJson.add(newCategory, loadedJson.get(oldCategory));
             ret = true;
             MagicLib.getLogger().info("[RenameCategoryMigrator-{}]Renamed category: {} -> {}",
                     configHandler.getIdentifier(), oldCategory, newCategory);
