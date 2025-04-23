@@ -2,7 +2,6 @@ package top.hendrixshen.magiclib.impl.malilib.config.migration;
 
 import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.util.JsonUtils;
-import lombok.Setter;
 
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler;
@@ -16,7 +15,6 @@ import top.hendrixshen.magiclib.util.collect.SimplePredicate;
  * Typically used to finalise upgrade config file.
  * </p>
  */
-@Setter
 public class VersionMigrator implements ConfigMigrator {
     private final int newVersion;
     private final SimplePredicate<MagicConfigHandler> migratePredicate;
