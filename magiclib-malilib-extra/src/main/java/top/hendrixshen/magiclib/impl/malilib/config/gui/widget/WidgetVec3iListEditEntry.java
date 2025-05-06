@@ -201,18 +201,22 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
                 // CHECKSTYLE.ON: SeparatorWrap
                 // CHECKSTYLE.ON: NoWhitespaceBefore
         );
-        this.vec3iEntry.render(
-                // CHECKSTYLE.OFF: NoWhitespaceBefore
-                // CHECKSTYLE.OFF: SeparatorWrap
-                mouseX,
-                mouseY,
-                selected
-                //#if MC > 11502
-                , poseStackOrGuiGraphics
-                //#endif
-                // CHECKSTYLE.ON: SeparatorWrap
-                // CHECKSTYLE.ON: NoWhitespaceBefore
-        );
+
+        if (this.vec3iEntry != null) {
+            this.vec3iEntry.render(
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
+                    mouseX,
+                    mouseY,
+                    selected
+                    //#if MC > 11502
+                    , poseStackOrGuiGraphics
+                    //#endif
+                    // CHECKSTYLE.ON: SeparatorWrap
+                    // CHECKSTYLE.ON: NoWhitespaceBefore
+            );
+        }
+
         super.render(
                 // CHECKSTYLE.OFF: NoWhitespaceBefore
                 // CHECKSTYLE.OFF: SeparatorWrap
@@ -242,6 +246,10 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
 
     @Override
     public boolean onKeyTypedImpl(int keyCode, int scanCode, int modifiers) {
+        if (this.vec3iEntry == null) {
+            return false;
+        }
+
         return this.vec3iEntry.onKeyTypedImpl(keyCode, scanCode, modifiers);
     }
 
