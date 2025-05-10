@@ -6,6 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import top.hendrixshen.magiclib.util.collect.Provider;
 
+//#if FORGE && MC < 12100
+//$$ @SuppressWarnings("removal")
+//#endif
 public interface ResourceLocationCompat extends Provider<ResourceLocation> {
     static @NotNull ResourceLocation fromNamespaceAndPath(String namespace, String path) {
         //#if MC > 12006
