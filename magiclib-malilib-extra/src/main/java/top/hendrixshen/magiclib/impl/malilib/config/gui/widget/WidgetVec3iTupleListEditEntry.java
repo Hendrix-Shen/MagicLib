@@ -211,30 +211,34 @@ public class WidgetVec3iTupleListEditEntry extends WidgetConfigOptionBase<Config
                 // CHECKSTYLE.ON: SeparatorWrap
                 // CHECKSTYLE.ON: NoWhitespaceBefore
         );
-        this.firstVec3iEntry.render(
-                // CHECKSTYLE.OFF: NoWhitespaceBefore
-                // CHECKSTYLE.OFF: SeparatorWrap
-                mouseX,
-                mouseY,
-                selected
-                //#if MC > 11502
-                , poseStackOrGuiGraphics
-                //#endif
-                // CHECKSTYLE.ON: SeparatorWrap
-                // CHECKSTYLE.ON: NoWhitespaceBefore
-        );
-        this.secondVec3iEntry.render(
-                // CHECKSTYLE.OFF: NoWhitespaceBefore
-                // CHECKSTYLE.OFF: SeparatorWrap
-                mouseX,
-                mouseY,
-                selected
-                //#if MC > 11502
-                , poseStackOrGuiGraphics
-                //#endif
-                // CHECKSTYLE.ON: SeparatorWrap
-                // CHECKSTYLE.ON: NoWhitespaceBefore
-        );
+
+        if (this.firstVec3iEntry != null && this.secondVec3iEntry != null) {
+            this.firstVec3iEntry.render(
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
+                    mouseX,
+                    mouseY,
+                    selected
+                    //#if MC > 11502
+                    , poseStackOrGuiGraphics
+                    //#endif
+                    // CHECKSTYLE.ON: SeparatorWrap
+                    // CHECKSTYLE.ON: NoWhitespaceBefore
+            );
+            this.secondVec3iEntry.render(
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
+                    mouseX,
+                    mouseY,
+                    selected
+                    //#if MC > 11502
+                    , poseStackOrGuiGraphics
+                    //#endif
+                    // CHECKSTYLE.ON: SeparatorWrap
+                    // CHECKSTYLE.ON: NoWhitespaceBefore
+            );
+        }
+
         super.render(
                 // CHECKSTYLE.OFF: NoWhitespaceBefore
                 // CHECKSTYLE.OFF: SeparatorWrap
@@ -265,6 +269,10 @@ public class WidgetVec3iTupleListEditEntry extends WidgetConfigOptionBase<Config
 
     @Override
     public boolean onKeyTypedImpl(int keyCode, int scanCode, int modifiers) {
+        if (this.firstVec3iEntry == null || this.secondVec3iEntry == null) {
+            return false;
+        }
+
         return this.firstVec3iEntry.onKeyTypedImpl(keyCode, scanCode, modifiers)
                 || this.secondVec3iEntry.onKeyTypedImpl(keyCode, scanCode, modifiers);
     }
