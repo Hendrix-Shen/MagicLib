@@ -20,8 +20,11 @@
 
 package top.hendrixshen.magiclib.api.network.packet;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ServerboundCustomPayloadPacket;
+import net.minecraft.server.level.ServerPlayer;
 
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.impl.network.packet.MagicPacketRegistrationCenterHelper;
@@ -58,5 +61,25 @@ public class MagicPackets {
 
     public static <P> ClientboundCustomPayloadPacket createClientbound(PacketType<P> id, P packet) {
         return MagicPacketRegistry.CLIENTBOUND_GAME.createPacket(id, packet);
+    }
+
+    public static <P> void sendServerbound(PacketType<P> type, P buf) {
+        MagicPackets.sendServerbound(MagicPackets.createServerbound(type, buf));
+    }
+
+    public static void sendServerbound(ServerboundCustomPayloadPacket customPayloadPacket) {
+        if (Minecraft.getInstance().getConnection() != null) {
+            Minecraft.getInstance().getConnection().send(customPayloadPacket);
+        }
+
+        throw new IllegalStateException("Cannot send packets when not in game!");
+    }
+
+    public static void sendClientbound(ServerPlayer player, PacketType<FriendlyByteBuf> type, FriendlyByteBuf buf) {
+        MagicPackets.sendClientbound(player, MagicPackets.createClientbound(type, buf));
+    }
+
+    public static void sendClientbound(ServerPlayer player, ClientboundCustomPayloadPacket packet) {
+        player.connection.send(packet);
     }
 }
