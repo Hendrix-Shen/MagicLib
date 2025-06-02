@@ -70,6 +70,7 @@ public class MagicPackets {
     public static void sendServerbound(ServerboundCustomPayloadPacket customPayloadPacket) {
         if (Minecraft.getInstance().getConnection() != null) {
             Minecraft.getInstance().getConnection().send(customPayloadPacket);
+            return;
         }
 
         throw new IllegalStateException("Cannot send packets when not in game!");
