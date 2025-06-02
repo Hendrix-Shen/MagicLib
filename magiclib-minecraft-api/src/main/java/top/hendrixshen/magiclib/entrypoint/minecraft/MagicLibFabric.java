@@ -9,6 +9,7 @@ import net.fabricmc.api.ModInitializer;
 import top.hendrixshen.magiclib.impl.i18n.minecraft.MinecraftLanguageManager;
 import top.hendrixshen.magiclib.impl.minecraft.MagicLibMinecraft;
 import top.hendrixshen.magiclib.impl.mixin.audit.minecraft.MinecraftMixinAudit;
+import top.hendrixshen.magiclib.impl.network.packet.MagicPacketRegistrationCenterHelper;
 
 public class MagicLibFabric implements ModInitializer, ClientModInitializer, DedicatedServerModInitializer {
     @Override
@@ -24,6 +25,7 @@ public class MagicLibFabric implements ModInitializer, ClientModInitializer, Ded
     public void onInitialize() {
         MinecraftMixinAudit.init();
         MagicLibMinecraft.init();
+        MagicPacketRegistrationCenterHelper.collectAll();
     }
 }
 //#endif
