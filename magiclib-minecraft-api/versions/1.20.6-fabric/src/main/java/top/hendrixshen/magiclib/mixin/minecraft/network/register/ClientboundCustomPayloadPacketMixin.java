@@ -57,7 +57,6 @@ public abstract class ClientboundCustomPayloadPacketMixin {
                         CustomPacketPayload.codec(MagicCustomPayload::write, buf -> new MagicCustomPayload(type, entry.getCodec(), buf)))
                 )
         );
-
         return Collections.unmodifiableList(newTypes);
     }
 }

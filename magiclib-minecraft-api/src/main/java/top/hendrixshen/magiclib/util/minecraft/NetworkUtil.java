@@ -49,6 +49,7 @@ public class NetworkUtil {
             }
 
             byte typeId = buf.readByte();
+
             if (typeId != TagCompat.TAG_COMPOUND) {
                 return NbtStyle.UNKNOWN;
             }
@@ -88,8 +89,8 @@ public class NetworkUtil {
      * </p>
      */
     public static CompoundTag readNbtAuto(FriendlyByteBuf buf) {
-        NbtStyle nbtFormat = NetworkUtil.guessNbtStyle(buf);
-        return Objects.requireNonNull(NetworkUtil.readNbt(nbtFormat, buf));
+        NbtStyle nbtStyle = NetworkUtil.guessNbtStyle(buf);
+        return Objects.requireNonNull(NetworkUtil.readNbt(nbtStyle, buf));
     }
 
     /**
@@ -105,17 +106,17 @@ public class NetworkUtil {
      */
     public static CompoundTag readNbtWithFormat(FriendlyByteBuf buf) {
         int styleId = buf.readVarInt();
-        NbtStyle nbtFormat = NbtStyle.values()[styleId];
-        return Objects.requireNonNull(NetworkUtil.readNbt(nbtFormat, buf));
+        NbtStyle nbtStyle = NbtStyle.values()[styleId];
+        return Objects.requireNonNull(NetworkUtil.readNbt(nbtStyle, buf));
     }
 
     @Nullable
-    private static CompoundTag readNbt(NbtStyle bufNbtFormat, FriendlyByteBuf buf) {
-        if (bufNbtFormat == NbtStyle.UNKNOWN) {
-            MagicLib.getLogger().debug("NetworkUtil.readNbtImpl() called with unknown NbtFormat");
+    private static CompoundTag readNbt(NbtStyle bufNbtStyle, FriendlyByteBuf buf) {
+        if (bufNbtStyle == NbtStyle.UNKNOWN) {
+            MagicLib.getLogger().debug("NetworkUtil.readNbt() called with unknown NbtStyle");
         }
 
-        if (NbtStyle.CURRENT == NbtStyle.LEGACY && bufNbtFormat == NbtStyle.MODERN) {
+        if (NbtStyle.CURRENT == NbtStyle.LEGACY && bufNbtStyle == NbtStyle.MODERN) {
             // I'm < mc1.20.2 (OLD), trying to read a nbt in NEW style
             //#if MC < 12002
             int prevReaderIndex = buf.readerIndex();
@@ -129,7 +130,7 @@ public class NetworkUtil {
             buf.readBytes(Math.max(0, n - 2));
             return nbt;
             //#endif
-        } else if (NbtStyle.CURRENT == NbtStyle.MODERN && bufNbtFormat == NbtStyle.LEGACY) {
+        } else if (NbtStyle.CURRENT == NbtStyle.MODERN && bufNbtStyle == NbtStyle.LEGACY) {
             // I'm >= mc1.20.2 (NEW), trying to read a nbt in OLD style
             int prevReaderIndex = buf.readerIndex();
             FriendlyByteBuf tweakedBuf = new FriendlyByteBuf(Unpooled.buffer());
@@ -152,8 +153,8 @@ public class NetworkUtil {
      */
     @Deprecated
     public static CompoundTag readNbt(FriendlyByteBuf buf) {
-        NbtStyle nbtFormat = NetworkUtil.guessNbtStyle(buf);
-        return NetworkUtil.readNbt(nbtFormat, buf);
+        NbtStyle nbtStyle = NetworkUtil.guessNbtStyle(buf);
+        return NetworkUtil.readNbt(nbtStyle, buf);
     }
 
     /**

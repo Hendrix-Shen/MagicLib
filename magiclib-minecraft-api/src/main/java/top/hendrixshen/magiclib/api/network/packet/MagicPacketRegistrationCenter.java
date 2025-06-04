@@ -39,11 +39,10 @@ package top.hendrixshen.magiclib.api.network.packet;
  * Example mixin:
  * <pre>
  * {@code
- * @Mixin(MagicPacketRegistrationCenter.class)
+ * @Mixin(value = MagicPacketRegistrationCenter.class, remap = false)
  * public abstract class MagicPacketRegistrationCenterMixin {
- *     @Inject(method = "common", at = @At("HEAD"), remap = false)
- *     private static void register(CallbackInfo ci)
- *     {
+ *     @Inject(method = "common", at = @At("HEAD"))
+ *     private static void register(CallbackInfo ci) {
  *         MyMod.registerMyPacketsToMagicLib();
  *     }
  * }
