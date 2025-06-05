@@ -14,7 +14,7 @@ import java.util.jar.Manifest
 
 buildscript {
     dependencies {
-        classpath("org.apache.groovy:groovy-toml:4.0.26")
+        classpath("org.apache.groovy:groovy-toml:4.0.27")
     }
 }
 
