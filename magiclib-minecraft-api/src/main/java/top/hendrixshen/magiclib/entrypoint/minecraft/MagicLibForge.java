@@ -8,6 +8,7 @@
 //$$ import top.hendrixshen.magiclib.impl.i18n.minecraft.MinecraftLanguageManager;
 //$$ import top.hendrixshen.magiclib.impl.minecraft.MagicLibMinecraft;
 //$$ import top.hendrixshen.magiclib.impl.mixin.audit.minecraft.MinecraftMixinAudit;
+//$$ import top.hendrixshen.magiclib.impl.network.packet.MagicPacketRegistrationCenterHelper;
 //$$
 //$$ @Mod("@MOD_IDENTIFIER@")
 //$$ public class MagicLibForge implements ModInitializer {
@@ -28,6 +29,7 @@
 //$$     public void onInitialize() {
 //$$         MinecraftMixinAudit.init();
 //$$         MagicLibMinecraft.init();
+//$$         MagicPacketRegistrationCenterHelper.collectAll();
 //$$     }
 //$$ }
 //#endif

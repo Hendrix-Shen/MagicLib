@@ -8,6 +8,7 @@
     "defaultRequire": 1
   },
   "client": [
+    "accessor.ClientPacketListenerAccessor",
     "accessor.GuiGraphicsAccessor",
     "accessor.LegacyPackResourcesAdapterAccessor",
     "accessor.Matrix4fAccessor",
@@ -21,11 +22,15 @@
     "event.MinecraftMixin",
     "event.render.EntityRendererMixin",
     "event.render.GameRendererMixin",
-    "event.render.LevelRendererMixin"
+    "event.render.LevelRendererMixin",
+    "network.hook.ClientPacketListenerMixin"
   ],
   "mixins": [
+    "accessor.ClientboundCustomPayloadPacketAccessor",
     "accessor.DyeColorAccessor",
     "accessor.ServerboundClientInformationPacketAccessor",
+    "accessor.ServerboundCustomPayloadPacketAccessor",
+    "accessor.ServerGamePacketListenerImplAccessor",
     "accessor.SlotAccessor",
     "accessor.StyleAccessor",
     "accessor.TranslatableComponentAccessor",
@@ -34,7 +39,10 @@
     "i18n.FilePackResourcesMixin",
     "i18n.PathPackResourcesMixin",
     "i18n.ServerPlayerMixin",
-    "i18n.TranslatableText"
+    "i18n.TranslatableText",
+    "network.hook.ServerGamePacketListenerImplMixin",
+    "network.register.ClientboundCustomPayloadPacketMixin",
+    "network.register.ServerboundCustomPayloadPacketMixin"
   ],
   "server": [
     "event.DedicatedServerMixin"
