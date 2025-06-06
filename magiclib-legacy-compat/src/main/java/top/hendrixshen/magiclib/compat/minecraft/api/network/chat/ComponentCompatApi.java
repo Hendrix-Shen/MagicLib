@@ -27,7 +27,7 @@ public interface ComponentCompatApi {
 
     //#if MC < 11600
     //$$ default BaseComponent withStyle(Style style) {
-    //$$     return (BaseComponent) this.withStyle(style);
+    //$$     return this.withStyleCompat(style);
     //$$ }
     //#endif
 }
