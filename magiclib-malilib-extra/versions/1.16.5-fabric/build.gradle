@@ -82,9 +82,9 @@ String malilib_fabric_ga = project.getProperties().getOrDefault("dependencies.ap
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        [malilib_fabric_ga       , "malilib"   , fabricLike                     , false],
-        ["maven.modrinth:mafglib", "malilib"   , forgeLike                      , false],
-        ["lol.bai:badpackets"    , "badpackets", forgeLike && mcVersion > 12004 , false],
+        [malilib_fabric_ga       , "malilib"   , fabricLike                                           , false],
+        ["maven.modrinth:mafglib", "malilib"   , forgeLike                                            , false],
+        ["lol.bai:badpackets"    , "badpackets", forgeLike && 12100 >> mcVersion && mcVersion > 12004 , false],
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
