@@ -20,6 +20,7 @@
 
 package top.hendrixshen.magiclib.impl.render;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.Camera;
@@ -37,16 +38,16 @@ import com.mojang.math.Matrix4f;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
+import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
 import java.util.Objects;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/InWorldPositionTransformer.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/src/main/java/me/fallenbreath/tweakermore/util/render/InWorldPositionTransformer.java">TweakerMore</a>.
  */
 public class CameraPositionTransformer {
     private final Vec3 pos;
-
     private RenderContext context;
 
     public static @NotNull CameraPositionTransformer create(Vec3 pos) {
@@ -58,8 +59,10 @@ public class CameraPositionTransformer {
     }
 
     /**
-     * Pose stack of renderContext will be pushed.
+     * @deprecated Use {@link CameraPositionTransformer#apply(LevelRenderContext)} instead.
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public void apply(@NotNull RenderContext context) {
         this.context = context;
         Minecraft mc = Minecraft.getInstance();
@@ -83,6 +86,13 @@ public class CameraPositionTransformer {
     }
 
     /**
+     * Matrix stack of renderContext will be pushed.
+     */
+    public void apply(@NotNull LevelRenderContext context) {
+        this.apply((RenderContext) context);
+    }
+
+    /**
      * Pose stack of renderContext will be popped.
      */
     public void restore() {
@@ -94,6 +104,8 @@ public class CameraPositionTransformer {
         this.context = null;
     }
 
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public RenderContext getContext() {
         return Objects.requireNonNull(this.context);
     }

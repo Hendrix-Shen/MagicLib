@@ -9,6 +9,7 @@
   },
   "client": [
     "accessor.ClientPacketListenerAccessor",
+    "accessor.GameRendererAccessor",
     "accessor.GuiGraphicsAccessor",
     "accessor.LegacyPackResourcesAdapterAccessor",
     "accessor.Matrix4fAccessor",
@@ -23,7 +24,9 @@
     "event.render.EntityRendererMixin",
     "event.render.GameRendererMixin",
     "event.render.LevelRendererMixin",
-    "network.hook.ClientPacketListenerMixin"
+    "network.hook.ClientPacketListenerMixin",
+    "render.compat.fabricrenderingapi.SpecialGuiElementRegistryImpl",
+    "render.context.GuiRendererMixin"
   ],
   "mixins": [
     "accessor.ClientboundCustomPayloadPacketAccessor",

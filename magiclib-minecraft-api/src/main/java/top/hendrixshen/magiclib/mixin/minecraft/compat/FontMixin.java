@@ -24,6 +24,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import top.hendrixshen.magiclib.api.fake.compat.FontAccessor;
 
+// Used in mc1.21.5-
 @Environment(EnvType.CLIENT)
 @Mixin(Font.class)
 public abstract class FontMixin implements FontAccessor {

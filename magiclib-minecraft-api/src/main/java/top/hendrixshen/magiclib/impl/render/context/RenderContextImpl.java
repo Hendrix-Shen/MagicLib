@@ -20,6 +20,7 @@
 
 package top.hendrixshen.magiclib.impl.render.context;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 // CHECKSTYLE.OFF: ImportOrder
@@ -41,7 +42,11 @@ import top.hendrixshen.magiclib.api.render.matrix.MatrixStack;
 
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderContextImpl.java">TweakerMore</a>.
+ *
+ * @deprecated split into {@link GuiRenderContextImpl} and {@link LevelRenderContextImpl}.
  */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public class RenderContextImpl implements RenderContext {
     //#if MC > 11904
     //$$ private final GuiGraphics guiGraphics;
@@ -50,17 +55,19 @@ public class RenderContextImpl implements RenderContext {
     @NotNull
     private final MatrixStack matrixStack;
 
-    public RenderContextImpl(
-            //#if MC > 11904
-            //$$ GuiGraphics guiGraphics,
-            //#endif
-            @NotNull MatrixStack matrixStack
-    ) {
+    public RenderContextImpl(@NotNull MatrixStack matrixStack) {
         //#if MC > 11904
-        //$$ this.guiGraphics = guiGraphics;
+        //$$ this.guiGraphics = null;
         //#endif
         this.matrixStack = matrixStack;
     }
+
+    //#if MC > 11904
+    //$$ public RenderContextImpl(GuiGraphics guiGraphics, @NotNull MatrixStack matrixStack) {
+    //$$     this.guiGraphics = guiGraphics;
+    //$$     this.matrixStack = matrixStack;
+    //$$ }
+    //#endif
 
     @Override
     public GuiComponent getGuiComponent() {

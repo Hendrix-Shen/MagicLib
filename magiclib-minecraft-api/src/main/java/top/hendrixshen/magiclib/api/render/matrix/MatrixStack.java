@@ -20,19 +20,34 @@
 
 package top.hendrixshen.magiclib.api.render.matrix;
 
-import com.mojang.math.Matrix4f;
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11404
+import org.jetbrains.annotations.ApiStatus;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 11903
+//$$ import org.joml.Matrix4f;
+//#else
+import com.mojang.math.Matrix4f;
+//#endif
+
 //#if MC > 11404
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/6b126681084526b295e268330ca9053dda3b63a9/src/main/java/me/fallenbreath/tweakermore/util/render/matrix/IMatrixStack.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/src/main/java/me/fallenbreath/tweakermore/util/render/matrix/IMatrixStack.java">TweakerMore</a>.
  */
 public interface MatrixStack {
     //#if MC > 11404
+    /**
+     * @deprecated moved to {@link top.hendrixshen.magiclib.impl.render.matrix.MinecraftPoseStack#getPoseStack()}.
+     */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     PoseStack getPoseStack();
     //#endif
 

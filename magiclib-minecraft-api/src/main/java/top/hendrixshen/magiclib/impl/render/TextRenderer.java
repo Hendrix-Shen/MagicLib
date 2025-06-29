@@ -53,6 +53,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
+import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
 import top.hendrixshen.magiclib.util.minecraft.PositionUtil;
@@ -70,7 +71,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderer.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderer.java">TweakerMore</a>.
  */
 public class TextRenderer {
     public static final double DEFAULT_FONT_SCALE = 0.025;
@@ -94,17 +95,17 @@ public class TextRenderer {
         return new TextRenderer();
     }
 
-    private static @NotNull RenderContext createGlobalMatrixRenderContext() {
+    private static @NotNull LevelRenderContext createGlobalMatrixRenderContext() {
         // if transformation is applied to the RenderContext's matrix,
         // and the context's matrix (instead of an identity matrix) is used in TextRenderer.draw(),
         // then the z index might be wrongly apply, making background-ed texts really weird,
         // so just apply the transformation on the global matrix
         // FIXME: why
-        return RenderContext.of(
-                //#if MC > 11605
+        return RenderContext.level(
+                //#if MC >= 11700
                 //$$ RenderSystem.getModelViewStack()
-                //#elseif MC > 11502
-                new PoseStack()  // dummy matrix, will not be used for transformations
+                //#elseif MC >= 11600
+                new PoseStack() // dummy matrix, will not be used for transformations
                 //#endif
         );
     }
@@ -142,7 +143,7 @@ public class TextRenderer {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        RenderContext context = TextRenderer.createGlobalMatrixRenderContext();
+        LevelRenderContext context = TextRenderer.createGlobalMatrixRenderContext();
 
         CameraPositionTransformer positionTransformer = CameraPositionTransformer.create(this.pos);
         positionTransformer.apply(context);

@@ -27,6 +27,12 @@ import net.fabricmc.api.Environment;
 import top.hendrixshen.magiclib.impl.compat.minecraft.client.gui.FontCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.21.4: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.21.5+        : subproject 1.21.5</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Environment(EnvType.CLIENT)
 public interface FontCompat extends Provider<Font> {
     static @NotNull FontCompat of(@NotNull Font font) {
