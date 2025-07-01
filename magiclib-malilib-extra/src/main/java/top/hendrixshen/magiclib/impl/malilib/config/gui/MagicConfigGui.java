@@ -313,10 +313,13 @@ public class MagicConfigGui extends GuiConfigsBase {
         this.hoveringWidgets.forEach(widget -> widget.render(
                 // CHECKSTYLE.OFF: NoWhitespaceBefore
                 // CHECKSTYLE.OFF: SeparatorWrap
+                //#if MC >= 12106
+                //$$ poseStackOrGuiGraphics,
+                //#endif
                 mouseX,
                 mouseY,
                 widget.isMouseOver(mouseX, mouseY)
-                //#if MC > 11502
+                //#if 12106 > MC &&  MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
                 // CHECKSTYLE.ON: SeparatorWrap

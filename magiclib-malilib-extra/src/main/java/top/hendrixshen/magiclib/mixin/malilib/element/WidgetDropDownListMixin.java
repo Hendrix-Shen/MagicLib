@@ -39,17 +39,20 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/element/WidgetDropDownListMixin.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ae01c423f14ad6d3e45527bfe9450191ba19bd35/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/element/WidgetDropDownListMixin.java">TweakerMore</a>.
  */
 @Mixin(value = WidgetDropDownList.class, remap = false)
 public class WidgetDropDownListMixin {
     //#if FABRIC_LIKE
-    @SuppressWarnings({"ConstantConditions", "PointlessBitwiseExpression"})
+    @SuppressWarnings({"ConstantConditions", "PointlessBitwiseExpression", "PointlessArithmeticExpression"})
     @ModifyArgs(
             method = "render",
             at = @At(
                     value = "INVOKE",
-                    //#if MC > 12104
+                    //#if MC >= 12106
+                    //$$ target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(Lnet/minecraft/client/gui/GuiGraphics;IIIII)V",
+                    //$$ remap = true
+                    //#elseif MC > 12104
                     //$$ target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIIIZ)V"
                     //#else
                     target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIII)V"
@@ -58,14 +61,20 @@ public class WidgetDropDownListMixin {
     )
     private void selectorDropDownListMakeOpaque(Args args) {
         if ((WidgetDropDownList<?>) (Object) this instanceof SelectorDropDownList<?>) {
+            //#if MC >= 12106
+            //$$ final int baseIdx = 1;  // the 1st guiGraphics param
+            //#else
+            final int baseIdx = 0;
+            //#endif
+
             // Ensure background is opaque.
-            int bgColor = args.get(4);
+            int bgColor = args.get(baseIdx + 4);
             int a = (bgColor >> 24) & 0xFF;
             bgColor = (0xFF << 24) | (a << 16) | (a << 8) | (a << 0);
-            args.set(4, bgColor);
+            args.set(baseIdx + 4, bgColor);
 
             // Show left box border.
-            args.set(0, (int) args.get(0) + 1);
+            args.set(baseIdx + 0, (int) args.get(baseIdx + 0) + 1);
         }
     }
     //#else

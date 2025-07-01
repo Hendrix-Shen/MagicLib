@@ -168,6 +168,23 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
     }
 
     @Override
+    //#if MC >= 12106
+    //$$ public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean selected) {
+    //$$     if (this.isOdd) {
+    //$$         RenderUtils.drawRect(guiGraphics, this.x, this.y, this.width, this.height, 0x20FFFFFF);
+    //$$     } else {
+    //$$         RenderUtils.drawRect(guiGraphics, this.x, this.y, this.width, this.height, 0x30FFFFFF);
+    //$$     }
+    //$$
+    //$$     this.drawSubWidgets(guiGraphics, mouseX, mouseY);
+    //$$
+    //$$     if (this.vec3iEntry != null) {
+    //$$         this.vec3iEntry.render(guiGraphics, mouseX, mouseY, selected);
+    //$$     }
+    //$$
+    //$$     super.render(guiGraphics, mouseX, mouseY, selected);
+    //$$ }
+    //#else
     public void render(
             // CHECKSTYLE.OFF: NoWhitespaceBefore
             // CHECKSTYLE.OFF: SeparatorWrap
@@ -230,6 +247,7 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
                 // CHECKSTYLE.ON: NoWhitespaceBefore
         );
     }
+    //#endif
 
     @Override
     protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {

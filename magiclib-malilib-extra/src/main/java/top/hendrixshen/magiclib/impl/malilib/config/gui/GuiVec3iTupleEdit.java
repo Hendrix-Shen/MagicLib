@@ -148,13 +148,23 @@ public class GuiVec3iTupleEdit extends GuiBase {
 
     @Override
     protected void drawScreenBackground(
-            //#if MC > 12104
+            //#if MC > 12006
             //$$ GuiGraphics guiGraphics,
             //#endif
             int mouseX,
             int mouseY
     ) {
-        RenderUtils.drawOutlinedBox(this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, 0xFF999999);
+        RenderUtils.drawOutlinedBox(
+                //#if MC >= 12106
+                //$$ guiGraphics,
+                //#endif
+                this.dialogLeft,
+                this.dialogTop,
+                this.dialogWidth,
+                this.dialogHeight,
+                0xFF000000,
+                0xFF999999
+        );
     }
 
     @Override
