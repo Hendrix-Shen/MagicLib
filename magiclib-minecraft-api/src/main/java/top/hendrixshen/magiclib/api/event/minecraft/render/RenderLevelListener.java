@@ -30,14 +30,18 @@ public interface RenderLevelListener extends Listener {
      */
     @Deprecated
     @ApiStatus.ScheduledForRemoval
-    void preRenderLevel(Level level, RenderContext renderContext, float partialTicks);
+    default void preRenderLevel(Level level, RenderContext renderContext, float partialTicks) {
+        throw new UnsupportedOperationException("Use preRenderLevel with LevelRenderContext instead");
+    }
 
     /**
      * Use {@link RenderLevelListener#postRenderLevel(ClientLevel, LevelRenderContext)} instead.
      */
     @Deprecated
     @ApiStatus.ScheduledForRemoval
-    void postRenderLevel(Level level, RenderContext renderContext, float partialTicks);
+    default void postRenderLevel(Level level, RenderContext renderContext, float partialTicks) {
+        throw new UnsupportedOperationException("Use postRenderLevel with LevelRenderContext instead");
+    }
     //#endif
 
     default void postRenderLevel(ClientLevel level, LevelRenderContext renderContext) {

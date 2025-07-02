@@ -9,13 +9,19 @@ import top.hendrixshen.magiclib.api.render.context.RenderContext;
 import top.hendrixshen.magiclib.impl.render.context.EntityRenderContext;
 
 public interface RenderEntityListener extends Listener {
+    //#if MC < 12106
     @Deprecated
     @ApiStatus.ScheduledForRemoval
-    void preRenderEntity(Entity entity, RenderContext renderContext, float partialTicks);
+    default void preRenderEntity(Entity entity, RenderContext renderContext, float partialTicks) {
+        throw new UnsupportedOperationException("Use preRenderEntity with EntityRenderContext instead");
+    }
 
     @Deprecated
     @ApiStatus.ScheduledForRemoval
-    void postRenderEntity(Entity entity, RenderContext renderContext, float partialTicks);
+    default void postRenderEntity(Entity entity, RenderContext renderContext, float partialTicks) {
+        throw new UnsupportedOperationException("Use postRenderEntity with EntityRenderContext instead");
+    }
+    //#endif
 
     default void preRenderEntity(Entity entity, EntityRenderContext renderContext) {
         throw new UnsupportedOperationException("Implement it before using");
