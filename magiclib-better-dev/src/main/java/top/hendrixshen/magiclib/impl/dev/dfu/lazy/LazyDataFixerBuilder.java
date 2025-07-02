@@ -31,6 +31,9 @@ import java.util.concurrent.Executor;
 
 /**
  * Reference to <a href="https://github.com/astei/lazydfu/blob/385764a6fb4cf57b7a39e0ff367a704f74f12497/src/main/java/me/steinborn/lazydfu/mod/LazyDataFixerBuilder.java">LazyDFU</a>.
+ *
+ * <li>mc1.14 ~ mc1.19.1: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.19.2+        : subproject 1.19.2 [dummy]</li>
  */
 public class LazyDataFixerBuilder extends DataFixerBuilder {
     private static final Executor NO_OP_EXECUTOR = command -> {

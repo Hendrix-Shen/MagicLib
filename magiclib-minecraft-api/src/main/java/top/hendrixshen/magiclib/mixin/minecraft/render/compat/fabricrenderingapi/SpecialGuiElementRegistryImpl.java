@@ -6,7 +6,12 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.preprocess.DummyClass;
 
-// Used in mc1.21.6+
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project) [dummy]        &lt;--------</li>
+ * <li>mc1.21.6+        : subproject 1.21.7</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Dependencies(require = @Dependency(value = "fabric-rendering-v1", versionPredicates = ">=0.127.0"))
 @Mixin(DummyClass.class)
 public abstract class SpecialGuiElementRegistryImpl {

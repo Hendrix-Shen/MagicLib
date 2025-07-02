@@ -34,6 +34,12 @@ import top.hendrixshen.magiclib.impl.event.EventManager;
 import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderLevelEvent;
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 : subproject 1.14.4 [dummy]</li>
+ * <li>mc1.15+: subproject 1.16.5 (main project)        &lt;--------</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Environment(EnvType.CLIENT)
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {

@@ -18,8 +18,8 @@ import top.hendrixshen.magiclib.util.collect.Provider;
 
 // CHECKSTYLE.OFF: JavadocStyle
 /**
- * <li>mc1.14 ~ mc1.21.4: subproject 1.16.5 (main project)</li>
- * <li>mc1.21.5+        : subproject 1.21.5        &lt;--------</li>
+ * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)</li>
+ * <li>mc1.21.6+        : subproject 1.21.7        &lt;--------</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
 @Environment(EnvType.CLIENT)

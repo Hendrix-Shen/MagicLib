@@ -41,18 +41,15 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * Reference to <a href="https://github.com/magistermaks/mod-fungible/blob/9cd81f1d8ebcef43cff3df279aaef9bb68950e7c/src/main/java/net/darktree/fungible/mixin/auth/ProfileKeysImplMixin.java">mod-fungible</a>.
+ *
+ * <li>mc1.14 ~ mc1.19.2: subproject 1.16.5 (main project) [dummy]</li>
+ * <li>mc1.19.3+        : subproject 1.19.3        &lt;--------</li>
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.AuthEmptyKeyPredicate.class))
 @Environment(EnvType.CLIENT)
 @Mixin(AccountProfileKeyPairManager.class)
 public class AccountProfileKeyPairManagerMixin {
-    @Inject(
-            method = "prepareKeyPair",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
+    @Inject(method = "prepareKeyPair", at = @At("HEAD"), cancellable = true)
     private void onPrepareKeyPair(@NotNull CallbackInfoReturnable<CompletableFuture<Optional<ProfileKeyPair>>> cir) {
         cir.setReturnValue(CompletableFuture.completedFuture(Optional.empty()));
     }

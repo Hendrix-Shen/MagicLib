@@ -40,17 +40,15 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 
 /**
  * Reference to <a href="https://github.com/astei/lazydfu/blob/a83ce2f3e7deb429d48134700424b4454f3bee8b/src/main/java/me/steinborn/lazydfu/mixin/SharedConstantsMixin.java">LazyDFU</a>.
+ *
+ * <li>mc1.14 ~ mc1.19.1: subproject 1.16.5 (main project) [dummy]</li>
+ * <li>mc1.19.2 ~ mc1.21: subproject 1.19.2        &lt;--------</li>
+ * <li>mc1.21.1+        : subproject 1.21.1 [dummy]</li>
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.LazyDFUPredicate.class))
 @Mixin(SharedConstants.class)
 public class SharedConstantsMixin {
-    @Inject(
-            method = "enableDataFixerOptimizations",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
+    @Inject(method = "enableDataFixerOptimizations", at = @At("HEAD"), cancellable = true)
     private static void onEnableDataFixerOptimizations(@NotNull CallbackInfo ci) {
         ci.cancel();
     }

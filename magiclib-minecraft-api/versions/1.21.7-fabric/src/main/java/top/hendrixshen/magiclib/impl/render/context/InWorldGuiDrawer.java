@@ -40,7 +40,7 @@ import java.util.List;
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/versions/1.21.6/src/main/java/me/fallenbreath/tweakermore/util/render/context/InWorldGuiDrawer.java#L48">TweakerMore</a>.
  *
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)</li>
- * <li>mc1.21.6+        : subproject 1.21.6        &lt;--------</li>
+ * <li>mc1.21.6+        : subproject 1.21.7        &lt;--------</li>
  */
 public class InWorldGuiDrawer implements AutoCloseable {
     @Getter

@@ -42,8 +42,8 @@ import net.minecraft.client.gui.GuiComponent;
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/src/main/java/me/fallenbreath/tweakermore/util/render/context/InWorldGuiDrawer.java">TweakerMore</a>.
  *
  * <p>
- * <li>mc1.14 ~ mc1.12.5: subproject 1.15.2 (main project)        &lt;--------</li>
- * <li>mc1.21.6+        : subproject 1.21.6</li>
+ * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.21.6+        : subproject 1.21.7</li>
  * </p>
  */
 public class InWorldGuiDrawer {

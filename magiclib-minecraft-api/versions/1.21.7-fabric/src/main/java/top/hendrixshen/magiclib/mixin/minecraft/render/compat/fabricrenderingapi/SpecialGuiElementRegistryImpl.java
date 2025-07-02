@@ -40,6 +40,9 @@ import top.hendrixshen.magiclib.impl.render.context.InWorldGuiDrawer;
  * <p>
  * See also: <a href="https://github.com/FabricMC/fabric/blob/05ccac950a2ea7ef8b4a4e08c955b96543f1ac59/fabric-rendering-v1/src/client/java/net/fabricmc/fabric/impl/client/rendering/SpecialGuiElementRegistryImpl.java#L40-L47">fabric api source code</a>
  * </p>
+ *
+ * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project) [dummy]</li>
+ * <li>mc1.21.6+        : subproject 1.21.7        &lt;--------</li>
  */
 @Dependencies(require = @Dependency(value = "fabric-rendering-v1", versionPredicates = ">=0.127.0"))
 @Pseudo
