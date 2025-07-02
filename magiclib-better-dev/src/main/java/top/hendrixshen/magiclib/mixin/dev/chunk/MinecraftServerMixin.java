@@ -38,7 +38,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.ChunkPredicate.class))
 @Mixin(MinecraftServer.class)
-public class MinecraftServerMixin {
+public abstract class MinecraftServerMixin {
     @Inject(
             method = "prepareLevels",
             at = @At(

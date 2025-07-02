@@ -19,7 +19,7 @@ import top.hendrixshen.magiclib.impl.event.minecraft.LanguageManagerEvent.Langua
 import top.hendrixshen.magiclib.impl.event.minecraft.LanguageManagerEvent.LanguageSelectEvent;
 
 @Mixin(LanguageManager.class)
-public class LanguageManagerMixin {
+public abstract class LanguageManagerMixin {
     @Inject(
             method = "onResourceManagerReload",
             at = @At(

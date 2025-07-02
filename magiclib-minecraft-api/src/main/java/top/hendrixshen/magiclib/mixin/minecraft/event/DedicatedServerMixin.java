@@ -15,7 +15,7 @@ import top.hendrixshen.magiclib.impl.event.minecraft.DedicatedServerEvent.PostIn
 
 @Environment(EnvType.SERVER)
 @Mixin(DedicatedServer.class)
-public class DedicatedServerMixin {
+public abstract class DedicatedServerMixin {
     @Inject(
             method = "initServer",
             at = @At(

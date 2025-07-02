@@ -29,7 +29,7 @@ import java.util.concurrent.CompletableFuture;
 @Environment(EnvType.CLIENT)
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.LazyDFUPredicate.class))
 @Mixin(Main.class)
-public class MainMixin {
+public abstract class MainMixin {
     @Redirect(
             method = "main",
             at = @At(

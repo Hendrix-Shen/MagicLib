@@ -12,7 +12,7 @@ import top.hendrixshen.magiclib.impl.event.minecraft.MinecraftServerEvent;
 import top.hendrixshen.magiclib.util.MiscUtil;
 
 @Mixin(MinecraftServer.class)
-public class MinecraftServerMixin {
+public abstract class MinecraftServerMixin {
     @Inject(
             method = "loadLevel",
             at = @At(

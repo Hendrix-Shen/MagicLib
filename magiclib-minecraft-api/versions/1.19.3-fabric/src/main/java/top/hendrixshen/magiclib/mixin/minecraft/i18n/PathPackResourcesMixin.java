@@ -19,7 +19,7 @@ import java.nio.file.Path;
  */
 // CHECKSTYLE.ON: JavadocStyle
 @Mixin(PathPackResources.class)
-public class PathPackResourcesMixin implements PackAccessor {
+public abstract class PathPackResourcesMixin implements PackAccessor {
     @Final
     @Shadow
     private Path root;

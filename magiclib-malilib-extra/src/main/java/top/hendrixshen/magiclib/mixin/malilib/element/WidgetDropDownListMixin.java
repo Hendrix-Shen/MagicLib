@@ -42,7 +42,7 @@ import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ae01c423f14ad6d3e45527bfe9450191ba19bd35/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/element/WidgetDropDownListMixin.java">TweakerMore</a>.
  */
 @Mixin(value = WidgetDropDownList.class, remap = false)
-public class WidgetDropDownListMixin {
+public abstract class WidgetDropDownListMixin {
     //#if FABRIC_LIKE
     @SuppressWarnings({"ConstantConditions", "PointlessBitwiseExpression", "PointlessArithmeticExpression"})
     @ModifyArgs(

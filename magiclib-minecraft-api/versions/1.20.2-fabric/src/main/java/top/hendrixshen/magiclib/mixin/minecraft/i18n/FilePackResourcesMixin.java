@@ -18,7 +18,7 @@ import java.io.File;
  */
 // CHECKSTYLE.ON: JavadocStyle
 @Mixin(FilePackResources.class)
-public class FilePackResourcesMixin implements PackAccessor {
+public abstract class FilePackResourcesMixin implements PackAccessor {
     @Final
     @Shadow
     private FilePackResources.SharedZipFileAccess zipFileAccess;

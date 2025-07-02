@@ -17,7 +17,7 @@ import java.io.File;
  */
 // CHECKSTYLE.ON: JavadocStyle
 @Mixin(AbstractPackResources.class)
-public class AbstractResourcePackMixin implements PackAccessor {
+public abstract class AbstractResourcePackMixin implements PackAccessor {
     @Final
     @Shadow
     protected File file;

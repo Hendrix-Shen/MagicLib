@@ -47,7 +47,7 @@ import top.hendrixshen.magiclib.impl.dev.dfu.lazy.LazyDataFixerBuilder;
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.LazyDFUPredicate.class))
 @Mixin(value = DataFixers.class, remap = false)
-public class DataFixersMixin {
+public abstract class DataFixersMixin {
     @Redirect(
             method = "createFixerUpper",
             at = @At(

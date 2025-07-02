@@ -48,7 +48,7 @@ import java.util.concurrent.CompletableFuture;
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.AuthEmptyKeyPredicate.class))
 @Environment(EnvType.CLIENT)
 @Mixin(AccountProfileKeyPairManager.class)
-public class AccountProfileKeyPairManagerMixin {
+public abstract class AccountProfileKeyPairManagerMixin {
     @Inject(method = "prepareKeyPair", at = @At("HEAD"), cancellable = true)
     private void onPrepareKeyPair(@NotNull CallbackInfoReturnable<CompletableFuture<Optional<ProfileKeyPair>>> cir) {
         cir.setReturnValue(CompletableFuture.completedFuture(Optional.empty()));

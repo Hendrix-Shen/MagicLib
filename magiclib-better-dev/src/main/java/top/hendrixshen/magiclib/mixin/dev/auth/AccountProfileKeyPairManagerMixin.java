@@ -15,5 +15,5 @@ import top.hendrixshen.magiclib.api.preprocess.DummyClass;
 // CHECKSTYLE.ON: JavadocStyle
 @Environment(EnvType.CLIENT)
 @Mixin(DummyClass.class)
-public class AccountProfileKeyPairManagerMixin {
+public abstract class AccountProfileKeyPairManagerMixin {
 }

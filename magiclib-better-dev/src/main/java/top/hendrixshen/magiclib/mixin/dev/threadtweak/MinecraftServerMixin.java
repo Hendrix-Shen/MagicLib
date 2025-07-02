@@ -54,7 +54,7 @@ import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
         //$$ MinecraftServer.class
         //#endif
 )
-public class MinecraftServerMixin {
+public abstract class MinecraftServerMixin {
     @Inject(
             method = "main",
             at = @At(

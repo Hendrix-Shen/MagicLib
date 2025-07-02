@@ -57,7 +57,7 @@ import java.util.concurrent.ExecutorService;
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.TheadTweakPredicate.class))
 @Mixin(Util.class)
-public class UtilMixin {
+public abstract class UtilMixin {
     //#if MC > 11502
     //#if MC > 12003
     //$$ @Unique

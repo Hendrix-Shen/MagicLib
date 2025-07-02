@@ -18,7 +18,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.DestroyDFUPredicate.class))
 @Mixin(value = Schema.class, remap = false)
-public class SchemaMixin {
+public abstract class SchemaMixin {
     @Inject(
             method = "getType",
             at = @At(

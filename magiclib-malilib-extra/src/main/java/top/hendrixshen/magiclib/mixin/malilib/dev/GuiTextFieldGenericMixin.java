@@ -44,7 +44,7 @@ import top.hendrixshen.magiclib.impl.mixin.BuiltInPredicates;
         }
 )
 @Mixin(value = GuiTextFieldGeneric.class, remap = false)
-public class GuiTextFieldGenericMixin extends EditBox {
+public abstract class GuiTextFieldGenericMixin extends EditBox {
     @Unique
     private boolean magiclib$setCursorPositionCalled = false;
 

@@ -12,5 +12,5 @@ import top.hendrixshen.magiclib.api.preprocess.DummyClass;
  */
 // CHECKSTYLE.ON: JavadocStyle
 @Mixin(DummyClass.class)
-public class FilePackResourcesMixin {
+public abstract class FilePackResourcesMixin {
 }

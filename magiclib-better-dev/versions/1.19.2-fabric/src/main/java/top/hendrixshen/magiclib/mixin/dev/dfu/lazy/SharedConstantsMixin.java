@@ -47,7 +47,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.LazyDFUPredicate.class))
 @Mixin(SharedConstants.class)
-public class SharedConstantsMixin {
+public abstract class SharedConstantsMixin {
     @Inject(method = "enableDataFixerOptimizations", at = @At("HEAD"), cancellable = true)
     private static void onEnableDataFixerOptimizations(@NotNull CallbackInfo ci) {
         ci.cancel();

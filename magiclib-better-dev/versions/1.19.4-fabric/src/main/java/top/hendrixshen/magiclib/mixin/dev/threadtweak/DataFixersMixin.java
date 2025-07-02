@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadFactory;
  */
 // CHECKSTYLE.ON: JavadocStyle
 @Mixin(value = DataFixers.class, remap = false)
-public class DataFixersMixin {
+public abstract class DataFixersMixin {
     @Redirect(
             method = "createFixerUpper",
             at = @At(

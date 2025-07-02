@@ -63,7 +63,7 @@ import java.util.Locale;
  * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/mixins/translations/ServerPlayerEntityMixin.java">Carpet-TIS-Addition</a>.
  */
 @Mixin(ServerPlayer.class)
-public class ServerPlayerMixin implements ServerPlayerLanguage {
+public abstract class ServerPlayerMixin implements ServerPlayerLanguage {
     @Unique
     private String magiclib$language = "en_us";
 

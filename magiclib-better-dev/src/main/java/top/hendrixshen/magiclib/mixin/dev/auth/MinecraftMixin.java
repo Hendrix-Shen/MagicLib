@@ -45,7 +45,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.AuthVerifyPredicate.class))
 @Environment(EnvType.CLIENT)
 @Mixin(Minecraft.class)
-public class MinecraftMixin {
+public abstract class MinecraftMixin {
     @Redirect(
             //#if MC > 11701
             //$$ method = "createUserApiService",

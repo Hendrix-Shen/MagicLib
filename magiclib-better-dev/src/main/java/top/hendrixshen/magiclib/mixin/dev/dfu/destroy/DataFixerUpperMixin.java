@@ -39,7 +39,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.DestroyDFUPredicate.class))
 @Mixin(value = DataFixerUpper.class, remap = false)
-public class DataFixerUpperMixin {
+public abstract class DataFixerUpperMixin {
     @Inject(
             method = "update",
             at = @At(

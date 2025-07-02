@@ -44,7 +44,7 @@ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
  * <li>mc1.21.6+        : subproject 1.21.7        &lt;--------</li>
  */
 @Mixin(GuiRenderer.class)
-public class GuiRendererMixin implements InWorldGuiRendererHook {
+public abstract class GuiRendererMixin implements InWorldGuiRendererHook {
     @Unique
     private boolean magiclib$inWorldGuiRender;
 

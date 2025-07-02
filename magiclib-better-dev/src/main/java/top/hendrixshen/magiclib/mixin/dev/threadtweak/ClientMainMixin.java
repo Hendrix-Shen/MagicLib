@@ -46,7 +46,7 @@ import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.TheadTweakPredicate.class))
 @Environment(EnvType.CLIENT)
 @Mixin(Main.class)
-public class ClientMainMixin {
+public abstract class ClientMainMixin {
     @Inject(
             method = "main",
             at = @At(

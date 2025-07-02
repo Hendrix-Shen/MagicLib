@@ -11,7 +11,7 @@ import top.hendrixshen.magiclib.impl.event.EventManager;
 import top.hendrixshen.magiclib.impl.event.minecraft.MinecraftEvent;
 
 @Mixin(Minecraft.class)
-public class MinecraftMixin {
+public abstract class MinecraftMixin {
     @Inject(
             //#if MC > 11404
             method = "<init>",

@@ -38,7 +38,7 @@ import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/476a25a5458a7058bdd402683b1fd833b189ae60/src/main/java/me/fallenbreath/tweakermore/mixins/core/config/ConfigBaseMixin.java">TweakerMore</a>.
  */
 @Mixin(value = ConfigBase.class, remap = false)
-public class ConfigBaseMixin {
+public abstract class ConfigBaseMixin {
     @Shadow
     private String comment;
 

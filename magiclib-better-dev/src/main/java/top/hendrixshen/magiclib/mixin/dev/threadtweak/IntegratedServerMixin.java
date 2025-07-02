@@ -74,7 +74,7 @@ import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.TheadTweakPredicate.class))
 @Environment(EnvType.CLIENT)
 @Mixin(IntegratedServer.class)
-public class IntegratedServerMixin {
+public abstract class IntegratedServerMixin {
     @Inject(
             method = "<init>",
             at = @At(

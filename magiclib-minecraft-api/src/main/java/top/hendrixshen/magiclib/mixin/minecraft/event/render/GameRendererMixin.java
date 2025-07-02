@@ -36,7 +36,7 @@ import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 @Environment(EnvType.CLIENT)
 @Mixin(GameRenderer.class)
-public class GameRendererMixin {
+public abstract class GameRendererMixin {
     @Inject(method = "render", at = @At("HEAD"))
     private void recordPartialTick(
             CallbackInfo ci,
