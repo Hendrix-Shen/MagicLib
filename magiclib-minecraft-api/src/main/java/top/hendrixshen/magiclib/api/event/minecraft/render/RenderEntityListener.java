@@ -1,12 +1,21 @@
 package top.hendrixshen.magiclib.api.event.minecraft.render;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 12106
 import org.jetbrains.annotations.ApiStatus;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import net.minecraft.world.entity.Entity;
 
 import top.hendrixshen.magiclib.api.event.Listener;
-import top.hendrixshen.magiclib.api.render.context.RenderContext;
 import top.hendrixshen.magiclib.impl.render.context.EntityRenderContext;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 12106
+import top.hendrixshen.magiclib.api.render.context.RenderContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public interface RenderEntityListener extends Listener {
     //#if MC < 12106
