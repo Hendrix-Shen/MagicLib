@@ -39,13 +39,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.ChunkPredicate.class))
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
-    @Inject(
-            method = "prepareLevels",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
+    @Inject(method = "prepareLevels", at = @At("HEAD"), cancellable = true)
     private void onPrepareLevels(ChunkProgressListener chunkProgressListener, @NotNull CallbackInfo ci) {
         ci.cancel();
     }

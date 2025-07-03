@@ -67,12 +67,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerLanguage {
     @Unique
     private String magiclib$language = "en_us";
 
-    @Inject(
-            method = "updateOptions",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "updateOptions", at = @At("HEAD"))
     private void preUpdateOptions(
             //#if MC > 12001
             //$$ @NotNull ClientInformation clientInformation,
@@ -113,9 +108,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerLanguage {
                     //$$ "sendMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/ChatType;)V",
                     //#endif
             },
-            at = @At(
-                    "HEAD"
-            ),
+            at = @At("HEAD"),
             argsOnly = true
     )
     private Component applyMagicTranslationToChatMessage(Component message) {

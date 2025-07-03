@@ -69,19 +69,19 @@ public abstract class ServerGamePacketListenerImplMixin {
 
         //#if MC >= 12002
         //$$ if (packet.payload() instanceof MagicCustomPayload mcp && (Object) this instanceof ServerGamePacketListenerImpl self) {
-        //$$     ServerGamePacketListenerImplMixin.handleCustomPayload(mcp, (ServerboundPacketHandler) entry.getHandler(), self);
+        //$$     ServerGamePacketListenerImplMixin.magiclib$handleCustomPayload(mcp, (ServerboundPacketHandler) entry.getHandler(), self);
         //$$     ci.cancel();
         //$$ }
         //#else
         FriendlyByteBuf buf = ((ServerboundCustomPayloadPacketAccessor) packet).magiclib$getData();
         MagicCustomPayload<?> payload = new MagicCustomPayload<>(type, entry.getCodec(), buf);
-        ServerGamePacketListenerImplMixin.handleCustomPayload(payload, (ServerboundPacketHandler) entry.getHandler(), MiscUtil.cast(this));
+        ServerGamePacketListenerImplMixin.magiclib$handleCustomPayload(payload, (ServerboundPacketHandler) entry.getHandler(), MiscUtil.cast(this));
         ci.cancel();
         //#endif
     }
 
     @Unique
-    private static <P> void handleCustomPayload(MagicCustomPayload<P> payload, ServerboundPacketHandler<P> handler, ServerGamePacketListenerImpl self) {
+    private static <P> void magiclib$handleCustomPayload(MagicCustomPayload<P> payload, ServerboundPacketHandler<P> handler, ServerGamePacketListenerImpl self) {
         handler.handle(payload.getPacket(), new PacketHandlerContextImpl.Serverbound(self));
     }
 }

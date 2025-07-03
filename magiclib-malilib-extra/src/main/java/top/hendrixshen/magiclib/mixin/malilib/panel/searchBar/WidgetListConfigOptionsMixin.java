@@ -66,12 +66,7 @@ public abstract class WidgetListConfigOptionsMixin extends WidgetListConfigOptio
         return width;
     }
 
-    @Inject(
-            method = "<init>",
-            at = @At(
-                    value = "TAIL"
-            )
-    )
+    @Inject(method = "<init>", at = @At("TAIL"))
     private void magiclibRecordSearchBar(CallbackInfo ci) {
         if (this.parent instanceof MagicConfigGui) {
             ((MagicConfigGui) this.parent).setSearchBar(this.widgetSearchBar);

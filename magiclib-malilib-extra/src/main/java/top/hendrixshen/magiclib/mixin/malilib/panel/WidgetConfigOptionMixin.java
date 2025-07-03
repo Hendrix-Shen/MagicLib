@@ -159,13 +159,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     //$$     }
     //$$ }
     //$$
-    //$$ @Inject(
-    //$$         method = "addHotkeyConfigElements",
-    //$$         at = @At(
-    //$$                 value = "HEAD"
-    //$$         ),
-    //$$         cancellable = true
-    //$$ )
+    //$$ @Inject(method = "addHotkeyConfigElements", at = @At("HEAD"), cancellable = true)
     //$$ private void customMagicConfigGuiIHotkey(int x, int y, int configWidth, String configName,
     //$$                                          IHotkey config, CallbackInfo ci) {
     //$$     if (!this.magiclib$isMagicGui()) {
@@ -250,12 +244,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
         }
     }
 
-    @Inject(
-            method = "addConfigButtonEntry",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "addConfigButtonEntry", at = @At("HEAD"))
     private void enableEnableValueHoveringForConfigButtonOptionList(int xReset, int yReset, IConfigResettable config,
                                                                     ButtonBase optionButton, CallbackInfo ci) {
         if (this.magiclib$isMagicGui() && optionButton instanceof ConfigButtonOptionListHovering) {
@@ -414,12 +403,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
      * to make IHotkeyWithSwitch and IOptionListHotkeyed option panel works,
      * and also to make compact ConfigBooleanHotkeyed option panel works in <1.18.
      */
-    @Inject(
-            method = "<init>",
-            at = @At(
-                    value = "TAIL"
-            )
-    )
+    @Inject(method = "<init>", at = @At("TAIL"))
     private void initInitialState(CallbackInfo ci) {
         if (!this.magiclib$isMagicGui() || this.wrapper.getType() != GuiConfigsBase.ConfigOptionWrapper.Type.CONFIG) {
             return;
@@ -440,13 +424,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
         }
     }
 
-    @Inject(
-            method = "wasConfigModified",
-            at = @At(
-                    value = "RETURN"
-            ),
-            cancellable = true
-    )
+    @Inject(method = "wasConfigModified", at = @At("RETURN"), cancellable = true)
     private void specialJudgeCustomConfigBooleanHotkeyed(CallbackInfoReturnable<Boolean> cir) {
         IConfigBase config = this.wrapper.getConfig();
 

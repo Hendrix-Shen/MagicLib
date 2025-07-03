@@ -13,32 +13,17 @@ import top.hendrixshen.magiclib.util.MiscUtil;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
-    @Inject(
-            method = "loadLevel",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "loadLevel", at = @At("HEAD"))
     private void onServerLoaded(CallbackInfo ci) {
         EventManager.dispatch(new MinecraftServerEvent.ServerLoadedEvent(MiscUtil.cast(this)));
     }
 
-    @Inject(
-            method = "loadLevel",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "loadLevel", at = @At("HEAD"))
     private void onServerLevelLoaded(CallbackInfo ci) {
         EventManager.dispatch(new MinecraftServerEvent.ServerLevelLoadedEvent(MiscUtil.cast(this)));
     }
 
-    @Inject(
-            method = "stopServer",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "stopServer", at = @At("HEAD"))
     private void onStopServer(CallbackInfo ci) {
         EventManager.dispatch(new MinecraftServerEvent.ServerCloseEvent(MiscUtil.cast(this)));
     }

@@ -19,35 +19,17 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.DestroyDFUPredicate.class))
 @Mixin(value = Schema.class, remap = false)
 public abstract class SchemaMixin {
-    @Inject(
-            method = "getType",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
+    @Inject(method = "getType", at = @At("HEAD"), cancellable = true)
     private void onGetType(DSL.TypeReference type, @NotNull CallbackInfoReturnable<Type<?>> cir) {
         cir.setReturnValue(null);
     }
 
-    @Inject(
-            method = "getTypeRaw",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
+    @Inject(method = "getTypeRaw", at = @At("HEAD"), cancellable = true)
     private void onGetTypeRaw(DSL.TypeReference type, @NotNull CallbackInfoReturnable<Type<?>> cir) {
         cir.setReturnValue(null);
     }
 
-    @Inject(
-            method = "getChoiceType",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
+    @Inject(method = "getChoiceType", at = @At("HEAD"), cancellable = true)
     private void onGetChoiceType(DSL.TypeReference type, String choiceName,
                                  @NotNull CallbackInfoReturnable<Type<?>> cir) {
         cir.setReturnValue(null);

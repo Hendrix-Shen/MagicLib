@@ -119,9 +119,7 @@ public abstract class UtilMixin {
             //#else
             //$$ method = "makeBackgroundExecutor",
             //#endif
-            at = @At(
-                    value = "HEAD"
-            )
+            at = @At("HEAD")
     )
     private static void onMakeBackgroundExecutor(CallbackInfoReturnable<Executor> ci) {
         if (UtilMixin.magiclib$initMainWorker) {
@@ -136,12 +134,7 @@ public abstract class UtilMixin {
 
     //#if MC > 11502
     //#if MC > 12003
-    //$$ @Inject(
-    //$$         method = "nonCriticalIoPool",
-    //$$         at = @At(
-    //$$                 value = "HEAD"
-    //$$         )
-    //$$ )
+    //$$ @Inject(method = "nonCriticalIoPool", at = @At("HEAD"))
     //$$ private static void onNonCriticalIoPool(CallbackInfoReturnable<Executor> cir) {
     //$$     if (UtilMixin.magiclib$initDownloadWorker) {
     //$$         return;
@@ -155,12 +148,7 @@ public abstract class UtilMixin {
     //#endif
 
     //#if MC < 11904
-    @Inject(
-            method = "bootstrapExecutor",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "bootstrapExecutor", at = @At("HEAD"))
     private static void onBootstrapExecutor(CallbackInfoReturnable<Executor> ci) {
         if (UtilMixin.magiclib$initBootstrapWorker) {
             return;
@@ -173,12 +161,7 @@ public abstract class UtilMixin {
     }
     //#endif
 
-    @Inject(
-            method = "ioPool",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "ioPool", at = @At("HEAD"))
     private static void onIoPool(CallbackInfoReturnable<Executor> cir) {
         if (UtilMixin.magiclib$initIoWorker) {
             return;

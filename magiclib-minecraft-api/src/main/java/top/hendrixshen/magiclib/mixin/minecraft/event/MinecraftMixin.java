@@ -18,9 +18,7 @@ public abstract class MinecraftMixin {
             //#else
             //$$ method = "init",
             //#endif
-            at = @At(
-                    value = "RETURN"
-            )
+            at = @At("RETURN")
     )
     private void postInit(CallbackInfo ci) {
         EventManager.dispatch(new MinecraftEvent.PostInitEvent());

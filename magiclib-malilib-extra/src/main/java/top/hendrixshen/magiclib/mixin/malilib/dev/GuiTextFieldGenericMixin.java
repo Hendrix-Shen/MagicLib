@@ -53,13 +53,7 @@ public abstract class GuiTextFieldGenericMixin extends EditBox {
         super(null, 0, 0, 0, 0, null);
     }
 
-    @Inject(
-            method = "setCursorPosition",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
+    @Inject(method = "setCursorPosition", at = @At("HEAD"), cancellable = true)
     private void preSetCursorPosition(int pos, CallbackInfo ci) {
         if (this.magiclib$setCursorPositionCalled) {
             super.setCursorPosition(pos);
@@ -69,23 +63,12 @@ public abstract class GuiTextFieldGenericMixin extends EditBox {
         this.magiclib$setCursorPositionCalled = true;
     }
 
-    @Inject(
-            method = "setCursorPosition",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "setCursorPosition", at = @At("RETURN"))
     private void postSetCursorPosition(int pos, CallbackInfo ci) {
         this.magiclib$setCursorPositionCalled = false;
     }
 
-    @Inject(
-            method = "getCursorPosition",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
+    @Inject(method = "getCursorPosition", at = @At("HEAD"), cancellable = true)
     private void preGetCursorPosition(@NotNull CallbackInfoReturnable<Integer> cir) {
         cir.setReturnValue(super.getCursorPosition());
     }

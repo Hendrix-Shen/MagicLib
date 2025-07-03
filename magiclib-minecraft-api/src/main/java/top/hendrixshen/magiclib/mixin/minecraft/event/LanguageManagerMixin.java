@@ -20,22 +20,12 @@ import top.hendrixshen.magiclib.impl.event.minecraft.LanguageManagerEvent.Langua
 
 @Mixin(LanguageManager.class)
 public abstract class LanguageManagerMixin {
-    @Inject(
-            method = "onResourceManagerReload",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "onResourceManagerReload", at = @At("RETURN"))
     private void postOnResourceManagerReload(ResourceManager resourceManager, CallbackInfo ci) {
         EventManager.dispatch(new LanguageReloadEvent());
     }
 
-    @Inject(
-            method = "setSelected",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "setSelected", at = @At("RETURN"))
     private void postSetSelected(
             //#if MC > 11903
             //$$ String languageCode,

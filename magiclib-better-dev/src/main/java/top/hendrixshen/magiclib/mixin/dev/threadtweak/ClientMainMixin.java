@@ -47,13 +47,7 @@ import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
 @Environment(EnvType.CLIENT)
 @Mixin(Main.class)
 public abstract class ClientMainMixin {
-    @Inject(
-            method = "main",
-            at = @At(
-                    value = "HEAD"
-            ),
-            remap = false
-    )
+    @Inject(method = "main", at = @At("HEAD"), remap = false)
     private static void onMain(String[] strings, CallbackInfo ci) {
         Thread.currentThread().setPriority(ThreadTweaker.getGamePriority());
     }

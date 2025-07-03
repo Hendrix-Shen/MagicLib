@@ -97,12 +97,7 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
         }
     }
 
-    @Inject(
-            method = "drawContents",
-            at = @At(
-                    "HEAD"
-            )
-    )
+    @Inject(method = "drawContents", at = @At("HEAD"))
     private void drawMagicConfigGuiDropDownListSetFlag(CallbackInfo ci) {
         this.magiclib$shouldRenderMagicConfigGuiDropDownList = true;
     }
@@ -145,12 +140,7 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
     }
     //#endif
 
-    @Inject(
-            method = "drawContents",
-            at = @At(
-                    value = "TAIL"
-            )
-    )
+    @Inject(method = "drawContents", at = @At("TAIL"))
     private void drawMagicConfigGuiDropDownListAgainAfterHover(
             //#if MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
