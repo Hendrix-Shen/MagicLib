@@ -54,14 +54,8 @@ import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
         //$$ MinecraftServer.class
         //#endif
 )
-public class MinecraftServerMixin {
-    @Inject(
-            method = "main",
-            at = @At(
-                    value = "HEAD"
-            ),
-            remap = false
-    )
+public abstract class MinecraftServerMixin {
+    @Inject(method = "main", at = @At("HEAD"), remap = false)
     private static void onMain(String[] strings, CallbackInfo ci) {
         Thread.currentThread().setPriority(ThreadTweaker.getGamePriority());
     }

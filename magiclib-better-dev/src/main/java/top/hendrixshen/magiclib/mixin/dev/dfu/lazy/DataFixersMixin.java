@@ -41,10 +41,13 @@ import top.hendrixshen.magiclib.impl.dev.dfu.lazy.LazyDataFixerBuilder;
 
 /**
  * Reference to <a href="https://github.com/astei/lazydfu/blob/385764a6fb4cf57b7a39e0ff367a704f74f12497/src/main/java/me/steinborn/lazydfu/mixin/SchemasMixin.java">LazyDFU</a>.
+ *
+ * <li>mc1.14 ~ mc1.19.1: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.19.2+        : subproject 1.19.2 [dummy]</li>
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.LazyDFUPredicate.class))
 @Mixin(value = DataFixers.class, remap = false)
-public class DataFixersMixin {
+public abstract class DataFixersMixin {
     @Redirect(
             method = "createFixerUpper",
             at = @At(

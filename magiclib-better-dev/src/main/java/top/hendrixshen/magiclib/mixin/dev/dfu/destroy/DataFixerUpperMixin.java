@@ -39,14 +39,8 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.DestroyDFUPredicate.class))
 @Mixin(value = DataFixerUpper.class, remap = false)
-public class DataFixerUpperMixin {
-    @Inject(
-            method = "update",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
+public abstract class DataFixerUpperMixin {
+    @Inject(method = "update", at = @At("HEAD"), cancellable = true)
     private <T> void onUpdate(DSL.TypeReference type, Dynamic<T> input, int version,
                               int newVersion, @NotNull CallbackInfoReturnable<Dynamic<T>> cir) {
         cir.setReturnValue(input);

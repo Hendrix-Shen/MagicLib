@@ -26,7 +26,11 @@ import lombok.NoArgsConstructor;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/348904161f9fff2fcb9aeb44dee05d8c994e8c21/versions/1.14.4/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/versions/1.14.4/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
+ *
+ * <li>mc1.14           : subproject 1.14.4        &lt;--------</li>
+ * <li>mc1.15 ~ mc1.21.4: subproject 1.16.5 (main project)</li>
+ * <li>mc1.21.5+        : subproject 1.21.5</li>
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RenderGlobal {

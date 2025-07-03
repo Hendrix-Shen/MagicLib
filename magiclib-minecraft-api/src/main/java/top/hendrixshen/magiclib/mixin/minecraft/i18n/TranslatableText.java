@@ -47,7 +47,7 @@ import top.hendrixshen.magiclib.impl.i18n.minecraft.translation.HookTranslationM
         TranslatableComponent.class
         //#endif
 )
-public class TranslatableText {
+public abstract class TranslatableText {
     @Shadow
     @Final
     private String key;

@@ -10,8 +10,15 @@ import top.hendrixshen.magiclib.api.fake.i18n.PackAccessor;
 
 import java.io.File;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.19.2  : subproject 1.16.5 (main project) [dummy]</li>
+ * <li>mc1.19.3 ~ mc1.20.1: subproject 1.19.3        &lt;--------</li>
+ * <li>mc1.20.2+          : subproject 1.20.2</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Mixin(FilePackResources.class)
-public class FilePackResourcesMixin implements PackAccessor {
+public abstract class FilePackResourcesMixin implements PackAccessor {
     @Final
     @Shadow
     private File file;

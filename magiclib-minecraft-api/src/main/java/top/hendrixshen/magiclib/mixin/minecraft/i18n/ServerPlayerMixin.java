@@ -63,16 +63,11 @@ import java.util.Locale;
  * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/2733a1dfa4978374e7422376486b5c291ebb1bbc/src/main/java/carpettisaddition/mixins/translations/ServerPlayerEntityMixin.java">Carpet-TIS-Addition</a>.
  */
 @Mixin(ServerPlayer.class)
-public class ServerPlayerMixin implements ServerPlayerLanguage {
+public abstract class ServerPlayerMixin implements ServerPlayerLanguage {
     @Unique
     private String magiclib$language = "en_us";
 
-    @Inject(
-            method = "updateOptions",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "updateOptions", at = @At("HEAD"))
     private void preUpdateOptions(
             //#if MC > 12001
             //$$ @NotNull ClientInformation clientInformation,
@@ -113,9 +108,7 @@ public class ServerPlayerMixin implements ServerPlayerLanguage {
                     //$$ "sendMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/ChatType;)V",
                     //#endif
             },
-            at = @At(
-                    "HEAD"
-            ),
+            at = @At("HEAD"),
             argsOnly = true
     )
     private Component applyMagicTranslationToChatMessage(Component message) {

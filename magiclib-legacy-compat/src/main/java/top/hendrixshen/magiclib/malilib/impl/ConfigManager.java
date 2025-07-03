@@ -7,7 +7,6 @@ import fi.dy.masa.malilib.event.InputEventHandler;
 import fi.dy.masa.malilib.hotkeys.IHotkey;
 import fi.dy.masa.malilib.hotkeys.IKeybindManager;
 import fi.dy.masa.malilib.hotkeys.IKeybindProvider;
-import fi.dy.masa.malilib.util.Color4f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
@@ -27,6 +26,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+//#if MC < 12106
+import fi.dy.masa.malilib.util.Color4f;
+//#endif
 
 @Deprecated
 @ApiStatus.ScheduledForRemoval
@@ -211,6 +214,7 @@ public class ConfigManager implements IKeybindProvider {
 
                         ((IMagicConfigBase) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigString) c).getStringValue()));
+                    //#if MC < 12106
                     } else if (configFieldObj instanceof Color4f) {
                         config = new MagicConfigColor(String.format("%s.config.%s", this.identifier, annotation.category()),
                                 field.getName(), String.format("#%08X", ((Color4f) configFieldObj).intValue));
@@ -223,6 +227,7 @@ public class ConfigManager implements IKeybindProvider {
 
                         ((IMagicConfigBase) config).setValueChangedFromJsonCallback(
                                 c -> setFieldValue(field, null, ((ConfigColor) c).getColor()));
+                    //#endif
                     //#if MC > 12104
                     //$$ } else if (configFieldObj instanceof fi.dy.masa.malilib.util.data.Color4f) {
                     //$$     config = new MagicConfigColor(String.format("%s.config.%s", this.identifier, annotation.category()),

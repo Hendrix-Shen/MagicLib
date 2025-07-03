@@ -49,7 +49,9 @@ public abstract class MixinFont implements FontCompatApi {
     //$$ public abstract int drawShadow(String string, float x, float y, int color);
     //#endif
 
-    //#if MC > 11502
+    //#if MC >= 12106
+    //$$ public abstract void drawInBatch(Component component, float x, float y, int color, boolean shadow, Matrix4f matrix4f, MultiBufferSource multiBufferSource, Font.DisplayMode displayMode, int backgroundColor, int light);
+    //#elseif MC > 11502
     @Shadow
     public abstract int drawInBatch(
             Component component,
@@ -71,6 +73,12 @@ public abstract class MixinFont implements FontCompatApi {
 
     @Override
     public int drawInBatch(Component component, float x, float y, int color, boolean shadow, Matrix4f matrix4f, boolean seeThrough, int backgroundColor, int light) {
+        //#if MC >= 12106
+        //$$ MultiBufferSource.BufferSource bufferSource = RenderUtil.getBufferSource();
+        //$$ this.drawInBatch(component, x, y, color, shadow, matrix4f, bufferSource, seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, backgroundColor, light);
+        //$$ bufferSource.endBatch();
+        //$$ return (int) x + this.widthCompat(component);
+        //#else
         //#if MC > 11404
         MultiBufferSource.BufferSource bufferSource = RenderUtil.getBufferSource();
         int ret = this.drawInBatch(
@@ -139,6 +147,7 @@ public abstract class MixinFont implements FontCompatApi {
         //$$ GlStateManager.popMatrix();
         //#endif
         return ret;
+        //#endif
     }
 
     @Override

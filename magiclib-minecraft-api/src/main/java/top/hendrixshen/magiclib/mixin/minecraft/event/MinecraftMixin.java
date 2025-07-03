@@ -11,16 +11,14 @@ import top.hendrixshen.magiclib.impl.event.EventManager;
 import top.hendrixshen.magiclib.impl.event.minecraft.MinecraftEvent;
 
 @Mixin(Minecraft.class)
-public class MinecraftMixin {
+public abstract class MinecraftMixin {
     @Inject(
             //#if MC > 11404
             method = "<init>",
             //#else
             //$$ method = "init",
             //#endif
-            at = @At(
-                    value = "RETURN"
-            )
+            at = @At("RETURN")
     )
     private void postInit(CallbackInfo ci) {
         EventManager.dispatch(new MinecraftEvent.PostInitEvent());

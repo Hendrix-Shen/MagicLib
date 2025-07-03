@@ -65,9 +65,12 @@ public class RenderContext {
     }
     //#endif
 
+    //#if MC < 12106
+    @Deprecated
     public void color4f(float red, float green, float blue, float alpha) {
         RenderGlobal.color4f(red, green, blue, alpha);
     }
+    //#endif
 
     //#if MC < 11904
     public void enableTexture() {

@@ -20,6 +20,10 @@
 
 package top.hendrixshen.magiclib.util.minecraft.render;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.jetbrains.annotations.ApiStatus;
+
 // CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11404
 import org.jetbrains.annotations.NotNull;
@@ -55,9 +59,12 @@ import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
 @Environment(EnvType.CLIENT)
 public class RenderUtil {
     private static final Font TEXT_RENDERER = Minecraft.getInstance().font;
-
     public static final int TEXT_HEIGHT = RenderUtil.TEXT_RENDERER.lineHeight;
     public static final int TEXT_LINE_HEIGHT = RenderUtil.TEXT_HEIGHT + 1;
+
+    @Getter
+    @Setter(onMethod_ = @ApiStatus.Internal)
+    private static float partialTick = 1.0F;
 
     public static int getRenderWidth(String text) {
         return RenderUtil.TEXT_RENDERER.width(text);

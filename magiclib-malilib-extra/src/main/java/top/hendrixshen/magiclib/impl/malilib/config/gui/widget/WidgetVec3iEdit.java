@@ -134,6 +134,12 @@ public class WidgetVec3iEdit extends WidgetContainer {
     }
 
     @Override
+    //#if MC >= 12106
+    //$$ public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean selected) {
+    //$$     this.drawTextFields(mouseX, mouseY, guiGraphics);
+    //$$     super.render(guiGraphics, mouseX, mouseY, selected);
+    //$$ }
+    //#else
     public void render(
             // CHECKSTYLE.OFF: NoWhitespaceBefore
             // CHECKSTYLE.OFF: SeparatorWrap
@@ -173,6 +179,7 @@ public class WidgetVec3iEdit extends WidgetContainer {
                 // CHECKSTYLE.ON: NoWhitespaceBefore
         );
     }
+    //#endif
 
     @Override
     protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {

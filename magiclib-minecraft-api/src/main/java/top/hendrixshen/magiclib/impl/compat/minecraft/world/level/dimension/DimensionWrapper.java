@@ -40,7 +40,7 @@ import net.minecraft.resources.ResourceKey;
 import java.util.Objects;
 
 /**
- * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/f407a6338363cc2ffe87c19759a36c53e1b0fec0/src/main/java/carpettisaddition/utils/compat/DimensionWrapper.java">Carpet-TIS-Addition</a>.
+ * Reference to <a href="https://github.com/TISUnion/Carpet-TIS-Addition/blob/65afc48e8c748ee6b7caa3c972b4cb1f7090b9ea/src/main/java/carpettisaddition/utils/compat/DimensionWrapper.java">Carpet-TIS-Addition</a>.
  *
  * <p>
  * A wrapper class to deal with dimension type class differences between minecraft version:
@@ -108,7 +108,13 @@ public class DimensionWrapper {
     }
 
     public static @NotNull DimensionWrapper of(@NotNull Entity entity) {
-        return DimensionWrapper.of(entity.getCommandSenderWorld());
+        return DimensionWrapper.of(
+                //#if MC >= 12106
+                //$$ entity.level()
+                //#else
+                entity.getCommandSenderWorld()
+                //#endif
+        );
     }
 
     /**

@@ -20,21 +20,33 @@
 
 package top.hendrixshen.magiclib.impl.render;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 11904
+//$$ import org.joml.Matrix3x2f;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
+import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
 import java.util.Objects;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/RenderUtil.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/8af864d8c0070f3237736ea80f5050b726e367e3/src/main/java/me/fallenbreath/tweakermore/util/render/RenderUtils.java">TweakerMore</a>.
  */
 public class Scaler {
     private final double anchorX;
     private final double anchorY;
     private final double factor;
 
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     private RenderContext context;
+    private Runnable restoreFunc;
 
     public static @NotNull Scaler create(double anchorX, double anchorY, double factor) {
         return new Scaler(anchorX, anchorY, factor);
@@ -54,25 +66,55 @@ public class Scaler {
     /**
      * Pose stack of renderContext will be pushed.
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public void apply(RenderContext context) {
         this.context = context;
-        this.context.pushMatrix();
-        this.context.translate(-anchorX * factor, -anchorY * factor, 0);
-        this.context.scale(factor, factor, 1);
-        this.context.translate(anchorX / factor, anchorY / factor, 0);
+        context.pushMatrix();
+        context.translate(-anchorX * factor, -anchorY * factor, 0);
+        context.scale(factor, factor, 1);
+        context.translate(anchorX / factor, anchorY / factor, 0);
+        this.restoreFunc = context::popMatrix;
     }
+
+    public void apply(LevelRenderContext context) {
+        context.pushMatrix();
+        context.translate(-anchorX * factor, -anchorY * factor, 0);
+        context.scale(factor, factor, 1);
+        context.translate(anchorX / factor, anchorY / factor, 0);
+        this.restoreFunc = context::popMatrix;
+    }
+
+    public void apply(GuiRenderContext context) {
+        context.pushMatrix();
+        context.translate(-anchorX * factor, -anchorY * factor);
+        context.scale(factor, factor);
+        context.translate(anchorX / factor, anchorY / factor);
+        this.restoreFunc = context::popMatrix;
+    }
+
+    //#if MC >= 11904
+    //$$ public void apply(Matrix3x2f matrix) {
+    //$$     matrix.translate((float) (-anchorX * factor), (float) (-anchorY * factor));
+    //$$     matrix.scale((float) factor, (float) factor);
+    //$$     matrix.translate((float) (anchorX / factor), (float) (anchorY / factor));
+    //$$ }
+    //#endif
 
     /**
      * Pose stack of renderContext will be popped.
      */
     public void restore() {
-        if (this.context == null) {
-            throw new RuntimeException("Scaler: Calling restore before calling apply");
+        if (this.restoreFunc == null) {
+            throw new IllegalStateException("Scaler: Calling restore before calling apply");
         }
 
-        this.context.popMatrix();
+        this.restoreFunc.run();
+        this.restoreFunc = null;
     }
 
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public RenderContext getRenderContext() {
         return Objects.requireNonNull(this.context);
     }

@@ -37,11 +37,15 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/versions/1.16.5/src/main/java/me/fallenbreath/tweakermore/mixins/util/qol/MinecraftClientMixin.java">TweakerMore</a>.
+ *
+ * <li>mc1.14 ~ mc1.15  : subproject 1.15.2 [dummy]</li>
+ * <li>mc1.16 ~ mc1.20.3: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.20.4+        : subproject 1.20.4 [dummy]</li>
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.AuthVerifyPredicate.class))
 @Environment(EnvType.CLIENT)
 @Mixin(Minecraft.class)
-public class MinecraftMixin {
+public abstract class MinecraftMixin {
     @Redirect(
             //#if MC > 11701
             //$$ method = "createUserApiService",

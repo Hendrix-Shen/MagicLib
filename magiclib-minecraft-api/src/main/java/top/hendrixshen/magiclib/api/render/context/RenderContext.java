@@ -20,6 +20,7 @@
 
 package top.hendrixshen.magiclib.api.render.context;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 // CHECKSTYLE.OFF: ImportOrder
@@ -44,16 +45,20 @@ import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
+import top.hendrixshen.magiclib.impl.render.context.GuiRenderContextImpl;
 import top.hendrixshen.magiclib.impl.render.context.LevelRenderContextImpl;
-import top.hendrixshen.magiclib.impl.render.context.RenderContextImpl;
 import top.hendrixshen.magiclib.impl.render.matrix.MinecraftPoseStack;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC < 12106
+import top.hendrixshen.magiclib.impl.render.context.RenderContextImpl;
+//#endif
+
 //#if MC > 12004
 //$$ import top.hendrixshen.magiclib.impl.render.matrix.JomlMatrixStack;
 //#endif
 
-//#if MC > 11904
+//#if 12106 > MC && MC > 11904
 //$$ import top.hendrixshen.magiclib.util.minecraft.render.RenderContextUtil;
 //#endif
 
@@ -63,17 +68,68 @@ import top.hendrixshen.magiclib.api.render.matrix.MatrixStack;
 // CHECKSTYLE.ON: ImportOrder
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderContext.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/8af864d8c0070f3237736ea80f5050b726e367e3/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderContext.java">TweakerMore</a>.
  */
 public interface RenderContext {
+    static LevelRenderContext level(
+            //#if MC >= 12006
+            //$$ @NotNull Matrix4fStack matrixStack
+            //#elseif MC >= 11600
+            @NotNull PoseStack poseStack
+            //#endif
+    ) {
+        return new LevelRenderContextImpl(
+                //#if MC >= 12006
+                //$$ new JomlMatrixStack(matrixStack)
+                //#else
+                new MinecraftPoseStack(
+                        //#if MC >= 11600
+                        poseStack
+                        //#endif
+                )
+                //#endif
+        );
+    }
+
+    static GuiRenderContext gui(
+            //#if MC >= 12000
+            //$$ @NotNull GuiGraphics guiGraphics
+            //#elseif MC >= 11600
+            @NotNull PoseStack poseStack
+            //#endif
+    ) {
+        return new GuiRenderContextImpl(
+                //#if MC >= 12000
+                //$$ guiGraphics
+                //#else
+                new MinecraftPoseStack(
+                        //#if MC >= 11600
+                        poseStack
+                        //#endif
+                )
+                //#endif
+        );
+    }
+
+    //#if MC >= 12000
+    //$$ static GuiRenderContext gui(@NotNull GuiGraphics guiGraphics, @NotNull PoseStack poseStack) {
+    //$$     return new GuiRenderContextImpl(guiGraphics, new MinecraftPoseStack(poseStack));
+    //$$ }
+    //#endif
+
+    //#if MC < 12106
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     static @NotNull RenderContext of(
             //#if MC > 11502
             @NotNull PoseStack poseStack
             //#endif
     ) {
         return new RenderContextImpl(
-                //#if MC > 11904
-                //$$ RenderContextUtil.createDrawContext(poseStack),
+                //#if MC >= 12106
+                //$$ RenderContextUtil.createDefaultGuiGraphics(),
+                //#elseif MC > 11904
+                //$$ RenderContextUtil.createGuiGraphic(poseStack),
                 //#endif
                 new MinecraftPoseStack(
                         //#if MC > 11502
@@ -83,6 +139,8 @@ public interface RenderContext {
         );
     }
 
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     static @NotNull LevelRenderContextImpl createWorldRenderContext(
             //#if MC > 12004
             //$$ @NotNull Matrix4fStack matrixStack
@@ -91,8 +149,10 @@ public interface RenderContext {
             //#endif
     ) {
         return new LevelRenderContextImpl(
-                //#if MC > 11904
-                //$$ RenderContextUtil.createDrawContext(
+                //#if MC >= 12106
+                //$$ RenderContextUtil.createDefaultGuiGraphics(),
+                //#elseif MC > 11904
+                //$$ RenderContextUtil.createGuiGraphic(
                 //#if MC > 12004
                 //$$         new PoseStack()
                 //#else
@@ -113,17 +173,34 @@ public interface RenderContext {
     }
 
     //#if MC > 12004
+    //$$ @Deprecated
+    //$$ @ApiStatus.ScheduledForRemoval
     //$$ static RenderContext of(@NotNull Matrix4fStack matrixStack) {
-    //$$     return new RenderContextImpl(RenderContextUtil.createDrawContext(new PoseStack()), new JomlMatrixStack(matrixStack));
+    //$$     return new RenderContextImpl(
+    //#if MC >= 12106
+    //$$             RenderContextUtil.createDefaultGuiGraphics(),
+    //#else
+    //$$             RenderContextUtil.createGuiGraphic(new PoseStack()),
+    //#endif
+    //$$             new JomlMatrixStack(matrixStack)
+    //$$     );
     //$$ }
     //#endif
 
     //#if MC > 11904
+    //$$ @Deprecated
+    //$$ @ApiStatus.ScheduledForRemoval
     //$$ static RenderContext of(@NotNull GuiGraphics guiGraphics) {
     //$$     return new RenderContextImpl(guiGraphics, new MinecraftPoseStack(guiGraphics.pose()));
     //$$ }
     //#endif
+    //#endif
 
+    /**
+     * @deprecated Moved to {@link GuiRenderContext#getGuiComponent()}.
+     */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     GuiComponent getGuiComponent();
 
     //#if MC > 11502

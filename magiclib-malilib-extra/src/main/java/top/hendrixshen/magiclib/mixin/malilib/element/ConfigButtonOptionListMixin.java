@@ -60,12 +60,7 @@ public abstract class ConfigButtonOptionListMixin extends ButtonGeneric implemen
         this.updateDisplayString();
     }
 
-    @Inject(
-            method = "updateDisplayString",
-            at = @At(
-                    value = "TAIL"
-            )
-    )
+    @Inject(method = "updateDisplayString", at = @At("TAIL"))
     private void makeSomeValueHovering(CallbackInfo ci) {
         if (this.magiclib$enableValueHovering) {
             this.setHoverStrings(this.magiclib$makeHoveringLines(this.config));

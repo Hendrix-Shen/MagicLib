@@ -36,7 +36,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC > 11701
+//#if 12106 > MC && MC > 11701
+import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
@@ -128,6 +129,15 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
     /**
      * Hover text rendering logic reference: {@link fi.dy.masa.malilib.gui.button.ButtonBase#postRenderHovered}.
      */
+    //#if MC >= 12106
+    //$$ public void postRenderHovered(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean selected) {
+    //$$     super.postRenderHovered(guiGraphics, mouseX, mouseY, selected);
+    //$$
+    //$$     if (this.hoverText != null && this.isMouseOver(mouseX, mouseY) && !this.isOpen) {
+    //$$         RenderUtils.drawHoverText(guiGraphics, mouseX, mouseY, Collections.singletonList(this.hoverText.getStringValue()));
+    //$$     }
+    //$$ }
+    //#else
     @Override
     public void postRenderHovered(
             // CHECKSTYLE.OFF: NoWhitespaceBefore
@@ -176,6 +186,7 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
             //#endif
         }
     }
+    //#endif
 
     private void onEntryChanged() {
         if (this.entryChangeListener != null) {
@@ -184,7 +195,7 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
     }
 
     // Ugly fix for text render depth issue in MC 1.18+.
-    //#if MC > 11701
+    //#if 12106 > MC && MC > 11701
     @Override
     public void drawString(
             int x,
@@ -198,9 +209,9 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
             //#endif
 
     ) {
-        RenderContext context = RenderContext.of(guiGraphicsOrMatrixStack);
+        GuiRenderContext context = RenderContext.gui(guiGraphicsOrMatrixStack);
         context.pushMatrix();
-        context.translate(0, 0, -10);
+        context.translateDirect(0, 0, -10);
         super.drawString(x, y, color, text, guiGraphicsOrMatrixStack);
         context.popMatrix();
     }

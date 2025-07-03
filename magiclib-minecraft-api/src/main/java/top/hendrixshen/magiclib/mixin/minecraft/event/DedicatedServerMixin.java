@@ -15,13 +15,8 @@ import top.hendrixshen.magiclib.impl.event.minecraft.DedicatedServerEvent.PostIn
 
 @Environment(EnvType.SERVER)
 @Mixin(DedicatedServer.class)
-public class DedicatedServerMixin {
-    @Inject(
-            method = "initServer",
-            at = @At(
-                    "TAIL"
-            )
-    )
+public abstract class DedicatedServerMixin {
+    @Inject(method = "initServer", at = @At("TAIL"))
     private void postInitServer(CallbackInfoReturnable<Boolean> cir) {
         EventManager.dispatch(new PostInitEvent());
     }

@@ -20,10 +20,16 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.21: subproject 1.16.5 (main project) [dummy]</li>
+ * <li>mc1.21.1+      : subproject 1.21.1        &lt;--------</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Environment(EnvType.CLIENT)
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.LazyDFUPredicate.class))
 @Mixin(Main.class)
-public class MainMixin {
+public abstract class MainMixin {
     @Redirect(
             method = "main",
             at = @At(

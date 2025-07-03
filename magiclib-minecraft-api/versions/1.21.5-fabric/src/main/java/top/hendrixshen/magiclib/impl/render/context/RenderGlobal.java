@@ -27,10 +27,19 @@ import com.mojang.blaze3d.opengl.GlConst;
 import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.platform.DestFactor;
 import com.mojang.blaze3d.platform.SourceFactor;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 12106
 import com.mojang.blaze3d.systems.RenderSystem;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/348904161f9fff2fcb9aeb44dee05d8c994e8c21/versions/1.21.5/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/versions/1.21.5/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
+ *
+ * <li>mc1.14           : subproject 1.14.4</li>
+ * <li>mc1.15 ~ mc1.21.4: subproject 1.16.5 (main project)</li>
+ * <li>mc1.21.5+        : subproject 1.21.5        &lt;--------</li>
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RenderGlobal {
@@ -86,9 +95,12 @@ public class RenderGlobal {
         GlStateManager._colorMask(red, green, blue, alpha);
     }
 
+    //#if MC < 12106
+    @Deprecated
     public static void color4f(float red, float green, float blue, float alpha) {
         RenderSystem.setShaderColor(red, green, blue, alpha);
     }
+    //#endif
 
     public static void defaultBlendFunc() {
         RenderGlobal.blendFuncSeparate(

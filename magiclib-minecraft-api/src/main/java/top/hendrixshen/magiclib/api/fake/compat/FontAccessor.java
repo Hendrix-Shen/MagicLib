@@ -22,6 +22,13 @@ import com.mojang.math.Matrix4f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.15.2: subproject 1.15.2 [dummy]</li>
+ * <li>mc1.16 ~ mc1.21.5: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.21.6+        : subproject 1.21.7 [dummy]</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Environment(EnvType.CLIENT)
 public interface FontAccessor {
     //#if MC > 12101

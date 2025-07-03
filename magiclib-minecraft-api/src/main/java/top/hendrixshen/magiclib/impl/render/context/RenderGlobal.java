@@ -39,7 +39,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 // CHECKSTYLE.ON: ImportOrder
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/353b69cc3138ce0d767854c77776abe04b056369/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
+ *
+ * <li>mc1.14           : subproject 1.14.4</li>
+ * <li>mc1.15 ~ mc1.21.4: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.21.5+        : subproject 1.21.5</li>
  */
 //#if 11700 > MC && MC < 11700
 @SuppressWarnings("deprecation")
