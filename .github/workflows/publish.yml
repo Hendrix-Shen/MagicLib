@@ -213,9 +213,9 @@ jobs:
           files: |
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
           curseforge-changelog: ${{ steps.changelog.outputs.result }}
-          curseforge-name: ${{ needs.release_core.outputs.release_title }}
+          curseforge-name: ${{ needs.release_core.outputs.release_title }} for MC ${{ matrix.mc_ver }} (${{ matrix.platform }})
           modrinth-changelog: ${{ steps.changelog.outputs.result }}
-          modrinth-name: ${{ needs.release_core.outputs.release_title }}
+          modrinth-name: ${{ needs.release_core.outputs.release_title }} for MC ${{ matrix.mc_ver }} (${{ matrix.platform }})
           version: ${{ format('v{0}.{1}-mc{2}-{3}', needs.release_core.outputs.mod_version, needs.release_core.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
           version-type: alpha
           loaders: ${{ steps.publish_info.outputs.publish_loaders }}
@@ -241,9 +241,9 @@ jobs:
           files: |
             build-artifacts/magiclib-wrapper/${{ matrix.platform }}/${{ matrix.mc_ver }}/build/libs/!(*-@(dev|sources|javadoc|empty)).jar
           curseforge-changelog: ${{ steps.changelog.outputs.result }}
-          curseforge-name: ${{ needs.release_core.outputs.release_title }}
+          curseforge-name: ${{ needs.release_core.outputs.release_title }} for MC ${{ matrix.mc_ver }} (${{ matrix.platform }})
           modrinth-changelog: ${{ steps.changelog.outputs.result }}
-          modrinth-name: ${{ needs.release_core.outputs.release_title }}
+          modrinth-name: ${{ needs.release_core.outputs.release_title }} for MC ${{ matrix.mc_ver }} (${{ matrix.platform }})
           version: ${{ format('v{0}.{1}-mc{2}-{3}', needs.release_core.outputs.mod_version, needs.release_core.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
           version-type: ${{ github.event.release.prerelease && 'beta' || 'release' }}
           loaders: ${{ steps.publish_info.outputs.publish_loaders }}
