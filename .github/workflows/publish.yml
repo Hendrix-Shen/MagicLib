@@ -196,6 +196,8 @@ jobs:
             - File name: `${{ steps.file_info.outputs.name }}`
             - SHA-256: `${{ steps.file_info.outputs.hash }}`
             - Built from: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      - name: Delay Publish
+        run: sleep ${{ matrix.delay }}
       - name: Publish Minecraft Mods (Dev Channel)
         if: ${{ inputs.publish_type == 'dev' }}
         uses: Kir-Antipov/mc-publish@v3.3

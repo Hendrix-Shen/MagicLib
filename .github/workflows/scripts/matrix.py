@@ -9,6 +9,7 @@ __author__ = 'Hendrix_Shen'
 
 import json
 import os
+from itertools import count
 from typing import Dict, List
 
 import common
@@ -16,11 +17,19 @@ import common
 
 def main():
     subproject_dict: Dict[str, List[str]] = common.get_projects_by_platform()
-    matrix: Dict[str, List[Dict[str, str]]] = {'include': [
-        {'platform': platform, 'mc_ver': mc_ver}
-        for platform, versions in subproject_dict.items()
-        for mc_ver in versions
-    ]}
+    counter = count()
+    matrix: Dict[str, List[Dict[str, Union[str, int]]]] = {
+        'include': [
+            {
+                'platform': platform,
+                'mc_ver': mc_ver,
+                'delay': delay_counter * 10
+            }
+            for platform, versions in subproject_dict.items()
+            for mc_ver in versions
+            for delay_counter in [next(counter)]
+        ]
+    }
 
     with open(os.environ['GITHUB_OUTPUT'], 'w') as f:
         f.write('matrix={}\n'.format(json.dumps(matrix)))
