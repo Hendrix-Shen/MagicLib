@@ -1,25 +1,14 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.client.gui;
 
+import com.google.common.collect.ImmutableBiMap;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.Component;
-
-// CHECKSTYLE.OFF: ImportOrder
-//#if MC > 11605
-//$$ import com.google.common.collect.ImmutableBiMap;
-//#endif
-
-//#if MC > 11502
-import net.minecraft.util.FormattedCharSequence;
-//#endif
-
-//#if MC > 11404
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.renderer.MultiBufferSource;
-//#endif
-// CHECKSTYLE.ON: ImportOrder
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -29,8 +18,8 @@ import top.hendrixshen.magiclib.util.collect.Provider;
 
 // CHECKSTYLE.OFF: JavadocStyle
 /**
- * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)        &lt;--------</li>
- * <li>mc1.21.6+        : subproject 1.21.8</li>
+ * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)</li>
+ * <li>mc1.21.6+        : subproject 1.21.8        &lt;--------</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
 @Environment(EnvType.CLIENT)
@@ -39,70 +28,61 @@ public interface FontCompat extends Provider<Font> {
         return new FontCompatImpl(font);
     }
 
-    //#if MC > 11605
-    //$$ ImmutableBiMap<DisplayMode, Font.DisplayMode> displayModeMappings = ImmutableBiMap.of(
-    //$$         FontCompat.DisplayMode.NORMAL, Font.DisplayMode.NORMAL,
-    //$$         FontCompat.DisplayMode.SEE_THROUGH, Font.DisplayMode.SEE_THROUGH,
-    //$$         FontCompat.DisplayMode.POLYGON_OFFSET, Font.DisplayMode.POLYGON_OFFSET
-    //$$ );
-    //$$
-    //$$ static DisplayMode getCompatMode(Font.DisplayMode displayMode) {
-    //$$     return FontCompat.displayModeMappings.inverse().get(displayMode);
-    //$$ }
-    //$$
-    //$$ static Font.DisplayMode getDisplayMode(FontCompat.DisplayMode displayModeCompat) {
-    //$$     return FontCompat.displayModeMappings.get(displayModeCompat);
-    //$$ }
-    //#endif
+    ImmutableBiMap<DisplayMode, Font.DisplayMode> displayModeMappings = ImmutableBiMap.of(
+            DisplayMode.NORMAL, Font.DisplayMode.NORMAL,
+            DisplayMode.SEE_THROUGH, Font.DisplayMode.SEE_THROUGH,
+            DisplayMode.POLYGON_OFFSET, Font.DisplayMode.POLYGON_OFFSET
+    );
 
-    int drawInBatch(
+    static DisplayMode getCompatMode(Font.DisplayMode displayMode) {
+        return FontCompat.displayModeMappings.inverse().get(displayMode);
+    }
+
+    static Font.DisplayMode getDisplayMode(DisplayMode displayModeCompat) {
+        return FontCompat.displayModeMappings.get(displayModeCompat);
+    }
+
+    void drawInBatch(
             String text,
             float x,
             float y,
             int color,
             boolean dropShadow,
-            //#if MC > 11404
             Matrix4f matrix4f,
             MultiBufferSource buffer,
-            //#endif
             DisplayMode displayMode,
             int backgroundColor,
             int packedLightCoords
     );
 
-    int drawInBatch(
+    void drawInBatch(
             String text,
             float x,
             float y,
             int color,
             boolean dropShadow,
-            //#if MC > 11404
             Matrix4f matrix4f,
             MultiBufferSource buffer,
-            //#endif
             @NotNull DisplayMode displayMode,
             int backgroundColor,
             int packedLightCoords,
             boolean bidirectional
     );
 
-    int drawInBatch(
+    void drawInBatch(
             @NotNull Component component,
             float x,
             float y,
             int color,
             boolean dropShadow,
-            //#if MC > 11404
             Matrix4f matrix4f,
             MultiBufferSource buffer,
-            //#endif
             DisplayMode displayMode,
             int backgroundColor,
             int packedLightCoords
     );
 
-    //#if MC > 11502
-    int drawInBatch(
+    void drawInBatch(
             FormattedCharSequence formattedCharSequence,
             float x,
             float y,
@@ -114,7 +94,6 @@ public interface FontCompat extends Provider<Font> {
             int backgroundColor,
             int packedLightCoords
     );
-    //#endif
 
     int width(@NotNull Component component);
 

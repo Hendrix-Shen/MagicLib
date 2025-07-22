@@ -19,7 +19,7 @@
         "1.21.3-fabric",
         "1.21.4-fabric",
         "1.21.5-fabric",
-        "1.21.7-fabric",
+        "1.21.8-fabric",
 
         "1.17.1-forge",
         "1.18.2-forge",
@@ -31,7 +31,7 @@
         "1.21.3-neoforge",
         "1.21.4-neoforge",
         "1.21.5-neoforge",
-        "1.21.7-neoforge"
+        "1.21.8-neoforge"
       ]
     },
     "magiclib-legacy-compat": {
@@ -53,7 +53,7 @@
         "1.21.3-fabric",
         "1.21.4-fabric",
         "1.21.5-fabric",
-        "1.21.7-fabric"
+        "1.21.8-fabric"
       ]
     },
     "magiclib-malilib-extra": {
@@ -75,7 +75,7 @@
         "1.21.3-fabric",
         "1.21.4-fabric",
         "1.21.5-fabric",
-        "1.21.7-fabric",
+        "1.21.8-fabric",
 
         "1.17.1-forge",
         "1.18.2-forge",
@@ -107,7 +107,7 @@
         "1.21.3-fabric",
         "1.21.4-fabric",
         "1.21.5-fabric",
-        "1.21.7-fabric",
+        "1.21.8-fabric",
 
         "1.17.1-forge",
         "1.18.2-forge",
@@ -119,7 +119,7 @@
         "1.21.3-neoforge",
         "1.21.4-neoforge",
         "1.21.5-neoforge",
-        "1.21.7-neoforge"
+        "1.21.8-neoforge"
       ]
     }
   }

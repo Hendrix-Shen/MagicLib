@@ -43,7 +43,7 @@ import net.minecraft.client.gui.GuiComponent;
  *
  * <p>
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)        &lt;--------</li>
- * <li>mc1.21.6+        : subproject 1.21.7</li>
+ * <li>mc1.21.6+        : subproject 1.21.8</li>
  * </p>
  */
 public class InWorldGuiDrawer {
