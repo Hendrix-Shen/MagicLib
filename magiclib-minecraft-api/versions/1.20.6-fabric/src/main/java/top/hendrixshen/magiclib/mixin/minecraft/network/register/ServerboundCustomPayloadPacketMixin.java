@@ -49,7 +49,11 @@ public abstract class ServerboundCustomPayloadPacketMixin {
             method = "<clinit>",
             at = @At(
                     value = "INVOKE",
+                    //#if FORGE_LIKE
+                    //$$ target = "Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;codec(Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload$FallbackProvider;Ljava/util/List;Lnet/minecraft/network/ConnectionProtocol;Lnet/minecraft/network/protocol/PacketFlow;)Lnet/minecraft/network/codec/StreamCodec;"
+                    //#else
                     target = "Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;codec(Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload$FallbackProvider;Ljava/util/List;)Lnet/minecraft/network/codec/StreamCodec;"
+                    //#endif
             )
     )
     private static List<CustomPacketPayload.TypeAndCodec<?, ?>> registerServerboundMagicPayload(List<CustomPacketPayload.TypeAndCodec<?, ?>> types) {
