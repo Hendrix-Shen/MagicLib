@@ -9,7 +9,7 @@ import top.hendrixshen.magiclib.api.preprocess.DummyClass;
 // CHECKSTYLE.OFF: JavadocStyle
 /**
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project) [dummy]        &lt;--------</li>
- * <li>mc1.21.6+        : subproject 1.21.7</li>
+ * <li>mc1.21.6+        : subproject 1.21.8</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
 @Dependencies(require = @Dependency(value = "fabric-rendering-v1", versionPredicates = ">=0.127.0"))

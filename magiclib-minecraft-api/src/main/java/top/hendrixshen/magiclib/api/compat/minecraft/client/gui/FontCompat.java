@@ -30,7 +30,7 @@ import top.hendrixshen.magiclib.util.collect.Provider;
 // CHECKSTYLE.OFF: JavadocStyle
 /**
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)        &lt;--------</li>
- * <li>mc1.21.6+        : subproject 1.21.7</li>
+ * <li>mc1.21.6+        : subproject 1.21.8</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
 @Environment(EnvType.CLIENT)
