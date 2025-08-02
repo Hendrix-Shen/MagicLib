@@ -10,19 +10,31 @@ dependencies {
 }
 
 processResources {
+    inputs.property("mod_alias"           , project.parent.property("mod.id"))
+    inputs.property("mod_description"     , project.parent.property("mod.description"))
+    inputs.property("mod_homepage"        , project.parent.property("mod.homepage"))
+    inputs.property("mod_id"              , project.parent.property("mod.id").toString().replace("-", "_"))
+    inputs.property("mod_license"         , project.parent.property("mod.license"))
+    inputs.property("mod_name"            , project.parent.property("mod.name"))
+    inputs.property("mod_sources"         , project.parent.property("mod.sources"))
+    inputs.property("mod_version"         , project.getVersionWithCommitHash(this.project.parent))
+    inputs.property("root_mod_id"         , rootProject.property("mod.id"))
+    inputs.property("root_mod_name"       , rootProject.property("mod.name"))
+    inputs.property("root_mod_description", rootProject.property("mod.description"))
+
     filesMatching("fabric.mod.json") {
         expand([
-                "mod_alias"           : project.parent.property("mod.id"),
-                "mod_description"     : project.parent.property("mod.description"),
-                "mod_homepage"        : project.parent.property("mod.homepage"),
-                "mod_id"              : project.parent.property("mod.id").toString().replace("-", "_"),
-                "mod_license"         : project.parent.property("mod.license"),
-                "mod_name"            : project.parent.property("mod.name"),
-                "mod_sources"         : project.parent.property("mod.sources"),
-                "mod_version"         : project.getVersionWithCommitHash(this.project.parent),
-                "root_mod_id"         : rootProject.property("mod.id"),
-                "root_mod_name"       : rootProject.property("mod.name"),
-                "root_mod_description": rootProject.property("mod.description")
+                "mod_alias"           : inputs.properties.get("mod_alias"),
+                "mod_description"     : inputs.properties.get("mod_description"),
+                "mod_homepage"        : inputs.properties.get("mod_homepage"),
+                "mod_id"              : inputs.properties.get("mod_id"),
+                "mod_license"         : inputs.properties.get("mod_license"),
+                "mod_name"            : inputs.properties.get("mod_name"),
+                "mod_sources"         : inputs.properties.get("mod_sources"),
+                "mod_version"         : inputs.properties.get("mod_version"),
+                "root_mod_id"         : inputs.properties.get("root_mod_id"),
+                "root_mod_name"       : inputs.properties.get("root_mod_name"),
+                "root_mod_description": inputs.properties.get("root_mod_description")
         ])
     }
 

@@ -135,6 +135,14 @@ subprojects {
     processResources {
         dependsOn(coreProject.tasks.processResources)
 
+        inputs.property("mod_description", project.property("mod.description"))
+        inputs.property("mod_homepage"   , project.property("mod.homepage"))
+        inputs.property("mod_id"         , project.property("mod.id"))
+        inputs.property("mod_license"    , project.property("mod.license"))
+        inputs.property("mod_name"       , project.property("mod.name"))
+        inputs.property("mod_sources"    , project.property("mod.sources"))
+        inputs.property("mod_version"    , project.getVersionWithCommitHash(rootProject))
+
         from(project.parent.sourceSets.main.resources.srcDirs) {
             include("META-INF")
             [
@@ -143,13 +151,13 @@ subprojects {
             ].forEach {
                 include(it)
                 expand([
-                        "mod_description": project.property("mod.description"),
-                        "mod_homepage"   : project.property("mod.homepage"),
-                        "mod_id"         : project.property("mod.id"),
-                        "mod_license"    : project.property("mod.license"),
-                        "mod_name"       : project.property("mod.name"),
-                        "mod_sources"    : project.property("mod.sources"),
-                        "mod_version"    : project.getVersionWithCommitHash(rootProject),
+                        "mod_description": inputs.properties.get("mod_description"),
+                        "mod_homepage"   : inputs.properties.get("mod_homepage"),
+                        "mod_id"         : inputs.properties.get("mod_id"),
+                        "mod_license"    : inputs.properties.get("mod_license"),
+                        "mod_name"       : inputs.properties.get("mod_name"),
+                        "mod_sources"    : inputs.properties.get("mod_sources"),
+                        "mod_version"    : inputs.properties.get("mod_version")
                 ])
             }
         }

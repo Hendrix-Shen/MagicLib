@@ -103,7 +103,6 @@ subprojects {
     shadowJar {
         setArchiveClassifier(null)
         setConfigurations([project.configurations.shade, project.configurations.shadeOnly])
-        relocate("org.semver4j", "${project.property("mod.maven_group")}.libs.org.semver4j")
         relocate("com.llamalad7", "${project.property("mod.maven_group")}.libs.com.llamalad7")
         exclude("META-INF/maven/**/*")
         mergeServiceFiles()
@@ -192,6 +191,23 @@ subprojects {
     }
 
     if (project.name != "common") {
+        configurations {
+            register("shadowApiElements") {
+                canBeConsumed = true
+                canBeResolved = false
+
+                attributes {
+                    attribute(Category.CATEGORY_ATTRIBUTE, this.project.objects.named(Category, Category.LIBRARY))
+                    attribute(Usage.USAGE_ATTRIBUTE, this.project.objects.named(Usage, Usage.JAVA_API))
+                    attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, this.project.objects.named(LibraryElements, "shadowed-jar"))
+                }
+            }
+        }
+
+        artifacts {
+            shadowApiElements(shadowJar)
+        }
+
         dependencies {
             shade(project(":magiclib-core:common"))
         }
