@@ -1,5 +1,6 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowCopyAction
 import com.github.jengelman.gradle.plugins.shadow.transformers.CacheableTransformer
-import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
+import com.github.jengelman.gradle.plugins.shadow.transformers.ResourceTransformer
 import com.github.jengelman.gradle.plugins.shadow.transformers.TransformerContext
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
@@ -342,7 +343,7 @@ class ProcessMetadata extends DefaultTask {
 }
 
 @CacheableTransformer
-class ManifestTransformer implements Transformer {
+class ManifestTransformer implements ResourceTransformer {
     private Map<String, String> attributes = [:]
 
     private static BiFunction<String, String, String> DEFAULT_MERGE = { String before, String after ->
@@ -374,7 +375,7 @@ class ManifestTransformer implements Transformer {
 
     @Override
     void transform(TransformerContext context) {
-        context.is.readLines()
+        context.inputStream.readLines()
                 .findAll { it.contains(":") }
                 .collect {
                     String[] ls = it.split(":", 2)
@@ -408,11 +409,21 @@ class ManifestTransformer implements Transformer {
         }
 
         ZipEntry entry = new ZipEntry(JarFile.MANIFEST_NAME)
-        entry.setTime(TransformerContext.getEntryTimestamp(preserveFileTimestamps, entry.getTime()))
+
+        long time = -1
+
+        if (preserveFileTimestamps) {
+            long lastModifiedTime = entry.getTime()
+
+            if (lastModifiedTime >= 0) {
+                time = lastModifiedTime
+            }
+        } else {
+            time = ShadowCopyAction.CONSTANT_TIME_FOR_ZIP_ENTRIES
+        }
+
+        entry.setTime(time)
         os.putNextEntry(entry)
         manifest.write(os)
     }
 }
-
-
-
