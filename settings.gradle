@@ -70,6 +70,7 @@ ext {
 }
 
 rootProject.setName(settings.providers.gradleProperty("mod.id").get())
+includeBuild("build-logic")
 
 // Magic Core API
 ["common", "fabric", "forge", "neoforge"].forEach {

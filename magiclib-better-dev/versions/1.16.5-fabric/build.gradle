@@ -5,10 +5,11 @@ plugins {
     id("maven-publish")
     id("signing")
 
+    id("top.hendrixshen.magiclib.build.process-resources-minecraft-plugin")
+
     id("top.hendrixshen.replace-token").version("${replace_token_version}")
 }
 
-apply(plugin: "dev.architectury.loom")
 apply(plugin: "com.replaymod.preprocess")
 apply(plugin: "me.fallenbreath.yamlang")
 
@@ -249,56 +250,6 @@ replaceToken {
     replaceIn("top/hendrixshen/magiclib/impl/dev/SharedConstants")
     replaceIn("top/hendrixshen/magiclib/entrypoint/dev/MagicLibForge")
     replaceIn("top/hendrixshen/magiclib/entrypoint/dev/MagicLibNeoForge")
-}
-
-processResources {
-    inputs.property("minecraft_dependency", project.property("dependencies.minecraft_dependency"))
-    inputs.property("mod_alias"           , project.parent.property("mod.id"))
-    inputs.property("mod_description"     , project.parent.property("mod.description"))
-    inputs.property("mod_homepage"        , project.parent.property("mod.homepage"))
-    inputs.property("mod_id"              , project.parent.property("mod.id").toString().replace("-", "_"))
-    inputs.property("mod_license"         , project.parent.property("mod.license"))
-    inputs.property("mod_name"            , project.parent.property("mod.name"))
-    inputs.property("mod_sources"         , project.parent.property("mod.sources"))
-    inputs.property("mod_version"         , project.getVersionWithCommitHash(this.project.parent))
-    inputs.property("root_mod_id"         , rootProject.property("mod.id"))
-    inputs.property("root_mod_name"       , rootProject.property("mod.name"))
-    inputs.property("root_mod_description", rootProject.property("mod.description"))
-
-    [
-            "fabric.mod.json"            : ["fabric"],
-            "META-INF"                   : ["forge", "neoforge"],
-            "META-INF/mods.toml"         : ["forge", "neoforge"],
-            "META-INF/neoforge.mods.toml": ["neoforge"]
-    ].forEach { file, platforms ->
-        if (platforms.contains(modPlatform)) {
-            filesMatching(file) {
-                expand([
-                        "minecraft_dependency": inputs.properties.get("minecraft_dependency"),
-                        "mod_alias"           : inputs.properties.get("mod_alias"),
-                        "mod_description"     : inputs.properties.get("mod_description"),
-                        "mod_homepage"        : inputs.properties.get("mod_homepage"),
-                        "mod_id"              : inputs.properties.get("mod_id"),
-                        "mod_license"         : inputs.properties.get("mod_license"),
-                        "mod_name"            : inputs.properties.get("mod_name"),
-                        "mod_sources"         : inputs.properties.get("mod_sources"),
-                        "mod_version"         : inputs.properties.get("mod_version"),
-                        "root_mod_id"         : inputs.properties.get("root_mod_id"),
-                        "root_mod_name"       : inputs.properties.get("root_mod_name"),
-                        "root_mod_description": inputs.properties.get("root_mod_description"),
-                ])
-            }
-        } else {
-            exclude(file)
-        }
-    }
-
-    from("${rootDir}/LICENSE")
-    from("${rootDir}/icon.png") {
-        if (fabricLike) {
-            into("assets/${project.parent.property("mod.id")}")
-        }
-    }
 }
 
 yamlang {

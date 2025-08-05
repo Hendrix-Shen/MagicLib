@@ -1,0 +1,43 @@
+plugins {
+    id("java-gradle-plugin")
+}
+
+repositories {
+    gradlePluginPortal()
+
+    maven {
+        name = "NyanMaven Mirror"
+        url = "https://maven.hendrixshen.top/mirror"
+    }
+
+    maven {
+        name = "Architectury"
+        url = "https://maven.architectury.dev"
+    }
+
+    maven {
+        name = "Jitpack"
+        url = "https://jitpack.io"
+    }
+}
+
+dependencies {
+    implementation(gradleApi())
+    implementation(localGroovy())
+    implementation("com.github.Fallen-Breath:preprocessor:d452ef7")
+    implementation("dev.architectury.loom:dev.architectury.loom.gradle.plugin:1.10-SNAPSHOT")
+}
+
+gradlePlugin {
+    plugins {
+        register("processResourcesPlugin") {
+            id = "top.hendrixshen.magiclib.build.process-resources-plugin"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.ProcessResourcesConfigPlugin"
+        }
+
+        register("processResourcesMCPlugin") {
+            id = "top.hendrixshen.magiclib.build.process-resources-minecraft-plugin"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.ProcessResourcesMCConfigPlugin"
+        }
+    }
+}

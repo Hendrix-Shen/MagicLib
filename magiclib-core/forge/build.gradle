@@ -1,3 +1,7 @@
+plugins {
+    id("top.hendrixshen.magiclib.build.process-resources-plugin")
+}
+
 repositories {
     maven {
         name = "Forge"
@@ -11,33 +15,6 @@ dependencies {
     compileOnly("net.minecraftforge:forgespi:${project.property("dependencies.forgespi_version")}")
     compileOnly("cpw.mods:modlauncher:${project.property("dependencies.modlauncher_version")}")
     compileOnly("org.apache.maven:maven-artifact:${project.property("dependencies.maven-artifact_version")}")
-}
-
-processResources {
-    inputs.property("mod_description", project.property("mod.description"))
-    inputs.property("mod_homepage"   , project.property("mod.homepage"))
-    inputs.property("mod_id"         , project.property("mod.id").toString().replace("-", "_"))
-    inputs.property("mod_license"    , project.property("mod.license"))
-    inputs.property("mod_name"       , project.property("mod.name"))
-    inputs.property("mod_version"    , project.getVersionWithCommitHash(this.project.parent))
-
-    filesMatching("META-INF/mods.toml") {
-        expand([
-                "mod_description": inputs.properties.get("mod_description"),
-                "mod_homepage"   : inputs.properties.get("mod_homepage"),
-                "mod_id"         : inputs.properties.get("mod_id"),
-                "mod_license"    : inputs.properties.get("mod_license"),
-                "mod_name"       : inputs.properties.get("mod_name"),
-                "mod_version"    : inputs.properties.get("mod_version")
-        ])
-    }
-
-    from("${rootDir}/LICENSE")
-    from("${rootDir}/icon.png")
-
-    from("${rootDir}/icon.png") {
-        into("assets/${project.parent.property("mod.id")}")
-    }
 }
 
 tasks.withType(Jar).configureEach {
