@@ -1,0 +1,56 @@
+[plugins]
+architectury-loom = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
+grgit = { id = "org.ajoberstar.grgit", version.ref = "grgit" }
+preprocessor = { id = "com.replaymod.preprocess", version.ref = "preprocessor" }
+replace-token = { id = "top.hendrixshen.replace-token", version.ref = "replace-token" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+yamlang = { id = "me.fallenbreath.yamlang", version.ref = "yamlang" }
+
+[versions]
+architectury-loom = "1.10-SNAPSHOT"
+asm = "9.8"
+checkstyle = "10.26.1"
+commons-lang3 = "3.17.0"
+grgit = "5.2.2"
+lombok = "1.18.38"
+gson = "2.13.1"
+guava = "33.4.8-jre"
+jetbrains-annotations = "26.0.2"
+log4j = "2.24.3"
+mixinextras = "0.5.0"
+preprocessor = "d452ef7"
+replace-token = "1.1.3"
+spongepowered-mixin = "0.8.7"
+shadow = "9.0.0-rc3"
+yamlang = "1.4.1"
+
+[libraries]
+# ASM
+asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
+asm-analysis = { module = "org.ow2.asm:asm-analysis", version.ref = "asm" }
+asm-commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
+asm-tree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
+asm-util = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
+
+# Mixin
+spongepowered-mixin = { module = "org.spongepowered:mixin", version.ref = "spongepowered-mixin" }
+
+# Mixin Extras
+mixinextras-common = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinextras" }
+
+# Plugin
+architectury-loom = { module = "dev.architectury.loom:dev.architectury.loom.gradle.plugin", version.ref = "architectury-loom" }
+preprocessor = { module = "com.github.Fallen-Breath:preprocessor", version.ref = "preprocessor" }
+replace-token = { module = "top.hendrixshen.replace-token:top.hendrixshen.replace-token.gradle.plugin", version.ref = "replace-token" }
+shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
+
+# Other
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
+log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+[bundles]
+asm = ["asm", "asm-analysis", "asm-commons", "asm-tree", "asm-util"]

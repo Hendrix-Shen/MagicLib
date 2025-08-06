@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import net.fabricmc.loom.api.LoomGradleExtensionAPI;
 import net.fabricmc.loom.util.ModPlatform;
+import top.hendrixshen.magiclib.buildLogic.config.ProcessResourcesConfig;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProcessResourcesMCConfigPlugin extends ProcessResourcesConfigPlugin {
+public class ProcessResourcesMCConfigPlugin extends ProcessResourcesConfig {
     private static final Map<String, List<ModPlatform>> FILE_PATTERNS = Util.make(() -> {
         Map<String, List<ModPlatform>> res = new HashMap<>();
         List<ModPlatform> list = new ArrayList<>();

@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.buildLogic;
+package top.hendrixshen.magiclib.buildLogic.config;
 
 import groovy.lang.Closure;
 import groovy.lang.GString;
@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProcessResourcesConfigPlugin implements Plugin<Project> {
+public class ProcessResourcesConfig implements Plugin<Project> {
     @Override
     public void apply(@NotNull Project project) {
         project.afterEvaluate(p -> {
@@ -41,8 +41,7 @@ public class ProcessResourcesConfigPlugin implements Plugin<Project> {
         map.put("mod_name", parent.property("mod.name"));
         map.put("mod_sources", parent.property("mod.sources"));
         @SuppressWarnings("unchecked")
-        Closure<GString> getVersionWithCommitHash = (Closure<GString>) project.getRootProject().getExtensions().getExtraProperties().get("getVersionWithCommitHash");
-        assert getVersionWithCommitHash != null;
+        Closure<GString> getVersionWithCommitHash = (Closure<GString>) project.getRootProject().getExtensions().getExtraProperties().getProperties().get("getVersionWithCommitHash");
         map.put("mod_version", getVersionWithCommitHash.call(project.getParent()));
         map.put("root_mod_id", root.property("mod.id"));
         map.put("root_mod_name", root.property("mod.name"));

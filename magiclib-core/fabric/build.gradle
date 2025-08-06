@@ -1,5 +1,9 @@
 plugins {
-    id("top.hendrixshen.magiclib.build.process-resources-plugin")
+    alias(libs.plugins.replace.token)
+    alias(libs.plugins.shadow)
+
+    id("top.hendrixshen.magiclib.build-logic.core-project")
+    id("top.hendrixshen.magiclib.build-logic.process-resources")
 }
 
 repositories {
@@ -11,4 +15,9 @@ repositories {
 
 dependencies {
     compileOnly("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }

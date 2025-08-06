@@ -1,5 +1,9 @@
 plugins {
-    id("top.hendrixshen.magiclib.build.process-resources-plugin")
+    alias(libs.plugins.replace.token)
+    alias(libs.plugins.shadow)
+
+    id("top.hendrixshen.magiclib.build-logic.core-project")
+    id("top.hendrixshen.magiclib.build-logic.process-resources")
 }
 
 repositories {
@@ -15,6 +19,11 @@ dependencies {
     compileOnly("net.minecraftforge:forgespi:${project.property("dependencies.forgespi_version")}")
     compileOnly("cpw.mods:modlauncher:${project.property("dependencies.modlauncher_version")}")
     compileOnly("org.apache.maven:maven-artifact:${project.property("dependencies.maven-artifact_version")}")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType(Jar).configureEach {

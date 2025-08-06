@@ -1,4 +1,5 @@
 plugins {
+    id("checkstyle")
     id("java-gradle-plugin")
 }
 
@@ -24,20 +25,32 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
-    implementation("com.github.Fallen-Breath:preprocessor:d452ef7")
-    implementation("dev.architectury.loom:dev.architectury.loom.gradle.plugin:1.10-SNAPSHOT")
+    implementation(libs.architectury.loom)
+    implementation(libs.preprocessor)
+    implementation(libs.replace.token)
+    implementation(libs.shadow)
+}
+
+checkstyle {
+    configFile = rootProject.file("checkstyle.xml")
+    toolVersion = libs.versions.checkstyle
 }
 
 gradlePlugin {
     plugins {
         register("processResourcesPlugin") {
-            id = "top.hendrixshen.magiclib.build.process-resources-plugin"
-            implementationClass = "top.hendrixshen.magiclib.buildLogic.ProcessResourcesConfigPlugin"
+            id = "top.hendrixshen.magiclib.build-logic.process-resources"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.config.ProcessResourcesConfig"
         }
 
         register("processResourcesMCPlugin") {
             id = "top.hendrixshen.magiclib.build.process-resources-minecraft-plugin"
             implementationClass = "top.hendrixshen.magiclib.buildLogic.ProcessResourcesMCConfigPlugin"
+        }
+
+        register("coreProjectBuildLogic") {
+            id = "top.hendrixshen.magiclib.build-logic.core-project"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.config.CoreProjectBuildLogic"
         }
     }
 }

@@ -1,5 +1,9 @@
 plugins {
-    id("top.hendrixshen.magiclib.build.process-resources-plugin")
+    alias(libs.plugins.replace.token)
+    alias(libs.plugins.shadow)
+
+    id("top.hendrixshen.magiclib.build-logic.core-project")
+    id("top.hendrixshen.magiclib.build-logic.process-resources")
 }
 
 repositories {
