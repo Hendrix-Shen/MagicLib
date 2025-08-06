@@ -4,13 +4,13 @@ plugins {
     id("maven-publish")
     id("signing")
 
-    id("top.hendrixshen.magiclib.build.process-resources-minecraft-plugin")
+    alias(libs.plugins.architectury.loom)
+    alias(libs.plugins.replace.token)
+    alias(libs.plugins.yamlang)
+    alias(libs.plugins.preprocessor)
 
-    id("top.hendrixshen.replace-token").version("${replace_token_version}")
+    id("top.hendrixshen.magiclib.build-logic.process-resources-minecraft")
 }
-
-apply(plugin: "com.replaymod.preprocess")
-apply(plugin: "me.fallenbreath.yamlang")
 
 String modPlatform = loom.platform.get().toString().toLowerCase()
 boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
@@ -79,8 +79,8 @@ dependencies {
     mappings(loom.officialMojangMappings())
 
     // Lombok
-    compileOnly("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
-    annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
 
     // MagicLib Core
     api(annotationProcessor(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow")))
@@ -96,7 +96,7 @@ dependencies {
 
     switch (modPlatform) {
         case "fabric":
-            modApi("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
+            modApi(libs.fabric.loader)
             break
         case "forge":
             forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")

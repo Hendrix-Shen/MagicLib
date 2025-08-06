@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.buildLogic;
+package top.hendrixshen.magiclib.buildLogic.config;
 
 import org.gradle.api.Project;
 import org.gradle.api.tasks.AbstractCopyTask;
@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import net.fabricmc.loom.api.LoomGradleExtensionAPI;
 import net.fabricmc.loom.util.ModPlatform;
-import top.hendrixshen.magiclib.buildLogic.config.ProcessResourcesConfig;
+import top.hendrixshen.magiclib.buildLogic.Util;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProcessResourcesMCConfigPlugin extends ProcessResourcesConfig {
+public class ProcessResourcesMCConfig extends ProcessResourcesConfig {
     private static final Map<String, List<ModPlatform>> FILE_PATTERNS = Util.make(() -> {
         Map<String, List<ModPlatform>> res = new HashMap<>();
         List<ModPlatform> list = new ArrayList<>();
@@ -39,7 +39,6 @@ public class ProcessResourcesMCConfigPlugin extends ProcessResourcesConfig {
         // We need to wait for the configuration to evaluate before we can release magic
         // in order to inject subproject's own input configuration.
         project.afterEvaluate(super::apply);
-        project.getPlugins().apply("dev.architectury.loom");
         this.modPlatform = project.getExtensions().getByType(LoomGradleExtensionAPI.class).getPlatform().get();
     }
 
@@ -53,7 +52,7 @@ public class ProcessResourcesMCConfigPlugin extends ProcessResourcesConfig {
 
     @Override
     public void filesMatching(Project project, ProcessResources task) {
-        ProcessResourcesMCConfigPlugin.FILE_PATTERNS.forEach((pattern, platforms) -> {
+        ProcessResourcesMCConfig.FILE_PATTERNS.forEach((pattern, platforms) -> {
             if (platforms.stream().anyMatch(platform -> platform == this.modPlatform)) {
                 this.filesMatching(project, task, pattern);
             } else {

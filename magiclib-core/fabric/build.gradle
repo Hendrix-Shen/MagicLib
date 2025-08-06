@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("net.fabricmc:fabric-loader:${project.property("dependencies.fabric_loader_version")}")
+    compileOnly(libs.fabric.loader)
 }
 
 java {

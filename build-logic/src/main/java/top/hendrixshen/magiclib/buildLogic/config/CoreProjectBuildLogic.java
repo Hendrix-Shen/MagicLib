@@ -288,7 +288,7 @@ public class CoreProjectBuildLogic implements Plugin<Project> {
             configurations.add(this.project.getConfigurations().getByName("shade"));
             configurations.add(this.project.getConfigurations().getByName("shadeOnly"));
             task.getConfigurations().set(configurations);
-            task.relocate("com.llamalad7", (String) this.project.getRootProject().getExtensions().getExtraProperties().getProperties().get("mod.maven_group"));
+            task.relocate("com.llamalad7", this.project.getRootProject().getExtensions().getExtraProperties().getProperties().get("mod.maven_group") + ".libs.com.llamalad7");
             task.exclude("META-INF/maven/**/*");
             task.mergeServiceFiles();
         });

@@ -24,7 +24,7 @@ plugins {
     id("maven-publish")
     id("signing")
 
-    id("com.gradleup.shadow").version("${shadow_version}")
+    alias(libs.plugins.shadow)
 }
 
 allprojects {

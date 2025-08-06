@@ -44,8 +44,8 @@ gradlePlugin {
         }
 
         register("processResourcesMCPlugin") {
-            id = "top.hendrixshen.magiclib.build.process-resources-minecraft-plugin"
-            implementationClass = "top.hendrixshen.magiclib.buildLogic.ProcessResourcesMCConfigPlugin"
+            id = "top.hendrixshen.magiclib.build-logic.process-resources-minecraft"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.config.ProcessResourcesMCConfig"
         }
 
         register("coreProjectBuildLogic") {
