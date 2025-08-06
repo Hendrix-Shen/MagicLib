@@ -117,6 +117,12 @@ for (String module_name : settings.get("projects").keySet()) {
 
 for (String platform : wrappers.keySet()) {
     for (String ver : wrappers.get(platform)) {
+        File file = file("magiclib-wrapper/${platform}/${ver}")
+
+        if (!file.exists()) {
+            file.mkdirs()
+        }
+
         include("magiclib-wrapper:${platform}:${ver}")
     }
 }
