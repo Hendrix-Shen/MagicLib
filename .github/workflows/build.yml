@@ -29,15 +29,12 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/dev/0.8' }}
       # TODO: Remove in next major version
       - name: Preprocess Resources
-        run: |
-          chmod +x gradlew
-          ./gradlew preprocessResources
+        run: gradle preprocessResources --stacktrace
         env:
           BUILD_TYPE: ${{ inputs.build_version_type }}
       - name: Build and publish with gradle
         if: ${{ inputs.build_publish == true }}
-        run: |
-          ./gradlew build publish --stacktrace
+        run: gradle build publish --stacktrace
         env:
           BUILD_TYPE: ${{ inputs.build_version_type }}
           NYAN_MAVEN_PASSWORD: ${{ secrets.NYAN_MAVEN_PASSWORD }}
@@ -45,8 +42,7 @@ jobs:
           SIGNING_PGP_KEY: ${{ secrets.SIGNING_PGP_KEY }}
       - name: Build and publishToMavenLocal with gradle
         if: ${{ inputs.build_publish == false }}
-        run: |
-          ./gradlew build publishToMavenLocal --stacktrace
+        run: gradle build publishToMavenLocal --stacktrace
         env:
           BUILD_TYPE: ${{ inputs.build_version_type }}
       - name: Upload build artifacts
