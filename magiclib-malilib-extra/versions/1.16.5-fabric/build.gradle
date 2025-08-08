@@ -236,7 +236,7 @@ base {
 
 checkstyle {
     configFile = rootProject.file("checkstyle-light.xml")
-    toolVersion = libs.versions.checkstyle
+    toolVersion = libs.versions.checkstyle.get()
 }
 
 java {
