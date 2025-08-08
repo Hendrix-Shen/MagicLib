@@ -177,8 +177,8 @@ public class CoreProjectBuildLogic implements Plugin<Project> {
             Closure<GString> getOrDefault = (Closure<GString>) extraProperties.get("getOrDefault");
             @SuppressWarnings("unchecked")
             Closure<Map<String, String>> getEnv = (Closure<Map<String, String>>) extraProperties.get("getEnv");
-            String signingKey = String.valueOf(getOrDefault.call(extraProperties.get("secrets.gpg.signingKey"), getEnv.call().get("SIGNING_PGP_KEY")));
-            String signingPassword = String.valueOf(getOrDefault.call(extraProperties.get("secrets.gpg.signingPassword"), getEnv.call().get("SIGNING_PGP_PASSWORD")));
+            String signingKey = String.valueOf(getOrDefault.call("secrets.gpg.signingKey", getEnv.call().get("SIGNING_PGP_KEY")));
+            String signingPassword = String.valueOf(getOrDefault.call("secrets.gpg.signingPassword", getEnv.call().get("SIGNING_PGP_PASSWORD")));
             signingExtension.setRequired(signingKey != null);
             signingExtension.useInMemoryPgpKeys(signingKey, signingPassword);
         });
