@@ -1,3 +1,11 @@
+plugins {
+    alias(libs.plugins.replace.token)
+    alias(libs.plugins.shadow)
+
+    id("top.hendrixshen.magiclib.build-logic.core-project")
+    id("top.hendrixshen.magiclib.build-logic.process-resources")
+}
+
 repositories {
     maven {
         name = "NeoForge"
@@ -14,26 +22,6 @@ dependencies {
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
-}
-
-processResources {
-    filesMatching(["META-INF/mods.toml", "META-INF/neoforge.mods.toml"]) {
-        expand([
-                "mod_description": project.parent.property("mod.description"),
-                "mod_homepage"   : project.parent.property("mod.homepage"),
-                "mod_id"         : project.parent.property("mod.id").toString().replace("-", "_"),
-                "mod_license"    : project.parent.property("mod.license"),
-                "mod_name"       : project.parent.property("mod.name"),
-                "mod_version"    : project.getVersionWithCommitHash(this.project.parent)
-        ])
-    }
-
-    from("${rootDir}/LICENSE")
-    from("${rootDir}/icon.png")
-
-    from("${rootDir}/icon.png") {
-        into("assets/${project.parent.property("mod.id")}")
-    }
 }
 
 tasks.withType(Jar).configureEach {

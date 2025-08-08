@@ -1,7 +1,7 @@
 plugins {
     id("maven-publish")
 
-    id("org.ajoberstar.grgit").version("${grgit_version}")
+    alias(libs.plugins.grgit)
 }
 
 ext {

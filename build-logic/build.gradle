@@ -1,0 +1,56 @@
+plugins {
+    id("checkstyle")
+    id("java-gradle-plugin")
+}
+
+repositories {
+    gradlePluginPortal()
+
+    maven {
+        name = "NyanMaven Mirror"
+        url = "https://maven.hendrixshen.top/mirror"
+    }
+
+    maven {
+        name = "Architectury"
+        url = "https://maven.architectury.dev"
+    }
+
+    maven {
+        name = "Jitpack"
+        url = "https://jitpack.io"
+    }
+}
+
+dependencies {
+    implementation(gradleApi())
+    implementation(localGroovy())
+    implementation(libs.architectury.loom)
+    implementation(libs.preprocessor)
+    implementation(libs.replace.token)
+    implementation(libs.shadow)
+}
+
+checkstyle {
+    configFile = rootProject.file("checkstyle.xml")
+    toolVersion = libs.versions.checkstyle
+}
+
+gradlePlugin {
+    plugins {
+        register("processResourcesPlugin") {
+            id = "top.hendrixshen.magiclib.build-logic.process-resources"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.config.ProcessResourcesConfig"
+        }
+
+        register("processResourcesMCPlugin") {
+            id = "top.hendrixshen.magiclib.build-logic.process-resources-minecraft"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.config.ProcessResourcesMCConfig"
+        }
+
+        register("coreProjectBuildLogic") {
+            id = "top.hendrixshen.magiclib.build-logic.core-project"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.config.CoreProjectBuildLogic"
+        }
+    }
+}

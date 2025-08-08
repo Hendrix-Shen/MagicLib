@@ -1,5 +1,14 @@
 plugins {
-    id("me.fallenbreath.yamlang").version("${yamlang_version}")
+    alias(libs.plugins.replace.token)
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.yamlang)
+
+    id("top.hendrixshen.magiclib.build-logic.core-project")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 yamlang {

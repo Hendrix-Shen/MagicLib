@@ -2,9 +2,8 @@ import com.replaymod.gradle.preprocess.Node
 import com.replaymod.gradle.preprocess.RootPreprocessExtension
 
 plugins {
-    id("dev.architectury.loom").version("${architectury_loom_version}").apply(false)
-    id("com.replaymod.preprocess").version("${preprocessor_version}").apply(false)
-    id("me.fallenbreath.yamlang").version("${yamlang_version}").apply(false)
+    alias(libs.plugins.architectury.loom).apply(false)
+    alias(libs.plugins.preprocessor).apply(false)
 }
 
 extensions.create("preprocess", RootPreprocessExtension.class)

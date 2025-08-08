@@ -1,5 +1,6 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowCopyAction
 import com.github.jengelman.gradle.plugins.shadow.transformers.CacheableTransformer
-import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
+import com.github.jengelman.gradle.plugins.shadow.transformers.ResourceTransformer
 import com.github.jengelman.gradle.plugins.shadow.transformers.TransformerContext
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
@@ -23,7 +24,7 @@ plugins {
     id("maven-publish")
     id("signing")
 
-    id("com.gradleup.shadow").version("${shadow_version}")
+    alias(libs.plugins.shadow)
 }
 
 allprojects {
@@ -134,6 +135,14 @@ subprojects {
     processResources {
         dependsOn(coreProject.tasks.processResources)
 
+        inputs.property("mod_description", project.property("mod.description"))
+        inputs.property("mod_homepage"   , project.property("mod.homepage"))
+        inputs.property("mod_id"         , project.property("mod.id"))
+        inputs.property("mod_license"    , project.property("mod.license"))
+        inputs.property("mod_name"       , project.property("mod.name"))
+        inputs.property("mod_sources"    , project.property("mod.sources"))
+        inputs.property("mod_version"    , project.getVersionWithCommitHash(rootProject))
+
         from(project.parent.sourceSets.main.resources.srcDirs) {
             include("META-INF")
             [
@@ -142,13 +151,13 @@ subprojects {
             ].forEach {
                 include(it)
                 expand([
-                        "mod_description": project.property("mod.description"),
-                        "mod_homepage"   : project.property("mod.homepage"),
-                        "mod_id"         : project.property("mod.id"),
-                        "mod_license"    : project.property("mod.license"),
-                        "mod_name"       : project.property("mod.name"),
-                        "mod_sources"    : project.property("mod.sources"),
-                        "mod_version"    : project.getVersionWithCommitHash(rootProject),
+                        "mod_description": inputs.properties.get("mod_description"),
+                        "mod_homepage"   : inputs.properties.get("mod_homepage"),
+                        "mod_id"         : inputs.properties.get("mod_id"),
+                        "mod_license"    : inputs.properties.get("mod_license"),
+                        "mod_name"       : inputs.properties.get("mod_name"),
+                        "mod_sources"    : inputs.properties.get("mod_sources"),
+                        "mod_version"    : inputs.properties.get("mod_version")
                 ])
             }
         }
@@ -342,7 +351,7 @@ class ProcessMetadata extends DefaultTask {
 }
 
 @CacheableTransformer
-class ManifestTransformer implements Transformer {
+class ManifestTransformer implements ResourceTransformer {
     private Map<String, String> attributes = [:]
 
     private static BiFunction<String, String, String> DEFAULT_MERGE = { String before, String after ->
@@ -374,7 +383,7 @@ class ManifestTransformer implements Transformer {
 
     @Override
     void transform(TransformerContext context) {
-        context.is.readLines()
+        context.inputStream.readLines()
                 .findAll { it.contains(":") }
                 .collect {
                     String[] ls = it.split(":", 2)
@@ -408,11 +417,21 @@ class ManifestTransformer implements Transformer {
         }
 
         ZipEntry entry = new ZipEntry(JarFile.MANIFEST_NAME)
-        entry.setTime(TransformerContext.getEntryTimestamp(preserveFileTimestamps, entry.getTime()))
+
+        long time = -1
+
+        if (preserveFileTimestamps) {
+            long lastModifiedTime = entry.getTime()
+
+            if (lastModifiedTime >= 0) {
+                time = lastModifiedTime
+            }
+        } else {
+            time = ShadowCopyAction.CONSTANT_TIME_FOR_ZIP_ENTRIES
+        }
+
+        entry.setTime(time)
         os.putNextEntry(entry)
         manifest.write(os)
     }
 }
-
-
-
