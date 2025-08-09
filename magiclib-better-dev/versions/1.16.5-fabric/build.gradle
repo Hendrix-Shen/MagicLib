@@ -18,6 +18,7 @@ boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
 boolean forgeLike = modPlatform == "forge" || modPlatform == "neoforge"
 String projectName = project.name.replace("better-dev-", "")
 int mcVersion = 0
+VersionCatalogsExtension catalogsExtension = project.getExtensions().getByType(VersionCatalogsExtension.class)
 
 preprocess {
     mcVersion = vars.get().get("MC")
@@ -67,17 +68,13 @@ repositories {
     mavenCentral()
 }
 
-// Module, Property prefix, Resolve condition, Transitive dependencies.
-def apiDependencies = [
-        ["maven.modrinth:modmenu"            , "modmenu", fabricLike, false],
-        ["net.fabricmc.fabric-api:fabric-api", "fabric" , fabricLike, true],
-]
-
-// Module, Property prefix, Resolve condition, Transitive dependencies.
-def runtimeDependencies = [
-        ["maven.modrinth:in-game-account-switcher", "inGameAccountSwitcher", true      , false],
-        ["maven.modrinth:imblocker"               , "imblocker"            , fabricLike, false],
-        ["maven.modrinth:imblocker-original"      , "imblocker"            , forgeLike , false],
+// Configuration name, Module, Resolve condition, Use version mapping, Configuration closure.
+def deps = [
+        ["modApi"        , "fabric"                                 , fabricLike, true , { }],
+        ["modApi"        , "modmenu"                                , fabricLike, true , { transitive = false }],
+        ["modRuntimeOnly", "in-game-account-switcher-${modPlatform}", true      , true , { transitive = false }],
+        ["modRuntimeOnly", "imblocker"                              , fabricLike, false, { transitive = false }],
+        ["modRuntimeOnly", "imblocker-original-${modPlatform}"      , forgeLike , true , { transitive = false }]
 ]
 
 dependencies {
@@ -96,46 +93,28 @@ dependencies {
             modApi(libs.fabric.loader)
             break
         case "forge":
-            forge(project.getExtensions().getByType(VersionCatalogsExtension.class).named("forges").findLibrary("forge-mc${mcVersion}").get())
+            forge(catalogsExtension.named("forges").findLibrary("forge-mc${mcVersion}").orElseThrow { throw new GradleException("No Forge library found for mc${mcVersion}") })
             break
         case "neoforge":
-            neoForge(project.getExtensions().getByType(VersionCatalogsExtension.class).named("forges").findLibrary("neoforge-mc${mcVersion}").get())
+            neoForge(catalogsExtension.named("forges").findLibrary("neoforge-mc${mcVersion}").orElseThrow { throw new GradleException("No NeoForge library found for mc${mcVersion}") })
             break
     }
 
-    // API
-    apiDependencies.forEach { item ->
-        String dependencyNotation = item[0]
-        String dependencyVersion = project.findProperty("dependencies.api.${item[1]}_version")
-        boolean shouldResolve = item[2] && dependencyVersion != "0"
-        boolean shouldTransitive = item[3]
+    deps.forEach { item ->
+        String configurationName = item[0]
+        String dependencyName = item[1]
+        boolean shouldResolve = item[2]
 
-        if (shouldResolve) {
-            if (!dependencyVersion) {
-                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
-            }
-
-            modApi("${dependencyNotation}:${dependencyVersion}") {
-                transitive = shouldTransitive
-            }
+        if (!shouldResolve) {
+            return
         }
-    }
 
-    // Runtime Library - Make development environment comfortable.
-    runtimeDependencies.forEach { item ->
-        String dependencyNotation = item[0]
-        String dependencyVersion = project.findProperty("dependencies.runtime.${item[1]}_version")
-        boolean shouldResolve = item[2] && dependencyVersion != "0"
-        boolean shouldTransitive = item[3]
+        org.gradle.api.provider.Provider<MinimalExternalModuleDependency> dep = catalogsExtension.named("mods").findLibrary(item[3] ? "${dependencyName}-mc${mcVersion}" : dependencyName).orElseThrow { throw new GradleException("No mod library found for ${dependencyName + (item[3] ? "-mc${mcVersion}" : "")}") }
+        shouldResolve &= dep.get().getVersion() != "0"
+        Closure<Void> closure = (Closure<Void>) item[4]
 
         if (shouldResolve) {
-            if (!dependencyVersion) {
-                throw new RuntimeException("Could not get unknown property 'dependencies.runtime.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
-            }
-
-            modRuntimeOnly("${dependencyNotation}:${dependencyVersion}") {
-                transitive = shouldTransitive
-            }
+            add(configurationName, dep, closure)
         }
     }
 }

@@ -1,0 +1,159 @@
+[versions]
+fabric-mc11404 = "0.28.5+1.14"
+fabric-mc11502 = "0.28.5+1.15"
+fabric-mc11605 = "0.42.0+1.16"
+fabric-mc11701 = "0.46.1+1.17"
+fabric-mc11802 = "0.77.0+1.18.2"
+fabric-mc11902 = "0.77.0+1.19.2"
+fabric-mc11903 = "0.76.1+1.19.3"
+fabric-mc11904 = "0.87.2+1.19.4"
+fabric-mc12001 = "0.92.6+1.20.1"
+fabric-mc12002 = "0.91.6+1.20.2"
+fabric-mc12004 = "0.97.3+1.20.4"
+fabric-mc12006 = "0.100.8+1.20.6"
+fabric-mc12101 = "0.116.5+1.21.1"
+fabric-mc12103 = "0.114.1+1.21.3"
+fabric-mc12104 = "0.119.4+1.21.4"
+fabric-mc12105 = "0.128.2+1.21.5"
+fabric-mc12108 = "0.131.0+1.21.8"
+
+imblocker-original-forge-mc11701 = "bJY9G53S"
+imblocker-original-forge-mc11802 = "bJY9G53S"
+imblocker-original-forge-mc11904 = "bJY9G53S"
+
+imblocker-original-neoforge-mc12002 = "5.0.0"
+imblocker-original-neoforge-mc12006 = "BZem119r"
+imblocker-original-neoforge-mc12101 = "BZem119r"
+imblocker-original-neoforge-mc12103 = "BZem119r"
+imblocker-original-neoforge-mc12104 = "BZem119r"
+imblocker-original-neoforge-mc12105 = "BZem119r"
+imblocker-original-neoforge-mc12108 = "BZem119r"
+
+in-game-account-switcher-fabric-mc11404 = "8.0.1-fabric1.14"
+in-game-account-switcher-fabric-mc11502 = "8.0.1-fabric1.15"
+in-game-account-switcher-fabric-mc11605 = "8.0.1-fabric1.16"
+in-game-account-switcher-fabric-mc11701 = "8.0.1-fabric1.17"
+in-game-account-switcher-fabric-mc11802 = "9.0.4"
+in-game-account-switcher-fabric-mc11902 = "rOZ9OXpO"
+in-game-account-switcher-fabric-mc11903 = "8.0.1.1-fabric1.19"
+in-game-account-switcher-fabric-mc11904 = "IEZz1GYL"
+in-game-account-switcher-fabric-mc12001 = "BEifi05w"
+in-game-account-switcher-fabric-mc12002 = "95fKovyV"
+in-game-account-switcher-fabric-mc12004 = "4YkiZd0z"
+in-game-account-switcher-fabric-mc12006 = "GCg9DZEz"
+in-game-account-switcher-fabric-mc12101 = "1I6CbhGl"
+in-game-account-switcher-fabric-mc12103 = "1lyTVvWQ"
+in-game-account-switcher-fabric-mc12104 = "GpMGjDlf"
+in-game-account-switcher-fabric-mc12105 = "Rqmwlwr6"
+in-game-account-switcher-fabric-mc12108 = "9.0.5"
+
+in-game-account-switcher-forge-mc11701 = "8.0.1-forge1.17"
+in-game-account-switcher-forge-mc11802 = "Az6PjZ5q"
+in-game-account-switcher-forge-mc11904 = "oGKy0OfP"
+
+in-game-account-switcher-neoforge-mc12002 = "6Vr5XdM2"
+in-game-account-switcher-neoforge-mc12006 = "5AbTaqq3"
+in-game-account-switcher-neoforge-mc12101 = "2ByghZuX"
+in-game-account-switcher-neoforge-mc12103 = "13hMwIl3"
+in-game-account-switcher-neoforge-mc12104 = "KlUPHWLu"
+in-game-account-switcher-neoforge-mc12105 = "j05I8VL2"
+in-game-account-switcher-neoforge-mc12108 = "eQRA4vob"
+
+modmenu-mc11404 = "1.7.17"
+modmenu-mc11502 = "1.10.7"
+modmenu-mc11605 = "1.16.23"
+modmenu-mc11701 = "2.0.17"
+modmenu-mc11802 = "3.2.5"
+modmenu-mc11902 = "4.2.0-beta.2"
+modmenu-mc11903 = "5.1.0"
+modmenu-mc11904 = "6.3.1"
+modmenu-mc12001 = "7.2.2"
+modmenu-mc12002 = "8.0.1"
+modmenu-mc12004 = "9.2.0"
+modmenu-mc12006 = "10.0.0"
+modmenu-mc12101 = "11.0.3"
+modmenu-mc12103 = "12.0.0"
+modmenu-mc12104 = "13.0.3"
+modmenu-mc12105 = "14.0.0-rc.2"
+modmenu-mc12108 = "15.0.0-beta.3"
+
+[libraries]
+fabric-mc11404 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11404" }
+fabric-mc11502 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11502" }
+fabric-mc11605 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11605" }
+fabric-mc11701 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11701" }
+fabric-mc11802 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11802" }
+fabric-mc11902 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11902" }
+fabric-mc11903 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11903" }
+fabric-mc11904 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11904" }
+fabric-mc12001 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12001" }
+fabric-mc12002 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12002" }
+fabric-mc12004 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12004" }
+fabric-mc12006 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12006" }
+fabric-mc12101 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12101" }
+fabric-mc12103 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12103" }
+fabric-mc12104 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12104" }
+fabric-mc12105 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12105" }
+fabric-mc12108 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12108" }
+
+imblocker = "maven.modrinth:imblocker:1.0.20"
+
+imblocker-original-forge-mc11701 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc11701" }
+imblocker-original-forge-mc11802 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc11802" }
+imblocker-original-forge-mc11904 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc11904" }
+
+imblocker-original-neoforge-mc12002 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-neoforge-mc12002" }
+imblocker-original-neoforge-mc12006 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-neoforge-mc12006" }
+imblocker-original-neoforge-mc12101 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-neoforge-mc12101" }
+imblocker-original-neoforge-mc12103 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-neoforge-mc12103" }
+imblocker-original-neoforge-mc12104 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-neoforge-mc12104" }
+imblocker-original-neoforge-mc12105 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-neoforge-mc12105" }
+imblocker-original-neoforge-mc12108 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-neoforge-mc12108" }
+
+in-game-account-switcher-fabric-mc11404 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc11404" }
+in-game-account-switcher-fabric-mc11502 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc11502" }
+in-game-account-switcher-fabric-mc11605 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc11605" }
+in-game-account-switcher-fabric-mc11701 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc11701" }
+in-game-account-switcher-fabric-mc11802 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc11802" }
+in-game-account-switcher-fabric-mc11902 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc11902" }
+in-game-account-switcher-fabric-mc11903 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc11903" }
+in-game-account-switcher-fabric-mc11904 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc11904" }
+in-game-account-switcher-fabric-mc12001 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc12001" }
+in-game-account-switcher-fabric-mc12002 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc12002" }
+in-game-account-switcher-fabric-mc12004 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc12004" }
+in-game-account-switcher-fabric-mc12006 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc12006" }
+in-game-account-switcher-fabric-mc12101 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc12101" }
+in-game-account-switcher-fabric-mc12103 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc12103" }
+in-game-account-switcher-fabric-mc12104 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc12104" }
+in-game-account-switcher-fabric-mc12105 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc12105" }
+in-game-account-switcher-fabric-mc12108 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-fabric-mc12108" }
+
+in-game-account-switcher-forge-mc11701 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-forge-mc11701" }
+in-game-account-switcher-forge-mc11802 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-forge-mc11802" }
+in-game-account-switcher-forge-mc11904 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-forge-mc11904" }
+
+in-game-account-switcher-neoforge-mc12002 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-neoforge-mc12002" }
+in-game-account-switcher-neoforge-mc12006 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-neoforge-mc12006" }
+in-game-account-switcher-neoforge-mc12101 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-neoforge-mc12101" }
+in-game-account-switcher-neoforge-mc12103 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-neoforge-mc12103" }
+in-game-account-switcher-neoforge-mc12104 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-neoforge-mc12104" }
+in-game-account-switcher-neoforge-mc12105 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-neoforge-mc12105" }
+in-game-account-switcher-neoforge-mc12108 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-neoforge-mc12108" }
+
+modmenu-mc11404 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc11404" }
+modmenu-mc11502 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc11502" }
+modmenu-mc11605 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc11605" }
+modmenu-mc11701 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc11701" }
+modmenu-mc11802 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc11802" }
+modmenu-mc11902 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc11902" }
+modmenu-mc11903 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc11903" }
+modmenu-mc11904 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc11904" }
+modmenu-mc12001 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12001" }
+modmenu-mc12002 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12002" }
+modmenu-mc12004 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12004" }
+modmenu-mc12006 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12006" }
+modmenu-mc12101 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12101" }
+modmenu-mc12103 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12103" }
+modmenu-mc12104 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12104" }
+modmenu-mc12105 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12105" }
+modmenu-mc12108 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12108" }
