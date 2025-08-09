@@ -47,6 +47,14 @@ pluginManagement {
     }
 }
 
+dependencyResolutionManagement {
+    versionCatalogs {
+        register("forges") {
+            from(files("./gradle/forges.versions.toml"))
+        }
+    }
+}
+
 ext {
     File localPropsFile = file("${rootDir}/local.properties")
 

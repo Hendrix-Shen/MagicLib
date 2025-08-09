@@ -121,10 +121,10 @@ dependencies {
             modApi(libs.fabric.loader)
             break
         case "forge":
-            forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
+            forge(project.getExtensions().getByType(VersionCatalogsExtension.class).named("forges").findLibrary("forge-mc${mcVersion}").get())
             break
         case "neoforge":
-            neoForge("net.neoforged:neoforge:${project.property("dependencies.neoforge_version")}")
+            neoForge(project.getExtensions().getByType(VersionCatalogsExtension.class).named("forges").findLibrary("neoforge-mc${mcVersion}").get())
             break
     }
 
