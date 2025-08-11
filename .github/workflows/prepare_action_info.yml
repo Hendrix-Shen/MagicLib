@@ -23,7 +23,7 @@ jobs:
       publish_type: ${{ steps.build_info.outputs.publish_type }}
     steps:
       - name: Checkout the sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Determining build info
