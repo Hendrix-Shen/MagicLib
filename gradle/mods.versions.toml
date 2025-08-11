@@ -77,6 +77,37 @@ modmenu-mc12104 = "13.0.3"
 modmenu-mc12105 = "14.0.0-rc.2"
 modmenu-mc12108 = "15.0.0-beta.3"
 
+badpackets-mc12006 = "neo-0.7.4"
+
+malilib-mc11404 = "nVIcj6u9"
+malilib-mc11502 = "0.10.0-dev.21+arne.3"
+malilib-mc11605 = "Lav6afIY"
+malilib-mc11701 = "HljUtdhE"
+malilib-mc11802 = "0.12.1"
+malilib-mc11902 = "M3rtbAPE"
+malilib-mc11903 = "0.14.1-pre.1"
+malilib-mc11904 = "0.15.4"
+malilib-mc12001 = "0.16.3"
+malilib-mc12002 = "0.17.0"
+malilib-mc12004 = "0.18.3"
+malilib-mc12006 = "0.19.0"
+malilib-mc12101 = "0.21.9"
+malilib-mc12103 = "0.22.7"
+malilib-mc12104 = "0.23.4"
+malilib-mc12105 = "0.24.2"
+malilib-mc12108 = "0.25.4"
+
+mafglib-mc11701 = "0.1.6-mc1.17.1"
+mafglib-mc11802 = "0.1.14-mc1.18.2"
+mafglib-mc11904 = "0.1.11-mc1.19.4"
+mafglib-mc12006 = "0.1.15-mc1.20.6"
+mafglib-mc12101 = "0.3.6-mc1.21.1"
+mafglib-mc12103 = "0.3.3-mc1.21.3"
+mafglib-mc12104 = "0.3.6-mc1.21.4"
+mafglib-mc12105 = "0.3.8-mc1.21.5"
+mafglib-mc12108 = "0.4.0+mc1.21.8"
+
+# libraries will be removed after the migration to build-logic.
 [libraries]
 fabric-mc11404 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11404" }
 fabric-mc11502 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11502" }
@@ -157,3 +188,33 @@ modmenu-mc12103 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc
 modmenu-mc12104 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12104" }
 modmenu-mc12105 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12105" }
 modmenu-mc12108 = { module = "maven.modrinth:modmenu", version.ref = "modmenu-mc12108" }
+
+badpackets-mc12006 = { module = "maven.modrinth:mafglib", version.ref = "badpackets-mc12006" }
+
+malilib-mc11404 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc11404" }
+malilib-mc11502 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc11502" }
+malilib-mc11605 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc11605" }
+malilib-mc11701 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc11701" }
+malilib-mc11802 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc11802" }
+malilib-mc11902 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc11902" }
+malilib-mc11903 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc11903" }
+malilib-mc11904 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc11904" }
+malilib-mc12001 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12001" }
+malilib-mc12002 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12002" }
+malilib-mc12004 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12004" }
+malilib-mc12006 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12006" }
+malilib-mc12101 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12101" }
+malilib-mc12103 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12103" }
+malilib-mc12104 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12104" }
+malilib-mc12105 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12105" }
+malilib-mc12108 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12108" }
+
+mafglib-mc11701 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11701" }
+mafglib-mc11802 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11802" }
+mafglib-mc11904 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11904" }
+mafglib-mc12006 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12006" }
+mafglib-mc12101 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12101" }
+mafglib-mc12103 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12103" }
+mafglib-mc12104 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12104" }
+mafglib-mc12105 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12105" }
+mafglib-mc12108 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12108" }
