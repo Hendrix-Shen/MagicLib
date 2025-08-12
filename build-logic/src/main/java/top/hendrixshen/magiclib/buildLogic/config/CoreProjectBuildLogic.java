@@ -15,6 +15,7 @@ import org.gradle.api.artifacts.VersionCatalogsExtension;
 import org.gradle.api.artifacts.dsl.DependencyHandler;
 import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.plugins.BasePluginExtension;
+import org.gradle.api.plugins.JavaLibraryPlugin;
 import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.plugins.PluginContainer;
 import org.gradle.api.plugins.quality.CheckstyleExtension;
@@ -24,6 +25,7 @@ import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven;
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository;
+import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.TaskCollection;
 import org.gradle.api.tasks.compile.JavaCompile;
 import org.gradle.api.tasks.javadoc.Javadoc;
@@ -55,7 +57,7 @@ public class CoreProjectBuildLogic implements Plugin<Project> {
         this.project.getPluginManager();
         PluginContainer plugins = this.project.getPlugins();
         plugins.apply("checkstyle");
-        plugins.apply("java");
+        plugins.apply("java-library");
         plugins.apply("maven-publish");
         plugins.apply("signing");
     }
@@ -295,10 +297,16 @@ public class CoreProjectBuildLogic implements Plugin<Project> {
     }
 
     private void sourcesJarConfigure() {
-        if (!"common".equals(this.project.getName())) {
-            this.project.getTasks().named("sourcesJar", Jar.class).configure(task ->
-                    task.from(this.project.project(":magiclib-core:common").getExtensions().getByType(JavaPluginExtension.class).getSourceSets().getByName("main").getAllSource())
-            );
+        if ("common".equals(this.project.getName())) {
+            return;
         }
+
+        this.project.getTasks().named("sourcesJar", Jar.class).configure(task -> {
+            Project project = this.project.project(":magiclib-core:common");
+            project.getPlugins().withType(JavaLibraryPlugin.class, plugin -> {
+                SourceSet sourceSet = project.getExtensions().getByType(JavaPluginExtension.class).getSourceSets().getByName("main");
+                task.from(sourceSet.getAllSource());
+            });
+        });
     }
 }
