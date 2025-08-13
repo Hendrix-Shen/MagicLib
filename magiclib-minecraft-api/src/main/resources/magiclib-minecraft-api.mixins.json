@@ -21,7 +21,7 @@
     "compat.FontMixin",
     "event.LanguageManagerMixin",
     "event.MinecraftMixin",
-    "event.render.EntityRendererMixin",
+    "event.render.EntityRenderDispatcherMixin",
     "event.render.GameRendererMixin",
     "event.render.LevelRendererMixin",
     "network.hook.ClientPacketListenerMixin",
