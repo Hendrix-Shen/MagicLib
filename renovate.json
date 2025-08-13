@@ -18,6 +18,9 @@
         "net.neoforged.fancymodloader:core",
         "net.neoforged.fancymodloader:language-java",
         "net.neoforged.fancymodloader:loader",
+        "net.neoforged:neoforge",
+
+        "net.fabricmc.fabric-api:fabric-api",
         
         "com.mojang:minecraft",
 
