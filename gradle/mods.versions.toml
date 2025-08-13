@@ -127,7 +127,7 @@ fabric-mc12104 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = 
 fabric-mc12105 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12105" }
 fabric-mc12108 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12108" }
 
-imblocker = "maven.modrinth:imblocker:1.0.20"
+imblocker = "maven.modrinth:imblocker:1.0.24"
 
 imblocker-original-forge-mc11701 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc11701" }
 imblocker-original-forge-mc11802 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc11802" }
