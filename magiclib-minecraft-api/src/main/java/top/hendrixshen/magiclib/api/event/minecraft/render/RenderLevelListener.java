@@ -24,7 +24,11 @@ import top.hendrixshen.magiclib.api.render.context.RenderContext;
 // CHECKSTYLE.ON: ImportOrder
 
 public interface RenderLevelListener extends Listener {
-    //#if MC < 12106
+    //#if MC > 12105
+    //$$ void preRenderLevel(ClientLevel level, LevelRenderContext renderContext);
+    //$$
+    //$$ void postRenderLevel(ClientLevel level, LevelRenderContext renderContext);
+    //#else
     /**
      * Use {@link RenderLevelListener#preRenderLevel(ClientLevel, LevelRenderContext)} instead.
      */
@@ -42,13 +46,13 @@ public interface RenderLevelListener extends Listener {
     default void postRenderLevel(Level level, RenderContext renderContext, float partialTicks) {
         throw new UnsupportedOperationException("Use postRenderLevel with LevelRenderContext instead");
     }
-    //#endif
-
-    default void postRenderLevel(ClientLevel level, LevelRenderContext renderContext) {
-        throw new UnsupportedOperationException("Implement it before using");
-    }
 
     default void preRenderLevel(ClientLevel level, LevelRenderContext renderContext) {
         throw new UnsupportedOperationException("Implement it before using");
     }
+
+    default void postRenderLevel(ClientLevel level, LevelRenderContext renderContext) {
+        throw new UnsupportedOperationException("Implement it before using");
+    }
+    //#endif
 }

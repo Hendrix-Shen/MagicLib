@@ -18,19 +18,28 @@ import top.hendrixshen.magiclib.api.render.context.RenderContext;
 // CHECKSTYLE.ON: ImportOrder
 
 public interface RenderEntityListener extends Listener {
-    //#if MC < 12106
+    //#if MC > 12105
+    //$$ void preRenderEntity(Entity entity, EntityRenderContext renderContext);
+    //$$
+    //$$ void postRenderEntity(Entity entity, EntityRenderContext renderContext);
+    //#else
+    /**
+     * Use {@link RenderEntityListener#preRenderEntity(Entity, EntityRenderContext)} instead.
+     */
     @Deprecated
     @ApiStatus.ScheduledForRemoval
     default void preRenderEntity(Entity entity, RenderContext renderContext, float partialTicks) {
         throw new UnsupportedOperationException("Use preRenderEntity with EntityRenderContext instead");
     }
 
+    /**
+     * Use {@link RenderEntityListener#postRenderEntity(Entity, EntityRenderContext)} instead.
+     */
     @Deprecated
     @ApiStatus.ScheduledForRemoval
     default void postRenderEntity(Entity entity, RenderContext renderContext, float partialTicks) {
         throw new UnsupportedOperationException("Use postRenderEntity with EntityRenderContext instead");
     }
-    //#endif
 
     default void preRenderEntity(Entity entity, EntityRenderContext renderContext) {
         throw new UnsupportedOperationException("Implement it before using");
@@ -39,4 +48,5 @@ public interface RenderEntityListener extends Listener {
     default void postRenderEntity(Entity entity, EntityRenderContext renderContext) {
         throw new UnsupportedOperationException("Implement it before using");
     }
+    //#endif
 }
