@@ -156,6 +156,9 @@ public class CoreProjectBuildLogic implements Plugin<Project> {
     private void replaceTokenConfigure() {
         this.project.getExtensions().configure(ReplaceTokenExtension.class, replaceTokenExtension -> {
             assert this.project.getParent() != null;
+            List<SourceSet> sourceSets = new ArrayList<>();
+            sourceSets.add(this.project.getExtensions().getByType(JavaPluginExtension.class).getSourceSets().getByName("main"));
+            replaceTokenExtension.getTargetSourceSets().set(sourceSets);
             Map<String, ?> parentProperties = this.project.getParent().getProperties();
             Map<String, ?> rootProperties = this.project.getRootProject().getProperties();
             @SuppressWarnings("unchecked")
