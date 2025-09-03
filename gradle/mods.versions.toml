@@ -102,6 +102,7 @@ malilib-mc12108 = "0.25.4"
 mafglib-mc11701 = "0.1.6-mc1.17.1"
 mafglib-mc11802 = "0.1.14-mc1.18.2"
 mafglib-mc11904 = "0.1.11-mc1.19.4"
+mafglib-mc12001 = "0.1.14-mc1.20.1"
 mafglib-mc12006 = "0.1.15-mc1.20.6"
 mafglib-mc12101 = "0.3.6-mc1.21.1"
 mafglib-mc12103 = "0.3.3-mc1.21.3"
@@ -216,6 +217,7 @@ malilib-mc12108 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc
 mafglib-mc11701 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11701" }
 mafglib-mc11802 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11802" }
 mafglib-mc11904 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11904" }
+mafglib-mc12001 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12001" }
 mafglib-mc12006 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12006" }
 mafglib-mc12101 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12101" }
 mafglib-mc12103 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12103" }
