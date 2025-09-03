@@ -20,6 +20,7 @@ fabric-mc12108 = "0.131.0+1.21.8"
 imblocker-original-forge-mc11701 = "bJY9G53S"
 imblocker-original-forge-mc11802 = "bJY9G53S"
 imblocker-original-forge-mc11904 = "bJY9G53S"
+imblocker-original-forge-mc12001 = "vqhzTeuW"
 
 imblocker-original-neoforge-mc12002 = "5.0.0"
 imblocker-original-neoforge-mc12006 = "BZem119r"
@@ -50,6 +51,7 @@ in-game-account-switcher-fabric-mc12108 = "9.0.5"
 in-game-account-switcher-forge-mc11701 = "8.0.1-forge1.17"
 in-game-account-switcher-forge-mc11802 = "Az6PjZ5q"
 in-game-account-switcher-forge-mc11904 = "oGKy0OfP"
+in-game-account-switcher-forge-mc12001 = "DCMEYBKC"
 
 in-game-account-switcher-neoforge-mc12002 = "6Vr5XdM2"
 in-game-account-switcher-neoforge-mc12006 = "5AbTaqq3"
@@ -132,6 +134,7 @@ imblocker = "maven.modrinth:imblocker:1.0.24"
 imblocker-original-forge-mc11701 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc11701" }
 imblocker-original-forge-mc11802 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc11802" }
 imblocker-original-forge-mc11904 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc11904" }
+imblocker-original-forge-mc12001 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc12001" }
 
 imblocker-original-neoforge-mc12002 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-neoforge-mc12002" }
 imblocker-original-neoforge-mc12006 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-neoforge-mc12006" }
@@ -162,6 +165,7 @@ in-game-account-switcher-fabric-mc12108 = { module = "maven.modrinth:in-game-acc
 in-game-account-switcher-forge-mc11701 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-forge-mc11701" }
 in-game-account-switcher-forge-mc11802 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-forge-mc11802" }
 in-game-account-switcher-forge-mc11904 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-forge-mc11904" }
+in-game-account-switcher-forge-mc12001 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-forge-mc12001" }
 
 in-game-account-switcher-neoforge-mc12002 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-neoforge-mc12002" }
 in-game-account-switcher-neoforge-mc12006 = { module = "maven.modrinth:in-game-account-switcher", version.ref = "in-game-account-switcher-neoforge-mc12006" }
