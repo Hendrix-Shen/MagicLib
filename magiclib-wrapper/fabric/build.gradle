@@ -88,6 +88,9 @@ subprojects {
     }
 
     processResources {
+        dependsOn(coreProject.tasks.processResources)
+        outputs.upToDateWhen { false }
+
         inputs.property("mod_description", project.property("mod.description"))
         inputs.property("mod_homepage"   , project.property("mod.homepage"))
         inputs.property("mod_id"         , project.property("mod.id"))
@@ -219,28 +222,21 @@ subprojects {
     tasks.register("processMetadata", ProcessMetadata.class) { ProcessMetadata processTask ->
         processTask.dependsOn(tasks.processResources)
         processTask.setGroup("${project.property("mod.id")}")
-        processTask.setFabricMetadataFile(file(project.layout.buildDirectory.file("resources/main/fabric.mod.json")))
-        processTask.setCoreProject(coreProject)
-        processTask.submodules(submodules_publish)
+        processTask.fabricMetadataFile.set(file(project.layout.buildDirectory.file("resources/main/fabric.mod.json")))
+        processTask.coreProject.set(coreProject)
+        processTask.subProjects.set(submodules_publish)
     }
 }
 
-class ProcessMetadata extends DefaultTask {
-    private final Property<File> fabricMetadataFile = project.objects.property(File.class)
-    private final Property<Project> coreProject = project.objects.property(Project.class)
-    private final Set<Project> submodules = new HashSet<>()
+abstract class ProcessMetadata extends DefaultTask {
+    @Input
+    abstract Property<File> getFabricMetadataFile();
 
-    void submodules(Set<Project> submodules) {
-        this.submodules.addAll(submodules)
-    }
+    @Input
+    abstract Property<Project> getCoreProject();
 
-    void setFabricMetadataFile(File fabricMetadataFile) {
-        this.fabricMetadataFile.set(fabricMetadataFile)
-    }
-
-    void setCoreProject(Project coreProject) {
-        this.coreProject.set(coreProject)
-    }
+    @Input
+    abstract SetProperty<Project> getSubProjects();
 
     @TaskAction
     void runTask() {
@@ -256,7 +252,7 @@ class ProcessMetadata extends DefaultTask {
         Set<String> mc_condition = []
         Set<Map<String, String>> jars = [["file": "META-INF/jars/${this.coreProject.get().parent.property("mod.archives_base_name")}-fabric-${this.coreProject.get().version}.jar"]]
 
-        this.submodules.forEach {
+        this.subProjects.get().forEach {
             mc_condition.add("${it.property("dependencies.minecraft_dependency")}")
             jars.add(["file": "META-INF/jars/${it.parent.property("mod.archives_base_name")}-mc${it.property("dependencies.minecraft_version")}-${it.loom.platform.get().toString().toLowerCase()}-${it.version}.jar"])
 
