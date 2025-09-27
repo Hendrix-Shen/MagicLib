@@ -31,26 +31,16 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-// CHECKSTYLE.OFF: ImportOrder
-//#if FABRIC_LIKE
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
-//#else
-//$$ import org.jetbrains.annotations.Nullable;
-//$$ import org.spongepowered.asm.mixin.injection.Inject;
-//$$ import org.spongepowered.asm.mixin.injection.ModifyArg;
-//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//#endif
-// CHECKSTYLE.ON: ImportOrder
-
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
+import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
 
 import java.util.function.Function;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/panel/dropDownListRedraw/WidgetListBaseMixin.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/f1104ff35c04dd133032de82ec4c779a4a795b60/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/panel/labelWithOriginalText/WidgetListConfigOptionMixin.java">TweakerMore</a>.
  */
 @Mixin(value = WidgetConfigOption.class, remap = false)
 public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
@@ -66,72 +56,27 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
                 && ((WidgetListConfigOptionsAccessor) this.parent).magiclib$getParent() instanceof MagicConfigGui;
     }
 
-    //#if FABRIC_LIKE
-    @ModifyArgs(
+    @WrapWithCondition(
             method = "addConfigOption",
             at = @At(
                     value = "INVOKE",
                     target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addLabel(IIIII[Ljava/lang/String;)V"
             )
     )
-    private void applyConfigLabelTextModifier(Args args, int x_, int y_, float zLevel, int labelWidth,
-                                              int configWidth, IConfigBase config) {
-        if (!this.magiclib$isMagicGui()) {
-            return;
+    private boolean applyConfigLabelTextModifier(
+            WidgetConfigOption self, int x, int y,
+            int width, int height, int textColor, String[] originalLines,
+            @Local(argsOnly = true) IConfigBase config) {
+        if (!this.magiclib$isMagicGui() || !(config instanceof MagicIConfigBase) || originalLines == null) {
+            return true;
         }
 
-        if (!(config instanceof MagicIConfigBase)) {
-            return;
-        }
-
-        String[] originalLines = args.get(5);
         Function<String, String> modifier = ((MagicIConfigBase) config).getGuiDisplayLineModifier();
 
         for (int i = 0; i < originalLines.length; i++) {
             originalLines[i] = modifier.apply(originalLines[i]);
         }
+
+        return false;
     }
-    //#else
-    //$$ @Unique
-    //$$ private MagicIConfigBase magiclib$interceptedConfig = null;
-    //$$
-    //$$ @Inject(
-    //$$         method = "addConfigOption",
-    //$$         at = @At(
-    //$$                 value = "INVOKE",
-    //$$                 target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addLabel(IIIII[Ljava/lang/String;)V"
-    //$$         )
-    //$$ )
-    //$$ private void interceptConfig(int x, int y, float zLevel, int labelWidth, int configWidth,
-    //$$                              IConfigBase config, CallbackInfo ci) {
-    //$$     if (!this.magiclib$isMagicGui()) {
-    //$$         return;
-    //$$     }
-    //$$
-    //$$     if (!(config instanceof MagicIConfigBase)) {
-    //$$         return;
-    //$$     }
-    //$$
-    //$$     this.magiclib$interceptedConfig = (MagicIConfigBase) config;
-    //$$ }
-    //$$
-    //$$ @ModifyArg(
-    //$$         method = "addConfigOption",
-    //$$         at = @At(
-    //$$                 value = "INVOKE",
-    //$$                 target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addLabel(IIIII[Ljava/lang/String;)V"
-    //$$         )
-    //$$ )
-    //$$ private String @Nullable [] applyConfigLabelTextModifier(String[] originalLines) {
-    //$$     if (this.magiclib$interceptedConfig != null) {
-    //$$         Function<String, String> modifier = this.magiclib$interceptedConfig.getGuiDisplayLineModifier();
-    //$$
-    //$$         for (int i = 0; i < originalLines.length; i++) {
-    //$$             originalLines[i] = modifier.apply(originalLines[i]);
-    //$$         }
-    //$$     }
-    //$$
-    //$$     return originalLines;
-    //$$ }
-    //#endif
 }
