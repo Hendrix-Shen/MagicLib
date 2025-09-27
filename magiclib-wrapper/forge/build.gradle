@@ -1,17 +1,6 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowCopyAction
-import com.github.jengelman.gradle.plugins.shadow.transformers.CacheableTransformer
-import com.github.jengelman.gradle.plugins.shadow.transformers.ResourceTransformer
-import com.github.jengelman.gradle.plugins.shadow.transformers.TransformerContext
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.apache.groovy.toml.util.TomlConverter
-import org.apache.tools.zip.ZipEntry
-import org.apache.tools.zip.ZipOutputStream
-
-import java.util.function.BiFunction
-import java.util.jar.Attributes.Name
-import java.util.jar.JarFile
-import java.util.jar.Manifest
 
 buildscript {
     dependencies {
@@ -111,7 +100,6 @@ subprojects {
     }
 
     jar {
-        outputs.upToDateWhen { false }
         dependsOn("copyPublishModule")
         dependsOn("copyUnpublishModule")
         dependsOn(tasks.shadowJar)
@@ -126,13 +114,22 @@ subprojects {
         exclude("META-INF/maven/**/*")
         append("META-INF/accesstransformer.cfg")
 
-        transform(ManifestTransformer.class) {
-            merge("MixinConfigs")
+        manifest {
+            attributes("MixinConfigs": "magiclib-core-bootstrap.mixins.json, magiclib-minecraft-api.mixins.json, magiclib-malilib-extra.mixins.json",)
+        }
+
+        filesMatching("META-INF/accesstransformer.cfg") {
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        }
+
+        filesMatching("META-INF/MANIFEST.MF") {
+            exclude()
         }
     }
 
     processResources {
         dependsOn(coreProject.tasks.processResources)
+        outputs.upToDateWhen { false }
 
         inputs.property("mod_description", project.property("mod.description"))
         inputs.property("mod_homepage"   , project.property("mod.homepage"))
@@ -154,9 +151,6 @@ subprojects {
                     "mod_sources"    : inputs.properties.get("mod_sources"),
                     "mod_version"    : inputs.properties.get("mod_version")
             ])
-        }
-
-        doLast {
         }
 
         from("${rootDir}/LICENSE")
@@ -271,28 +265,20 @@ subprojects {
     tasks.register("processMetadata", ProcessMetadata.class) { ProcessMetadata processTask ->
         processTask.dependsOn(tasks.processResources)
         processTask.setGroup("${project.property("mod.id")}")
-        processTask.setForgeMetadataFile(file(project.layout.buildDirectory.file("resources/main/META-INF/mods.toml")))
-        processTask.setCoreProject(coreProject)
-        processTask.submodules(submodules_publish)
+        processTask.forgeMetadataFile.set(file(project.layout.buildDirectory.file("resources/main/META-INF/mods.toml")))
+        Set<Project> projects = new HashSet<>()
+        projects.add(coreProject)
+        projects.addAll(submodules_publish)
+        processTask.projects.set(projects)
     }
 }
 
-class ProcessMetadata extends DefaultTask {
-    private final Property<File> forgeMetadataFile = project.objects.property(File.class)
-    private final Property<Project> coreProject = project.objects.property(Project.class)
-    private final Set<Project> submodules = new HashSet<>()
+abstract class ProcessMetadata extends DefaultTask {
+    @Input
+    abstract Property<File> getForgeMetadataFile();
 
-    void submodules(Set<Project> submodules) {
-        this.submodules.addAll(submodules)
-    }
-
-    void setForgeMetadataFile(File forgeMetadataFile) {
-        this.forgeMetadataFile.set(forgeMetadataFile)
-    }
-
-    void setCoreProject(Project coreProject) {
-        this.coreProject.set(coreProject)
-    }
+    @Input
+    abstract SetProperty<Project> getProjects();
 
     @TaskAction
     void runTask() {
@@ -310,11 +296,7 @@ class ProcessMetadata extends DefaultTask {
             new JsonSlurper().parse(new StringReader(TomlConverter.convertTomlToJson(it))) as Map<String, ?>
         }
 
-        Set modules = new HashSet()
-        modules.add(this.coreProject.get())
-        modules.addAll(this.submodules)
-
-        modules.forEach {
+        this.projects.get().forEach {
             File subproject_toml_file = it.layout.buildDirectory.file("resources/main/META-INF/mods.toml").get().getAsFile()
 
             Map<String, ?> submodule_toml_map = subproject_toml_file.withReader {
@@ -336,91 +318,5 @@ class ProcessMetadata extends DefaultTask {
         toml_file.withWriter {
             it.append(TomlConverter.convertJsonToToml(new StringReader(new JsonBuilder(toml_map).toString())))
         }
-    }
-}
-
-@CacheableTransformer
-class ManifestTransformer implements ResourceTransformer {
-    private Map<String, String> attributes = [:]
-
-    private static BiFunction<String, String, String> DEFAULT_MERGE = { String before, String after ->
-        before + "," + after
-    }
-
-    private Map<String, BiFunction<String, String, String>> mergeMap = [:]
-
-    ManifestTransformer merge(String attribute, BiFunction<String, String, String> mergeStrategy) {
-        this.mergeMap.put(attribute, mergeStrategy)
-        return this
-    }
-
-    ManifestTransformer merge(String attribute) {
-        this.merge(attribute, DEFAULT_MERGE)
-        return this
-    }
-
-    @Override
-    boolean canTransformResource(FileTreeElement element) {
-        String path = element.relativePath.pathString
-
-        if (JarFile.MANIFEST_NAME.equalsIgnoreCase(path)) {
-            return true
-        }
-
-        return false
-    }
-
-    @Override
-    void transform(TransformerContext context) {
-        context.inputStream.readLines()
-                .findAll { it.contains(":") }
-                .collect {
-                    String[] ls = it.split(":", 2)
-                    new Tuple2<String, String>(ls[0], ls[1])
-                }
-                .forEach { tuple ->
-                    String value = this.attributes.get(tuple.getV1())
-                    BiFunction<String, String, String> mergeFunction = this.mergeMap.get(tuple.getV1())
-
-                    if (value == null) {
-                        value = tuple.getV2()
-                    } else if (mergeFunction != null) {
-                        value = mergeFunction.apply(value, tuple.getV2())
-                    }
-
-                    attributes.put(tuple.getV1(), value)
-                }
-    }
-
-    @Override
-    boolean hasTransformedResource() {
-        return true
-    }
-
-    @Override
-    void modifyOutputStream(ZipOutputStream os, boolean preserveFileTimestamps) {
-        Manifest manifest = new Manifest()
-
-        this.attributes.forEach { String key, String value ->
-            manifest.getMainAttributes().put(new Name(key), value)
-        }
-
-        ZipEntry entry = new ZipEntry(JarFile.MANIFEST_NAME)
-
-        long time = -1
-
-        if (preserveFileTimestamps) {
-            long lastModifiedTime = entry.getTime()
-
-            if (lastModifiedTime >= 0) {
-                time = lastModifiedTime
-            }
-        } else {
-            time = ShadowCopyAction.CONSTANT_TIME_FOR_ZIP_ENTRIES
-        }
-
-        entry.setTime(time)
-        os.putNextEntry(entry)
-        manifest.write(os)
     }
 }
