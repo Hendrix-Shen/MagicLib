@@ -223,10 +223,8 @@ subprojects {
         processTask.dependsOn(tasks.processResources)
         processTask.setGroup("${project.property("mod.id")}")
         processTask.fabricMetadataFile.set(file(project.layout.buildDirectory.file("resources/main/fabric.mod.json")))
-        Set<Project> projects = new HashSet<>()
-        projects.add(coreProject)
-        projects.addAll(submodules_publish)
-        processTask.projects.set(projects)
+        processTask.coreProject.set(coreProject)
+        processTask.subProjects.set(submodules_publish)
     }
 }
 
@@ -235,7 +233,10 @@ abstract class ProcessMetadata extends DefaultTask {
     abstract Property<File> getFabricMetadataFile();
 
     @Input
-    abstract SetProperty<Project> getProjects();
+    abstract Property<Project> getCoreProject();
+
+    @Input
+    abstract SetProperty<Project> getSubProjects();
 
     @TaskAction
     void runTask() {
@@ -251,7 +252,7 @@ abstract class ProcessMetadata extends DefaultTask {
         Set<String> mc_condition = []
         Set<Map<String, String>> jars = [["file": "META-INF/jars/${this.coreProject.get().parent.property("mod.archives_base_name")}-fabric-${this.coreProject.get().version}.jar"]]
 
-        this.project.forEach {
+        this.subProjects.get().forEach {
             mc_condition.add("${it.property("dependencies.minecraft_dependency")}")
             jars.add(["file": "META-INF/jars/${it.parent.property("mod.archives_base_name")}-mc${it.property("dependencies.minecraft_version")}-${it.loom.platform.get().toString().toLowerCase()}-${it.version}.jar"])
 
