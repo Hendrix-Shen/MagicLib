@@ -30,10 +30,10 @@ import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import top.hendrixshen.magiclib.api.malilib.config.option.MagicIConfigBase;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
-import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
 
@@ -41,8 +41,12 @@ import java.util.function.Function;
 
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/f1104ff35c04dd133032de82ec4c779a4a795b60/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/panel/labelWithOriginalText/WidgetListConfigOptionMixin.java">TweakerMore</a>.
+ *
+ * <p>
+ * We should apply ConfigLabelTextModifier as early as possible.
+ * </p>
  */
-@Mixin(value = WidgetConfigOption.class, remap = false)
+@Mixin(value = WidgetConfigOption.class, remap = false, priority = 990)
 public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
     public WidgetConfigOptionMixin(int x, int y, int width, int height, WidgetListConfigOptionsBase<?, ?> parent,
                                    GuiConfigsBase.ConfigOptionWrapper entry, int listIndex) {
@@ -56,19 +60,16 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
                 && ((WidgetListConfigOptionsAccessor) this.parent).magiclib$getParent() instanceof MagicConfigGui;
     }
 
-    @WrapWithCondition(
+    @ModifyArg(
             method = "addConfigOption",
             at = @At(
                     value = "INVOKE",
                     target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addLabel(IIIII[Ljava/lang/String;)V"
             )
     )
-    private boolean applyConfigLabelTextModifier(
-            WidgetConfigOption self, int x, int y,
-            int width, int height, int textColor, String[] originalLines,
-            @Local(argsOnly = true) IConfigBase config) {
+    private String[] applyConfigLabelTextModifier(String[] originalLines, @Local(argsOnly = true) IConfigBase config) {
         if (!this.magiclib$isMagicGui() || !(config instanceof MagicIConfigBase) || originalLines == null) {
-            return true;
+            return originalLines;
         }
 
         Function<String, String> modifier = ((MagicIConfigBase) config).getGuiDisplayLineModifier();
@@ -77,6 +78,6 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
             originalLines[i] = modifier.apply(originalLines[i]);
         }
 
-        return false;
+        return originalLines;
     }
 }
