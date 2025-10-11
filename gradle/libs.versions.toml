@@ -7,7 +7,7 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 yamlang = { id = "me.fallenbreath.yamlang", version.ref = "yamlang" }
 
 [versions]
-architectury-loom = "1.10-SNAPSHOT"
+architectury-loom = "1.11-SNAPSHOT"
 asm = "9.8"
 checkstyle = "11.1.0"
 commons-lang3 = "3.19.0"
