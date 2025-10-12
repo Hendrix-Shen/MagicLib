@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 import cpw.mods.modlauncher.api.INameMappingService;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.forgespi.language.IModInfo;
 
@@ -112,7 +111,7 @@ public final class ForgePlatformImpl implements Platform {
 
     @Override
     public boolean isDevelopmentEnvironment() {
-        return !FMLLoader.isProduction();
+        return ClassLoader.getSystemClassLoader().getResource("net/minecraft/DetectedVersion.class") == null;
     }
 
     @Override
@@ -213,7 +212,8 @@ public final class ForgePlatformImpl implements Platform {
     }
 
     public Dist getCurrentEnvType() {
-        return FMLLoader.getDist();
+        boolean clientAvailable = ClassLoader.getSystemClassLoader().getResource("net/minecraft/client/main/Main.class") != null;
+        return clientAvailable ? Dist.CLIENT : Dist.DEDICATED_SERVER;
     }
 
     public DistType getDistType(Dist envType) {

@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 import cpw.mods.modlauncher.api.INameMappingService;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforgespi.language.IModInfo;
@@ -85,7 +84,7 @@ public final class NeoForgePlatformImpl implements Platform {
 
     @Override
     public boolean isDevelopmentEnvironment() {
-        return !FMLLoader.isProduction();
+        return ClassLoader.getSystemClassLoader().getResource("net/minecraft/DetectedVersion.class") == null;
     }
 
     @Override
@@ -186,7 +185,8 @@ public final class NeoForgePlatformImpl implements Platform {
     }
 
     public Dist getCurrentEnvType() {
-        return FMLLoader.getDist();
+        boolean clientAvailable = ClassLoader.getSystemClassLoader().getResource("net/minecraft/client/main/Main.class") != null;
+        return clientAvailable ? Dist.CLIENT : Dist.DEDICATED_SERVER;
     }
 
     public DistType getDistType(Dist envType) {
