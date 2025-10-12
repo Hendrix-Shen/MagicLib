@@ -8,7 +8,7 @@ yamlang = { id = "me.fallenbreath.yamlang", version.ref = "yamlang" }
 
 [versions]
 architectury-loom = "1.10-SNAPSHOT"
-asm = "9.8"
+asm = "9.9"
 checkstyle = "11.1.0"
 commons-lang3 = "3.19.0"
 fabric-loader = "0.17.2"
