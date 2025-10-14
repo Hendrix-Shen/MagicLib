@@ -10,10 +10,17 @@ import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12109
+//$$ import net.minecraft.network.chat.FontDescription;
+//#endif
+
+//#if 12109 > MC && MC > 11502
+import net.minecraft.resources.ResourceLocation;
+//#endif
+
 //#if MC > 11502
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.TextColor;
-import net.minecraft.resources.ResourceLocation;
 //#else
 //$$ import net.minecraft.ChatFormatting;
 //#endif
@@ -46,7 +53,11 @@ public interface StyleAccessor {
             @Nullable ClickEvent clickEvent,
             @Nullable HoverEvent hoverEvent,
             @Nullable String insertion,
-            @Nullable ResourceLocation font
+            //#if MC >= 12109
+            //$$ FontDescription font
+            //#else
+            ResourceLocation font
+            //#endif
     ) {
         throw new AssertionError();
     }

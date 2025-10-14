@@ -26,6 +26,12 @@ import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 import java.util.List;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.12.8: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.21.9+        : subproject 1.21.10 [dummy]</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 public class RenderEntityEvent {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Info {

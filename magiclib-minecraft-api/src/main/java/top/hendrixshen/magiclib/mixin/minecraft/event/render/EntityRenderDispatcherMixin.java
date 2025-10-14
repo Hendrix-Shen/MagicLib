@@ -18,6 +18,12 @@ import top.hendrixshen.magiclib.impl.event.EventManager;
 import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderEntityEvent;
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.12.8: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.21.9+        : subproject 1.21.10 [dummy]</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Mixin(EntityRenderDispatcher.class)
 public abstract class EntityRenderDispatcherMixin {
     @Inject(

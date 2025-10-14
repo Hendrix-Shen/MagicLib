@@ -6,9 +6,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12109
+//$$ import net.minecraft.network.chat.FontDescription;
+//#else
+import net.minecraft.resources.ResourceLocation;
+//#endif
+
 //#if MC > 11502
 import net.minecraft.network.chat.TextColor;
 //#endif
@@ -56,7 +61,13 @@ public interface StyleCompat extends Provider<Style> {
 
     StyleCompat withInsertion(String insertion);
 
-    StyleCompat withFont(ResourceLocation font);
+    StyleCompat withFont(
+            //#if MC >= 12109
+            //$$ FontDescription font
+            //#else
+            ResourceLocation font
+            //#endif
+    );
 
     StyleCompat applyFormats(ChatFormatting... chatFormattings);
 }

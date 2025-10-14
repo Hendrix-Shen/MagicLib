@@ -165,7 +165,9 @@ public class MagicTranslation {
         }
 
         // Translate hover text.
-        HoverEvent hoverEvent = ((StyleAccessor) text.getStyle()).getHoverEvent();
+        // In mc1.21.9+, Style is a final class, so we need to cast it to Object first.
+        @SuppressWarnings("RedundantCast")
+        HoverEvent hoverEvent = ((StyleAccessor) (Object) text.getStyle()).getHoverEvent();
 
         if (hoverEvent != null) {
             BaseComponent oldHoverText = CommonUtil.make(() -> {
