@@ -8,10 +8,10 @@ yamlang = { id = "me.fallenbreath.yamlang", version.ref = "yamlang" }
 
 [versions]
 architectury-loom = "1.11-SNAPSHOT"
-asm = "9.8"
-checkstyle = "11.1.0"
+asm = "9.9"
+checkstyle = "12.0.1"
 commons-lang3 = "3.19.0"
-fabric-loader = "0.17.2"
+fabric-loader = "0.17.3"
 grgit = "5.3.3"
 gson = "2.13.2"
 guava = "33.4.8-jre"
@@ -35,7 +35,7 @@ asm-util = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
 
 # Mixin
 spongepowered-mixin = { module = "org.spongepowered:mixin", version.ref = "spongepowered-mixin" }
-fabric-mixin = "net.fabricmc:sponge-mixin:0.16.4+mixin.0.8.7"
+fabric-mixin = "net.fabricmc:sponge-mixin:0.16.5+mixin.0.8.7"
 
 # Mixin Extras
 mixinextras-common = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinextras" }
