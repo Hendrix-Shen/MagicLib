@@ -7,6 +7,12 @@ import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12109
+//$$ import net.minecraft.client.input.MouseButtonEvent;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.api.malilib.config.option.ConfigVec3iTuple;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.GuiVec3iTupleEdit;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.MagicConfigGui;
@@ -28,8 +34,26 @@ public class ConfigButtonVec3iTuple extends ButtonGeneric {
     }
 
     @Override
-    protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
-        super.onMouseClickedImpl(mouseX, mouseY, mouseButton);
+    protected boolean onMouseClickedImpl(
+            //#if MC >= 12109
+            //$$ MouseButtonEvent click,
+            //$$ boolean doubleClick
+            //#else
+            int mouseX,
+            int mouseY,
+            int mouseButton
+            //#endif
+    ) {
+        super.onMouseClickedImpl(
+                //#if MC >= 12109
+                //$$ click,
+                //$$ doubleClick
+                //#else
+                mouseX,
+                mouseY,
+                mouseButton
+                //#endif
+        );
 
         if (this.dialogHandler != null) {
             this.dialogHandler.openDialog(new GuiVec3iTupleEdit(this.config, this.configGui, this.dialogHandler, null));

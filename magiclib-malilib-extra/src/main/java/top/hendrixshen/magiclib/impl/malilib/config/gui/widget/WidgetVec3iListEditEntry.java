@@ -11,6 +11,12 @@ import lombok.AllArgsConstructor;
 import net.minecraft.core.Vec3i;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12109
+//$$ import net.minecraft.client.input.CharacterEvent;
+//$$ import net.minecraft.client.input.KeyEvent;
+//$$ import net.minecraft.client.input.MouseButtonEvent;
+//#endif
+
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
@@ -250,8 +256,26 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
     //#endif
 
     @Override
-    protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
-        if (super.onMouseClickedImpl(mouseX, mouseY, mouseButton)) {
+    protected boolean onMouseClickedImpl(
+            //#if MC >= 12109
+            //$$ MouseButtonEvent click,
+            //$$ boolean doubleClick
+            //#else
+            int mouseX,
+            int mouseY,
+            int mouseButton
+            //#endif
+    ) {
+        if (super.onMouseClickedImpl(
+                //#if MC >= 12109
+                //$$ click,
+                //$$ doubleClick
+                //#else
+                mouseX,
+                mouseY,
+                mouseButton
+                //#endif
+        )) {
             return true;
         }
 
@@ -259,25 +283,64 @@ public class WidgetVec3iListEditEntry extends WidgetConfigOptionBase<Vec3i> {
             return false;
         }
 
-        return this.vec3iEntry.onMouseClickedImpl(mouseX, mouseY, mouseButton);
+        return this.vec3iEntry.onMouseClickedImpl(
+                //#if MC >= 12109
+                //$$ click,
+                //$$ doubleClick
+                //#else
+                mouseX,
+                mouseY,
+                mouseButton
+                //#endif
+        );
     }
 
     @Override
-    public boolean onKeyTypedImpl(int keyCode, int scanCode, int modifiers) {
+    public boolean onKeyTypedImpl(
+            //#if MC >= 12109
+            //$$ KeyEvent input
+            //#else
+            int keyCode,
+            int scanCode,
+            int modifiers
+            //#endif
+    ) {
         if (this.vec3iEntry == null) {
             return false;
         }
 
-        return this.vec3iEntry.onKeyTypedImpl(keyCode, scanCode, modifiers);
+        return this.vec3iEntry.onKeyTypedImpl(
+                //#if MC >= 12109
+                //$$ input
+                //#else
+                keyCode,
+                scanCode,
+                modifiers
+                //#endif
+        );
     }
 
     @Override
-    protected boolean onCharTypedImpl(char charIn, int modifiers) {
+    protected boolean onCharTypedImpl(
+            //#if MC >= 12109
+            //$$ CharacterEvent input
+            //#else
+            char charIn,
+            int modifiers
+            //#endif
+    ) {
         if (this.vec3iEntry == null) {
             return false;
         }
 
-        return this.vec3iEntry.onCharTypedImpl(charIn, modifiers);
+        return this.vec3iEntry.onCharTypedImpl(
+                //#if MC >= 12109
+                //$$ input
+                //#else
+                charIn,
+                modifiers
+                //#endif
+        );
     }
 
     @AllArgsConstructor

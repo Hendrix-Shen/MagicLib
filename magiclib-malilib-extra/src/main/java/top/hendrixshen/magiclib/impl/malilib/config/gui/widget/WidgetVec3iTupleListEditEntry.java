@@ -11,6 +11,12 @@ import lombok.AllArgsConstructor;
 import net.minecraft.core.Vec3i;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12109
+//$$ import net.minecraft.client.input.CharacterEvent;
+//$$ import net.minecraft.client.input.KeyEvent;
+//$$ import net.minecraft.client.input.MouseButtonEvent;
+//#endif
+
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
@@ -272,6 +278,41 @@ public class WidgetVec3iTupleListEditEntry extends WidgetConfigOptionBase<Config
     }
     //#endif
 
+    //#if MC >= 12109
+    //$$ @Override
+    //$$ protected boolean onMouseClickedImpl(MouseButtonEvent input, boolean doubleClick) {
+    //$$     if (super.onMouseClickedImpl(input, doubleClick)) {
+    //$$         return true;
+    //$$     }
+    //$$
+    //$$     if (this.firstVec3iEntry == null || this.secondVec3iEntry == null) {
+    //$$         return false;
+    //$$     }
+    //$$
+    //$$     return this.firstVec3iEntry.onMouseClickedImpl(input, doubleClick)
+    //$$             || this.secondVec3iEntry.onMouseClickedImpl(input, doubleClick);
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ public boolean onKeyTypedImpl(KeyEvent input) {
+    //$$     if (this.firstVec3iEntry == null || this.secondVec3iEntry == null) {
+    //$$         return false;
+    //$$     }
+    //$$
+    //$$     return this.firstVec3iEntry.onKeyTypedImpl(input)
+    //$$             || this.secondVec3iEntry.onKeyTypedImpl(input);
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ protected boolean onCharTypedImpl(CharacterEvent input) {
+    //$$     if (this.firstVec3iEntry == null || this.secondVec3iEntry == null) {
+    //$$         return false;
+    //$$     }
+    //$$
+    //$$     return this.firstVec3iEntry.onCharTypedImpl(input)
+    //$$             || this.secondVec3iEntry.onCharTypedImpl(input);
+    //$$ }
+    //#else
     @Override
     protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
         if (super.onMouseClickedImpl(mouseX, mouseY, mouseButton)) {
@@ -305,6 +346,7 @@ public class WidgetVec3iTupleListEditEntry extends WidgetConfigOptionBase<Config
         return this.firstVec3iEntry.onCharTypedImpl(charIn, modifiers)
                 || this.secondVec3iEntry.onCharTypedImpl(charIn, modifiers);
     }
+    //#endif
 
     @AllArgsConstructor
     private static class ListenerListActions implements IButtonActionListener {

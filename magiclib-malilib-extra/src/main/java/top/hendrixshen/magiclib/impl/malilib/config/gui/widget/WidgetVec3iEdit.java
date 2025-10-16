@@ -17,6 +17,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.Vec3i;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12109
+//$$ import net.minecraft.client.input.CharacterEvent;
+//$$ import net.minecraft.client.input.KeyEvent;
+//$$ import net.minecraft.client.input.MouseButtonEvent;
+//#endif
+
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
@@ -182,7 +188,16 @@ public class WidgetVec3iEdit extends WidgetContainer {
     //#endif
 
     @Override
-    protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
+    protected boolean onMouseClickedImpl(
+            //#if MC >= 12109
+            //$$ MouseButtonEvent click,
+            //$$ boolean doubleClick
+            //#else
+            int mouseX,
+            int mouseY,
+            int mouseButton
+            //#endif
+    ) {
         boolean ret = false;
 
         Function<TextFieldWrapper<? extends GuiTextFieldGeneric>, Boolean> mouseClickImpl = wrapper -> {
@@ -190,7 +205,16 @@ public class WidgetVec3iEdit extends WidgetContainer {
                 return false;
             }
 
-            return wrapper.getTextField().mouseClicked(mouseX, mouseY, mouseButton);
+            return wrapper.getTextField().mouseClicked(
+                    //#if MC >= 12109
+                    //$$ click,
+                    //$$ doubleClick
+                    //#else
+                    mouseX,
+                    mouseY,
+                    mouseButton
+                    //#endif
+            );
         };
 
         ret |= mouseClickImpl.apply(this.xTextField);
@@ -198,25 +222,58 @@ public class WidgetVec3iEdit extends WidgetContainer {
         ret |= mouseClickImpl.apply(this.zTextField);
 
         for (WidgetBase widget : this.subWidgets) {
-            ret |= widget.isMouseOver(mouseX, mouseY) && widget.onMouseClicked(mouseX, mouseY, mouseButton);
+            //#if MC >= 12109
+            //$$ int mouseX = (int) click.x();
+            //$$ int mouseY = (int) click.y();
+            //#endif
+            ret |= widget.isMouseOver(mouseX, mouseY) && widget.onMouseClicked(
+                    //#if MC >= 12109
+                    //$$ click,
+                    //$$ doubleClick
+                    //#else
+                    mouseX,
+                    mouseY,
+                    mouseButton
+                    //#endif
+            );
         }
 
         return ret;
     }
 
     @Override
-    public boolean onKeyTypedImpl(int keyCode, int scanCode, int modifiers) {
+    public boolean onKeyTypedImpl(
+            //#if MC >= 12109
+            //$$ KeyEvent input
+            //#else
+            int keyCode,
+            int scanCode,
+            int modifiers
+            //#endif
+    ) {
         Function<TextFieldWrapper<? extends GuiTextFieldGeneric>, Boolean> keyTypedImpl = wrapper -> {
             if (wrapper == null || !wrapper.isFocused()) {
                 return false;
             }
+
+            //#if MC >= 12109
+            //$$ int keyCode = input.key();
+            //#endif
 
             if (keyCode == GLFW.GLFW_KEY_ENTER) {
                 this.applyNewValueToConfig();
                 return true;
             }
 
-            return wrapper.onKeyTyped(keyCode, scanCode, modifiers);
+            return wrapper.onKeyTyped(
+                    //#if MC >= 12109
+                    //$$ input
+                    //#else
+                    keyCode,
+                    scanCode,
+                    modifiers
+                    //#endif
+            );
         };
 
         return keyTypedImpl.apply(this.xTextField)
@@ -225,13 +282,27 @@ public class WidgetVec3iEdit extends WidgetContainer {
     }
 
     @Override
-    protected boolean onCharTypedImpl(char charIn, int modifiers) {
+    protected boolean onCharTypedImpl(
+            //#if MC >= 12109
+            //$$ CharacterEvent input
+            //#else
+            char charIn,
+            int modifiers
+            //#endif
+    ) {
         Function<TextFieldWrapper<? extends GuiTextFieldGeneric>, Boolean> charTypedImpl = wrapper -> {
             if (wrapper == null) {
                 return false;
             }
 
-            return wrapper.onCharTyped(charIn, modifiers);
+            return wrapper.onCharTyped(
+                    //#if MC >= 12109
+                    //$$ input
+                    //#else
+                    charIn,
+                    modifiers
+                    //#endif
+            );
         };
 
         return charTypedImpl.apply(this.xTextField) || charTypedImpl.apply(this.yTextField) || charTypedImpl.apply(this.zTextField);

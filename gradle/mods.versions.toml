@@ -105,6 +105,7 @@ malilib-mc12103 = "0.22.7"
 malilib-mc12104 = "0.23.4"
 malilib-mc12105 = "0.24.2"
 malilib-mc12108 = "0.25.4"
+malilib-mc12110 = "0.26.2"
 
 mafglib-mc11701 = "0.1.6-mc1.17.1"
 mafglib-mc11802 = "0.1.14-mc1.18.2"
@@ -116,6 +117,7 @@ mafglib-mc12103 = "0.3.3-mc1.21.3"
 mafglib-mc12104 = "0.3.6-mc1.21.4"
 mafglib-mc12105 = "0.3.8-mc1.21.5"
 mafglib-mc12108 = "0.4.0+mc1.21.8"
+mafglib-mc12110 = "0.4.2+mc1.21.10"
 
 # libraries will be removed after the migration to build-logic.
 [libraries]
@@ -225,6 +227,7 @@ malilib-mc12103 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc
 malilib-mc12104 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12104" }
 malilib-mc12105 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12105" }
 malilib-mc12108 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12108" }
+malilib-mc12110 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12110" }
 
 mafglib-mc11701 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11701" }
 mafglib-mc11802 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11802" }
@@ -236,3 +239,4 @@ mafglib-mc12103 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc
 mafglib-mc12104 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12104" }
 mafglib-mc12105 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12105" }
 mafglib-mc12108 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12108" }
+mafglib-mc12110 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12110" }

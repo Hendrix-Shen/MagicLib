@@ -83,13 +83,20 @@ public abstract class WidgetDropDownListMixin {
     //$$         method = "render",
     //$$         at = @At(
     //$$                 value = "INVOKE",
-    //#if MC > 12104
+    //#if MC >= 12106
+    //$$                 target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(Lnet/minecraft/client/gui/GuiGraphics;IIIII)V",
+    //$$                 remap = true
+    //#elseif MC > 12104
     //$$                 target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIIIZ)V"
     //#else
     //$$                 target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIII)V"
     //#endif
     //$$         ),
+    //#if MC >= 12106
+    //$$         index = 5
+    //#else
     //$$         index = 4
+    //#endif
     //$$ )
     //$$ private int makeOpaque(int alpha) {
     //$$     if ((WidgetDropDownList<?>) (Object) this instanceof SelectorDropDownList<?>) {
@@ -106,13 +113,20 @@ public abstract class WidgetDropDownListMixin {
     //$$         method = "render",
     //$$         at = @At(
     //$$                 value = "INVOKE",
-    //#if MC > 12104
+    //#if MC >= 12106
+    //$$                 target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(Lnet/minecraft/client/gui/GuiGraphics;IIIII)V",
+    //$$                 remap = true
+    //#elseif MC > 12104
     //$$                 target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIIIZ)V"
     //#else
     //$$                 target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(IIIII)V"
     //#endif
     //$$         ),
-    //$$         index = 0
+    //#if MC >= 12106
+    //$$         index = 5
+    //#else
+    //$$         index = 4
+    //#endif
     //$$ )
     //$$ private int showBorder(int x) {
     //$$     if ((WidgetDropDownList<?>) (Object) this instanceof SelectorDropDownList<?>) {

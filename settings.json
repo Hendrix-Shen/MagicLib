@@ -79,6 +79,7 @@
         "1.21.4-fabric",
         "1.21.5-fabric",
         "1.21.8-fabric",
+        "1.21.10-fabric",
 
         "1.17.1-forge",
         "1.18.2-forge",
@@ -90,7 +91,8 @@
         "1.21.3-neoforge",
         "1.21.4-neoforge",
         "1.21.5-neoforge",
-        "1.21.8-neoforge"
+        "1.21.8-neoforge",
+        "1.21.10-neoforge"
       ]
     },
     "magiclib-minecraft-api": {

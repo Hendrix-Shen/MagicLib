@@ -127,8 +127,17 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     //$$         ),
     //$$         cancellable = true
     //$$ )
-    //$$ private void customMagicConfigGuiIOptionListHotkeyed(int x, int y, float zLevel, int labelWidth,
-    //$$                                                      int configWidth, IConfigBase config, CallbackInfo ci) {
+    //$$ private void customMagicConfigGuiIOptionListHotkeyed(
+    //$$         int x,
+    //$$         int y,
+    //$$         //#if MC < 12109
+    //$$         //$$ float zLevel,
+    //$$         //#endif
+    //$$         int labelWidth,
+    //$$         int configWidth,
+    //$$         IConfigBase config,
+    //$$         CallbackInfo ci
+    //$$ ) {
     //$$     if (!this.magiclib$isMagicGui()) {
     //$$         return;
     //$$     }
@@ -147,8 +156,17 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     //$$         ),
     //$$         cancellable = true
     //$$ )
-    //$$ private void customMagicConfigGuiIHotkeyTogglable(int x, int y, float zLevel, int labelWidth, int configWidth,
-    //$$                                                   IConfigBase config, CallbackInfo ci) {
+    //$$ private void customMagicConfigGuiIHotkeyTogglable(
+    //$$         int x,
+    //$$         int y,
+    //$$         //#if MC < 12109
+    //$$         //$$ float zLevel,
+    //$$         //#endif
+    //$$         int labelWidth,
+    //$$         int configWidth,
+    //$$         IConfigBase config,
+    //$$         CallbackInfo ci
+    //$$ ) {
     //$$     if (!this.magiclib$isMagicGui()) {
     //$$         return;
     //$$     }
@@ -160,8 +178,17 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     //$$ }
     //$$
     //$$ @Inject(method = "addHotkeyConfigElements", at = @At("HEAD"), cancellable = true)
-    //$$ private void customMagicConfigGuiIHotkey(int x, int y, int configWidth, String configName,
-    //$$                                          IHotkey config, CallbackInfo ci) {
+    //$$ private void customMagicConfigGuiIHotkey(
+    //$$         int x,
+    //$$         int y,
+    //$$         //#if MC < 12109
+    //$$         //$$ float zLevel,
+    //$$         //#endif
+    //$$         int configWidth,
+    //$$         String configName,
+    //$$         IHotkey config,
+    //$$         CallbackInfo ci
+    //$$ ) {
     //$$     if (!this.magiclib$isMagicGui()) {
     //$$         return;
     //$$     }
@@ -219,8 +246,17 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
             ),
             cancellable = true
     )
-    private void injectExtraMagicConfig(int x, int y, float zLevel, int labelWidth, int configWidth,
-                                        IConfigBase config, CallbackInfo ci) {
+    private void injectExtraMagicConfig(
+            int x,
+            int y,
+            //#if MC < 12109
+            float zLevel,
+            //#endif
+            int labelWidth,
+            int configWidth,
+            IConfigBase config,
+            CallbackInfo ci
+    ) {
         if (!this.magiclib$isMagicGui()) {
             return;
         }
