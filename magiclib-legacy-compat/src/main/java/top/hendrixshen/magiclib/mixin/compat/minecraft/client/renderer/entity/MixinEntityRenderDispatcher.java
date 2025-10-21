@@ -4,10 +4,13 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.entity.Entity;
-import com.mojang.math.Quaternion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import top.hendrixshen.magiclib.compat.minecraft.api.client.renderer.entity.EntityRenderDispatcherCompatApi;
+
+//#if MC < 12109
+import com.mojang.math.Quaternion;
+//#endif
 
 //#if MC < 11500
 //$$ import net.minecraft.client.Camera;
@@ -17,8 +20,10 @@ import top.hendrixshen.magiclib.compat.minecraft.api.client.renderer.entity.Enti
 @Mixin(EntityRenderDispatcher.class)
 public abstract class MixinEntityRenderDispatcher implements EntityRenderDispatcherCompatApi {
     //#if MC > 11404
+    //#if MC < 12109
     @Shadow
     public abstract Quaternion cameraOrientation();
+    //#endif
 
     @Shadow
     public abstract double distanceToSqr(Entity entity);
@@ -36,6 +41,7 @@ public abstract class MixinEntityRenderDispatcher implements EntityRenderDispatc
         //#endif
     }
 
+    //#if MC < 12109
     @Override
     public Quaternion cameraOrientationCompat() {
         //#if MC > 11404
@@ -44,4 +50,5 @@ public abstract class MixinEntityRenderDispatcher implements EntityRenderDispatc
         //$$ return camera.rotation();
         //#endif
     }
+    //#endif
 }
