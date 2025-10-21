@@ -178,17 +178,8 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     //$$ }
     //$$
     //$$ @Inject(method = "addHotkeyConfigElements", at = @At("HEAD"), cancellable = true)
-    //$$ private void customMagicConfigGuiIHotkey(
-    //$$         int x,
-    //$$         int y,
-    //$$         //#if MC < 12109
-    //$$         //$$ float zLevel,
-    //$$         //#endif
-    //$$         int configWidth,
-    //$$         String configName,
-    //$$         IHotkey config,
-    //$$         CallbackInfo ci
-    //$$ ) {
+    //$$ private void customMagicConfigGuiIHotkey(int x, int y, int configWidth, String configName,
+    //$$                                          IHotkey config, CallbackInfo ci) {
     //$$     if (!this.magiclib$isMagicGui()) {
     //$$         return;
     //$$     }
