@@ -46,14 +46,14 @@ jobs:
         env:
           BUILD_TYPE: ${{ inputs.build_version_type }}
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: build-artifacts
           path: |
             */**/build/libs/
             */**/build/tmp/submods/
       - name: Upload MavenLocal
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Maven Local
           path: ~/.m2/repository/top/hendrixshen/
@@ -67,7 +67,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Download build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-artifacts
           path: build-artifacts
