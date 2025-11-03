@@ -131,7 +131,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     //$$         int x,
     //$$         int y,
     //$$         //#if MC < 12109
-    //$$         //$$ float zLevel,
+    //$$         float zLevel,
     //$$         //#endif
     //$$         int labelWidth,
     //$$         int configWidth,
@@ -160,7 +160,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
     //$$         int x,
     //$$         int y,
     //$$         //#if MC < 12109
-    //$$         //$$ float zLevel,
+    //$$         float zLevel,
     //$$         //#endif
     //$$         int labelWidth,
     //$$         int configWidth,

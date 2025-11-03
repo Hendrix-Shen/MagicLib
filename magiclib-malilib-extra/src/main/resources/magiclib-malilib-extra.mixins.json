@@ -16,6 +16,7 @@
     "dev.GuiTextFieldGenericMixin",
     "element.ConfigButtonOptionListMixin",
     "element.WidgetDropDownListMixin",
+    "element.WidgetSearchBarMixin",
     "panel.WidgetConfigOptionMixin",
     "panel.dropDownListRedraw.WidgetListBaseMixin",
     "panel.label.WidgetConfigOptionMixin",
