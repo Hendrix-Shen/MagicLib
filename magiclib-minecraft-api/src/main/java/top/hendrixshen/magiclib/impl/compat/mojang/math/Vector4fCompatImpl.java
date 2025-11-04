@@ -16,9 +16,6 @@ import com.mojang.math.Vector4f;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.mojang.math.Vector4fCompat;
 
@@ -28,7 +25,6 @@ import top.hendrixshen.magiclib.api.compat.mojang.math.Vector4fCompat;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-@Environment(EnvType.CLIENT)
 public class Vector4fCompatImpl extends AbstractCompat<Vector4f> implements Vector4fCompat {
     public Vector4fCompatImpl(@NotNull Vector4f type) {
         super(type);

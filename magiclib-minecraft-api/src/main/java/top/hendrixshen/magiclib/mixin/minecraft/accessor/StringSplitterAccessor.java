@@ -2,9 +2,6 @@ package top.hendrixshen.magiclib.mixin.minecraft.accessor;
 
 import net.minecraft.client.StringSplitter;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
@@ -14,7 +11,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
  * <li>mc1.16.5+        : subproject 1.16.5 (main project)        &lt;--------</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
-@Environment(EnvType.CLIENT)
 @Mixin(StringSplitter.class)
 public interface StringSplitterAccessor {
     @Accessor("widthProvider")

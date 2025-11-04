@@ -27,9 +27,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
 
@@ -49,7 +46,6 @@ import top.hendrixshen.magiclib.api.fake.compat.FontAccessor;
  * <li>mc1.21.6+        : subproject 1.21.8</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
-@Environment(EnvType.CLIENT)
 public class FontCompatImpl extends AbstractCompat<Font> implements FontCompat {
     public FontCompatImpl(@NotNull Font type) {
         super(type);

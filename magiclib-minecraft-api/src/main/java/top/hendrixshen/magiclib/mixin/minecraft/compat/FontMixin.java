@@ -16,9 +16,6 @@ import com.mojang.math.Matrix4f;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -31,7 +28,6 @@ import top.hendrixshen.magiclib.api.fake.compat.FontAccessor;
  * <li>mc1.21.6+        : subproject 1.21.8 [dummy]</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
-@Environment(EnvType.CLIENT)
 @Mixin(Font.class)
 public abstract class FontMixin implements FontAccessor {
     @Shadow

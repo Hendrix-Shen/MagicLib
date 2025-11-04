@@ -23,9 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.client.multiplayer.AccountProfileKeyPairManager;
 import net.minecraft.world.entity.player.ProfileKeyPair;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -46,7 +43,6 @@ import java.util.concurrent.CompletableFuture;
  * <li>mc1.19.3+        : subproject 1.19.3        &lt;--------</li>
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.AuthEmptyKeyPredicate.class))
-@Environment(EnvType.CLIENT)
 @Mixin(AccountProfileKeyPairManager.class)
 public abstract class AccountProfileKeyPairManagerMixin {
     @Inject(method = "prepareKeyPair", at = @At("HEAD"), cancellable = true)

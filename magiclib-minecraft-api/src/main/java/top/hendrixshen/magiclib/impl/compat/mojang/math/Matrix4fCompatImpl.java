@@ -20,9 +20,6 @@ import com.mojang.math.Quaternion;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.mojang.math.Matrix4fCompat;
 
@@ -33,7 +30,6 @@ import top.hendrixshen.magiclib.api.compat.mojang.math.Matrix4fCompat;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-@Environment(EnvType.CLIENT)
 public class Matrix4fCompatImpl extends AbstractCompat<Matrix4f> implements Matrix4fCompat {
     public Matrix4fCompatImpl(@NotNull Matrix4f type) {
         super(type);

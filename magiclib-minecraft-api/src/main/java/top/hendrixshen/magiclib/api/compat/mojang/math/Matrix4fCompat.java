@@ -16,13 +16,9 @@ import com.mojang.math.Quaternion;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.impl.compat.mojang.math.Matrix4fCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
-@Environment(EnvType.CLIENT)
 public interface Matrix4fCompat extends Provider<Matrix4f> {
     static @NotNull Matrix4fCompat of(@NotNull Matrix4f matrix4f) {
         return new Matrix4fCompatImpl(matrix4f);

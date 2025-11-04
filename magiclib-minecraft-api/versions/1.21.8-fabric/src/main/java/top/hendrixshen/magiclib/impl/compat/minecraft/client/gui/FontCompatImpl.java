@@ -8,9 +8,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
 
@@ -20,7 +17,6 @@ import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
  * <li>mc1.21.6+        : subproject 1.21.8        &lt;--------</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
-@Environment(EnvType.CLIENT)
 public class FontCompatImpl extends AbstractCompat<Font> implements FontCompat {
     public FontCompatImpl(@NotNull Font type) {
         super(type);

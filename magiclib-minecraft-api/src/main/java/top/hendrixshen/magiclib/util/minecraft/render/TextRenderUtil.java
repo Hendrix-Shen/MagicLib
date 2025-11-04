@@ -41,9 +41,6 @@ import net.minecraft.util.StringDecomposer;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 // CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11502
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.StringSplitterAccessor;
@@ -59,7 +56,6 @@ import java.util.List;
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderingUtil.java">TweakerMore</a>.
  */
-@Environment(EnvType.CLIENT)
 public class TextRenderUtil {
     //#if MC > 11502
     public static @NotNull FormattedCharSequence string2formattedCharSequence(String string) {

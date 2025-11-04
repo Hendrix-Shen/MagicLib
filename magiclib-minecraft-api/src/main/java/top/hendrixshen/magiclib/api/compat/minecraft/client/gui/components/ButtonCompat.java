@@ -6,9 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.util.collect.Provider;
@@ -21,7 +18,6 @@ import top.hendrixshen.magiclib.util.collect.Provider;
 
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public interface ButtonCompat extends Provider<Button> {
     static ButtonCompat.@NotNull Builder builder(@NotNull Component message, @NotNull ButtonCompat.OnPress onPress) {
         return new ButtonCompat.Builder(message, onPress);
@@ -31,7 +27,6 @@ public interface ButtonCompat extends Provider<Button> {
         return new ButtonCompat.Builder(message.get(), onPress);
     }
 
-    @Environment(EnvType.CLIENT)
     class Builder {
         //#if MC > 11902
         //$$ private final Button.Builder builder;
@@ -141,12 +136,10 @@ public interface ButtonCompat extends Provider<Button> {
         }
     }
 
-    @Environment(EnvType.CLIENT)
     interface CreateNarration {
         MutableComponentCompat createNarrationMessage(Supplier<MutableComponentCompat> narration);
     }
 
-    @Environment(EnvType.CLIENT)
     interface OnPress {
         void onPress(Button button);
     }

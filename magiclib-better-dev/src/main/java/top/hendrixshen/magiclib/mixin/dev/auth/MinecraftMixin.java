@@ -22,9 +22,6 @@ package top.hendrixshen.magiclib.mixin.dev.auth;
 
 import net.minecraft.client.Minecraft;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
@@ -43,7 +40,6 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
  * <li>mc1.20.4+        : subproject 1.20.4 [dummy]</li>
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.AuthVerifyPredicate.class))
-@Environment(EnvType.CLIENT)
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin {
     @Redirect(

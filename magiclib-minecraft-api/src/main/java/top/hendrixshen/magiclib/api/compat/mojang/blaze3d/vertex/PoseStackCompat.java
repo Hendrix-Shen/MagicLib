@@ -8,9 +8,6 @@ import org.jetbrains.annotations.NotNull;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.impl.compat.mojang.blaze3d.vertex.PoseStackCompatImpl;
 
 // CHECKSTYLE.OFF: ImportOrder
@@ -18,8 +15,6 @@ import top.hendrixshen.magiclib.impl.compat.mojang.blaze3d.vertex.PoseStackCompa
 //$$ import top.hendrixshen.magiclib.util.collect.Provider;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
-
-@Environment(EnvType.CLIENT)
 
 // CHECKSTYLE.OFF: Indentation
 // @formatter:off

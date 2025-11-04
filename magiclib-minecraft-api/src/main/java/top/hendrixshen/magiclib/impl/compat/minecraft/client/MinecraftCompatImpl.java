@@ -6,13 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 
-@Environment(EnvType.CLIENT)
 public class MinecraftCompatImpl extends AbstractCompat<Minecraft> implements MinecraftCompat {
     @Getter(lazy = true)
     private static final MinecraftCompatImpl instance = new MinecraftCompatImpl(Minecraft.getInstance());

@@ -13,9 +13,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -26,7 +23,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
  * <li>mc1.20.1+      : subproject 1.20.1        &lt;--------</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
-@Environment(EnvType.CLIENT)
 @Mixin(GuiGraphics.class)
 public interface GuiGraphicsAccessor {
     @Mutable

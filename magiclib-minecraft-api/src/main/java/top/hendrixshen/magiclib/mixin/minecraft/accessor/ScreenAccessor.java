@@ -11,16 +11,12 @@ import net.minecraft.client.gui.components.AbstractWidget;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 @Mixin(Screen.class)
 public interface ScreenAccessor {
     @Accessor("children")

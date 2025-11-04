@@ -12,12 +12,7 @@ import org.lwjgl.opengl.GL11;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-@Environment(EnvType.CLIENT)
 public interface VertexFormatCompat {
-    @Environment(EnvType.CLIENT)
     final class Mode {
         private Mode() {
             throw new AssertionError("No " + Mode.class.getName() + "instances for you!");

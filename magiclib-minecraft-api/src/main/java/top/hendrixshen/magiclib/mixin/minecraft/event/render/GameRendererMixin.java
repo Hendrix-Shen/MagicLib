@@ -12,9 +12,6 @@ import net.minecraft.client.renderer.GameRenderer;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,7 +31,6 @@ import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-@Environment(EnvType.CLIENT)
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
     @Inject(method = "render", at = @At("HEAD"))

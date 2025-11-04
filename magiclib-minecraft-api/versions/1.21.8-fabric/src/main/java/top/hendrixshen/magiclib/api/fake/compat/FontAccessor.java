@@ -1,8 +1,5 @@
 package top.hendrixshen.magiclib.api.fake.compat;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 // CHECKSTYLE.OFF: JavadocStyle
 /**
  * <li>mc1.14 ~ mc1.15.2: subproject 1.15.2 [dummy]</li>
@@ -10,6 +7,5 @@ import net.fabricmc.api.Environment;
  * <li>mc1.21.6+        : subproject 1.21.8 [dummy]        &lt;--------</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
-@Environment(EnvType.CLIENT)
 public interface FontAccessor {
 }

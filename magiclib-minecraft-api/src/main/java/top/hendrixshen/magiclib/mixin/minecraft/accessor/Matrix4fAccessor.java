@@ -1,8 +1,5 @@
 package top.hendrixshen.magiclib.mixin.minecraft.accessor;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 
 import top.hendrixshen.magiclib.api.preprocess.DummyClass;
@@ -13,7 +10,6 @@ import top.hendrixshen.magiclib.api.preprocess.DummyClass;
  * <li>mc1.16+        : subproject 1.16.5 (main project) [dummy]        &lt;--------</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
-@Environment(EnvType.CLIENT)
 @Mixin(DummyClass.class)
 public interface Matrix4fAccessor {
 }

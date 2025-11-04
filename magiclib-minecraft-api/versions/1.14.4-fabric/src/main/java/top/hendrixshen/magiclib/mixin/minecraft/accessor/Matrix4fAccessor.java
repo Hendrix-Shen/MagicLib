@@ -2,9 +2,6 @@ package top.hendrixshen.magiclib.mixin.minecraft.accessor;
 
 import com.mojang.math.Matrix4f;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
@@ -14,7 +11,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
  * <li>mc1.16+        : subproject 1.16.5 (main project) [dummy]</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
-@Environment(EnvType.CLIENT)
 @Mixin(Matrix4f.class)
 public interface Matrix4fAccessor {
     @Accessor("values")
