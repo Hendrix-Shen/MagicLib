@@ -16,7 +16,7 @@ fabric-mc12103 = "0.114.1+1.21.3"
 fabric-mc12104 = "0.119.4+1.21.4"
 fabric-mc12105 = "0.128.2+1.21.5"
 fabric-mc12108 = "0.136.0+1.21.8"
-fabric-mc12110 = "0.136.0+1.21.10"
+fabric-mc12110 = "0.138.3+1.21.10"
 
 imblocker-original-forge-mc11701 = "5.4.5"
 imblocker-original-forge-mc11802 = "5.4.5"
