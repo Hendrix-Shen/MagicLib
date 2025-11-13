@@ -68,7 +68,7 @@ public class ProcessResourcesMCConfig extends ProcessResourcesConfig {
         task.from(rootDir.resolve("LICENSE"));
         task.from(rootDir.resolve("icon.png"), spec -> {
             if (this.modPlatform == ModPlatform.FABRIC) {
-                task.into("assets/" + parent.property("mod.id"));
+                spec.into("assets/" + parent.property("mod.id"));
             }
         });
     }
