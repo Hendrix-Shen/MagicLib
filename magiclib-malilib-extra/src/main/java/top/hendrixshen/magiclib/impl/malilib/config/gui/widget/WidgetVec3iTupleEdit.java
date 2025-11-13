@@ -5,6 +5,12 @@ import fi.dy.masa.malilib.gui.widgets.WidgetContainer;
 import net.minecraft.core.Vec3i;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12109
+//$$ import net.minecraft.client.input.CharacterEvent;
+//$$ import net.minecraft.client.input.KeyEvent;
+//$$ import net.minecraft.client.input.MouseButtonEvent;
+//#endif
+
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
@@ -107,6 +113,27 @@ public class WidgetVec3iTupleEdit extends WidgetContainer {
     }
     //#endif
 
+    //#if MC >= 12109
+    //$$ @Override
+    //$$ protected boolean onMouseClickedImpl(MouseButtonEvent click, boolean doubleClick) {
+    //$$     boolean ret = false;
+    //$$     ret |= this.firstVec3iEdit.onMouseClickedImpl(click, doubleClick);
+    //$$     ret |= this.secondVec3iEdit.onMouseClickedImpl(click, doubleClick);
+    //$$     return ret;
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ protected boolean onKeyTypedImpl(KeyEvent input) {
+    //$$     return this.firstVec3iEdit.onKeyTypedImpl(input)
+    //$$             || this.secondVec3iEdit.onKeyTypedImpl(input);
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ protected boolean onCharTypedImpl(CharacterEvent input) {
+    //$$     return this.firstVec3iEdit.onCharTypedImpl(input)
+    //$$             || this.secondVec3iEdit.onCharTypedImpl(input);
+    //$$ }
+    //#else
     @Override
     protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
         boolean ret = false;
@@ -126,6 +153,7 @@ public class WidgetVec3iTupleEdit extends WidgetContainer {
         return this.firstVec3iEdit.onCharTypedImpl(charIn, modifiers)
                 || this.secondVec3iEdit.onCharTypedImpl(charIn, modifiers);
     }
+    //#endif
 
     protected static class WidgetVec3iEditEntry extends WidgetVec3iEdit {
         public WidgetVec3iEditEntry(int x, int y, int width, int height, Vec3i initialValue, Vec3i defaultValue, int num) {

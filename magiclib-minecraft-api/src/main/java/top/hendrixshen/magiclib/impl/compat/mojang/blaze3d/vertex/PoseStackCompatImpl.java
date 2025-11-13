@@ -14,9 +14,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.mojang.blaze3d.vertex.PoseStackCompat;
 
 // CHECKSTYLE.OFF: ImportOrder
@@ -25,7 +22,6 @@ import top.hendrixshen.magiclib.api.compat.mojang.blaze3d.vertex.PoseStackCompat
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-@Environment(EnvType.CLIENT)
 public class PoseStackCompatImpl
         //#if MC > 11605
         //$$ extends AbstractCompat<PoseStack>

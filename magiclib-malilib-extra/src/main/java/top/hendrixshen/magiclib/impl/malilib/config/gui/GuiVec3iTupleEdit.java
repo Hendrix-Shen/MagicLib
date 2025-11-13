@@ -11,6 +11,10 @@ import org.lwjgl.glfw.GLFW;
 import net.minecraft.client.gui.screens.Screen;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12109
+//$$ import net.minecraft.client.input.KeyEvent;
+//#endif
+
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
@@ -190,12 +194,32 @@ public class GuiVec3iTupleEdit extends GuiBase {
     }
 
     @Override
-    public boolean onKeyTyped(int keyCode, int scanCode, int modifiers) {
+    public boolean onKeyTyped(
+            //#if MC >= 12109
+            //$$ KeyEvent input
+            //#else
+            int keyCode,
+            int scanCode,
+            int modifiers
+            //#endif
+    ) {
+        //#if MC >= 12109
+        //$$ int keyCode = input.key();
+        //#endif
+
         if (keyCode == GLFW.GLFW_KEY_ESCAPE && this.dialogHandler != null) {
             this.dialogHandler.closeDialog();
             return true;
         } else {
-            return super.onKeyTyped(keyCode, scanCode, modifiers);
+            return super.onKeyTyped(
+                    //#if MC >= 12109
+                    //$$ input
+                    //#else
+                    keyCode,
+                    scanCode,
+                    modifiers
+                    //#endif
+            );
         }
     }
 }

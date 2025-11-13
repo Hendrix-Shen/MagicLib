@@ -5,8 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.BaseComponent;
 
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
@@ -21,7 +19,6 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-@Environment(net.fabricmc.api.EnvType.CLIENT)
 public class InfoUtil {
     public static void displayClientMessage(BaseComponent component, boolean useActionBar) {
         ValueContainer.ofNullable(Minecraft.getInstance().player).ifPresent(p ->

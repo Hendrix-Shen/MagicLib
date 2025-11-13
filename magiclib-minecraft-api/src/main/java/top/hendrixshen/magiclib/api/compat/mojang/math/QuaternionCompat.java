@@ -14,13 +14,9 @@ import com.mojang.math.Quaternion;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.impl.compat.mojang.math.QuaternionCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
-@Environment(EnvType.CLIENT)
 public interface QuaternionCompat extends Provider<Quaternion> {
     QuaternionCompat ONE = QuaternionCompat.of(new Quaternion(0.0F, 0.0F, 0.0F, 1.0F));
 

@@ -12,6 +12,7 @@ import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.i18n.provider.FileLanguageProvider;
 import top.hendrixshen.magiclib.impl.i18n.provider.JarLanguageProvider;
 import top.hendrixshen.magiclib.util.MiscUtil;
+import top.hendrixshen.magiclib.util.VersionUtil;
 
 import java.util.IllegalFormatException;
 import java.util.List;
@@ -34,8 +35,9 @@ public class MagicLanguageManager {
     private String currentCode = MiscUtil.getSystemLanguageCode();
 
     private MagicLanguageManager() {
-        if (MagicLib.getInstance().getCurrentPlatform().getPlatformType()
-                .matches(PlatformType.FABRIC_LIKE)) {
+        if (MagicLib.getInstance().getCurrentPlatform().getPlatformType().matches(PlatformType.FABRIC_LIKE)
+                || VersionUtil.isVersionSatisfyPredicate(MagicLib.getInstance().getCurrentPlatform()
+                .getModVersion("minecraft"), ">=1.21.9-")) {
             this.providers.add(JarLanguageProvider.getInstance());
         }
 

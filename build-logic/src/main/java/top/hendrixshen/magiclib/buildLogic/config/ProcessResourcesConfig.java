@@ -4,7 +4,6 @@ import groovy.lang.Closure;
 import groovy.lang.GString;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.tasks.AbstractCopyTask;
 import org.gradle.language.jvm.tasks.ProcessResources;
 import org.jetbrains.annotations.NotNull;
 
@@ -72,10 +71,10 @@ public class ProcessResourcesConfig implements Plugin<Project> {
         Project parent = project.getParent();
         assert parent != null;
         task.from(rootDir.resolve("LICENSE"));
-        AbstractCopyTask copyTask = task.from(rootDir.resolve("icon.png"));
-
-        if ("fabric".equals(project.getName())) {
-            copyTask.into("assets/" + parent.property("mod.id"));
-        }
+        task.from(rootDir.resolve("icon.png"), spec  -> {
+            if ("fabric".equals(project.getName())) {
+                spec.into("assets/" + parent.property("mod.id"));
+            }
+        });
     }
 }

@@ -70,11 +70,11 @@ repositories {
 
 // Configuration name, Module, Resolve condition, Use version mapping, Configuration closure.
 def deps = [
-        ["modApi"        , "fabric"                                 , fabricLike, true , { }],
-        ["modApi"        , "modmenu"                                , fabricLike, true , { transitive = false }],
-        ["modRuntimeOnly", "in-game-account-switcher-${modPlatform}", true      , true , { transitive = false }],
-        ["modRuntimeOnly", "imblocker"                              , fabricLike, false, { transitive = false }],
-        ["modRuntimeOnly", "imblocker-original-${modPlatform}"      , forgeLike , true , { transitive = false }]
+        ["modApi"        , "fabric"                                 , fabricLike                     , true , { }],
+        ["modApi"        , "modmenu"                                , fabricLike                     , true , { transitive = false }],
+        ["modRuntimeOnly", "in-game-account-switcher-${modPlatform}", true                           , true , { transitive = false }],
+        ["modRuntimeOnly", "imblocker"                              , fabricLike && mcVersion < 12109, false, { transitive = false }],
+        ["modRuntimeOnly", "imblocker-original-${modPlatform}"      , forgeLike                      , true , { transitive = false }]
 ]
 
 dependencies {
@@ -216,8 +216,6 @@ remapJar {
         if (modPlatform == "neoforge") {
             atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
         }
-
-        exclude("${project.parent.property("mod.id")}.accesswidener")
     }
 }
 

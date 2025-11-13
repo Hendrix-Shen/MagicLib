@@ -18,10 +18,7 @@
 
 package top.hendrixshen.magiclib.mixin.dev.chunk;
 
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.progress.ChunkProgressListener;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,7 +37,7 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
     @Inject(method = "prepareLevels", at = @At("HEAD"), cancellable = true)
-    private void onPrepareLevels(ChunkProgressListener chunkProgressListener, @NotNull CallbackInfo ci) {
+    private void onPrepareLevels(CallbackInfo ci) {
         ci.cancel();
     }
 }

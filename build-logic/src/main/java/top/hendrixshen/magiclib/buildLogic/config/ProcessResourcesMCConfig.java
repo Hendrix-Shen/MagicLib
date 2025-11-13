@@ -1,7 +1,6 @@
 package top.hendrixshen.magiclib.buildLogic.config;
 
 import org.gradle.api.Project;
-import org.gradle.api.tasks.AbstractCopyTask;
 import org.gradle.language.jvm.tasks.ProcessResources;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,10 +66,10 @@ public class ProcessResourcesMCConfig extends ProcessResourcesConfig {
         Project parent = project.getParent();
         assert parent != null;
         task.from(rootDir.resolve("LICENSE"));
-        AbstractCopyTask copyTask = task.from(rootDir.resolve("icon.png"));
-
-        if (this.modPlatform == ModPlatform.FABRIC) {
-            copyTask.into("assets/" + parent.property("mod.id"));
-        }
+        task.from(rootDir.resolve("icon.png"), spec -> {
+            if (this.modPlatform == ModPlatform.FABRIC) {
+                spec.into("assets/" + parent.property("mod.id"));
+            }
+        });
     }
 }

@@ -22,6 +22,12 @@ package top.hendrixshen.magiclib.impl.malilib.config.gui;
 
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12109
+//$$ import net.minecraft.client.input.MouseButtonEvent;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import top.hendrixshen.magiclib.api.malilib.config.option.HotkeyWithSwitch;
 import top.hendrixshen.magiclib.impl.malilib.SharedConstants;
 
@@ -38,10 +44,28 @@ public class ConfigButtonBooleanSwitch extends ButtonGeneric {
     }
 
     @Override
-    protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
+    protected boolean onMouseClickedImpl(
+            //#if MC >= 12109
+            //$$ MouseButtonEvent click,
+            //$$ boolean doubleClick
+            //#else
+            int mouseX,
+            int mouseY,
+            int mouseButton
+            //#endif
+    ) {
         this.config.toggleBooleanValue();
         this.updateDisplayString();
-        return super.onMouseClickedImpl(mouseX, mouseY, mouseButton);
+        return super.onMouseClickedImpl(
+                //#if MC >= 12109
+                //$$ click,
+                //$$ doubleClick
+                //#else
+                mouseX,
+                mouseY,
+                mouseButton
+                //#endif
+        );
     }
 
     @Override

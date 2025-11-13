@@ -68,7 +68,12 @@ public class TextUtil {
 
     public static String tp(Entity entity) {
         if (entity instanceof Player) {
-            String name = ((Player) entity).getGameProfile().getName();
+            String name = ((Player) entity).getGameProfile()
+                    //#if MC >= 12109
+                    //$$ .name();
+                    //#else
+                    .getName();
+            //#endif
             return String.format("/tp %s", name);
         }
 

@@ -11,14 +11,10 @@ import net.minecraft.client.Camera;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.CameraCompat;
 import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
 
-@Environment(EnvType.CLIENT)
 public class CameraCompatImpl extends AbstractCompat<Camera> implements CameraCompat {
     public CameraCompatImpl(@NotNull Camera type) {
         super(type);

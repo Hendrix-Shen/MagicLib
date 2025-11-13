@@ -4,15 +4,11 @@ import lombok.Getter;
 
 import net.minecraft.client.Minecraft;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.event.minecraft.LanguageManagerListener;
 import top.hendrixshen.magiclib.api.event.minecraft.MinecraftListener;
 import top.hendrixshen.magiclib.impl.i18n.MagicLanguageManager;
 
-@Environment(EnvType.CLIENT)
 public class MinecraftLanguageManager implements LanguageManagerListener, MinecraftListener {
     @Getter
     private static final MinecraftLanguageManager instance = new MinecraftLanguageManager();

@@ -54,6 +54,12 @@ import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetSearchBarAccessor;
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 import top.hendrixshen.magiclib.util.serializable.JsonSaveAble;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12106
+//$$ import top.hendrixshen.magiclib.api.fake.malilib.WidgetSearchBarOpenStateAccessor;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -292,7 +298,11 @@ public class MagicConfigGui extends GuiConfigsBase {
 
         // Restoring search bar data.
         if (this.searchBar != null && previousSearchBarText != null) {
+            //#if MC >= 12106
+            //$$ ((WidgetSearchBarOpenStateAccessor) this.searchBar).magiclib$setSearchOpen(true);
+            //#else
             this.searchBar.setSearchOpen(true);
+            //#endif
             ((WidgetSearchBarAccessor) this.searchBar).magiclib$getSearchBox().setValue(previousSearchBarText);
             ((WidgetSearchBarAccessor) this.searchBar).magiclib$getSearchBox().setFocused(previousSearchBoxFocus);
         }

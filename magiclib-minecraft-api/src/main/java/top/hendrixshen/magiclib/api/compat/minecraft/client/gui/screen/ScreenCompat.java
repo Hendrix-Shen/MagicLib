@@ -6,13 +6,9 @@ import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.impl.compat.minecraft.client.gui.screen.ScreenCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
-@Environment(EnvType.CLIENT)
 public interface ScreenCompat extends Provider<Screen> {
     static @NotNull ScreenCompat of(@NotNull Screen screen) {
         return new ScreenCompatImpl(screen);

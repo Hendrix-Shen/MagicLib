@@ -29,7 +29,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.malilib.impl.config.MagicConfigBooleanHotkeyed;
 
 @Environment(EnvType.CLIENT)
-@CompositeDependencies(@Dependencies(require = @Dependency(value = "malilib", versionPredicates = ">=0.11.4")))
+@Dependencies(require = @Dependency(value = "malilib", versionPredicates = ">=0.11.4"))
 @Mixin(value = WidgetConfigOption.class, remap = false)
 public abstract class MixinWidgetConfigOptionForBooleanHotkeyed extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
     @Shadow
@@ -49,7 +49,17 @@ public abstract class MixinWidgetConfigOptionForBooleanHotkeyed extends WidgetCo
             ),
             cancellable = true
     )
-    private void tweakConfigBooleanHotkeyedElements(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
+    private void tweakConfigBooleanHotkeyedElements(
+            int x,
+            int y,
+            //#if MC < 12109
+            float zLevel,
+            //#endif
+            int labelWidth,
+            int configWidth,
+            IConfigBase config,
+            CallbackInfo ci
+    ) {
         if (config instanceof MagicConfigBooleanHotkeyed) {
             MagicConfigBooleanHotkeyed hotkeyedBoolean = (MagicConfigBooleanHotkeyed) config;
             IKeybind keybind = hotkeyedBoolean.getKeybind();

@@ -198,8 +198,6 @@ remapJar {
         if (modPlatform == "neoforge") {
             atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
         }
-
-        exclude("${project.parent.property("mod.id")}.accesswidener")
     }
 }
 

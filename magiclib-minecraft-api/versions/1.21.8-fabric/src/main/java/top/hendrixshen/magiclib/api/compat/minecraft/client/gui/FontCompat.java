@@ -10,9 +10,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.impl.compat.minecraft.client.gui.FontCompatImpl;
 import top.hendrixshen.magiclib.util.collect.Provider;
 
@@ -22,7 +19,6 @@ import top.hendrixshen.magiclib.util.collect.Provider;
  * <li>mc1.21.6+        : subproject 1.21.8        &lt;--------</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
-@Environment(EnvType.CLIENT)
 public interface FontCompat extends Provider<Font> {
     static @NotNull FontCompat of(@NotNull Font font) {
         return new FontCompatImpl(font);
@@ -98,7 +94,6 @@ public interface FontCompat extends Provider<Font> {
     int width(@NotNull Component component);
 
     @Getter
-    @Environment(EnvType.CLIENT)
     enum DisplayMode {
         NORMAL(false),
         SEE_THROUGH(true),

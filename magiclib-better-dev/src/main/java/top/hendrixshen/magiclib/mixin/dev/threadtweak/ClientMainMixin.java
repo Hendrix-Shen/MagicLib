@@ -26,9 +26,6 @@ package top.hendrixshen.magiclib.mixin.dev.threadtweak;
 
 import net.minecraft.client.main.Main;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -44,7 +41,6 @@ import top.hendrixshen.magiclib.impl.dev.threadtweak.ThreadTweaker;
  * Reference to <a href="https://github.com/UltimateBoomer/mc-smoothboot/blob/9a519ade89af24aa8b337dfed7d8eb8c0b62ec81/src/main/java/io/github/ultimateboomer/smoothboot/mixin/client/MainMixin.java">SmoothBoot</a>.
  */
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.TheadTweakPredicate.class))
-@Environment(EnvType.CLIENT)
 @Mixin(Main.class)
 public abstract class ClientMainMixin {
     @Inject(method = "main", at = @At("HEAD"), remap = false)

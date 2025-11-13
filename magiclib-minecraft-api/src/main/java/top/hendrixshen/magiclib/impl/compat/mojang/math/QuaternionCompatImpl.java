@@ -18,9 +18,6 @@ import com.mojang.math.Quaternion;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
 
@@ -31,7 +28,6 @@ import top.hendrixshen.magiclib.api.compat.mojang.math.QuaternionCompat;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-@Environment(EnvType.CLIENT)
 public class QuaternionCompatImpl extends AbstractCompat<Quaternion> implements QuaternionCompat {
     public QuaternionCompatImpl(@NotNull Quaternion type) {
         super(type);

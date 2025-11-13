@@ -57,7 +57,17 @@ public abstract class MixinWidgetConfigOptionForHotkeyed extends WidgetConfigOpt
             ),
             cancellable = true
     )
-    private void addConfigHotkeyedElements(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
+    private void addConfigHotkeyedElements(
+            int x,
+            int y,
+            //#if MC < 12109
+            float zLevel,
+            //#endif
+            int labelWidth,
+            int configWidth,
+            IConfigBase config,
+            CallbackInfo ci
+    ) {
         if (config instanceof MagicConfigHotkey) {
             this.magiclib$addConfigHotkeyedElements(x, y, configWidth, (IHotkey)config);
             ci.cancel();

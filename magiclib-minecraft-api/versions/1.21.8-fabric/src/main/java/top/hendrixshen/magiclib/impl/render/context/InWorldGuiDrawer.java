@@ -37,7 +37,7 @@ import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 import java.util.List;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/versions/1.21.6/src/main/java/me/fallenbreath/tweakermore/util/render/context/InWorldGuiDrawer.java#L48">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/07c1455ac9d8e97b976114f41a0fd7c81d2bebdd/versions/1.21.8/src/main/java/me/fallenbreath/tweakermore/util/render/context/InWorldGuiDrawer.java">TweakerMore</a>.
  *
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)</li>
  * <li>mc1.21.6+        : subproject 1.21.8        &lt;--------</li>
@@ -64,7 +64,15 @@ public class InWorldGuiDrawer implements AutoCloseable {
         MultiBufferSource.BufferSource immediate = RenderUtil.getBufferSource();
         this.guiState = new GuiRenderState();
         this.guiGraphics = new GuiGraphics(mc, this.guiState);
-        this.guiRenderer = new GuiRenderer(this.guiState, immediate, List.of());
+        this.guiRenderer = new GuiRenderer(
+                this.guiState,
+                immediate,
+                //#if MC >= 12109
+                //$$ mc.gameRenderer.getSubmitNodeStorage(),
+                //$$ mc.gameRenderer.getFeatureRenderDispatcher(),
+                //#endif
+                List.of()
+        );
         ((InWorldGuiRendererHook) this.guiRenderer).magiclib$setInWorldGuiRender(true);
         this.fogRenderer = new FogRenderer();
     }

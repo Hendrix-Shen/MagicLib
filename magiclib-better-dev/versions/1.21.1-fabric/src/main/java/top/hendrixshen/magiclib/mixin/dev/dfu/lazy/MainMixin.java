@@ -5,9 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.datafixers.DSL;
 import net.minecraft.client.main.Main;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -26,7 +23,6 @@ import java.util.concurrent.CompletableFuture;
  * <li>mc1.21.1+      : subproject 1.21.1        &lt;--------</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
-@Environment(EnvType.CLIENT)
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PREDICATE, predicate = MixinPredicates.LazyDFUPredicate.class))
 @Mixin(Main.class)
 public abstract class MainMixin {

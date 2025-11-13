@@ -48,15 +48,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
 
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/RenderUtil.java">TweakerMore</a>.
  */
-@Environment(EnvType.CLIENT)
 public class RenderUtil {
     private static final Font TEXT_RENDERER = Minecraft.getInstance().font;
     public static final int TEXT_HEIGHT = RenderUtil.TEXT_RENDERER.lineHeight;

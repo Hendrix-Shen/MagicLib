@@ -26,6 +26,11 @@ import fi.dy.masa.malilib.render.RenderUtils;
 import org.jetbrains.annotations.Nullable;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12109
+//$$ import net.minecraft.client.input.CharacterEvent;
+//$$ import net.minecraft.client.input.KeyEvent;
+//#endif
+
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
@@ -107,6 +112,17 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
         return ret;
     }
 
+    //#if MC >= 12109
+    //$$ @Override
+    //$$ protected boolean onKeyTypedImpl(KeyEvent input) {
+    //$$     return false;
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ protected boolean onCharTypedImpl(CharacterEvent input) {
+    //$$     return false;
+    //$$ }
+    //#else
     @Override
     protected boolean onKeyTypedImpl(int keyCode, int scanCode, int modifiers) {
         return false;
@@ -116,6 +132,7 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
     protected boolean onCharTypedImpl(char charIn, int modifiers) {
         return false;
     }
+    //#endif
 
     @Override
     protected String getDisplayString(T entry) {

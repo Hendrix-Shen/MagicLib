@@ -12,14 +12,10 @@ import net.minecraft.client.gui.components.AbstractWidget;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.screen.ScreenCompat;
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.ScreenAccessor;
 
-@Environment(EnvType.CLIENT)
 public class ScreenCompatImpl extends AbstractCompat<Screen> implements ScreenCompat {
     public ScreenCompatImpl(@NotNull Screen type) {
         super(type);
