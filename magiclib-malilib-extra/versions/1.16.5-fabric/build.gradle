@@ -149,8 +149,10 @@ loom {
         isEnabled.set(false)
     }
 
-    mixin {
-        useLegacyMixinAp.set(true)
+    if (fabricLike) {
+        mixin {
+            useLegacyMixinAp.set(true)
+        }
     }
 
     if (modPlatform == "forge") {
