@@ -38,7 +38,7 @@ public class FileLanguageProvider implements LanguageProvider {
     @Override
     public void init() {
         try {
-            for (URL resource : Collections.list(this.getClass().getClassLoader().getResources("assets"))) {
+            for (URL resource : Collections.list(this.getClassLoader().getResources("assets"))) {
                 if (!resource.getProtocol().equals("file") && !resource.getProtocol().equals("union")) {
                     continue;
                 }
