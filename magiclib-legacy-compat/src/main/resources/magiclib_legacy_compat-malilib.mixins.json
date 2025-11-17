@@ -10,7 +10,6 @@
   "client": [
     "MixinWidgetConfigOptionForBooleanHotkeyed",
     "MixinWidgetConfigOptionForHotkeyed",
-    "accessor.KeybindMultiAccessor",
     "backport.MixinConfigBooleanHotkeyed",
     "backport.MixinWidgetConfigOptionForBooleanHotkeyed"
   ]

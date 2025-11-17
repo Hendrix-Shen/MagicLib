@@ -110,6 +110,12 @@ loom {
         isEnabled.set(false)
     }
 
+    if (fabricLike) {
+        mixin {
+            useLegacyMixinAp.set(true)
+        }
+    }
+
     if (modPlatform == "forge") {
         forge {
             convertAccessWideners.set(true)

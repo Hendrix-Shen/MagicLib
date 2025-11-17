@@ -39,6 +39,7 @@ jar {
 
 tasks.register("copyPublishModule", Copy.class) { Copy copyTask ->
     copyTask.setGroup("${project.property("mod.id")}")
+    delete(project.layout.buildDirectory.file("tmp/submods/publish"))
 
     from {
         coreProject.tasks.shadowJar.outputs.files
@@ -245,6 +246,7 @@ subprojects {
     tasks.register("copyPublishModule", Copy.class) { Copy copyTask ->
         copyTask.dependsOn(submodules.collect { it.tasks.remapJar })
         copyTask.setGroup("${project.property("mod.id")}")
+        delete(project.layout.buildDirectory.file("tmp/submods/publish"))
 
         from {
             submodules_publish.collect {
@@ -258,6 +260,7 @@ subprojects {
     tasks.register("copyUnpublishModule", Copy.class) { Copy copyTask ->
         copyTask.dependsOn(submodules.collect { it.tasks.remapJar })
         copyTask.setGroup("${project.property("mod.id")}")
+        delete(project.layout.buildDirectory.file("tmp/submods/unpublish"))
 
         from {
             submodules_unpublish.collect {

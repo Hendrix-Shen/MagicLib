@@ -32,7 +32,7 @@ public class JarLanguageProvider implements LanguageProvider {
     @Override
     public void init() {
         try {
-            for (URL resource : Collections.list(ClassLoader.getSystemClassLoader().getResources("assets"))) {
+            for (URL resource : Collections.list(this.getClassLoader().getResources("assets"))) {
                 if (!resource.getProtocol().equals("jar")) {
                     continue;
                 }
