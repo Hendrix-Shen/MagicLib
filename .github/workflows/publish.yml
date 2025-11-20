@@ -28,7 +28,7 @@ jobs:
       short_sha: ${{ steps.shared_publish_info.outputs.short_sha }}
     steps:
       - name: Checkout the sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Download build artifacts
@@ -144,7 +144,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout the sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Download build artifacts
