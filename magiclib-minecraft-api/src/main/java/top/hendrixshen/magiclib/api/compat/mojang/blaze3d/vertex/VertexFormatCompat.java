@@ -20,7 +20,9 @@ public interface VertexFormatCompat {
 
         //#if MC > 11605
         //$$ public static VertexFormat.Mode LINES = VertexFormat.Mode.LINES;
+        //#if MC < 12100
         //$$ public static VertexFormat.Mode LINE_STRIP = VertexFormat.Mode.LINE_STRIP;
+        //#endif
         //$$ public static VertexFormat.Mode DEBUG_LINES = VertexFormat.Mode.DEBUG_LINES;
         //$$ public static VertexFormat.Mode DEBUG_LINE_STRIP = VertexFormat.Mode.DEBUG_LINE_STRIP;
         //$$ public static VertexFormat.Mode TRIANGLES = VertexFormat.Mode.TRIANGLES;

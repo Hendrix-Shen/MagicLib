@@ -3,6 +3,7 @@ package top.hendrixshen.magiclib.impl.compat.minecraft.client;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.Camera;
+import net.minecraft.world.phys.Vec3;
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if MC < 11500
@@ -31,5 +32,10 @@ public class CameraCompatImpl extends AbstractCompat<Camera> implements CameraCo
         //$$ ret.mul(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), this.get().getXRot(), true));
         //$$ return QuaternionCompat.of(quaternion);
         //#endif
+    }
+
+    @Override
+    public Vec3 getPosition() {
+        return this.get().getPosition();
     }
 }

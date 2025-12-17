@@ -27,7 +27,18 @@ public class RenderContextUtil {
     //#if MC >= 12106
     //$$ public static GuiGraphics createDefaultGuiGraphics() {
     //$$     Minecraft minecraft = Minecraft.getInstance();
-    //$$     return new GuiGraphics(minecraft, ((GameRendererAccessor) minecraft.gameRenderer).magiclib$getGuiRenderState());
+    //$$     return new GuiGraphics(
+    //$$             minecraft,
+    //$$             ((GameRendererAccessor) minecraft.gameRenderer).magiclib$getGuiRenderState()
+    //$$             //#if MC >= 12111
+    //$$             // CHECKSTYLE.OFF: NoWhitespaceBefore
+    //$$             // CHECKSTYLE.OFF: SeparatorWrap
+    //$$             //$$ , 0
+    //$$             //$$ , 0
+    //$$             // CHECKSTYLE.ON: SeparatorWrap
+    //$$             // CHECKSTYLE.ON: NoWhitespaceBefore
+    //$$             //#endif
+    //$$     );
     //$$ }
     //#else
     /**
@@ -35,7 +46,7 @@ public class RenderContextUtil {
      */
     @Deprecated
     public static GuiGraphics createDrawContext(PoseStack poseStack) {
-        return createGuiGraphic(poseStack);
+        return RenderContextUtil.createGuiGraphic(poseStack);
     }
 
     public static GuiGraphics createGuiGraphic(PoseStack poseStack) {
