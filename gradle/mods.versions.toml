@@ -121,7 +121,7 @@ mafglib-mc12103 = "0.4.1+mc1.21.3"
 mafglib-mc12104 = "0.4.1+mc1.21.4"
 mafglib-mc12105 = "0.4.1+mc1.21.5"
 mafglib-mc12108 = "0.4.3+mc1.21.8"
-mafglib-mc12110 = "0.4.5+mc1.21.10"
+mafglib-mc12110 = "0.4.8+mc1.21.10"
 
 # libraries will be removed after the migration to build-logic.
 [libraries]
