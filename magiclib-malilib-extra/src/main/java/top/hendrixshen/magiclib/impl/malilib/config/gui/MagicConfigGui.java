@@ -36,7 +36,14 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC > 11904
+//#if MC >= 12111
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12111
+//#elseif MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -312,7 +319,9 @@ public class MagicConfigGui extends GuiConfigsBase {
     }
 
     public void renderDropDownList(
-            //#if MC > 11904
+            //#if MC >= 12111
+            //$$ GuiContext poseStackOrGuiGraphics,
+            //#elseif MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
             //#elseif MC > 11502
             PoseStack poseStackOrGuiGraphics,

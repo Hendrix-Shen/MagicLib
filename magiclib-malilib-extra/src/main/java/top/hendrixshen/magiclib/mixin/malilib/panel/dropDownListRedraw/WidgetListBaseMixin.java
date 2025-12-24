@@ -26,7 +26,14 @@ import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.gui.widgets.WidgetListEntryBase;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC > 11904
+//#if MC >= 12111
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12111
+//#elseif MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -67,7 +74,9 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
     private void magiclib$drawMagicConfigGuiDropDownListAgain(
             // CHECKSTYLE.OFF: NoWhitespaceBefore
             // CHECKSTYLE.OFF: SeparatorWrap
-            //#if MC > 11904
+            //#if MC >= 12111
+            //$$ GuiContext poseStackOrGuiGraphics,
+            //#elseif MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
             //#elseif MC > 11502
             PoseStack poseStackOrGuiGraphics,
@@ -142,7 +151,9 @@ public abstract class WidgetListBaseMixin<TYPE, WIDGET extends WidgetListEntryBa
 
     @Inject(method = "drawContents", at = @At("TAIL"))
     private void drawMagicConfigGuiDropDownListAgainAfterHover(
-            //#if MC > 11904
+            //#if MC >= 12111
+            //$$ GuiContext poseStackOrGuiGraphics,
+            //#elseif MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
             //#elseif MC > 11502
             PoseStack poseStackOrGuiGraphics,

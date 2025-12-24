@@ -8,6 +8,12 @@ import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
 import fi.dy.masa.malilib.render.RenderUtils;
 import lombok.AllArgsConstructor;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12111
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.core.Vec3i;
 
 // CHECKSTYLE.OFF: ImportOrder
@@ -17,7 +23,8 @@ import net.minecraft.core.Vec3i;
 //$$ import net.minecraft.client.input.MouseButtonEvent;
 //#endif
 
-//#if MC > 11904
+//#if MC >= 12111
+//#elseif MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -185,7 +192,16 @@ public class WidgetVec3iTupleListEditEntry extends WidgetConfigOptionBase<Config
 
     @Override
     //#if MC >= 12106
-    //$$ public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean selected) {
+    //$$ public void render(
+    //$$         //#if MC >= 12111
+    //$$         //$$ GuiContext guiGraphics,
+    //$$         //#else
+    //$$         GuiGraphics guiGraphics,
+    //$$         //#endif
+    //$$         int mouseX,
+    //$$         int mouseY,
+    //$$         boolean selected
+    //$$ ) {
     //$$     if (this.isOdd) {
     //$$         RenderUtils.drawRect(guiGraphics, this.x, this.y, this.width, this.height, 0x20FFFFFF);
     //$$     } else {

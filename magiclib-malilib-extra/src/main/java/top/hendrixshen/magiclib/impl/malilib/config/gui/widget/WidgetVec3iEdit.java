@@ -13,6 +13,12 @@ import fi.dy.masa.malilib.gui.wrappers.TextFieldWrapper;
 import lombok.AllArgsConstructor;
 import org.lwjgl.glfw.GLFW;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12111
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Vec3i;
 
@@ -141,7 +147,16 @@ public class WidgetVec3iEdit extends WidgetContainer {
 
     @Override
     //#if MC >= 12106
-    //$$ public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean selected) {
+    //$$ public void render(
+    //$$         //#if MC >= 12111
+    //$$         //$$ GuiContext guiGraphics,
+    //$$         //#else
+    //$$         GuiGraphics guiGraphics,
+    //$$         //#endif
+    //$$         int mouseX,
+    //$$         int mouseY,
+    //$$         boolean selected
+    //$$ ) {
     //$$     this.drawTextFields(mouseX, mouseY, guiGraphics);
     //$$     super.render(guiGraphics, mouseX, mouseY, selected);
     //$$ }
