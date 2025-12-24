@@ -6,13 +6,13 @@ forge-mc12001 = "1.20.1-47.4.10"
 
 neoforge-mc12002 = "20.2.93"
 neoforge-mc12006 = "20.6.139"
-neoforge-mc12101 = "21.1.215"
-neoforge-mc12103 = "21.3.94"
-neoforge-mc12104 = "21.4.155"
-neoforge-mc12105 = "21.5.95"
-neoforge-mc12108 = "21.8.51"
-neoforge-mc12110 = "21.10.51-beta"
-neoforge-mc12111 = "21.11.6-beta"
+neoforge-mc12101 = "21.1.217"
+neoforge-mc12103 = "21.3.95"
+neoforge-mc12104 = "21.4.156"
+neoforge-mc12105 = "21.5.96"
+neoforge-mc12108 = "21.8.52"
+neoforge-mc12110 = "21.10.64"
+neoforge-mc12111 = "21.11.13-beta"
 
 [libraries]
 forge-mc11701 = { module = "net.minecraftforge:forge", version.ref = "forge-mc11701" }
