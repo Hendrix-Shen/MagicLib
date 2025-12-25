@@ -30,6 +30,7 @@ preprocess {
     Node mc_12105_fabric = createNode("legacy-1.21.5-fabric", 1_21_05, "mojang")
     Node mc_12108_fabric = createNode("legacy-1.21.8-fabric", 1_21_08, "mojang")
     Node mc_12110_fabric = createNode("legacy-1.21.10-fabric", 1_21_10, "mojang")
+    Node mc_12111_fabric = createNode("legacy-1.21.11-fabric", 1_21_11, "mojang")
 
     mc_11502_fabric.link(mc_11404_fabric, file("versions/mapping-1.15.2-1.14.4.txt"))
     mc_11605_fabric.link(mc_11502_fabric, file("versions/mapping-1.16.5-1.15.2.txt"))
@@ -48,4 +49,5 @@ preprocess {
     mc_12104_fabric.link(mc_12105_fabric, file("versions/mapping-1.21.4-1.21.5.txt"))
     mc_12105_fabric.link(mc_12108_fabric, file("versions/mapping-1.21.5-1.21.8.txt"))
     mc_12108_fabric.link(mc_12110_fabric, file("versions/mapping-1.21.8-1.21.10.txt"))
+    mc_12110_fabric.link(mc_12111_fabric, file("versions/mapping-1.21.10-1.21.11.txt"))
 }

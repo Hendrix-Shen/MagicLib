@@ -22,8 +22,8 @@ public class CameraPositionTransformer {
         this.context = context;
         Minecraft mc = Minecraft.getInstance();
         Camera camera = mc.gameRenderer.getMainCamera();
-        Vec3 vec3 = this.pos.subtract(camera.getPosition());
         CameraCompat cameraCompat = CameraCompat.of(camera);
+        Vec3 vec3 = this.pos.subtract(cameraCompat.getPosition());
         context.pushPose();
         context.translate(vec3.x(), vec3.y(), vec3.z());
         //#if MC > 11902
