@@ -63,7 +63,7 @@ public class InWorldGuiDrawer implements AutoCloseable {
         Minecraft mc = Minecraft.getInstance();
         MultiBufferSource.BufferSource immediate = RenderUtil.getBufferSource();
         this.guiState = new GuiRenderState();
-        //#if MC >= 1.21.11
+        //#if MC >= 12111
         //$$ // TODO: check if mouseX,mouseY setting to 0,0 works
         //$$ this.guiGraphics = new GuiGraphics(mc, this.guiState, 0, 0);
         //#else

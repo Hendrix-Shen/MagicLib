@@ -23,7 +23,8 @@ import net.minecraft.core.Vec3i;
 //$$ import net.minecraft.client.input.MouseButtonEvent;
 //#endif
 
-//#if MC > 11904
+//#if MC >= 12111
+//#elseif MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;

@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 //$$ import net.minecraft.client.input.KeyEvent;
 //#endif
 
-//#if MC > 12111
+//#if MC >= 12111
 //#elseif MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
