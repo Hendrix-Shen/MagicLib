@@ -57,10 +57,10 @@ preprocess {
     Node mc_11904_forge = createNode("better-dev-1.19.4-forge", 1_19_04, "mojang")
     Node mc_12001_forge = createNode("better-dev-1.20.1-forge", 1_20_01, "mojang")
 
-    mc_11701_fabric.link(mc_11701_forge, file("versions/mapping-1.17.1-fabric-forge.txt"))
-    mc_11802_fabric.link(mc_11802_forge, file("versions/mapping-1.18.2-fabric-forge.txt"))
-    mc_11904_fabric.link(mc_11904_forge, file("versions/mapping-1.19.4-fabric-forge.txt"))
-    mc_12001_fabric.link(mc_12001_forge, file("versions/mapping-1.20.1-fabric-forge.txt"))
+    mc_11701_fabric.link(mc_11701_forge, null)
+    mc_11802_fabric.link(mc_11802_forge, null)
+    mc_11904_fabric.link(mc_11904_forge, null)
+    mc_12001_fabric.link(mc_12001_forge, null)
 
     // NeoForge
     Node mc_12002_neoforge = createNode("better-dev-1.20.2-neoforge", 1_20_02, "mojang")
@@ -73,13 +73,13 @@ preprocess {
     Node mc_12110_neoforge = createNode("better-dev-1.21.10-neoforge", 1_21_10, "mojang")
     Node mc_12111_neoforge = createNode("better-dev-1.21.11-neoforge", 1_21_11, "mojang")
 
-    mc_12002_fabric.link(mc_12002_neoforge, file("versions/mapping-1.20.2-fabric-neoforge.txt"))
-    mc_12006_fabric.link(mc_12006_neoforge, file("versions/mapping-1.20.6-fabric-neoforge.txt"))
-    mc_12101_fabric.link(mc_12101_neoforge, file("versions/mapping-1.21.1-fabric-neoforge.txt"))
-    mc_12103_fabric.link(mc_12103_neoforge, file("versions/mapping-1.21.3-fabric-neoforge.txt"))
-    mc_12104_fabric.link(mc_12104_neoforge, file("versions/mapping-1.21.4-fabric-neoforge.txt"))
-    mc_12105_fabric.link(mc_12105_neoforge, file("versions/mapping-1.21.5-fabric-neoforge.txt"))
-    mc_12108_fabric.link(mc_12108_neoforge, file("versions/mapping-1.21.8-fabric-neoforge.txt"))
-    mc_12110_fabric.link(mc_12110_neoforge, file("versions/mapping-1.21.10-fabric-neoforge.txt"))
-    mc_12111_fabric.link(mc_12111_neoforge, file("versions/mapping-1.21.11-fabric-neoforge.txt"))
+    mc_12002_fabric.link(mc_12002_neoforge, null)
+    mc_12006_fabric.link(mc_12006_neoforge, null)
+    mc_12101_fabric.link(mc_12101_neoforge, null)
+    mc_12103_fabric.link(mc_12103_neoforge, null)
+    mc_12104_fabric.link(mc_12104_neoforge, null)
+    mc_12105_fabric.link(mc_12105_neoforge, null)
+    mc_12108_fabric.link(mc_12108_neoforge, null)
+    mc_12110_fabric.link(mc_12110_neoforge, null)
+    mc_12111_fabric.link(mc_12111_neoforge, null)
 }
