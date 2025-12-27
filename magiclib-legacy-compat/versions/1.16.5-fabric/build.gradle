@@ -176,7 +176,7 @@ loom {
                 "--height",
                 project.getOrDefault("ow.game.window.height", "1080"),
                 "--username",
-                project.getOrDefault("ow.game.window.username", "dev")
+                project.getOrDefault("ow.game.username", "dev")
         ])
         vmArgs("-Dmagiclib.debug=true")
         vmArgs("-Dmagiclib.dev.qol=true")
