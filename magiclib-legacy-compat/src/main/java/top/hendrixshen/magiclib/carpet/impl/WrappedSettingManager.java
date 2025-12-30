@@ -18,9 +18,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,6 +45,10 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+
+//#if MC >= 12111
+//$$ import net.minecraft.commands.Commands;
+//#endif
 
 //#if MC > 11903
 //$$ import carpet.api.settings.CarpetRule;
@@ -164,13 +166,33 @@ public class WrappedSettingManager extends SettingsManager {
                 case "true":
                     return true;
                 case "ops":
+                    //#if MC >= 12111
+                    //$$ return Commands.LEVEL_GAMEMASTERS.check(source.permissions());
+                    //#else
                     return source.hasPermission(2);
+                    //#endif
                 case "0":
+                    //#if MC >= 12111
+                    //$$ return Commands.LEVEL_ALL.check(source.permissions());
+                    //#endif
                 case "1":
+                    //#if MC >= 12111
+                    //$$ return Commands.LEVEL_MODERATORS.check(source.permissions());
+                    //#endif
                 case "2":
+                    //#if MC >= 12111
+                    //$$ return Commands.LEVEL_ALL.check(source.permissions());
+                    //#endif
                 case "3":
+                    //#if MC >= 12111
+                    //$$ return Commands.LEVEL_ADMINS.check(source.permissions());
+                    //#endif
                 case "4":
+                    //#if MC >= 12111
+                    //$$ return Commands.LEVEL_OWNERS.check(source.permissions());
+                    //#else
                     return source.hasPermission(Integer.parseInt(commandLevelString));
+                    //#endif
                 default:
                     return false;
             }

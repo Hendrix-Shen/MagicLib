@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.HoverEvent;
@@ -49,6 +48,9 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
 // CHECKSTYLE.OFF: ImportOrder
+// Due to package name changes in mc1.21.11, ImportOrder checks have been disabled.
+import net.minecraft.Util;
+
 //#if MC > 12005
 //$$ import net.minecraft.core.Holder;
 //#endif

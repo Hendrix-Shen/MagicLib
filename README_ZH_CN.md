@@ -34,7 +34,7 @@
 
 ### 支持
 
-当前主开发版本：1.18.2
+当前主开发版本：1.16.5
 
 并且使用 `预处理` 来兼容各版本。
 
@@ -51,6 +51,14 @@
 - Minecraft 1.20.1
 - Minecraft 1.20.2
 - Minecraft 1.20.4
+- Minecraft 1.20.6
+- Minecraft 1.21.1
+- Minecraft 1.21.3
+- Minecraft 1.21.4
+- Minecraft 1.21.5
+- Minecraft 1.21.8
+- Minecraft 1.21.10
+- Minecraft 1.21.11
 
 ### 混淆映射表
 

@@ -165,9 +165,9 @@ tasks.register("genLocalProperties") {
             bufferedWriter.writeLine("# Overwritten configurations")
             bufferedWriter.writeLine("ow.build.environment.local=")
             bufferedWriter.writeLine("ow.build.environment.buildType=")
+            bufferedWriter.writeLine("ow.game.username=")
             bufferedWriter.writeLine("ow.game.window.width=")
             bufferedWriter.writeLine("ow.game.window.height=")
-            bufferedWriter.writeLine("ow.game.window.username=")
             bufferedWriter.close()
 
             project.getLogger().info("local.properties generated successfully!")

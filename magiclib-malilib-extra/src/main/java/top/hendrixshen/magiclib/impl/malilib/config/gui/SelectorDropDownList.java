@@ -26,12 +26,19 @@ import fi.dy.masa.malilib.render.RenderUtils;
 import org.jetbrains.annotations.Nullable;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12111
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC >= 12109
 //$$ import net.minecraft.client.input.CharacterEvent;
 //$$ import net.minecraft.client.input.KeyEvent;
 //#endif
 
-//#if MC > 11904
+//#if MC >= 12111
+//#elseif MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -147,7 +154,16 @@ public class SelectorDropDownList<T extends IStringValue> extends WidgetDropDown
      * Hover text rendering logic reference: {@link fi.dy.masa.malilib.gui.button.ButtonBase#postRenderHovered}.
      */
     //#if MC >= 12106
-    //$$ public void postRenderHovered(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean selected) {
+    //$$ public void postRenderHovered(
+    //$$         //#if MC >= 12111
+    //$$         //$$ GuiContext guiGraphics,
+    //$$         //#else
+    //$$         GuiGraphics guiGraphics,
+    //$$         //#endif
+    //$$         int mouseX,
+    //$$         int mouseY,
+    //$$         boolean selected
+    //$$ ) {
     //$$     super.postRenderHovered(guiGraphics, mouseX, mouseY, selected);
     //$$
     //$$     if (this.hoverText != null && this.isMouseOver(mouseX, mouseY) && !this.isOpen) {

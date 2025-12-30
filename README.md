@@ -34,7 +34,7 @@ To beat magic with magic :(
 
 ### Support
 
-Current main development for Minecraft version: 1.18.2
+Current main development for Minecraft version: 1.16.5
 
 And use `preprocess` to be compatible with all versions.
 
@@ -51,6 +51,14 @@ And use `preprocess` to be compatible with all versions.
 - Minecraft 1.20.1
 - Minecraft 1.20.2
 - Minecraft 1.20.4
+- Minecraft 1.20.6
+- Minecraft 1.21.1
+- Minecraft 1.21.3
+- Minecraft 1.21.4
+- Minecraft 1.21.5
+- Minecraft 1.21.8
+- Minecraft 1.21.10
+- Minecraft 1.21.11
 
 ### Mappings
 

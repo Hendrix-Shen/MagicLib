@@ -9,6 +9,12 @@ import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12111
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Vec3i;
 
@@ -152,7 +158,9 @@ public class GuiVec3iListEdit extends GuiListBase<Vec3i, WidgetVec3iListEditEntr
 
     @Override
     protected void drawScreenBackground(
-            //#if MC > 12006
+            //#if MC >= 12111
+            //$$ GuiContext guiGraphics,
+            //#elseif MC > 12006
             //$$ GuiGraphics guiGraphics,
             //#endif
             int mouseX,
@@ -173,7 +181,9 @@ public class GuiVec3iListEdit extends GuiListBase<Vec3i, WidgetVec3iListEditEntr
 
     @Override
     protected void drawTitle(
-            //#if MC > 11904
+            //#if MC >= 12111
+            //$$ GuiContext poseStackOrGuiGraphics,
+            //#elseif MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
             //#elseif MC > 11502
             PoseStack poseStackOrGuiGraphics,

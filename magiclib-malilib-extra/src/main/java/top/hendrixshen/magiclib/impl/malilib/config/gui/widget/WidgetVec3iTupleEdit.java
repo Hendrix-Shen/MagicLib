@@ -2,6 +2,12 @@ package top.hendrixshen.magiclib.impl.malilib.config.gui.widget;
 
 import fi.dy.masa.malilib.gui.widgets.WidgetContainer;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12111
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.core.Vec3i;
 
 // CHECKSTYLE.OFF: ImportOrder
@@ -11,7 +17,8 @@ import net.minecraft.core.Vec3i;
 //$$ import net.minecraft.client.input.MouseButtonEvent;
 //#endif
 
-//#if MC > 11904
+//#if MC >= 12111
+//#elseif MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -53,7 +60,16 @@ public class WidgetVec3iTupleEdit extends WidgetContainer {
 
     @Override
     //#if MC >= 12106
-    //$$ public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean selected) {
+    //$$ public void render(
+    //$$         //#if MC >= 12111
+    //$$         //$$ GuiContext guiGraphics,
+    //$$         //#else
+    //$$         GuiGraphics guiGraphics,
+    //$$         //#endif
+    //$$         int mouseX,
+    //$$         int mouseY,
+    //$$         boolean selected
+    //$$ ) {
     //$$     this.firstVec3iEdit.render(guiGraphics, mouseX, mouseY, selected);
     //$$     this.secondVec3iEdit.render(guiGraphics, mouseX, mouseY, selected);
     //$$     super.render(guiGraphics, mouseX, mouseY, selected);
