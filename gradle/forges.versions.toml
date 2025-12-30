@@ -12,7 +12,7 @@ neoforge-mc12104 = "21.4.156"
 neoforge-mc12105 = "21.5.96"
 neoforge-mc12108 = "21.8.52"
 neoforge-mc12110 = "21.10.64"
-neoforge-mc12111 = "21.11.14-beta"
+neoforge-mc12111 = "21.11.17-beta"
 
 [libraries]
 forge-mc11701 = { module = "net.minecraftforge:forge", version.ref = "forge-mc11701" }
