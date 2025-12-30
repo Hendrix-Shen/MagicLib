@@ -70,6 +70,7 @@ preprocess {
     Node mc_12105_neoforge = createNode("malilib-1.21.5-neoforge", 1_21_05, "mojang")
     Node mc_12108_neoforge = createNode("malilib-1.21.8-neoforge", 1_21_08, "mojang")
     Node mc_12110_neoforge = createNode("malilib-1.21.10-neoforge", 1_21_10, "mojang")
+    Node mc_12111_neoforge = createNode("malilib-1.21.11-neoforge", 1_21_11, "mojang")
 
     mc_12006_fabric.link(mc_12006_neoforge, null)
     mc_12101_fabric.link(mc_12101_neoforge, null)
@@ -78,4 +79,5 @@ preprocess {
     mc_12105_fabric.link(mc_12105_neoforge, null)
     mc_12108_fabric.link(mc_12108_neoforge, null)
     mc_12110_fabric.link(mc_12110_neoforge, null)
+    mc_12111_fabric.link(mc_12111_neoforge, null)
 }

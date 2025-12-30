@@ -122,6 +122,7 @@ mafglib-mc12104 = "0.4.2+mc1.21.4"
 mafglib-mc12105 = "0.4.2+mc1.21.5"
 mafglib-mc12108 = "0.4.3+mc1.21.8"
 mafglib-mc12110 = "0.4.9+mc1.21.10"
+mafglib-mc12111 = "0.4.0+mc1.21.11"
 
 # libraries will be removed after the migration to build-logic.
 [libraries]
@@ -250,3 +251,4 @@ mafglib-mc12104 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc
 mafglib-mc12105 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12105" }
 mafglib-mc12108 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12108" }
 mafglib-mc12110 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12110" }
+mafglib-mc12111 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12111" }
