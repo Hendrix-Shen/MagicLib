@@ -74,7 +74,7 @@ public class CoreProjectBuildLogic implements Plugin<Project> {
         repositories.add(repositories.mavenLocal());
         repositories.maven(repo -> {
             repo.setName("NyanMaven Mirror");
-            repo.setUrl("https://maven.hendrixshen.top/mirror");
+            repo.setUrl("https://maven.hendrixshen.moe/mirror");
         });
     }
 
@@ -219,7 +219,7 @@ public class CoreProjectBuildLogic implements Plugin<Project> {
                 });
                 repositoryHandler.maven(maven -> {
                     maven.setName("nyanMavenRelease");
-                    maven.setUrl("https://maven.hendrixshen.top/releases");
+                    maven.setUrl("https://maven.hendrixshen.moe/releases");
                     @SuppressWarnings("unchecked")
                     Closure<Void> credentialsNyanMaven = (Closure<Void>) extraProperties.get("credentialsNyanMaven");
                     assert credentialsNyanMaven != null;
