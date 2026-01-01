@@ -169,7 +169,7 @@ subprojects {
 
             maven {
                 name = "nyanMavenRelease"
-                url = "https://maven.hendrixshen.top/releases"
+                url = "https://maven.hendrixshen.moe/releases"
 
                 project.credentialsNyanMaven(it)
             }

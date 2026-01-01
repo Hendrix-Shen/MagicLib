@@ -8,7 +8,7 @@ repositories {
 
     maven {
         name = "NyanMaven Mirror"
-        url = "https://maven.hendrixshen.top/mirror"
+        url = "https://maven.hendrixshen.moe/mirror"
     }
 
     maven {

@@ -39,7 +39,7 @@ repositories {
 
     maven {
         name = "NyanMaven Mirror"
-        url = "https://maven.hendrixshen.top/mirror"
+        url = "https://maven.hendrixshen.moe/mirror"
     }
 
     maven {
@@ -270,7 +270,7 @@ publishing {
 
         maven {
             name = "nyanMavenRelease"
-            url = "https://maven.hendrixshen.top/releases"
+            url = "https://maven.hendrixshen.moe/releases"
 
             project.credentialsNyanMaven(it)
         }
