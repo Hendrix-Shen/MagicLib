@@ -107,6 +107,7 @@ subprojects {
         dependsOn("copyUnpublishModule")
         dependsOn(tasks.shadowJar)
         setArchiveClassifier('empty')
+        setManifest(null)
         exclude("**/*")
     }
 
@@ -118,7 +119,7 @@ subprojects {
         append("META-INF/accesstransformer.cfg")
 
         manifest {
-            attributes("MixinConfigs": "magiclib-core-bootstrap.mixins.json, magiclib-minecraft-api.mixins.json, magiclib-malilib-extra.mixins.json",)
+            attributes("MixinConfigs": "magiclib-core-bootstrap.mixins.json, magiclib-minecraft-api.mixins.json, magiclib-malilib-extra.mixins.json")
         }
 
         filesMatching("META-INF/accesstransformer.cfg") {
