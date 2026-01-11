@@ -21,7 +21,7 @@ lombok = "1.18.42"
 mixinextras = "0.5.2"
 preprocessor = "d452ef7"
 replace-token = "1.1.3"
-shadow = "9.3.0"
+shadow = "9.3.1"
 spongepowered-mixin = "0.8.7"
 yamlang = "1.5.0"
 
