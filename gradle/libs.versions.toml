@@ -1,5 +1,7 @@
 [plugins]
 architectury-loom = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
+architectury-loom-remap = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
+architectury-loom-no-remap = { id = "dev.architectury.loom-no-remap", version.ref = "architectury-loom" }
 grgit = { id = "org.ajoberstar.grgit", version.ref = "grgit" }
 preprocessor = { id = "com.replaymod.preprocess", version.ref = "preprocessor" }
 replace-token = { id = "top.hendrixshen.replace-token", version.ref = "replace-token" }
@@ -19,7 +21,7 @@ jetbrains-annotations = "26.1.0"
 log4j = "2.25.4"
 lombok = "1.18.44"
 mixinextras = "0.5.3"
-preprocessor = "d452ef7"
+preprocessor = "c5abb4f"
 replace-token = "1.2.0"
 shadow = "9.4.1"
 spongepowered-mixin = "0.8.7"
