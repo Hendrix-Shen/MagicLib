@@ -84,7 +84,7 @@ jobs:
           echo "mod_full_version=$mod_full_version" >> $GITHUB_OUTPUT
           echo "release_title=$release_title" >> $GITHUB_OUTPUT
       - name: Prepare changelog
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         id: changelog
         with:
           script: |
@@ -180,7 +180,7 @@ jobs:
           echo "hash=$FILE_HASH" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
       - name: Attach file info to changelog
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         id: changelog
         with:
           script: return process.env.CHANGELOG
