@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.architectury.loom.remap).apply(false)
     alias(libs.plugins.architectury.loom.no.remap).apply(false)
-    alias(libs.plugins.preprocessor.root).apply(false)
+    alias(libs.plugins.preprocessor).apply(false)
 
     id("top.hendrixshen.magiclib.build-logic.magic-loom-root")
 }
