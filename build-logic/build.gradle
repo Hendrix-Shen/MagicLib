@@ -25,10 +25,14 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
-    implementation(libs.architectury.loom)
-    implementation(libs.preprocessor)
-    implementation(libs.replace.token)
-    implementation(libs.shadow)
+    compileOnly(libs.architectury.loom)
+    compileOnly(libs.preprocessor)
+    compileOnly(libs.replace.token)
+    compileOnly(libs.shadow)
+    implementation(libs.gson)
+    implementation(libs.guava)
+    annotationProcessor(libs.lombok)
+    compileOnly(libs.lombok)
 }
 
 checkstyle {
@@ -51,6 +55,16 @@ gradlePlugin {
         register("coreProjectBuildLogic") {
             id = "top.hendrixshen.magiclib.build-logic.core-project"
             implementationClass = "top.hendrixshen.magiclib.buildLogic.config.CoreProjectBuildLogic"
+        }
+
+        register("magic-loom") {
+            id = "top.hendrixshen.magiclib.build-logic.magic-loom"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.MagicLoomPlugin"
+        }
+
+        register("magic-loom-root") {
+            id = "top.hendrixshen.magiclib.build-logic.magic-loom-root"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.RootMagicLoomPlugin"
         }
     }
 }

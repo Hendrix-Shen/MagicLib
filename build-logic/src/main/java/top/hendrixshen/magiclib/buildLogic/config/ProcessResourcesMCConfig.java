@@ -1,12 +1,14 @@
 package top.hendrixshen.magiclib.buildLogic.config;
 
+import net.fabricmc.loom.LoomGradlePlugin;
+
 import org.gradle.api.Project;
 import org.gradle.language.jvm.tasks.ProcessResources;
 import org.jetbrains.annotations.NotNull;
 
 import net.fabricmc.loom.api.LoomGradleExtensionAPI;
 import net.fabricmc.loom.util.ModPlatform;
-import top.hendrixshen.magiclib.buildLogic.Util;
+import top.hendrixshen.magiclib.buildLogic.util.Util;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -38,7 +40,9 @@ public class ProcessResourcesMCConfig extends ProcessResourcesConfig {
         // We need to wait for the configuration to evaluate before we can release magic
         // in order to inject subproject's own input configuration.
         project.afterEvaluate(super::apply);
-        this.modPlatform = project.getExtensions().getByType(LoomGradleExtensionAPI.class).getPlatform().get();
+        project.getPlugins().withType(LoomGradlePlugin.class).configureEach(plugin -> {
+            this.modPlatform = project.getExtensions().getByType(LoomGradleExtensionAPI.class).getPlatform().get();
+        });
     }
 
     @Override

@@ -13,19 +13,3 @@ neoforge-mc12105 = "21.5.96"
 neoforge-mc12108 = "21.8.52"
 neoforge-mc12110 = "21.10.64"
 neoforge-mc12111 = "21.11.38-beta"
-
-[libraries]
-forge-mc11701 = { module = "net.minecraftforge:forge", version.ref = "forge-mc11701" }
-forge-mc11802 = { module = "net.minecraftforge:forge", version.ref = "forge-mc11802" }
-forge-mc11904 = { module = "net.minecraftforge:forge", version.ref = "forge-mc11904" }
-forge-mc12001 = { module = "net.minecraftforge:forge", version.ref = "forge-mc12001" }
-
-neoforge-mc12002 = { module = "net.neoforged:neoforge", version.ref = "neoforge-mc12002" }
-neoforge-mc12006 = { module = "net.neoforged:neoforge", version.ref = "neoforge-mc12006" }
-neoforge-mc12101 = { module = "net.neoforged:neoforge", version.ref = "neoforge-mc12101" }
-neoforge-mc12103 = { module = "net.neoforged:neoforge", version.ref = "neoforge-mc12103" }
-neoforge-mc12104 = { module = "net.neoforged:neoforge", version.ref = "neoforge-mc12104" }
-neoforge-mc12105 = { module = "net.neoforged:neoforge", version.ref = "neoforge-mc12105" }
-neoforge-mc12108 = { module = "net.neoforged:neoforge", version.ref = "neoforge-mc12108" }
-neoforge-mc12110 = { module = "net.neoforged:neoforge", version.ref = "neoforge-mc12110" }
-neoforge-mc12111 = { module = "net.neoforged:neoforge", version.ref = "neoforge-mc12111" }

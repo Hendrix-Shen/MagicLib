@@ -1,4 +1,4 @@
-package top.hendrixshen.magiclib.buildLogic;
+package top.hendrixshen.magiclib.buildLogic.util;
 
 import org.jetbrains.annotations.NotNull;
 
