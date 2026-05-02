@@ -57,11 +57,11 @@ repositories {
 
 // Configuration name, Module, Resolve condition, Use version mapping, Configuration closure.
 def deps = [
-        ["autoApi"       , "fabric"                                      , fabricLike                     , true , { }],
-        ["autoApi"       , "modmenu"                                     , fabricLike                     , true , { transitive = false }],
-        ["modRuntimeOnly", "in-game-account-switcher-${modPlatform.id()}", true                           , true , { transitive = false }],
-        ["modRuntimeOnly", "imblocker"                                   , fabricLike && mcVersion < 12109, false, { transitive = false }],
-        ["modRuntimeOnly", "imblocker-original-${modPlatform.id()}"      , forgeLike                      , true , { transitive = false }]
+        ["autoApi"        , "fabric"                                      , fabricLike                     , true , { }],
+        ["autoApi"        , "modmenu"                                     , fabricLike                     , true , { transitive = false }],
+        ["autoRuntimeOnly", "in-game-account-switcher-${modPlatform.id()}", true                           , true , { transitive = false }],
+        ["autoRuntimeOnly", "imblocker"                                   , fabricLike && mcVersion < 12109, false, { transitive = false }],
+        ["autoRuntimeOnly", "imblocker-original-${modPlatform.id()}"      , forgeLike                      , true , { transitive = false }]
 ]
 
 dependencies {
