@@ -1,5 +1,7 @@
 package top.hendrixshen.magiclib.buildLogic.configuration;
 
+import net.fabricmc.loom.LoomRemapGradlePlugin;
+
 import org.gradle.api.Action;
 import org.gradle.api.NamedDomainObjectProvider;
 import org.gradle.api.Project;
@@ -66,7 +68,7 @@ public abstract class MagicLoomConfigurations implements Runnable {
         if (this.projectDetail.isUnobfuscatedVersion()) {
             this.getProject().getPlugins().apply(LoomNoRemapGradlePlugin.class);
         } else {
-            this.getProject().getPlugins().apply(LoomGradlePlugin.class);
+            this.getProject().getPlugins().apply(LoomRemapGradlePlugin.class);
         }
 
         this.register(ConfigurationNames.AUTO_API, Role.RESOLVABLE);
@@ -111,7 +113,7 @@ public abstract class MagicLoomConfigurations implements Runnable {
 
         if (loom.getPlatform().get() == ModPlatform.FABRIC || loom.getPlatform().get() == ModPlatform.QUILT) {
             loom.mixin(mixin -> {
-                mixin.getUseLegacyMixinAp().set(true);
+                mixin.getUseLegacyMixinAp().set(!this.projectDetail.isUnobfuscatedVersion());
             });
         }
 

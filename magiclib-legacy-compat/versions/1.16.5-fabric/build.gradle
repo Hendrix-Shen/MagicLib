@@ -13,8 +13,7 @@ plugins {
     id("top.hendrixshen.magiclib.build-logic.process-resources-minecraft")
 }
 
-int mcVersion = 0
-
+final int mcVersion = magic.projectDetail.get().getMinecraftVersionNumber()
 final ModPlatform modPlatform = magic.projectDetail.get().getPlatform()
 final boolean fabricLike = !modPlatform.isForgeLike()
 final boolean forgeLike = modPlatform.isForgeLike()
@@ -22,10 +21,6 @@ String projectName = project.name.replace("legacy-", "")
 Project betterDev = evaluationDependsOn(":magiclib-better-dev:better-dev-${projectName}")
 Project malilib = evaluationDependsOn(":magiclib-malilib-extra:malilib-${projectName}")
 Project mcAPI = evaluationDependsOn(":magiclib-minecraft-api:mc-api-${projectName}")
-
-preprocess {
-    mcVersion = vars.get().get("MC")
-}
 
 repositories {
     mavenLocal()
@@ -164,10 +159,12 @@ base {
     setVersion(project.getModVersion(project.parent))
 }
 
-remapJar {
-    if (forgeLike) {
-        if (modPlatform == "neoforge") {
-            atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
+if (!magic.projectDetail.get().isUnobfuscatedVersion()) {
+    remapJar {
+        if (forgeLike) {
+            if (modPlatform == ModPlatform.NEOFORGE) {
+                atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
+            }
         }
     }
 }
