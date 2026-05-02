@@ -15,6 +15,7 @@ import net.fabricmc.loom.util.ModPlatform;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,7 +65,7 @@ public class ProjectDetail {
     }
 
     private ProjectDetail(String project, String prefix, ModPlatform modPlatform, String minecraftVersionName, boolean magiclibMode, List<String> extraFlags) {
-        Matcher matcher = Pattern.compile("^(?<version>(?<major>0|[1-9]\\d*)\\.(?<minor>0|[1-9]\\d*)\\.(?<patch>0|[1-9]\\d*))$").matcher(minecraftVersionName);
+        Matcher matcher = Pattern.compile("^(?<version>(?<major>0|[1-9]\\d*)\\.(?<minor>0|[1-9]\\d*)(?:\\.(?<patch>0|[1-9]\\d*))?)$").matcher(minecraftVersionName);
 
         if (!matcher.find()) {
             throw new ProjectParseException("Invalid minecraft version name: " + project);
@@ -77,7 +78,7 @@ public class ProjectDetail {
         this.magiclibMode = magiclibMode;
         this.minecraftMajor = Integer.parseInt(matcher.group("major"));
         this.minecraftMinor = Integer.parseInt(matcher.group("minor"));
-        this.minecraftPatch = Integer.parseInt(matcher.group("patch"));
+        this.minecraftPatch = Optional.ofNullable(matcher.group("patch")).map(Integer::parseInt).orElse(0);
         extraFlags.stream().filter(flag -> {
             if (ProjectDetail.BLACKLIST_FLAGS.contains(flag)) {
                 ProjectDetail.LOGGER.warn("Ignored blacklist flag: {}" + flag);
@@ -89,7 +90,7 @@ public class ProjectDetail {
     }
 
     private ProjectDetail(String project, String prefix, boolean magiclibMode) {
-        Matcher matcher = Pattern.compile("^(?<version>(?<major>0|[1-9]\\d*)\\.(?<minor>0|[1-9]\\d*)\\.(?<patch>0|[1-9]\\d*))(?:-(?<platform>fabric|quilt|forge|neoforge))?$").matcher(project);
+        Matcher matcher = Pattern.compile("^(?<version>(?<major>0|[1-9]\\d*)\\.(?<minor>0|[1-9]\\d*)(?:\\.(?<patch>0|[1-9]\\d*))?)(?:-(?<platform>fabric|quilt|forge|neoforge))?$").matcher(project);
 
         if (!matcher.find()) {
             throw new ProjectParseException("Invalid project name: " + project);
@@ -102,7 +103,7 @@ public class ProjectDetail {
         this.magiclibMode = magiclibMode;
         this.minecraftMajor = Integer.parseInt(matcher.group("major"));
         this.minecraftMinor = Integer.parseInt(matcher.group("minor"));
-        this.minecraftPatch = Integer.parseInt(matcher.group("patch"));
+        this.minecraftPatch = Optional.ofNullable(matcher.group("patch")).map(Integer::parseInt).orElse(0);
     }
 
     public String getProjectNameReal() {

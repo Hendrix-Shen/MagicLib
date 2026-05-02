@@ -112,16 +112,26 @@ for (String module_name : settings.get("projects").keySet()) {
     }
 
     for (String ver : versions) {
-        Matcher matcher = Pattern.compile("^((?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)(?:_\\w+)*)-(fabric|forge|neoforge|quilt)?\$").matcher(ver)
+        Matcher matcher = Pattern.compile("^((?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*))?(?:_\\w+)*)-(fabric|forge|neoforge|quilt)?\$").matcher(ver)
 
         if (!matcher.matches()) {
             throw new IllegalArgumentException("Invalid submodule name: ${ver}")
         }
 
+        File project_dir = file("${module_name}/versions/${ver}")
+
+        if (!project_dir.exists()) {
+            if (!project_dir.mkdirs()) {
+                throw new IllegalArgumentException("Failed to create missing submodule directory: ${project_dir.absolutePath}")
+            }
+
+            logger.warn("Creating missing submodule directory: ${project_dir.absolutePath}")
+        }
+
         String project_name = "${module_name}:${prefix}-${ver}"
         include("${project_name}")
         ProjectDescriptor proj = project(":${project_name}")
-        proj.setProjectDir(file("${module_name}/versions/${ver}"))
+        proj.setProjectDir(project_dir)
         proj.setBuildFileName("../${mainProject}/build.gradle")
         wrappers.computeIfAbsent(matcher.group(2), key -> new HashSet<>()).add(matcher.group(1))
     }
