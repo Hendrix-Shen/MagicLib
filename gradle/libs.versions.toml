@@ -1,7 +1,6 @@
 [plugins]
-architectury-loom = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
-architectury-loom-remap = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
-architectury-loom-no-remap = { id = "dev.architectury.loom-no-remap", version.ref = "architectury-loom" }
+essential-loom-remap = { id = "gg.essential.loom-remap", version.ref = "essential-loom" }
+essential-loom-no-remap = { id = "gg.essential.loom-no-remap", version.ref = "essential-loom" }
 grgit = { id = "org.ajoberstar.grgit", version.ref = "grgit" }
 preprocessor = { id = "com.replaymod.preprocess", version.ref = "preprocessor" }
 replace-token = { id = "top.hendrixshen.replace-token", version.ref = "replace-token" }
@@ -9,10 +8,10 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 yamlang = { id = "me.fallenbreath.yamlang", version.ref = "yamlang" }
 
 [versions]
-architectury-loom = "1.14-SNAPSHOT"
 asm = "9.9.1"
 checkstyle = "13.4.1"
 commons-lang3 = "3.20.0"
+essential-loom = "1.15.50"
 fabric-loader = "0.19.2"
 grgit = "5.3.3"
 gson = "2.14.0"
@@ -47,7 +46,7 @@ mixinextras-fabric = { module = "io.github.llamalad7:mixinextras-fabric", versio
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 
 # Plugin
-architectury-loom = { module = "dev.architectury.loom:dev.architectury.loom.gradle.plugin", version.ref = "architectury-loom" }
+essential-loom = { module = "gg.essential.loom:gg.essential.loom.gradle.plugin", version.ref = "essential-loom" }
 preprocessor = { module = "com.github.Fallen-Breath:preprocessor", version.ref = "preprocessor" }
 replace-token = { module = "top.hendrixshen.replace-token:top.hendrixshen.replace-token.gradle.plugin", version.ref = "replace-token" }
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }

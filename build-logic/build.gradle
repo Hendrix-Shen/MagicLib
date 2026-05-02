@@ -12,11 +12,6 @@ repositories {
     }
 
     maven {
-        name = "Architectury"
-        url = "https://maven.architectury.dev"
-    }
-
-    maven {
         name = "Jitpack"
         url = "https://jitpack.io"
     }
@@ -25,7 +20,7 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
-    compileOnly(libs.architectury.loom)
+    compileOnly(libs.essential.loom)
     compileOnly(libs.preprocessor)
     compileOnly(libs.replace.token)
     compileOnly(libs.shadow)
