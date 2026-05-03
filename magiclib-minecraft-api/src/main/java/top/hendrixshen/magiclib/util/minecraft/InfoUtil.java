@@ -21,8 +21,18 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 public class InfoUtil {
     public static void displayClientMessage(BaseComponent component, boolean useActionBar) {
+        //#if MC >= 21.1
+        //$$ ValueContainer.ofNullable(Minecraft.getInstance().player).ifPresent(p -> {
+        //$$     if (useActionBar) {
+        //$$         p.sendOverlayMessage(component);
+        //$$     } else {
+        //$$         p.sendSystemMessage(component);
+        //$$     }
+        //$$ });
+        //#else
         ValueContainer.ofNullable(Minecraft.getInstance().player).ifPresent(p ->
                 p.displayClientMessage(component, useActionBar));
+        //#endif
     }
 
     public static void displayClientMessage(@NotNull MutableComponentCompat component, boolean useActionBar) {

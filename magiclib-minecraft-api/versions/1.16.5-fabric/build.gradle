@@ -64,10 +64,10 @@ dependencies {
     api(annotationProcessor(project(path: ":magiclib-core:${modPlatform.id()}", configuration: "shadow")))
 
     // Dont publish better dev dependencies.
-    compileOnly(project(path: betterDev.path, configuration: "namedElements"))
-    localRuntime(project(path: betterDev.path, configuration: "namedElements"))
+    compileOnly(project(path: betterDev.path, configuration: magic.projectDetail.get().isUnobfuscatedVersion() ? null : "namedElements"))
+    localRuntime(project(path: betterDev.path, configuration: magic.projectDetail.get().isUnobfuscatedVersion() ? null : "namedElements"))
 
-    if (forgeLike) {
+    if (forgeLike && !magic.projectDetail.get().isUnobfuscatedVersion()) {
         compileOnly(project(path: betterDev.path, configuration: "modCompileClasspathMainMapped"))
         localRuntime(project(path: betterDev.path, configuration: "modRuntimeClasspathMainMapped"))
     }

@@ -37,7 +37,7 @@ import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 import java.util.List;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/073a2b6047084feedfe74c29274bcc3bdd750792/versions/1.21.8/src/main/java/me/fallenbreath/tweakermore/util/render/context/InWorldGuiDrawer.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/61fe6d85363cac594130d215c26f3d4307fcb09f/versions/1.21.8/src/main/java/me/fallenbreath/tweakermore/util/render/context/InWorldGuiDrawer.java">TweakerMore</a>.
  *
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)</li>
  * <li>mc1.21.6+        : subproject 1.21.8        &lt;--------</li>
@@ -96,7 +96,13 @@ public class InWorldGuiDrawer implements AutoCloseable {
         RenderSystem.backupProjectionMatrix();
         this.guiRenderer.render(this.fogRenderer.getBuffer(FogRenderer.FogMode.NONE));
         RenderSystem.restoreProjectionMatrix();
+
+        //#if MC >= 26.1
+        //$$ this.guiRenderer.endFrame();
+        //#else
         this.guiRenderer.incrementFrameNumber();
+        //#endif
+
         this.fogRenderer.endFrame();
         this.guiState.reset();
     }

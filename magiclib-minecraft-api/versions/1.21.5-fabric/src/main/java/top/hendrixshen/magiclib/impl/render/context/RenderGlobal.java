@@ -29,6 +29,10 @@ import com.mojang.blaze3d.platform.DestFactor;
 import com.mojang.blaze3d.platform.SourceFactor;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.1
+//$$ import com.mojang.blaze3d.pipeline.ColorTargetState;
+//#endif
+
 //#if MC < 12106
 import com.mojang.blaze3d.systems.RenderSystem;
 //#endif
@@ -92,7 +96,15 @@ public class RenderGlobal {
     }
 
     public static void colorMask(boolean red, boolean green, boolean blue, boolean alpha) {
+        //#if MC >= 26.1
+        //$$ int colorMask = (red ? ColorTargetState.WRITE_RED : ColorTargetState.WRITE_NONE)
+        //$$         + (green ? ColorTargetState.WRITE_GREEN : ColorTargetState.WRITE_NONE)
+        //$$         + (blue ? ColorTargetState.WRITE_BLUE : ColorTargetState.WRITE_NONE)
+        //$$         + (alpha ? ColorTargetState.WRITE_ALPHA : ColorTargetState.WRITE_NONE);
+        //$$ GlStateManager._colorMask(colorMask);
+        //#else
         GlStateManager._colorMask(red, green, blue, alpha);
+        //#endif
     }
 
     //#if MC < 12106

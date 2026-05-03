@@ -1,0 +1,2 @@
+net.minecraft.client.gui.GuiGraphics net.minecraft.client.gui.GuiGraphicsExtractor
+net.minecraft.client.gui.render.state.GuiRenderState net.minecraft.client.renderer.state.gui.GuiRenderState

@@ -38,7 +38,7 @@ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.injector.v2.WrapW
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/70d455206b76922b274f36535f5ebdcec8faa7ac/versions/1.21.8/src/main/java/me/fallenbreath/tweakermore/mixins/util/render/GuiRendererMixin.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/61fe6d85363cac594130d215c26f3d4307fcb09f/versions/1.21.8/src/main/java/me/fallenbreath/tweakermore/mixins/util/render/GuiRendererMixin.java">TweakerMore</a>.
  *
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project) [dummy]</li>
  * <li>mc1.21.6+        : subproject 1.21.8        &lt;--------</li>
@@ -59,7 +59,7 @@ public abstract class GuiRendererMixin implements InWorldGuiRendererHook {
                     value = "INVOKE",
                     target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lcom/mojang/blaze3d/ProjectionType;)V")
     )
-    private boolean skipSetProjectionMatrixForInWorldGuiRendering(GpuBufferSlice gpuBufferSlice, ProjectionType projectionType, @Local Window window) {
+    private boolean skipSetProjectionMatrixForInWorldGuiRendering(GpuBufferSlice gpuBufferSlice, ProjectionType projectionType) {
         return !this.magiclib$inWorldGuiRender;
     }
 

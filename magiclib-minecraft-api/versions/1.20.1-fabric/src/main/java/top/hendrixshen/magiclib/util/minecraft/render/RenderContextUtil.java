@@ -29,7 +29,11 @@ public class RenderContextUtil {
     //$$     Minecraft minecraft = Minecraft.getInstance();
     //$$     return new GuiGraphics(
     //$$             minecraft,
+    //$$             //#if MC >= 26.1
+    //$$             //$$ minecraft.gameRenderer.getGameRenderState().guiRenderState
+    //$$             //#else
     //$$             ((GameRendererAccessor) minecraft.gameRenderer).magiclib$getGuiRenderState()
+    //$$             //#endif
     //$$             //#if MC >= 12111
     //$$             // CHECKSTYLE.OFF: NoWhitespaceBefore
     //$$             // CHECKSTYLE.OFF: SeparatorWrap
