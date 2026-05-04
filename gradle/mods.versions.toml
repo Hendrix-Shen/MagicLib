@@ -114,7 +114,8 @@ malilib-mc12104 = "0.23.5"
 malilib-mc12105 = "0.24.3"
 malilib-mc12108 = "0.25.7"
 malilib-mc12110 = "0.26.8"
-malilib-mc12111 = "0.27.5"
+malilib-mc12111 = "0.27.9"
+malilib-mc260102 = "0.28.3"
 
 mafglib-mc11701 = "0.1.6-mc1.17.1"
 mafglib-mc11802 = "0.1.14-mc1.18.2"
@@ -127,7 +128,8 @@ mafglib-mc12104 = "0.4.3+mc1.21.4"
 mafglib-mc12105 = "0.4.3+mc1.21.5"
 mafglib-mc12108 = "0.4.5+mc1.21.8"
 mafglib-mc12110 = "0.4.11+mc1.21.10"
-mafglib-mc12111 = "0.4.2+mc1.21.11"
+mafglib-mc12111 = "fKaY22pe" # 0.4.4+mc1.21.11
+mafglib-mc260102 = "bThmGExj" # 0.5.0+mc26.1.1
 
 # libraries will be removed after the migration to build-logic.
 [libraries]
@@ -151,6 +153,8 @@ fabric-mc12108 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = 
 fabric-mc12110 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12110" }
 fabric-mc12111 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc12111" }
 fabric-mc260102 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc260102" }
+
+foxifiedclasstweaker = "maven.modrinth:foxifiedclasstweaker:0.1.0-alpha.3"
 
 imblocker = "maven.modrinth:imblocker:1.0.24"
 
@@ -249,6 +253,7 @@ malilib-mc12105 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc
 malilib-mc12108 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12108" }
 malilib-mc12110 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12110" }
 malilib-mc12111 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12111" }
+malilib-mc260102 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc260102" }
 
 mafglib-mc11701 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11701" }
 mafglib-mc11802 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11802" }
@@ -262,3 +267,4 @@ mafglib-mc12105 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc
 mafglib-mc12108 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12108" }
 mafglib-mc12110 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12110" }
 mafglib-mc12111 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc12111" }
+mafglib-mc260102 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc260102" }

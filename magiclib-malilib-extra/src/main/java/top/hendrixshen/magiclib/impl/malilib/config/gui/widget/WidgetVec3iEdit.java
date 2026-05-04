@@ -23,16 +23,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.Vec3i;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC > 26.1
+//#elseif MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#elseif MC > 11502
+import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
+
 //#if MC >= 12109
 //$$ import net.minecraft.client.input.CharacterEvent;
 //$$ import net.minecraft.client.input.KeyEvent;
 //$$ import net.minecraft.client.input.MouseButtonEvent;
-//#endif
-
-//#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11502
-import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
@@ -148,17 +149,19 @@ public class WidgetVec3iEdit extends WidgetContainer {
     @Override
     //#if MC >= 12106
     //$$ public void render(
-    //$$         //#if MC >= 12111
-    //$$         //$$ GuiContext guiGraphics,
+    //$$         //#if MC >= 26.1
+    //$$         //$$ GuiContext guiContext,
+    //$$         //#elseif MC >= 12111
+    //$$         //$$ GuiContext guiContext,
     //$$         //#else
-    //$$         GuiGraphics guiGraphics,
+    //$$         GuiGraphics guiContext,
     //$$         //#endif
     //$$         int mouseX,
     //$$         int mouseY,
     //$$         boolean selected
     //$$ ) {
-    //$$     this.drawTextFields(mouseX, mouseY, guiGraphics);
-    //$$     super.render(guiGraphics, mouseX, mouseY, selected);
+    //$$     this.drawTextFields(mouseX, mouseY, guiContext);
+    //$$     super.render(guiContext, mouseX, mouseY, selected);
     //$$ }
     //#else
     public void render(
@@ -328,10 +331,12 @@ public class WidgetVec3iEdit extends WidgetContainer {
             // CHECKSTYLE.OFF: SeparatorWrap
             int mouseX,
             int mouseY
-            //#if MC > 11904
-            //$$ , GuiGraphics poseStackOrGuiGraphics
+            //#if MC >= 26.1
+            //$$ , GuiContext guiContext
+            //#elseif MC > 11904
+            //$$ , GuiGraphics guiContext
             //#elseif MC > 11502
-            , PoseStack poseStackOrGuiGraphics
+            , PoseStack guiContext
             //#endif
             // CHECKSTYLE.ON: SeparatorWrap
             // CHECKSTYLE.ON: NoWhitespaceBefore
@@ -341,11 +346,15 @@ public class WidgetVec3iEdit extends WidgetContainer {
         }
 
         Consumer<TextFieldWrapper<? extends GuiTextFieldGeneric>> drawTextField = wrapper -> wrapper.getTextField()
+                //#if MC >= 26.1
+                //$$ .renderWrapper(
+                //#else
                 .render(
+                        //#endif
                         // CHECKSTYLE.OFF: NoWhitespaceBefore
                         // CHECKSTYLE.OFF: SeparatorWrap
                         //#if MC > 11502
-                        poseStackOrGuiGraphics,
+                        guiContext,
                         //#endif
                         mouseX,
                         mouseY,

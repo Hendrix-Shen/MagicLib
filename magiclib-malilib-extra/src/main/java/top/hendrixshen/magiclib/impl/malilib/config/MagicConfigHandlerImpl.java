@@ -241,7 +241,12 @@ public class MagicConfigHandlerImpl implements MagicConfigHandler {
         JsonObject root = null;
 
         if (this.configFile.exists() && this.configFile.isFile() && this.configFile.canRead()) {
-            JsonElement element = JsonUtils.parseJsonFile(this.configFile);
+            JsonElement element = JsonUtils.parseJsonFile(
+                    this.configFile
+                    //#if MC >= 26.1
+                    //$$         .toPath()
+                    //#endif
+            );
 
             if (element != null && element.isJsonObject()) {
                 root = element.getAsJsonObject();
@@ -258,7 +263,13 @@ public class MagicConfigHandlerImpl implements MagicConfigHandler {
         this.saveToJson();
 
         //#if MC > 11605
-        //$$ JsonUtils.writeJsonToFile(this.loadedJson, configFile);
+        //$$ JsonUtils.writeJsonToFile(
+        //$$         this.loadedJson,
+        //$$         configFile
+        //$$         //#if MC >= 26.1
+        //$$         //$$         .toPath()
+        //$$         //#endif
+        //$$ );
         //#else
         try {
             File tempFile = new File(configFile.getParent(), configFile.getName() + ".tmp");

@@ -39,19 +39,18 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ae01c423f14ad6d3e45527bfe9450191ba19bd35/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/element/WidgetDropDownListMixin.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/8518042b4ef3a5bbff72dd2192e2d97080ffba63/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/element/WidgetDropDownListMixin.java">TweakerMore</a>.
  */
 @Mixin(value = WidgetDropDownList.class, remap = false)
 public abstract class WidgetDropDownListMixin {
+    //#if MC < 12111
     //#if FABRIC_LIKE
     @SuppressWarnings({"ConstantConditions", "PointlessBitwiseExpression", "PointlessArithmeticExpression"})
     @ModifyArgs(
             method = "render",
             at = @At(
                     value = "INVOKE",
-                    //#if MC >= 12111
-                    //$$ target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(Lfi/dy/masa/malilib/render/GuiContext;IIIII)V"
-                    //#elseif MC >= 12106
+                    //#if MC >= 12106
                     //$$ target = "Lfi/dy/masa/malilib/render/RenderUtils;drawRect(Lnet/minecraft/client/gui/GuiGraphics;IIIII)V",
                     //$$ remap = true
                     //#elseif MC > 12104
@@ -141,6 +140,7 @@ public abstract class WidgetDropDownListMixin {
     //$$
     //$$     return x;
     //$$ }
+    //#endif
     //#endif
 
     @SuppressWarnings("ConstantConditions")
