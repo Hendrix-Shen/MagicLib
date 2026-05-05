@@ -1,4 +1,25 @@
 [versions]
+carpet-mc11404 = "1.14.4-1.3.7+v200127"
+carpet-mc11502 = "1.15.2-1.4.8+v200811"
+carpet-mc11605 = "1.16.5-1.4.44+v210714"
+carpet-mc11701 = "1.17.1-1.4.57+v220119"
+carpet-mc11802 = "1.18.2-1.4.69+v220331"
+carpet-mc11902 = "1.19.2-1.4.84+v221018"
+carpet-mc11903 = "1.19.3-1.4.96+v230201"
+carpet-mc11904 = "1.19.4-1.4.101+v230319"
+carpet-mc12001 = "1.20-1.4.112+v230608"
+carpet-mc12002 = "1.20.2-1.4.119+v230928"
+carpet-mc12004 = "1.20.3-1.4.128+v231205"
+carpet-mc12006 = "1.20.6-1.4.141+v240429"
+carpet-mc12101 = "1.21-1.4.147+v240613"
+carpet-mc12103 = "1.21.2-1.4.158+v241022"
+carpet-mc12104 = "1.21.4-1.4.161+v241203"
+carpet-mc12105 = "1.21.5-1.4.169+v250325"
+carpet-mc12108 = "1.21.7-1.4.177+v250630"
+carpet-mc12110 = "1.21.10-1.4.188+v251016"
+carpet-mc12111 = "1.21.11-1.4.194+v260107"
+carpet-mc260102 = "26.1+v260401"
+
 fabric-mc11404 = "0.28.5+1.14"
 fabric-mc11502 = "0.28.5+1.15"
 fabric-mc11605 = "0.42.0+1.16"
@@ -133,6 +154,27 @@ mafglib-mc260102 = "bThmGExj" # 0.5.0+mc26.1.1
 
 # libraries will be removed after the migration to build-logic.
 [libraries]
+carpet-mc11404 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc11404" }
+carpet-mc11502 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc11502" }
+carpet-mc11605 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc11605" }
+carpet-mc11701 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc11701" }
+carpet-mc11802 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc11802" }
+carpet-mc11902 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc11902" }
+carpet-mc11903 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc11903" }
+carpet-mc11904 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc11904" }
+carpet-mc12001 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12001" }
+carpet-mc12002 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12002" }
+carpet-mc12004 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12004" }
+carpet-mc12006 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12006" }
+carpet-mc12101 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12101" }
+carpet-mc12103 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12103" }
+carpet-mc12104 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12104" }
+carpet-mc12105 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12105" }
+carpet-mc12108 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12108" }
+carpet-mc12110 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12110" }
+carpet-mc12111 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12111" }
+carpet-mc260102 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc260102" }
+
 fabric-mc11404 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11404" }
 fabric-mc11502 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11502" }
 fabric-mc11605 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11605" }

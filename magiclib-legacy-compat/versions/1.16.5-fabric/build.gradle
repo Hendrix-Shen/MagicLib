@@ -21,6 +21,7 @@ String projectName = project.name.replace("legacy-", "")
 Project betterDev = evaluationDependsOn(":magiclib-better-dev:better-dev-${projectName}")
 Project malilib = evaluationDependsOn(":magiclib-malilib-extra:malilib-${projectName}")
 Project mcAPI = evaluationDependsOn(":magiclib-minecraft-api:mc-api-${projectName}")
+final VersionCatalogsExtension catalogsExtension = project.getExtensions().getByType(VersionCatalogsExtension.class)
 
 repositories {
     mavenLocal()
@@ -51,14 +52,9 @@ repositories {
     mavenCentral()
 }
 
-// Module, Property prefix, Resolve condition, Transitive dependencies.
-def apiDependencies = [
-        ["carpet:fabric-carpet", "carpet", true, false],
-]
-
-// Module, Property prefix, Resolve condition, Transitive dependencies.
-def runtimeDependencies = [
-        ["", "", false, false],
+// Configuration name, Module, Resolve condition, Use version mapping, Configuration closure.
+def deps = [
+        ["autoApi", "carpet", true, true, { transitive = false }],
 ]
 
 dependencies {
@@ -69,48 +65,35 @@ dependencies {
     // MagicLib Core
     api(annotationProcessor(project(path: ":magiclib-core:${modPlatform.id()}", configuration: "shadow")))
 
-    api(project(path: betterDev.path, configuration: "namedElements"))
-    api(project(path: malilib.path, configuration: "namedElements"))
-    api(project(path: mcAPI.path, configuration: "namedElements"))
+    // MC-API
+    api(project(path: malilib.path, configuration: magic.projectDetail.get().isUnobfuscatedVersion() ? null : "namedElements"))
+    // MaLiLib-Extra
+    api(project(path: mcAPI.path, configuration: magic.projectDetail.get().isUnobfuscatedVersion() ? null : "namedElements"))
 
-    if (forgeLike) {
+    // Dont publish better dev dependencies.
+    compileOnly(project(path: betterDev.path, configuration: magic.projectDetail.get().isUnobfuscatedVersion() ? null : "namedElements"))
+    localRuntime(project(path: betterDev.path, configuration: magic.projectDetail.get().isUnobfuscatedVersion() ? null : "namedElements"))
+
+    if (forgeLike && !magic.projectDetail.get().isUnobfuscatedVersion()) {
         compileOnly(project(path: betterDev.path, configuration: "modCompileClasspathMainMapped"))
         localRuntime(project(path: betterDev.path, configuration: "modRuntimeClasspathMainMapped"))
     }
 
-    // API
-    apiDependencies.forEach { item ->
-        String dependencyNotation = item[0]
-        String dependencyVersion = project.findProperty("dependencies.api.${item[1]}_version")
-        boolean shouldResolve = item[2] && dependencyVersion != "0"
-        boolean shouldTransitive = item[3]
+    deps.forEach { item ->
+        String configurationName = item[0]
+        String dependencyName = item[1]
+        boolean shouldResolve = item[2]
 
-        if (shouldResolve) {
-            if (!dependencyVersion) {
-                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
-            }
-
-            modApi("${dependencyNotation}:${dependencyVersion}") {
-                transitive = shouldTransitive
-            }
+        if (!shouldResolve) {
+            return
         }
-    }
 
-    // Runtime Library - Make development environment comfortable.
-    runtimeDependencies.forEach { item ->
-        String dependencyNotation = item[0]
-        String dependencyVersion = project.findProperty("dependencies.runtime.${item[1]}_version")
-        boolean shouldResolve = item[2] && dependencyVersion != "0"
-        boolean shouldTransitive = item[3]
+        org.gradle.api.provider.Provider<MinimalExternalModuleDependency> dep = catalogsExtension.named("mods").findLibrary(item[3] ? "${dependencyName}-mc${mcVersion}" : dependencyName).orElseThrow { throw new GradleException("No mod library found for ${dependencyName + (item[3] ? "-mc${mcVersion}" : "")}") }
+        shouldResolve &= dep.get().getVersion() != "0"
+        Closure<Void> closure = (Closure<Void>) item[4]
 
         if (shouldResolve) {
-            if (!dependencyVersion) {
-                throw new RuntimeException("Could not get unknown property 'dependencies.runtime.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
-            }
-
-            modRuntimeOnly("${dependencyNotation}:${dependencyVersion}") {
-                transitive = shouldTransitive
-            }
+            add(configurationName, dep, closure)
         }
     }
 }
