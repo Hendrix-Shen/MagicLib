@@ -24,7 +24,6 @@ import org.joml.Matrix4fc;
 
 import com.mojang.blaze3d.ProjectionType;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.render.GuiRenderer;
 
@@ -35,7 +34,6 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import top.hendrixshen.magiclib.api.fake.render.InWorldGuiRendererHook;
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/61fe6d85363cac594130d215c26f3d4307fcb09f/versions/1.21.8/src/main/java/me/fallenbreath/tweakermore/mixins/util/render/GuiRendererMixin.java">TweakerMore</a>.

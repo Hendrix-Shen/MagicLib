@@ -1,9 +1,6 @@
 package top.hendrixshen.magiclib.mixin.minecraft.accessor;
 
-import net.minecraft.client.renderer.GameRenderer;
-
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 
 import top.hendrixshen.magiclib.api.preprocess.DummyClass;
 

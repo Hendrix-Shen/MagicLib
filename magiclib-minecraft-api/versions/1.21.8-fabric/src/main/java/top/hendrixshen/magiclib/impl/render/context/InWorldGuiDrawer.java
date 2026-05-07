@@ -26,9 +26,16 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.render.GuiRenderer;
-import net.minecraft.client.gui.render.state.GuiRenderState;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.fog.FogRenderer;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.1
+//$$ import net.minecraft.client.renderer.state.gui.GuiRenderState;
+//#else
+import net.minecraft.client.gui.render.state.GuiRenderState;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import top.hendrixshen.magiclib.api.fake.render.InWorldGuiRendererHook;
 import top.hendrixshen.magiclib.util.function.MemoizedSupplier;

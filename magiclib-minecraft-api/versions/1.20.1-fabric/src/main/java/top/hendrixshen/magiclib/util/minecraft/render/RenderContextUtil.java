@@ -1,3 +1,4 @@
+
 package top.hendrixshen.magiclib.util.minecraft.render;
 
 import net.minecraft.client.Minecraft;
@@ -10,9 +11,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 // CHECKSTYLE.ON: ImportOrder
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC >= 12106
+//#if 26.1 > MC && MC >= 12106
 //$$ import top.hendrixshen.magiclib.mixin.minecraft.accessor.GameRendererAccessor;
-//#else
+//#endif
+
+//#if MC < 12106
 import top.hendrixshen.magiclib.mixin.minecraft.accessor.GuiGraphicsAccessor;
 //#endif
 // CHECKSTYLE.ON: ImportOrder

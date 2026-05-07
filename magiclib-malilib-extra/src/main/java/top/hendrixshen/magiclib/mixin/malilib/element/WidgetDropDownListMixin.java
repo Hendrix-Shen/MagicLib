@@ -28,11 +28,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC < 12111
 //#if FABRIC_LIKE
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 //#else
 //$$ import org.spongepowered.asm.mixin.injection.ModifyArg;
+//#endif
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
