@@ -277,7 +277,7 @@ abstract class ProcessMetadata extends DefaultTask {
 
         this.subProjects.get().forEach {
             mc_condition.add("${it.property("dependencies.minecraft_dependency")}")
-            jars.add(["file": "META-INF/jars/${it.parent.property("mod.archives_base_name")}-mc${it.property("dependencies.minecraft_version")}-${it.loom.platform.get().toString().toLowerCase()}-${it.version}.jar"])
+            jars.add(["file": "META-INF/jars/${it.parent.property("mod.archives_base_name")}-mc${it.magic.projectDetail.get().getMinecraftVersionName()}-${it.loom.platform.get().toString().toLowerCase()}-${it.version}.jar"])
 
         }
 

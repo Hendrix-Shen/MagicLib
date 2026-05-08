@@ -131,7 +131,7 @@ loom {
 }
 
 base {
-    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}-${modPlatform.id()}")
+    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${magic.projectDetail.get().getMinecraftVersionName()}-${modPlatform.id()}")
     setGroup("${project.property("mod.maven_group")}")
     setVersion(project.getModVersion(project.parent))
 }

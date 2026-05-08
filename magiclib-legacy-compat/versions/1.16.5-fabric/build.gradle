@@ -137,7 +137,7 @@ loom {
 }
 
 base {
-    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}-${modPlatform}")
+    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${magic.projectDetail.get().getMinecraftVersionName()}-${modPlatform.id()}")
     setGroup("${project.property("mod.maven_group")}")
     setVersion(project.getModVersion(project.parent))
 }
@@ -154,15 +154,15 @@ if (!magic.projectDetail.get().isUnobfuscatedVersion()) {
 
 replaceToken {
     targetSourceSets.set([sourceSets.main])
-    replace("@MINECRAFT_VERSION@"         , project.property("dependencies.minecraft_version"))
-    replace("@MINECRAFT_VERSION_IDENTIFY@", project.property("dependencies.minecraft_version").toString().replace(".", "_"))
+    replace("@MINECRAFT_VERSION@"         , magic.projectDetail.get().getMinecraftVersionName())
+    replace("@MINECRAFT_VERSION_IDENTIFY@", magic.projectDetail.get().getMinecraftVersionName().toString().replace(".", "_"))
     replace("@MOD_VERSION@"               , project.getVersionWithCommitHash(this.project.parent) as String)
     replaceIn("top/hendrixshen/magiclib/MagicLibReference")
 }
 
 processResources {
-    inputs.property("minecraft_version"   , project.property("dependencies.minecraft_version"))
-    inputs.property("minecraft_version_id", project.property("dependencies.minecraft_version").toString().replace(".", "_"))
+    inputs.property("minecraft_version"   , magic.projectDetail.get().getMinecraftVersionName())
+    inputs.property("minecraft_version_id", magic.projectDetail.get().getMinecraftVersionName().toString().replace(".", "_"))
 }
 
 yamlang {
