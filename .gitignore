@@ -24,10 +24,11 @@ bin/
 .classpath
 .project
 
+# macos
+
+*.DS_Store
+
 # fabric
-
-run/
-
 publish/
-
+run/
 local.properties
