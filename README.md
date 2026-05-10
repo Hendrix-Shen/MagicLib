@@ -38,7 +38,7 @@ Current main development for Minecraft version: 1.16.5
 
 And use `preprocess` to be compatible with all versions.
 
-**Note: I only accept the following versions of issues. Please note that this information is time-sensitive and any version of the issue not listed here will be closed**
+**Note: We only accept the following versions of issues. Please note that this information is time-sensitive and any version of the issue not listed here will be closed**
 
 - Minecraft 1.14.4
 - Minecraft 1.15.2
@@ -59,15 +59,30 @@ And use `preprocess` to be compatible with all versions.
 - Minecraft 1.21.8
 - Minecraft 1.21.10
 - Minecraft 1.21.11
+- Minecraft 26.1.2
 
 ### Mappings
 
-We are using the **Mojang official** mappings to de-obfuscate Minecraft and insert patches.
+For Minecraft 1.14 - 1.21.11, we are using the **Mojang official** mappings to de-obfuscate Minecraft and insert patches.
 
 ### Document
 
 The English doc and the Chinese doc are aligned line by line.
 
+## Disclaimer
+
+The use of this open-source mod dependency library is entirely at the user's own discretion. Any risks, losses, or consequences that may arise during the use of resources shall be solely borne by the user. We shall not be held responsible for any direct or indirect losses resulting from the use of this project.
+
+We solemnly commit that during the use of this project, we will not collect, store, transmit, or upload any personal information, usage data, or other sensitive information of users in any form. All data processing is completed locally to ensure the maximum protection of user privacy security.
+
+For any forks, modified versions, or distributions created by third parties based on this project or distributed through other channels, we do not provide any form of warranty, support, or maintenance services. Users should independently assess the relevant risks when using such third-party versions. The official releases we provide are strictly compiled from the open-source code to generate binary files. During this process, only placeholders and other technical means will be used to replace necessary information such as version numbers at compile time to ensure correct project identification and tracking. No substantive modifications will be made to the source code beyond this.
+
+At the same time, we need to clearly inform users that we cannot guarantee the complete fix of all known or unknown security vulnerabilities, nor can we promise to respond promptly to all feature requests or provide regular updates. Project maintenance and updates will be arranged according to project development status and resource availability. Users should understand this characteristic of open-source projects and make reasonable usage decisions accordingly.
+
+It should be particularly noted that this project repository has no affiliation, authorization, sponsorship, or cooperative relationship with Mojang Studios, Microsoft, and their related products, services, or trademarks. This project is a completely independent open-source project.
+
+If you do not accept any of the above terms and disclaimers, please do not use, install, introduce, or integrate this dependency library into any of your projects, and please immediately delete any related copies stored on your devices or systems, and cease all usage activities.
+
 ## License
 
-This project is available under the LGPLv3 license. Feel free to learn from it and incorporate it in your own projects.
+This project is available under the LGPL-3.0 license. Feel free to learn from it and incorporate it in your own projects.
