@@ -4,7 +4,7 @@ import org.apache.groovy.toml.util.TomlConverter
 
 buildscript {
     dependencies {
-        classpath("org.apache.groovy:groovy-toml:5.0.5")
+        classpath("org.apache.groovy:groovy-toml:5.0.6")
     }
 }
 
@@ -245,13 +245,23 @@ subprojects {
     }
 
     tasks.register("copyPublishModule", Copy.class) { Copy copyTask ->
-        copyTask.dependsOn(submodules.collect { it.tasks.remapJar })
+        copyTask.dependsOn(submodules.collect {
+            if (it.magic.projectDetail.get().isUnobfuscatedVersion()) {
+                it.tasks.jar
+            } else {
+                it.tasks.remapJar
+            }
+        })
         copyTask.setGroup("${project.property("mod.id")}")
         delete(project.layout.buildDirectory.file("tmp/submods/publish"))
 
         from {
             submodules_publish.collect {
-                it.tasks.remapJar.outputs.files
+                if (it.magic.projectDetail.get().isUnobfuscatedVersion()) {
+                    it.tasks.jar.outputs.files
+                } else {
+                    it.tasks.remapJar.outputs.files
+                }
             }
         }
 
@@ -259,13 +269,23 @@ subprojects {
     }
 
     tasks.register("copyUnpublishModule", Copy.class) { Copy copyTask ->
-        copyTask.dependsOn(submodules.collect { it.tasks.remapJar })
+        copyTask.dependsOn(submodules.collect {
+            if (it.magic.projectDetail.get().isUnobfuscatedVersion()) {
+                it.tasks.jar
+            } else {
+                it.tasks.remapJar
+            }
+        })
         copyTask.setGroup("${project.property("mod.id")}")
         delete(project.layout.buildDirectory.file("tmp/submods/unpublish"))
 
         from {
             submodules_unpublish.collect {
-                it.tasks.remapJar.outputs.files
+                if (it.magic.projectDetail.get().isUnobfuscatedVersion()) {
+                    it.tasks.jar.outputs.files
+                } else {
+                    it.tasks.remapJar.outputs.files
+                }
             }
         }
 

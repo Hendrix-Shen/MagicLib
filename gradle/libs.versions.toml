@@ -1,5 +1,6 @@
 [plugins]
-architectury-loom = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
+essential-loom-remap = { id = "gg.essential.loom-remap", version.ref = "essential-loom" }
+essential-loom-no-remap = { id = "gg.essential.loom-no-remap", version.ref = "essential-loom" }
 grgit = { id = "org.ajoberstar.grgit", version.ref = "grgit" }
 preprocessor = { id = "com.replaymod.preprocess", version.ref = "preprocessor" }
 replace-token = { id = "top.hendrixshen.replace-token", version.ref = "replace-token" }
@@ -7,19 +8,19 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 yamlang = { id = "me.fallenbreath.yamlang", version.ref = "yamlang" }
 
 [versions]
-architectury-loom = "1.13-SNAPSHOT"
 asm = "9.9.1"
 checkstyle = "13.4.2"
 commons-lang3 = "3.20.0"
+essential-loom = "1.15.50"
 fabric-loader = "0.19.2"
 grgit = "5.3.3"
 gson = "2.14.0"
 guava = "33.6.0-jre"
 jetbrains-annotations = "26.1.0"
-log4j = "2.25.4"
+log4j = "2.26.0"
 lombok = "1.18.46"
 mixinextras = "0.5.4"
-preprocessor = "d452ef7"
+preprocessor = "4c38783"
 replace-token = "1.2.0"
 shadow = "9.4.1"
 spongepowered-mixin = "0.8.7"
@@ -45,7 +46,7 @@ mixinextras-fabric = { module = "io.github.llamalad7:mixinextras-fabric", versio
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 
 # Plugin
-architectury-loom = { module = "dev.architectury.loom:dev.architectury.loom.gradle.plugin", version.ref = "architectury-loom" }
+essential-loom = { module = "gg.essential.loom:gg.essential.loom.gradle.plugin", version.ref = "essential-loom" }
 preprocessor = { module = "com.github.Fallen-Breath:preprocessor", version.ref = "preprocessor" }
 replace-token = { module = "top.hendrixshen.replace-token:top.hendrixshen.replace-token.gradle.plugin", version.ref = "replace-token" }
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }

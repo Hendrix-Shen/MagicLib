@@ -12,6 +12,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.1
+//$$ import net.minecraft.world.item.ItemStackTemplate;
+//#endif
+
 //#if MC < 12105
 import net.minecraft.network.chat.HoverEvent.Action;
 //#endif
@@ -76,7 +80,13 @@ public interface HoverEventCompat extends Provider<HoverEvent> {
             //#endif
     ) {
         //#if MC > 12104
-        //$$ return new ShowItem(itemStack);
+        //$$ return new ShowItem(
+        //$$         //#if MC >= 26.1
+        //$$         //$$ ItemStackTemplate.fromNonEmptyStack(itemStack)
+        //$$         //#else
+        //$$         itemStack
+        //$$         //#endif
+        //$$ );
         //#else
         return new HoverEvent(Action.SHOW_ITEM, itemStack);
         //#endif

@@ -1,39 +1,27 @@
+import net.fabricmc.loom.util.ModPlatform
+
 plugins {
     id("java")
     id("java-library")
     id("maven-publish")
     id("signing")
 
-    alias(libs.plugins.architectury.loom)
-    alias(libs.plugins.replace.token)
     alias(libs.plugins.yamlang)
-    alias(libs.plugins.preprocessor)
+    alias(libs.plugins.replace.token)
 
+    id("top.hendrixshen.magiclib.build-logic.magic-loom")
     id("top.hendrixshen.magiclib.build-logic.process-resources-minecraft")
 }
 
-String modPlatform = loom.platform.get().toString().toLowerCase()
-boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
-boolean forgeLike = modPlatform == "forge" || modPlatform == "neoforge"
+final int mcVersion = magic.projectDetail.get().getMinecraftVersionNumber()
+final ModPlatform modPlatform = magic.projectDetail.get().getPlatform()
+final boolean fabricLike = !modPlatform.isForgeLike()
+final boolean forgeLike = modPlatform.isForgeLike()
 String projectName = project.name.replace("legacy-", "")
 Project betterDev = evaluationDependsOn(":magiclib-better-dev:better-dev-${projectName}")
 Project malilib = evaluationDependsOn(":magiclib-malilib-extra:malilib-${projectName}")
 Project mcAPI = evaluationDependsOn(":magiclib-minecraft-api:mc-api-${projectName}")
-int mcVersion = 0
-
-preprocess {
-    mcVersion = vars.get().get("MC")
-    vars.put("MC", mcVersion)
-    vars.put("FABRIC", modPlatform == "fabric" ? 1 : 0)
-    vars.put("FORGE", modPlatform == "forge" ? 1 : 0)
-    vars.put("NEO_FORGE", modPlatform == "neoforge" ? 1 : 0)
-    vars.put("FABRIC_LIKE", fabricLike ? 1 : 0)
-    vars.put("FORGE_LIKE", forgeLike ? 1 : 0)
-}
-
-loom {
-    silentMojangMappingsLicense()
-}
+final VersionCatalogsExtension catalogsExtension = project.getExtensions().getByType(VersionCatalogsExtension.class)
 
 repositories {
     mavenLocal()
@@ -64,81 +52,48 @@ repositories {
     mavenCentral()
 }
 
-// Module, Property prefix, Resolve condition, Transitive dependencies.
-def apiDependencies = [
-        ["carpet:fabric-carpet", "carpet", true, false],
-]
-
-// Module, Property prefix, Resolve condition, Transitive dependencies.
-def runtimeDependencies = [
-        ["", "", false, false],
+// Configuration name, Module, Resolve condition, Use version mapping, Configuration closure.
+def deps = [
+        ["autoApi", "carpet", true, true, { transitive = false }],
 ]
 
 dependencies {
-    minecraft("com.mojang:minecraft:${project.property("dependencies.minecraft_version")}")
-    mappings(loom.officialMojangMappings())
-
     // Lombok
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
 
     // MagicLib Core
-    api(annotationProcessor(project(path: ":magiclib-core:${modPlatform}", configuration: "shadow")))
+    api(annotationProcessor(project(path: ":magiclib-core:${modPlatform.id()}", configuration: "shadow")))
 
-    api(project(path: betterDev.path, configuration: "namedElements"))
-    api(project(path: malilib.path, configuration: "namedElements"))
-    api(project(path: mcAPI.path, configuration: "namedElements"))
+    // MC-API
+    api(project(path: malilib.path, configuration: magic.projectDetail.get().isUnobfuscatedVersion() ? null : "namedElements"))
+    // MaLiLib-Extra
+    api(project(path: mcAPI.path, configuration: magic.projectDetail.get().isUnobfuscatedVersion() ? null : "namedElements"))
 
-    if (forgeLike) {
+    // Dont publish better dev dependencies.
+    compileOnly(project(path: betterDev.path, configuration: magic.projectDetail.get().isUnobfuscatedVersion() ? null : "namedElements"))
+    localRuntime(project(path: betterDev.path, configuration: magic.projectDetail.get().isUnobfuscatedVersion() ? null : "namedElements"))
+
+    if (forgeLike && !magic.projectDetail.get().isUnobfuscatedVersion()) {
         compileOnly(project(path: betterDev.path, configuration: "modCompileClasspathMainMapped"))
         localRuntime(project(path: betterDev.path, configuration: "modRuntimeClasspathMainMapped"))
     }
 
-    switch (modPlatform) {
-        case "fabric":
-            modApi(libs.fabric.loader)
-            break
-        case "forge":
-            forge(project.getExtensions().getByType(VersionCatalogsExtension.class).named("forges").findLibrary("forge-mc${mcVersion}").get())
-            break
-        case "neoforge":
-            neoForge(project.getExtensions().getByType(VersionCatalogsExtension.class).named("forges").findLibrary("neoforge-mc${mcVersion}").get())
-            break
-    }
+    deps.forEach { item ->
+        String configurationName = item[0]
+        String dependencyName = item[1]
+        boolean shouldResolve = item[2]
 
-    // API
-    apiDependencies.forEach { item ->
-        String dependencyNotation = item[0]
-        String dependencyVersion = project.findProperty("dependencies.api.${item[1]}_version")
-        boolean shouldResolve = item[2] && dependencyVersion != "0"
-        boolean shouldTransitive = item[3]
-
-        if (shouldResolve) {
-            if (!dependencyVersion) {
-                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
-            }
-
-            modApi("${dependencyNotation}:${dependencyVersion}") {
-                transitive = shouldTransitive
-            }
+        if (!shouldResolve) {
+            return
         }
-    }
 
-    // Runtime Library - Make development environment comfortable.
-    runtimeDependencies.forEach { item ->
-        String dependencyNotation = item[0]
-        String dependencyVersion = project.findProperty("dependencies.runtime.${item[1]}_version")
-        boolean shouldResolve = item[2] && dependencyVersion != "0"
-        boolean shouldTransitive = item[3]
+        org.gradle.api.provider.Provider<MinimalExternalModuleDependency> dep = catalogsExtension.named("mods").findLibrary(item[3] ? "${dependencyName}-mc${mcVersion}" : dependencyName).orElseThrow { throw new GradleException("No mod library found for ${dependencyName + (item[3] ? "-mc${mcVersion}" : "")}") }
+        shouldResolve &= dep.get().getVersion() != "0"
+        Closure<Void> closure = (Closure<Void>) item[4]
 
         if (shouldResolve) {
-            if (!dependencyVersion) {
-                throw new RuntimeException("Could not get unknown property 'dependencies.runtime.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
-            }
-
-            modRuntimeOnly("${dependencyNotation}:${dependencyVersion}") {
-                transitive = shouldTransitive
-            }
+            add(configurationName, dep, closure)
         }
     }
 }
@@ -151,24 +106,6 @@ loom {
         enableDependencyInterfaceInjection.set(false)
     }
 
-    if (fabricLike) {
-        mixin {
-            useLegacyMixinAp.set(true)
-        }
-    }
-
-    if (modPlatform == "forge") {
-        forge {
-            convertAccessWideners.set(true)
-            mixinConfig("${project.parent.property("mod.id")}.mixins.json")
-        }
-    }
-
-    runConfigs.configureEach {
-        // Dump modified classes automatically.
-        property("mixin.debug.export", "true")
-    }
-
     runConfigs.named("client") {
         programArgs([
                 "--width",
@@ -178,17 +115,6 @@ loom {
                 "--username",
                 project.getOrDefault("ow.game.username", "dev")
         ])
-        vmArgs("-Dmagiclib.debug=true")
-        vmArgs("-Dmagiclib.dev.qol=true")
-        vmArgs("-Dmagiclib.dev.qol.dfu.destroy=true")
-        runDir("run/client")
-    }
-
-    runConfigs.named("server") {
-        vmArgs("-Dmagiclib.debug=true")
-        vmArgs("-Dmagiclib.dev.qol=true")
-        vmArgs("-Dmagiclib.dev.qol.dfu.destroy=true")
-        runDir("run/server")
     }
 
     if (fabricLike) {
@@ -211,49 +137,32 @@ loom {
 }
 
 base {
-    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}-${modPlatform}")
+    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${magic.projectDetail.get().getMinecraftVersionName()}-${modPlatform.id()}")
     setGroup("${project.property("mod.maven_group")}")
     setVersion(project.getModVersion(project.parent))
 }
 
-java {
-    if (mcVersion > 11204) {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    } else if (mcVersion > 11701) {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    } else if (mcVersion > 11605) {
-        sourceCompatibility = JavaVersion.VERSION_16
-        targetCompatibility = JavaVersion.VERSION_16
-    } else {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    withSourcesJar()
-    withJavadocJar()
-}
-
-remapJar {
-    if (forgeLike) {
-        if (modPlatform == "neoforge") {
-            atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
+if (!magic.projectDetail.get().isUnobfuscatedVersion()) {
+    remapJar {
+        if (forgeLike) {
+            if (modPlatform == ModPlatform.NEOFORGE) {
+                atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
+            }
         }
     }
 }
 
 replaceToken {
     targetSourceSets.set([sourceSets.main])
-    replace("@MINECRAFT_VERSION@"         , project.property("dependencies.minecraft_version"))
-    replace("@MINECRAFT_VERSION_IDENTIFY@", project.property("dependencies.minecraft_version").toString().replace(".", "_"))
+    replace("@MINECRAFT_VERSION@"         , magic.projectDetail.get().getMinecraftVersionName())
+    replace("@MINECRAFT_VERSION_IDENTIFY@", magic.projectDetail.get().getMinecraftVersionName().toString().replace(".", "_"))
     replace("@MOD_VERSION@"               , project.getVersionWithCommitHash(this.project.parent) as String)
     replaceIn("top/hendrixshen/magiclib/MagicLibReference")
 }
 
 processResources {
-    inputs.property("minecraft_version"   , project.property("dependencies.minecraft_version"))
-    inputs.property("minecraft_version_id", project.property("dependencies.minecraft_version").toString().replace(".", "_"))
+    inputs.property("minecraft_version"   , magic.projectDetail.get().getMinecraftVersionName())
+    inputs.property("minecraft_version_id", magic.projectDetail.get().getMinecraftVersionName().toString().replace(".", "_"))
 }
 
 yamlang {
@@ -320,74 +229,6 @@ tasks.withType(Javadoc).configureEach { Javadoc task ->
     include("**/api/**")
     task.options.encoding = "UTF-8"
     (task.options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
-}
-
-tasks.withType(JavaCompile).configureEach { JavaCompile task ->
-    task.options.encoding = "UTF-8"
-
-    if (mcVersion > 12005) {
-        task.options.release.set(21)
-    } else if (mcVersion > 11701) {
-        task.options.release.set(17)
-    } else if (mcVersion > 11605) {
-        task.options.release.set(16)
-    } else {
-        task.options.release.set(8)
-        options.compilerArgs << '-Xlint:-options'
-    }
-}
-
-// Setup client default settings.
-tasks.named("runClient") {
-    defaultCharacterEncoding = "UTF-8"
-
-    doFirst {
-        file("${project.projectDir}/run/client/config").mkdirs()
-        file("${project.projectDir}/run/client/options.txt").with { File f ->
-            {
-                if (!f.exists()) {
-                    f.parentFile.mkdirs()
-                    f.withWriter { BufferedWriter writer ->
-                        writer.writeLine("autoJump:false")
-                        writer.writeLine("enableVsync:false")
-                        writer.writeLine("forceUnicodeFont:true")
-                        writer.writeLine("fov:1.0")
-
-                        if (mcVersion < 11900) {
-                            writer.writeLine("gamma:16.0")
-                        }
-
-                        writer.writeLine("guiScale:3")
-                        writer.writeLine("lang:${Locale.getDefault().toString().toLowerCase()}")
-                        writer.writeLine("maxFps:260")
-                        writer.writeLine("renderDistance:10")
-                        writer.writeLine("soundCategory_master:0.0")
-                    }
-                }
-            }
-        }
-    }
-}
-
-// Setup server default settings.
-tasks.named("runServer") {
-    defaultCharacterEncoding = "UTF-8"
-
-    doFirst {
-        // Agree eula before server init.
-        file("${project.projectDir}/run/server/eula.txt").with { File f ->
-            {
-                if (!f.exists()) {
-                    f.parentFile.mkdirs()
-                    f.withWriter { BufferedWriter writer ->
-                        writer.writeLine("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).")
-                        writer.writeLine("#${new Date()}")
-                        writer.writeLine("eula=true")
-                    }
-                }
-            }
-        }
-    }
 }
 
 tasks.register("cleanRuns", Delete.class) { Delete cleanTask ->

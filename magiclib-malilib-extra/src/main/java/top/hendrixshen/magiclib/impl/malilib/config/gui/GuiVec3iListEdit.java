@@ -10,6 +10,10 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.1
+//$$ import org.jetbrains.annotations.NotNull;
+//#endif
+
 //#if MC >= 12111
 //$$ import fi.dy.masa.malilib.render.GuiContext;
 //#endif
@@ -19,14 +23,16 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Vec3i;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC >= 12109
-//$$ import net.minecraft.client.input.KeyEvent;
-//#endif
-
-//#if MC > 11904
+//#if MC >= 26.1
+//$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
+//#elseif MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
+
+//#if MC >= 12109
+//$$ import net.minecraft.client.input.KeyEvent;
 //#endif
 
 //#if MC < 11700
@@ -124,6 +130,16 @@ public class GuiVec3iListEdit extends GuiListBase<Vec3i, WidgetVec3iListEditEntr
         super.removed();
     }
 
+    //#if MC >= 26.1
+    //$$ @Override
+    //$$ public void extractRenderState(@NotNull GuiGraphicsExtractor extractor, int mouseX, int mouseY, float partialTicks) {
+    //$$     if (this.getParent() != null) {
+    //$$         this.getParent().extractRenderState(extractor, mouseX, mouseY, partialTicks);
+    //$$     }
+    //$$
+    //$$     super.extractRenderState(extractor, mouseX, mouseY, partialTicks);
+    //$$ }
+    //#else
     @Override
     public void render(
             //#if MC > 11904
@@ -155,6 +171,7 @@ public class GuiVec3iListEdit extends GuiListBase<Vec3i, WidgetVec3iListEditEntr
                 partialTicks
         );
     }
+    //#endif
 
     @Override
     protected void drawScreenBackground(

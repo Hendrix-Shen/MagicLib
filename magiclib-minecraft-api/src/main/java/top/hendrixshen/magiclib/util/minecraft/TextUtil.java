@@ -51,7 +51,15 @@ public class TextUtil {
     }
 
     public static String tp(@NotNull ChunkPos pos) {
-        return String.format("/tp %d ~ %d", pos.x * 16 + 8, pos.z * 16 + 8);
+        return String.format("/tp %d ~ %d",
+                //#if MC >= 26.1
+                //$$ pos.x() * 16 + 8,
+                //$$ pos.z() * 16 + 8
+                //#else
+                pos.x * 16 + 8,
+                pos.z * 16 + 8
+                //#endif
+        );
     }
 
     public static @NotNull String tp(Vec3 pos, DimensionWrapper dimensionType) {
@@ -90,7 +98,13 @@ public class TextUtil {
     }
 
     public static String coordinate(@NotNull ChunkPos pos) {
-        return String.format("[%d, %d]", pos.x, pos.z);
+        return String.format("[%d, %d]",
+                //#if MC >= 26.1
+                //$$ pos.x(), pos.z()
+                //#else
+                pos.x, pos.z
+                //#endif
+        );
     }
 
     public static String vector(@NotNull Vec3 vec, int digits) {
