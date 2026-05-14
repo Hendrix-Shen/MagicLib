@@ -20,6 +20,7 @@
         "net.neoforged.fancymodloader:loader",
         "net.neoforged:neoforge",
 
+        "carpet:fabric-carpet",
         "net.fabricmc.fabric-api:fabric-api",
         
         "com.mojang:minecraft",
