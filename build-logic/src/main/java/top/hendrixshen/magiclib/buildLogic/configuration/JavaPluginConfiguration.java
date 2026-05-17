@@ -46,7 +46,7 @@ public abstract class JavaPluginConfiguration implements Runnable {
             java.setTargetCompatibility(JavaVersion.VERSION_17);
         } else if (mcVersion >= 1_17_00) {
             java.setSourceCompatibility(JavaVersion.VERSION_16);
-            java.setTargetCompatibility(JavaVersion.VERSION_25);
+            java.setTargetCompatibility(JavaVersion.VERSION_16);
         } else {
             java.setSourceCompatibility(JavaVersion.VERSION_1_8);
             java.setTargetCompatibility(JavaVersion.VERSION_1_8);
@@ -60,11 +60,13 @@ public abstract class JavaPluginConfiguration implements Runnable {
         task.getOptions().setEncoding("UTF-8");
         int mcVersion = this.projectDetail.getMinecraftVersionNumber();
 
-        if (mcVersion > 12005) {
+        if (mcVersion >= 26_01_00) {
+            task.getOptions().getRelease().set(25);
+        } else if (mcVersion >= 1_20_05) {
             task.getOptions().getRelease().set(21);
-        } else if (mcVersion > 11701) {
+        } else if (mcVersion >= 1_18_00) {
             task.getOptions().getRelease().set(17);
-        } else if (mcVersion > 11605) {
+        } else if (mcVersion >= 1_17_00) {
             task.getOptions().getRelease().set(16);
         } else {
             task.getOptions().getRelease().set(8);
