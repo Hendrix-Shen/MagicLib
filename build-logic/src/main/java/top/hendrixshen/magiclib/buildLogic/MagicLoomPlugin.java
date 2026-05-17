@@ -4,6 +4,7 @@ import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
+import top.hendrixshen.magiclib.buildLogic.configuration.JavaPluginConfiguration;
 import top.hendrixshen.magiclib.buildLogic.configuration.MagicLoomConfigurations;
 import top.hendrixshen.magiclib.buildLogic.configuration.Preprocessor;
 
@@ -14,6 +15,7 @@ public class MagicLoomPlugin implements Plugin<Project> {
 
     private static final List<Class<? extends Runnable>> SETUP_JOBS = List.of(
             MagicLoomConfigurations.class,
+            JavaPluginConfiguration.class,
             Preprocessor.class
     );
 
