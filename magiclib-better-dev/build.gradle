@@ -9,7 +9,7 @@ plugins {
 }
 
 magic {
+    extraMappingFailureStrategy = RootMagicLoomExtension.ExtraMappingFailureStrategy.IGNORE
     magiclibMode = true
     multiPlatformSupport = true
-    extraMappingFailureStrategy = RootMagicLoomExtension.ExtraMappingFailureStrategy.IGNORE
 }
