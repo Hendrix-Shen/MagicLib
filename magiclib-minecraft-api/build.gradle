@@ -9,4 +9,5 @@ plugins {
 magic {
     magiclibMode = true
     multiPlatformSupport = true
+    extraMappingFailureStrategy = RootMagicLoomExtension.ExtraMappingFailureStrategy.IGNORE
 }

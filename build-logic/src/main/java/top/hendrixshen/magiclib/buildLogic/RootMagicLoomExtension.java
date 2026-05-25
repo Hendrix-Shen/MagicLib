@@ -16,6 +16,8 @@ public interface RootMagicLoomExtension {
 
     Property<Boolean> getMultiPlatformSupport();
 
+    Property<ExtraMappingFailureStrategy> getExtraMappingFailureStrategy();
+
     MapProperty<String, ManualLinkDetail> getManualLinkMap();
 
     MapProperty<String, ProjectDetail> getProjectDetailMap();
@@ -23,4 +25,10 @@ public interface RootMagicLoomExtension {
     void manualLink(String projectName, ProjectDetail to, String mappingFileName);
 
     void recordProjectDetail(String projectName, ProjectDetail detail);
+
+    enum ExtraMappingFailureStrategy {
+        IGNORE,
+        FAIL,
+        WARN
+    }
 }

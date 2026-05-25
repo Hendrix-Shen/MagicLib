@@ -14,6 +14,7 @@ import top.hendrixshen.magiclib.buildLogic.util.ProjectDetail;
 public abstract class RootMagicLoomExtensionImpl implements RootMagicLoomExtension {
     private final Property<Boolean> magiclibMode;
     private final Property<Boolean> multiPlatformSupport;
+    private final Property<ExtraMappingFailureStrategy> extraMappingFailureStrategy;
     private final MapProperty<String, ManualLinkDetail> manualLinkMap;
     private final MapProperty<String, ProjectDetail> projectDetailMap;
 
@@ -22,6 +23,8 @@ public abstract class RootMagicLoomExtensionImpl implements RootMagicLoomExtensi
         this.magiclibMode.finalizeValueOnRead();
         this.multiPlatformSupport = project.getObjects().property(Boolean.class).convention(false);
         this.multiPlatformSupport.finalizeValueOnRead();
+        this.extraMappingFailureStrategy = project.getObjects().property(ExtraMappingFailureStrategy.class).convention(ExtraMappingFailureStrategy.FAIL);
+        this.extraMappingFailureStrategy.finalizeValueOnRead();
         this.manualLinkMap = project.getObjects().mapProperty(String.class, ManualLinkDetail.class);
         this.projectDetailMap = project.getObjects().mapProperty(String.class, ProjectDetail.class);
     }

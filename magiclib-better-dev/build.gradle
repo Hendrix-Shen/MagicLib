@@ -1,3 +1,5 @@
+import top.hendrixshen.magiclib.buildLogic.RootMagicLoomExtension
+
 plugins {
     alias(libs.plugins.essential.loom.remap).apply(false)
     alias(libs.plugins.essential.loom.no.remap).apply(false)
@@ -9,4 +11,5 @@ plugins {
 magic {
     magiclibMode = true
     multiPlatformSupport = true
+    extraMappingFailureStrategy = RootMagicLoomExtension.ExtraMappingFailureStrategy.IGNORE
 }
