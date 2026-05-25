@@ -13,18 +13,12 @@ pluginManagement {
         }
 
         maven {
-            name = "MinecraftForge"
-            url = "https://files.minecraftforge.net/maven"
-        }
-
-        maven {
-            name = "NeoForge"
-            url = "https://maven.neoforged.net/releases"
-        }
-
-        maven {
             name = "Jitpack"
-            url = "https://jitpack.io"
+            url = "https://maven.hendrixshen.moe/jitpack"
+
+            content {
+                includeGroupAndSubgroups("com.github")
+            }
         }
 
         gradlePluginPortal()

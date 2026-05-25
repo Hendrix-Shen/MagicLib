@@ -8,8 +8,8 @@ plugins {
 
 repositories {
     maven {
-        name = "NeoForge"
-        url = "https://maven.neoforged.net"
+        name = "NyanMaven Mirror"
+        url = "https://maven.hendrixshen.moe/mirror"
     }
 }
 

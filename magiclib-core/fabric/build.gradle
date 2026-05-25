@@ -8,8 +8,8 @@ plugins {
 
 repositories {
     maven {
-        name = "FabricMC"
-        url = "https://maven.fabricmc.net"
+        name = "NyanMaven Mirror"
+        url = "https://maven.hendrixshen.moe/mirror"
     }
 }
 
