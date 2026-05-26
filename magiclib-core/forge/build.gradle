@@ -8,8 +8,8 @@ plugins {
 
 repositories {
     maven {
-        name = "Forge"
-        url = "https://maven.minecraftforge.net"
+        name = "NyanMaven Mirror"
+        url = "https://maven.hendrixshen.moe/mirror"
     }
 }
 

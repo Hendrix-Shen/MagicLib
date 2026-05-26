@@ -48,8 +48,6 @@ repositories {
             includeGroup("maven.modrinth")
         }
     }
-
-    mavenCentral()
 }
 
 // Configuration name, Module, Resolve condition, Use version mapping, Configuration closure.

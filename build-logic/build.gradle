@@ -13,7 +13,11 @@ repositories {
 
     maven {
         name = "Jitpack"
-        url = "https://jitpack.io"
+        url = "https://maven.hendrixshen.moe/jitpack"
+
+        content {
+            includeGroupAndSubgroups("com.github")
+        }
     }
 }
 
