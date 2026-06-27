@@ -19,6 +19,7 @@ carpet-mc12108 = "1.21.7-1.4.177+v250630"
 carpet-mc12110 = "1.21.10-1.4.188+v251016"
 carpet-mc12111 = "1.21.11-1.4.194+v260107"
 carpet-mc260102 = "26.1+v260401"
+carpet-mc260200 = "26.2+v260616"
 
 fabric-mc11404 = "0.28.5+1.14"
 fabric-mc11502 = "0.28.5+1.15"
@@ -181,6 +182,7 @@ carpet-mc12108 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc1210
 carpet-mc12110 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12110" }
 carpet-mc12111 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc12111" }
 carpet-mc260102 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc260102" }
+carpet-mc260200 = { module = "carpet:fabric-carpet", version.ref = "carpet-mc260200" }
 
 fabric-mc11404 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11404" }
 fabric-mc11502 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc11502" }
