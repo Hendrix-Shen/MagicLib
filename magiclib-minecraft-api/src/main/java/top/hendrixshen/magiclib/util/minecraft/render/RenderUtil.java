@@ -25,7 +25,7 @@ import lombok.Setter;
 import org.jetbrains.annotations.ApiStatus;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC > 11404
+//#if 26.2 > MC && MC > 11404
 import org.jetbrains.annotations.NotNull;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
@@ -35,6 +35,10 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if 26.2 > MC && MC > 11404
+import net.minecraft.client.renderer.MultiBufferSource;
+//#endif
+
 //#if 12100 > MC && MC > 11404
 import com.mojang.blaze3d.vertex.Tesselator;
 //#endif
@@ -42,16 +46,12 @@ import com.mojang.blaze3d.vertex.Tesselator;
 //#if MC > 11502
 import net.minecraft.util.FormattedCharSequence;
 //#endif
-
-//#if MC > 11404
-import net.minecraft.client.renderer.MultiBufferSource;
-//#endif
 // CHECKSTYLE.ON: ImportOrder
 
 import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/e8edce20f53a1062c570af99a740fb6db0e73447/src/main/java/me/fallenbreath/tweakermore/util/render/RenderUtil.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/7a0d5d807d598418d2e97ee3fc97a252f38e5d6b/src/main/java/me/fallenbreath/tweakermore/util/render/RenderUtils.java">TweakerMore</a>.
  */
 public class RenderUtil {
     private static final Font TEXT_RENDERER = Minecraft.getInstance().font;
@@ -86,7 +86,7 @@ public class RenderUtil {
     }
     //#endif
 
-    //#if MC > 11404
+    //#if 26.2 > MC && MC > 11404
     public static MultiBufferSource.@NotNull BufferSource getBufferSource() {
         //#if MC > 12006
         //$$ return Minecraft.getInstance().renderBuffers().bufferSource();

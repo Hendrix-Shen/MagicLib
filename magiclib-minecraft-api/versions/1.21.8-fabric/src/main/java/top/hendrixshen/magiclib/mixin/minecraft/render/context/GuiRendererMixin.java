@@ -20,7 +20,13 @@
 
 package top.hendrixshen.magiclib.mixin.minecraft.render.context;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.2
+//$$ import org.joml.Matrix4f;
+//#else
 import org.joml.Matrix4fc;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import com.mojang.blaze3d.ProjectionType;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
@@ -36,7 +42,7 @@ import top.hendrixshen.magiclib.api.fake.render.InWorldGuiRendererHook;
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/61fe6d85363cac594130d215c26f3d4307fcb09f/versions/1.21.8/src/main/java/me/fallenbreath/tweakermore/mixins/util/render/GuiRendererMixin.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/7a0d5d807d598418d2e97ee3fc97a252f38e5d6b/versions/1.21.8/src/main/java/me/fallenbreath/tweakermore/mixins/util/render/GuiRendererMixin.java">TweakerMore</a>.
  *
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project) [dummy]</li>
  * <li>mc1.21.6+        : subproject 1.21.8        &lt;--------</li>
@@ -55,7 +61,8 @@ public abstract class GuiRendererMixin implements InWorldGuiRendererHook {
             method = "draw",
             at = @At(
                     value = "INVOKE",
-                    target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lcom/mojang/blaze3d/ProjectionType;)V")
+                    target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lcom/mojang/blaze3d/ProjectionType;)V"
+            )
     )
     private boolean skipSetProjectionMatrixForInWorldGuiRendering(GpuBufferSlice gpuBufferSlice, ProjectionType projectionType) {
         return !this.magiclib$inWorldGuiRender;
@@ -65,7 +72,9 @@ public abstract class GuiRendererMixin implements InWorldGuiRendererHook {
             method = "draw",
             at = @At(
                     value = "INVOKE",
-                    //#if MC >= 12111
+                    //#if MC >= 26.2
+                    //$$ target = "Lnet/minecraft/client/renderer/DynamicUniforms;writeTransform(Lorg/joml/Matrix4f;)Lcom/mojang/blaze3d/buffers/GpuBufferSlice;"
+                    //#elseif MC >= 12111
                     //$$ target = "Lnet/minecraft/client/renderer/DynamicUniforms;writeTransform(Lorg/joml/Matrix4fc;Lorg/joml/Vector4fc;Lorg/joml/Vector3fc;Lorg/joml/Matrix4fc;)Lcom/mojang/blaze3d/buffers/GpuBufferSlice;"
                     //#else
                     target = "Lnet/minecraft/client/renderer/DynamicUniforms;writeTransform(Lorg/joml/Matrix4fc;Lorg/joml/Vector4fc;Lorg/joml/Vector3fc;Lorg/joml/Matrix4fc;F)Lcom/mojang/blaze3d/buffers/GpuBufferSlice;"
@@ -73,11 +82,21 @@ public abstract class GuiRendererMixin implements InWorldGuiRendererHook {
             ),
             index = 0
     )
-    private Matrix4fc restoreModelViewMatrix(Matrix4fc matrix4fc) {
+    //#if MC >= 26.2
+    //$$ private Matrix4f setMatricToGlobalModelViewMatrix(Matrix4f matrix4f) {
+    //$$     if (this.magiclib$inWorldGuiRender) {
+    //$$         matrix4f = RenderSystem.getModelViewMatrixCopy();
+    //$$     }
+    //$$
+    //$$     return matrix4f;
+    //$$ }
+    //#else
+    private Matrix4fc setMatricToGlobalModelViewMatrix(Matrix4fc matrix4fc) {
         if (this.magiclib$inWorldGuiRender) {
             matrix4fc = RenderSystem.getModelViewMatrix();
         }
 
         return matrix4fc;
     }
+    //#endif
 }

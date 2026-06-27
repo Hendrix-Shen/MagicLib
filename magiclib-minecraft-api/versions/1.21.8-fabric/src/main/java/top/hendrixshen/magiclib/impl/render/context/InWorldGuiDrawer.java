@@ -26,10 +26,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.render.GuiRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.fog.FogRenderer;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC < 26.2
+import net.minecraft.client.renderer.MultiBufferSource;
+//#endif
+
 //#if MC >= 26.1
 //$$ import net.minecraft.client.renderer.state.gui.GuiRenderState;
 //#else
@@ -39,7 +42,12 @@ import net.minecraft.client.gui.render.state.GuiRenderState;
 
 import top.hendrixshen.magiclib.api.fake.render.InWorldGuiRendererHook;
 import top.hendrixshen.magiclib.util.function.MemoizedSupplier;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 26.2
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import java.util.List;
 
@@ -68,7 +76,9 @@ public class InWorldGuiDrawer implements AutoCloseable {
     private InWorldGuiDrawer() {
         // reference: net.minecraft.client.renderer.GameRenderer#GameRenderer
         Minecraft mc = Minecraft.getInstance();
+        //#if MC < 26.2
         MultiBufferSource.BufferSource immediate = RenderUtil.getBufferSource();
+        //#endif
         this.guiState = new GuiRenderState();
         //#if MC >= 12111
         //$$ // TODO: check if mouseX,mouseY setting to 0,0 works
@@ -78,8 +88,12 @@ public class InWorldGuiDrawer implements AutoCloseable {
         //#endif
         this.guiRenderer = new GuiRenderer(
                 this.guiState,
+                //#if MC < 26.2
                 immediate,
-                //#if MC >= 12109
+                //#endif
+                //#if MC >= 26.2
+                //$$ mc.gameRenderer.featureRenderDispatcher(),
+                //#elseif MC >= 12109
                 //$$ mc.gameRenderer.getSubmitNodeStorage(),
                 //$$ mc.gameRenderer.getFeatureRenderDispatcher(),
                 //#endif
@@ -101,7 +115,11 @@ public class InWorldGuiDrawer implements AutoCloseable {
 
     public void render() {
         RenderSystem.backupProjectionMatrix();
+        //#if MC >= 26.2
+        //$$ this.guiRenderer.render();
+        //#else
         this.guiRenderer.render(this.fogRenderer.getBuffer(FogRenderer.FogMode.NONE));
+        //#endif
         RenderSystem.restoreProjectionMatrix();
 
         //#if MC >= 26.1
