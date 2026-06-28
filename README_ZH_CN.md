@@ -60,6 +60,7 @@
 - Minecraft 1.21.10
 - Minecraft 1.21.11
 - Minecraft 26.1.2
+- Minecraft 26.2
 
 ### 混淆映射表
 
