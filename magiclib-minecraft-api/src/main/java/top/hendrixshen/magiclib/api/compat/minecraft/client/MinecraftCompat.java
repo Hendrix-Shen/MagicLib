@@ -1,5 +1,7 @@
 package top.hendrixshen.magiclib.api.compat.minecraft.client;
 
+import net.minecraft.client.gui.components.toasts.ToastComponent;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.platform.Window;
@@ -14,6 +16,8 @@ public interface MinecraftCompat extends Provider<Minecraft> {
     static MinecraftCompat getInstance() {
         return MinecraftCompatImpl.getInstance();
     }
+
+    ToastComponent getToasts();
 
     Window getWindow();
 

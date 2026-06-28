@@ -1,6 +1,9 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.client;
 
 import lombok.Getter;
+
+import net.minecraft.client.gui.components.toasts.ToastComponent;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.platform.Window;
@@ -18,6 +21,15 @@ public class MinecraftCompatImpl extends AbstractCompat<Minecraft> implements Mi
 
     private MinecraftCompatImpl(@NotNull Minecraft type) {
         super(type);
+    }
+
+    @Override
+    public ToastComponent getToasts() {
+        //#if MC >= 26.2
+        //$$ return this.get().gui.toastManager();
+        //#else
+        return this.get().getToasts();
+        //#endif
     }
 
     @Override
@@ -49,11 +61,7 @@ public class MinecraftCompatImpl extends AbstractCompat<Minecraft> implements Mi
 
     @Override
     public Camera getMainCamera() {
-        //#if MC >= 26.2
-        //$$ return this.get().gameRenderer.mainCamera();
-        //#else
         return this.get().gameRenderer.getMainCamera();
-        //#endif
     }
 
     @Override
