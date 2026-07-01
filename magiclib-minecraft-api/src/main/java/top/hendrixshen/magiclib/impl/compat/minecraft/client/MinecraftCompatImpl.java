@@ -1,14 +1,12 @@
 package top.hendrixshen.magiclib.impl.compat.minecraft.client;
 
 import lombok.Getter;
-
-import net.minecraft.client.gui.components.toasts.ToastComponent;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.gui.screens.Screen;
 
 import top.hendrixshen.magiclib.api.compat.AbstractCompat;
