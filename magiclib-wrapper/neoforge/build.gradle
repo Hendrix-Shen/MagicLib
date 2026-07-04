@@ -81,7 +81,7 @@ subprojects {
         }
 
         submodules_publish.forEach {
-            shadeOnly(it) {
+            shadeOnly(project(path: it.path)) {
                 transitive = false
             }
         }
@@ -89,8 +89,8 @@ subprojects {
 
     base {
         setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.name}-${project.parent.name}")
-        setGroup("${project.property("mod.maven_group")}")
-        setVersion(project.getModVersion(rootProject))
+        setGroup("${rootProject.property("mod.maven_group")}")
+        setVersion(rootProject.getModVersion(rootProject))
     }
 
     java {
@@ -140,7 +140,7 @@ subprojects {
         inputs.property("mod_license"    , project.property("mod.license"))
         inputs.property("mod_name"       , project.property("mod.name"))
         inputs.property("mod_sources"    , project.property("mod.sources"))
-        inputs.property("mod_version"    , project.getVersionWithCommitHash(rootProject))
+        inputs.property("mod_version"    , rootProject.getVersionWithCommitHash(rootProject))
 
         from(project.parent.sourceSets.main.resources.srcDirs) {
             include("META-INF")
@@ -168,8 +168,8 @@ subprojects {
     }
 
     signing {
-        String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getEnv().SIGNING_PGP_KEY)
-        String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getEnv().SIGNING_PGP_PASSWORD)
+        String signingKey = rootProject.getOrDefault("secrets.gpg.signingKey", rootProject.getEnv().SIGNING_PGP_KEY)
+        String signingPassword = rootProject.getOrDefault("secrets.gpg.signingPassword", rootProject.getEnv().SIGNING_PGP_PASSWORD)
         required = signingKey
         useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
         sign(publishing.publications)
@@ -186,21 +186,21 @@ subprojects {
 
                 artifact(sourcesJar)
                 artifact(javadocJar)
-                version = "${this.project.getMavenArtifactVersion(rootProject)}"
-                this.project.addPomMetadataInformation(this.project, publication)
+                version = "${rootProject.getMavenArtifactVersion(rootProject)}"
+                rootProject.addPomMetadataInformation(this.project, publication)
 
                 pom.withXml { XmlProvider provider ->
                     Node dependencies = provider.asNode().appendNode("dependencies")
                     Node core_dependency = dependencies.appendNode("dependency")
                     core_dependency.appendNode("groupId", coreProject.group)
                     core_dependency.appendNode("artifactId", "${coreProject.parent.property("mod.artifact_name")}-${coreProject.name}")
-                    core_dependency.appendNode("version", "${this.project.getMavenArtifactVersion(coreProject.parent)}")
+                    core_dependency.appendNode("version", "${rootProject.getMavenArtifactVersion(coreProject.parent)}")
                     core_dependency.appendNode("scope", "compile")
                     submodules.forEach { Project submodule ->
                         Node dependency = dependencies.appendNode("dependency")
                         dependency.appendNode("groupId", submodule.group)
                         dependency.appendNode("artifactId", "${submodule.parent.property("mod.artifact_name")}-${submodule.name.replace("${(settings.get("projects").get(submodule.parent.name) as Map<String, ?>).get("prefix")}-", "")}")
-                        dependency.appendNode("version", "${this.project.getMavenArtifactVersion(submodule.parent)}")
+                        dependency.appendNode("version", "${rootProject.getMavenArtifactVersion(submodule.parent)}")
                         dependency.appendNode("scope", "compile")
                     }
                 }
@@ -221,7 +221,7 @@ subprojects {
                 name = "nyanMavenRelease"
                 url = "https://maven.hendrixshen.moe/releases"
 
-                project.credentialsNyanMaven(it)
+                rootProject.credentialsNyanMaven(it)
             }
         }
     }
