@@ -24,12 +24,12 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.Vec3;
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if MC < 11500
 //$$ import com.mojang.blaze3d.platform.GlStateManager;
+//$$ import net.minecraft.client.Minecraft;
 //$$ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 //#endif
 
@@ -39,6 +39,7 @@ import com.mojang.math.Matrix4f;
 // CHECKSTYLE.ON: ImportOrder
 
 import top.hendrixshen.magiclib.api.compat.minecraft.client.CameraCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
@@ -66,8 +67,10 @@ public class CameraPositionTransformer {
     @ApiStatus.ScheduledForRemoval
     public void apply(@NotNull RenderContext context) {
         this.context = context;
-        Minecraft mc = Minecraft.getInstance();
-        Camera camera = mc.gameRenderer.getMainCamera();
+        //#if MC < 11500
+        //$$ Minecraft mc = Minecraft.getInstance();
+        //#endif
+        Camera camera = MinecraftCompat.getInstance().getMainCamera();
         CameraCompat cameraCompat = CameraCompat.of(camera);
         Vec3 vec3 = this.pos.subtract(cameraCompat.getPosition());
         context.pushMatrix();

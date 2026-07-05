@@ -7,7 +7,9 @@ import org.lwjgl.opengl.GL11;
 // CHECKSTYLE.ON: ImportOrder
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC > 11605
+//#if MC >= 26.2
+//$$ import com.mojang.blaze3d.PrimitiveTopology;
+//#elseif MC > 11605
 //$$ import com.mojang.blaze3d.vertex.VertexFormat;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
@@ -18,7 +20,15 @@ public interface VertexFormatCompat {
             throw new AssertionError("No " + Mode.class.getName() + "instances for you!");
         }
 
-        //#if MC > 11605
+        //#if MC >= 26.2
+        //$$ public static PrimitiveTopology LINES = PrimitiveTopology.LINES;
+        //$$ public static PrimitiveTopology DEBUG_LINES = PrimitiveTopology.DEBUG_LINES;
+        //$$ public static PrimitiveTopology DEBUG_LINE_STRIP = PrimitiveTopology.DEBUG_LINE_STRIP;
+        //$$ public static PrimitiveTopology TRIANGLES = PrimitiveTopology.TRIANGLES;
+        //$$ public static PrimitiveTopology TRIANGLE_STRIP = PrimitiveTopology.TRIANGLE_STRIP;
+        //$$ public static PrimitiveTopology TRIANGLE_FAN = PrimitiveTopology.TRIANGLE_FAN;
+        //$$ public static PrimitiveTopology QUADS = PrimitiveTopology.QUADS;
+        //#elseif MC > 11605
         //$$ public static VertexFormat.Mode LINES = VertexFormat.Mode.LINES;
         //#if MC < 12100
         //$$ public static VertexFormat.Mode LINE_STRIP = VertexFormat.Mode.LINE_STRIP;

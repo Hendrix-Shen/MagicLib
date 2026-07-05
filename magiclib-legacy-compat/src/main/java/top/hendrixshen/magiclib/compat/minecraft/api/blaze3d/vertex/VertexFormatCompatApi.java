@@ -4,7 +4,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
 
-//#if MC > 11605
+//#if MC >= 26.2
+//$$ import com.mojang.blaze3d.PrimitiveTopology;
+//#elseif MC > 11605
 //$$ import com.mojang.blaze3d.vertex.VertexFormat;
 //#else
 import org.lwjgl.opengl.GL11;
@@ -15,7 +17,9 @@ import org.lwjgl.opengl.GL11;
 @Environment(EnvType.CLIENT)
 public interface VertexFormatCompatApi {
     class Mode {
-        //#if MC > 11605
+        //#if MC >= 26.2
+        //$$ public static final PrimitiveTopology QUADS = PrimitiveTopology.QUADS;
+        //#elseif MC > 11605
         //$$ public static final VertexFormat.Mode QUADS = VertexFormat.Mode.QUADS;
         //#else
         public static final int QUADS = GL11.GL_QUADS;

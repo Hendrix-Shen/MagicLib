@@ -30,6 +30,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec3;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if 26.2 > MC && MC > 11404
+import net.minecraft.client.renderer.MultiBufferSource;
+import com.mojang.math.Transformation;
+//#endif
+
 //#if 11700 > MC && MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
@@ -46,10 +51,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.util.FormattedCharSequence;
 //#endif
 
-//#if MC > 11404
+//#if 26.2 > MC && MC > 11404
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Transformation;
-import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
@@ -60,6 +63,10 @@ import top.hendrixshen.magiclib.util.minecraft.PositionUtil;
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.2
+//$$ import top.hendrixshen.magiclib.impl.render.text.ImmediateTextDrawer;
+//#endif
+
 //#if MC > 11502
 import top.hendrixshen.magiclib.util.minecraft.render.TextRenderUtil;
 //#endif
@@ -71,11 +78,14 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderer.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/7a0d5d807d598418d2e97ee3fc97a252f38e5d6b/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderer.java">TweakerMore</a>.
  */
 public class TextRenderer {
     public static final double DEFAULT_FONT_SCALE = 0.025;
     private static final double DEFAULT_LINE_HEIGHT_RATIO = 1.0 * RenderUtil.TEXT_LINE_HEIGHT / RenderUtil.TEXT_HEIGHT;
+    //#if MC >= 26.2
+    //$$ private static final int FULL_BRIGHT_LIGHT = 0xF000F0;
+    //#endif
 
     private final List<TextHolder> lines;
     @Getter
@@ -179,7 +189,33 @@ public class TextRenderer {
         // Enable transparent-able text rendering.
         RenderGlobal.enableBlend();
         RenderGlobal.blendFuncForAlpha();
+        //#if MC > 11903
+        //$$ Font.DisplayMode displayMode = this.seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL;
+        //#else
+        // seeThrough
+        boolean displayMode = true;
+        //#endif
 
+        //#if MC >= 26.2
+        //$$ try (ImmediateTextDrawer drawer = new ImmediateTextDrawer(displayMode, TextRenderer.FULL_BRIGHT_LIGHT)) {
+        //$$     for (int i = 0; i < lineNum; i++) {
+        //$$         TextHolder holder = this.lines.get(i);
+        //$$         float textX = (float) this.horizontalAlignment.getTextX(maxTextWidth, holder.getWidth());
+        //$$         float textY = (float) (getLineHeight() * i);
+        //$$         int backgroundColor = this.backgroundColor;
+        //$$
+        //$$         while (true) {
+        //$$             drawer.append(mc.font.prepareText(holder.text, textX, textY, this.color, this.shadow, false, backgroundColor));
+        //$$
+        //$$             if (backgroundColor == 0) {
+        //$$                 break;
+        //$$             }
+        //$$
+        //$$             backgroundColor = 0;
+        //$$         }
+        //$$     }
+        //$$ }
+        //#else
         for (int i = 0; i < lineNum; i++) {
             TextHolder holder = this.lines.get(i);
             float textX = (float) this.horizontalAlignment.getTextX(maxTextWidth, holder.getWidth());
@@ -204,11 +240,7 @@ public class TextRenderer {
                         this.shadow,
                         matrix4f,
                         immediate,
-                        //#if MC > 11903
-                        //$$ this.seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL,
-                        //#else
-                        this.seeThrough,
-                        //#endif
+                        displayMode,
                         backgroundColor,
                         0xF000F0
                 );
@@ -229,6 +261,7 @@ public class TextRenderer {
             //$$ }
             //#endif
         }
+        //#endif
 
         //#if MC < 11600
         //$$ RenderGlobal.color4f(1.0F, 1.0F, 1.0F, 1.0F);

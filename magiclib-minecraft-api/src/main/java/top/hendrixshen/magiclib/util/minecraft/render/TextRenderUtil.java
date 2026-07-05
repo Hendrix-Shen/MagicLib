@@ -80,7 +80,11 @@ public class TextRenderUtil {
         MutableFloat width = new MutableFloat(0);
         boolean hasTrimmed = text.accept((index, style, codePoint) -> {
             width.add(widthRetriever.getWidth(codePoint, style));
+            //#if MC >= 26.2
+            //$$ boolean ok = width.floatValue() <= maxWidth;
+            //#else
             boolean ok = width.getValue() <= maxWidth;
+            //#endif
 
             if (ok) {
                 elements.add(Triple.of(index, style, codePoint));

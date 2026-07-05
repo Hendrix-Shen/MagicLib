@@ -32,7 +32,9 @@ public class RenderContextUtil {
     //$$     Minecraft minecraft = Minecraft.getInstance();
     //$$     return new GuiGraphics(
     //$$             minecraft,
-    //$$             //#if MC >= 26.1
+    //$$             //#if MC >= 26.2
+    //$$             //$$ minecraft.gameRenderer.gameRenderState().guiRenderState
+    //$$             //#elseif MC >= 26.1
     //$$             //$$ minecraft.gameRenderer.getGameRenderState().guiRenderState
     //$$             //#else
     //$$             ((GameRendererAccessor) minecraft.gameRenderer).magiclib$getGuiRenderState()

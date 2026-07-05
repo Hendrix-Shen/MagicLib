@@ -25,10 +25,15 @@ import lombok.NoArgsConstructor;
 
 import com.mojang.blaze3d.opengl.GlConst;
 import com.mojang.blaze3d.opengl.GlStateManager;
-import com.mojang.blaze3d.platform.DestFactor;
-import com.mojang.blaze3d.platform.SourceFactor;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.2
+//$$ import com.mojang.blaze3d.platform.BlendFactor;
+//#else
+import com.mojang.blaze3d.platform.DestFactor;
+import com.mojang.blaze3d.platform.SourceFactor;
+//#endif
+
 //#if MC >= 26.1
 //$$ import com.mojang.blaze3d.pipeline.ColorTargetState;
 //#endif
@@ -39,7 +44,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 // CHECKSTYLE.ON: ImportOrder
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/ddc655d68b6d5e34cce387863af1ffe79945befb/versions/1.21.5/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/7a0d5d807d598418d2e97ee3fc97a252f38e5d6b/versions/1.21.5/src/main/java/me/fallenbreath/tweakermore/util/render/context/RenderGlobals.java">TweakerMore</a>.
  *
  * <li>mc1.14           : subproject 1.14.4</li>
  * <li>mc1.15 ~ mc1.21.4: subproject 1.16.5 (main project)</li>
@@ -60,20 +65,41 @@ public class RenderGlobal {
     }
 
     public static void enableBlend() {
+        //#if MC >= 26.2
+        //$$ // FIXME
+        //$$ GlStateManager._enableBlend(0);
+        //#else
         GlStateManager._enableBlend();
+        //#endif
     }
 
     public static void disableBlend() {
+        //#if MC >= 26.2
+        //$$ // FIXME
+        //$$ GlStateManager._disableBlend(0);
+        //#else
         GlStateManager._disableBlend();
+        //#endif
     }
 
     public static void blendFuncSeparate(
-            SourceFactor sourceFactor, DestFactor destFactor,
-            SourceFactor sourceFactorAlpha, DestFactor destFactorAlpha
+            //#if MC >= 26.2
+            //$$ BlendFactor sourceFactor,
+            //$$ BlendFactor destFactor,
+            //$$ BlendFactor sourceFactorAlpha,
+            //$$ BlendFactor destFactorAlpha
+            //#else
+            SourceFactor sourceFactor,
+            DestFactor destFactor,
+            SourceFactor sourceFactorAlpha,
+            DestFactor destFactorAlpha
+            //#endif
     ) {
         RenderGlobal.blendFuncSeparate(
-                GlConst.toGl(sourceFactor), GlConst.toGl(destFactor),
-                GlConst.toGl(sourceFactorAlpha), GlConst.toGl(destFactorAlpha)
+                GlConst.toGl(sourceFactor),
+                GlConst.toGl(destFactor),
+                GlConst.toGl(sourceFactorAlpha),
+                GlConst.toGl(destFactorAlpha)
         );
     }
 
@@ -90,8 +116,17 @@ public class RenderGlobal {
      */
     public static void blendFuncForAlpha() {
         RenderGlobal.blendFuncSeparate(
-                SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA,
-                SourceFactor.ONE, DestFactor.ONE_MINUS_SRC_ALPHA
+                //#if MC >= 26.2
+                //$$ BlendFactor.SRC_ALPHA,
+                //$$ BlendFactor.ONE_MINUS_SRC_ALPHA,
+                //$$ BlendFactor.ONE,
+                //$$ BlendFactor.ONE_MINUS_SRC_ALPHA
+                //#else
+                SourceFactor.SRC_ALPHA,
+                DestFactor.ONE_MINUS_SRC_ALPHA,
+                SourceFactor.ONE,
+                DestFactor.ONE_MINUS_SRC_ALPHA
+                //#endif
         );
     }
 
@@ -116,8 +151,17 @@ public class RenderGlobal {
 
     public static void defaultBlendFunc() {
         RenderGlobal.blendFuncSeparate(
-                SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA,
-                SourceFactor.ONE, DestFactor.ZERO
+                //#if MC >= 26.2
+                //$$ BlendFactor.SRC_ALPHA,
+                //$$ BlendFactor.ONE_MINUS_SRC_ALPHA,
+                //$$ BlendFactor.ONE,
+                //$$ BlendFactor.ZERO
+                //#else
+                SourceFactor.SRC_ALPHA,
+                DestFactor.ONE_MINUS_SRC_ALPHA,
+                SourceFactor.ONE,
+                DestFactor.ZERO
+                //#endif
         );
     }
 }

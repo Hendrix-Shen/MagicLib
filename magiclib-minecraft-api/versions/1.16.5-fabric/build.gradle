@@ -78,11 +78,11 @@ loom {
     runConfigs.named("client") {
         programArgs([
                 "--width",
-                project.getOrDefault("ow.game.window.width", "1920"),
+                rootProject.getOrDefault("ow.game.window.width", "1920"),
                 "--height",
-                project.getOrDefault("ow.game.window.height", "1080"),
+                rootProject.getOrDefault("ow.game.window.height", "1080"),
                 "--username",
-                project.getOrDefault("ow.game.username", "dev")
+                rootProject.getOrDefault("ow.game.username", "dev")
         ])
     }
 
@@ -107,8 +107,8 @@ loom {
 
 base {
     setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${magic.projectDetail.get().getMinecraftVersionName()}-${modPlatform.id()}")
-    setGroup("${project.property("mod.maven_group")}")
-    setVersion(project.getModVersion(project.parent))
+    setGroup("${rootProject.property("mod.maven_group")}")
+    setVersion(rootProject.getModVersion(project.parent))
 }
 
 checkstyle {
@@ -130,7 +130,7 @@ replaceToken {
     targetSourceSets.set([sourceSets.main])
     replace("@MOD_IDENTIFIER@", project.parent.property("mod.id").toString().replace("-", "_"))
     replace("@MOD_NAME@"      , project.parent.property("mod.name"))
-    replace("@MOD_VERSION@"   , project.getVersionWithCommitHash(this.project.parent) as String)
+    replace("@MOD_VERSION@"   , rootProject.getVersionWithCommitHash(this.project.parent) as String)
     replaceIn("top/hendrixshen/magiclib/impl/minecraft/SharedConstants")
     replaceIn("top/hendrixshen/magiclib/entrypoint/minecraft/MagicLibForge")
     replaceIn("top/hendrixshen/magiclib/entrypoint/minecraft/MagicLibNeoForge")
@@ -142,8 +142,8 @@ yamlang {
 }
 
 signing {
-    String signingKey = project.getOrDefault("secrets.gpg.signingKey", project.getEnv().SIGNING_PGP_KEY)
-    String signingPassword = project.getOrDefault("secrets.gpg.signingPassword", project.getEnv().SIGNING_PGP_PASSWORD)
+    String signingKey = rootProject.getOrDefault("secrets.gpg.signingKey", rootProject.getEnv().SIGNING_PGP_KEY)
+    String signingPassword = rootProject.getOrDefault("secrets.gpg.signingPassword", rootProject.getEnv().SIGNING_PGP_PASSWORD)
     required = signingKey
     useInMemoryPgpKeys(signingKey, signingPassword ? signingPassword : "")
     sign(publishing.publications)
@@ -154,8 +154,8 @@ publishing {
         register("release", MavenPublication) { MavenPublication publication ->
             artifactId = "${this.project.parent.property("mod.artifact_name")}-${projectName}"
             from(this.project.components.java)
-            version = "${this.project.getMavenArtifactVersion(this.project.parent)}"
-            this.project.addPomMetadataInformation(this.project.parent, publication)
+            version = "${rootProject.getMavenArtifactVersion(this.project.parent)}"
+            rootProject.addPomMetadataInformation(this.project.parent, publication)
         }
     }
 
@@ -173,7 +173,7 @@ publishing {
             name = "nyanMavenRelease"
             url = "https://maven.hendrixshen.moe/releases"
 
-            project.credentialsNyanMaven(it)
+            rootProject.credentialsNyanMaven(it)
         }
     }
 }
@@ -188,7 +188,7 @@ tasks.withType(PublishToMavenRepository).configureEach {
     Provider<Boolean> predicate = provider {
         repository == publishing.repositories.mavenLocal ||
                 (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release) ||
-                (repository == publishing.repositories.nyanMavenRelease && publication == publishing.publications.release && project.isNyanMavenCredentialsExist())
+                (repository == publishing.repositories.nyanMavenRelease && publication == publishing.publications.release && rootProject.isNyanMavenCredentialsExist())
     }
 
     onlyIf {
@@ -204,22 +204,22 @@ tasks.withType(Javadoc).configureEach { Javadoc task ->
 
 tasks.register("cleanRuns", Delete.class) { Delete cleanTask ->
     dependsOn("cleanRunClient", "cleanRunServer")
-    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.setGroup("${rootProject.property("mod.id")}")
     cleanTask.delete(file(loom.runConfigs.client.runDir).parentFile)
 }
 
 tasks.register("cleanRunClient", Delete.class) { Delete cleanTask ->
-    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.setGroup("${rootProject.property("mod.id")}")
     cleanTask.delete(loom.runConfigs.client.runDir)
 }
 
 tasks.register("cleanRunServer", Delete.class) { Delete cleanTask ->
-    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.setGroup("${rootProject.property("mod.id")}")
     cleanTask.delete(loom.runConfigs.server.runDir)
 }
 
 tasks.register("cleanJar", Delete.class) { Delete cleanTask ->
-    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.setGroup("${rootProject.property("mod.id")}")
     cleanTask.delete(project.layout.buildDirectory.dir("libs"))
 }
 
@@ -231,7 +231,7 @@ tasks.register("cleanJar", Delete.class) { Delete cleanTask ->
 ].forEach { taskName ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
-            it.setGroup("${project.property("mod.id")}")
+            it.setGroup("${rootProject.property("mod.id")}")
         }
     }
 }

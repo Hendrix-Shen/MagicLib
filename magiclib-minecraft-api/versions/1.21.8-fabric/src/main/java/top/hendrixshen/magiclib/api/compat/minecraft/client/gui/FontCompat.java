@@ -16,7 +16,8 @@ import top.hendrixshen.magiclib.util.collect.Provider;
 // CHECKSTYLE.OFF: JavadocStyle
 /**
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)</li>
- * <li>mc1.21.6+        : subproject 1.21.8        &lt;--------</li>
+ * <li>mc1.21.6 ~ mc26.1: subproject 1.21.8        &lt;--------</li>
+ * <li>mc26.2+          : subproject 26.2</li>
  */
 // CHECKSTYLE.ON: JavadocStyle
 public interface FontCompat extends Provider<Font> {
