@@ -206,7 +206,7 @@ fabric-mc12111 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = 
 fabric-mc260102 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc260102" }
 fabric-mc260200 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc260200" }
 
-foxifiedclasstweaker = "maven.modrinth:foxifiedclasstweaker:0.1.0-alpha.3"
+foxifiedclasstweaker = "maven.modrinth:foxifiedclasstweaker:0.1.0-alpha.4"
 
 imblocker = "maven.modrinth:imblocker:1.0.24"
 
