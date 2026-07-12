@@ -40,8 +40,27 @@ fabric-mc12105 = "0.128.2+1.21.5"
 fabric-mc12108 = "0.136.1+1.21.8"
 fabric-mc12110 = "0.138.4+1.21.10"
 fabric-mc12111 = "0.141.4+1.21.11"
-fabric-mc260102 = "0.154.0+26.1.2"
-fabric-mc260200 = "0.154.0+26.2"
+fabric-mc260102 = "0.154.2+26.1.2"
+fabric-mc260200 = "0.154.2+26.2"
+
+imblocker-original-fabric-mc11701 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc11802 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc11902 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc11903 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc11904 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc12001 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc12002 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc12004 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc12006 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc12101 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc12103 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc12104 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc12105 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc12108 = "g85fdqxk" # IMBlocker-v5.5.4-fabric
+imblocker-original-fabric-mc12110 = "6.1.4"
+imblocker-original-fabric-mc12111 = "6.1.4"
+imblocker-original-fabric-mc260102 = "7.1.7"
+imblocker-original-fabric-mc260200 = "7.1.7"
 
 imblocker-original-forge-mc11701 = "5.5.3"
 imblocker-original-forge-mc11802 = "5.5.3"
@@ -117,9 +136,9 @@ modmenu-mc12104 = "13.0.4"
 modmenu-mc12105 = "14.0.2"
 modmenu-mc12108 = "15.0.2"
 modmenu-mc12110 = "16.0.1"
-modmenu-mc12111 = "17.0.0"
-modmenu-mc260102 = "18.0.0-beta.1"
-modmenu-mc260200 = "20.0.0-beta.4"
+modmenu-mc12111 = "17.0.1-beta.1"
+modmenu-mc260102 = "18.0.0"
+modmenu-mc260200 = "20.0.0"
 
 badpackets-mc12006 = "neo-0.7.4"
 
@@ -141,9 +160,9 @@ malilib-mc12104 = "0.23.5"
 malilib-mc12105 = "0.24.3"
 malilib-mc12108 = "0.25.7"
 malilib-mc12110 = "0.26.8"
-malilib-mc12111 = "0.27.15"
-malilib-mc260102 = "0.28.8"
-malilib-mc260200 = "0.29.2"
+malilib-mc12111 = "0.27.16"
+malilib-mc260102 = "0.28.9"
+malilib-mc260200 = "0.29.3"
 
 mafglib-mc11701 = "0.1.6-mc1.17.1"
 mafglib-mc11802 = "0.1.14-mc1.18.2"
@@ -156,9 +175,9 @@ mafglib-mc12104 = "0.4.3+mc1.21.4"
 mafglib-mc12105 = "0.4.3+mc1.21.5"
 mafglib-mc12108 = "0.4.5+mc1.21.8"
 mafglib-mc12110 = "0.4.11+mc1.21.10"
-mafglib-mc12111 = "fKaY22pe" # 0.4.4+mc1.21.11
-mafglib-mc260102 = "bThmGExj" # 0.5.0+mc26.1.1
-mafglib-mc260200 = "N3d1oEun" # 0.5.0+mc26.2
+mafglib-mc12111 = "SvPK1yWT" # 0.4.5+mc1.21.11
+mafglib-mc260102 = "8IvsfLow" # 0.5.4+mc26.1.2
+mafglib-mc260200 = "PU3DPP5w" # 0.5.1+mc26.2
 
 # libraries will be removed after the migration to build-logic.
 [libraries]
@@ -206,9 +225,30 @@ fabric-mc12111 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = 
 fabric-mc260102 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc260102" }
 fabric-mc260200 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-mc260200" }
 
-foxifiedclasstweaker = "maven.modrinth:foxifiedclasstweaker:0.1.0-alpha.3"
+foxifiedclasstweaker = "maven.modrinth:foxifiedclasstweaker:0.1.0-alpha.4"
 
-imblocker = "maven.modrinth:imblocker:1.0.24"
+imblocker-mc11404 = "maven.modrinth:imblocker:1.0.20"
+imblocker-mc11502 = "maven.modrinth:imblocker:1.0.24"
+imblocker-mc11605 = "maven.modrinth:imblocker:1.0.24"
+
+imblocker-original-fabric-mc11701 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc11701" }
+imblocker-original-fabric-mc11802 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc11802" }
+imblocker-original-fabric-mc11902 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc11902" }
+imblocker-original-fabric-mc11903 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc11903" }
+imblocker-original-fabric-mc11904 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc11904" }
+imblocker-original-fabric-mc12001 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12001" }
+imblocker-original-fabric-mc12002 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12002" }
+imblocker-original-fabric-mc12004 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12004" }
+imblocker-original-fabric-mc12006 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12006" }
+imblocker-original-fabric-mc12101 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12101" }
+imblocker-original-fabric-mc12103 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12103" }
+imblocker-original-fabric-mc12104 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12104" }
+imblocker-original-fabric-mc12105 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12105" }
+imblocker-original-fabric-mc12108 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12108" }
+imblocker-original-fabric-mc12110 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12110" }
+imblocker-original-fabric-mc12111 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc12111" }
+imblocker-original-fabric-mc260102 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc260102" }
+imblocker-original-fabric-mc260200 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-fabric-mc260200" }
 
 imblocker-original-forge-mc11701 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc11701" }
 imblocker-original-forge-mc11802 = { module = "maven.modrinth:imblocker-original", version.ref = "imblocker-original-forge-mc11802" }
