@@ -214,6 +214,7 @@ public class TextRenderer {
         //$$             backgroundColor = 0;
         //$$         }
         //$$     }
+        //$$     drawer.draw();
         //$$ }
         //#else
         for (int i = 0; i < lineNum; i++) {
