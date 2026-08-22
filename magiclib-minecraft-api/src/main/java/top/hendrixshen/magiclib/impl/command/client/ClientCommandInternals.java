@@ -20,6 +20,7 @@ import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompa
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * The internal implementation of the client-side command system.
@@ -145,7 +146,7 @@ public final class ClientCommandInternals {
             Map<CommandNode<MagicCommandSource>, CommandNode<MagicCommandSource>> nodeMapping
     ) {
         ArgumentBuilder<MagicCommandSource, ?> builder = node.createBuilder();
-        builder.requires(s -> true);
+        builder.requires((Predicate) s -> true);
 
         if (builder.getCommand() != null) {
             builder.executes(context -> 0);
