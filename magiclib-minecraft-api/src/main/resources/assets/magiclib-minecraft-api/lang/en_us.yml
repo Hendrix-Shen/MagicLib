@@ -1,4 +1,10 @@
 magiclib:
+  command:
+    client:
+      version: "MagicLib %1$s (%2$s, %3$s)"
+      dump:
+        success: "Client commands have been dumped to %1$s"
+        fail: "Failed to dump client commands to %1$s"
   util:
     minecraft:
       color:
