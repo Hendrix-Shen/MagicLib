@@ -15,15 +15,15 @@ import net.minecraft.client.multiplayer.ClientLevel;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import top.hendrixshen.magiclib.api.command.client.MagicCommandSource;
+import top.hendrixshen.magiclib.api.command.client.ClientCommandSource;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 
 /**
- * A {@link MagicCommandSource} that delegates to the vanilla client.
+ * A {@link ClientCommandSource} that delegates to the vanilla client.
  */
 @AllArgsConstructor
-public class MagicCommandSourceImpl implements MagicCommandSource {
+public class ClientCommandSourceImpl implements ClientCommandSource {
     private final Minecraft client;
 
     @Override

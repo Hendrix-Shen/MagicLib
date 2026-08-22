@@ -15,7 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.command.client.MagicCommandSource;
+import top.hendrixshen.magiclib.api.command.client.ClientCommandSource;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
 
 import java.util.HashMap;
@@ -66,7 +66,7 @@ public final class ClientCommandInternals {
         //#else
         ChatComponent chat = client.gui.getChat();
         //#endif
-        MagicCommandSource source = new MagicCommandSourceImpl(client);
+        ClientCommandSource source = new ClientCommandSourceImpl(client);
         chat.addRecentChat(ClientCommandInternals.COMMAND_PREFIX + command);
 
         try {
@@ -89,10 +89,10 @@ public final class ClientCommandInternals {
      *
      * @param target the dispatcher to merge the client commands into
      */
-    public static void addCommands(CommandDispatcher<MagicCommandSource> target) {
-        MagicCommandSource source = new MagicCommandSourceImpl(Minecraft.getInstance());
-        CommandDispatcher<MagicCommandSource> sourceDispatcher = ClientCommandRegistry.getInstance().getDispatcher();
-        Map<CommandNode<MagicCommandSource>, CommandNode<MagicCommandSource>> nodeMapping = new HashMap<>();
+    public static void addCommands(CommandDispatcher<ClientCommandSource> target) {
+        ClientCommandSource source = new ClientCommandSourceImpl(Minecraft.getInstance());
+        CommandDispatcher<ClientCommandSource> sourceDispatcher = ClientCommandRegistry.getInstance().getDispatcher();
+        Map<CommandNode<ClientCommandSource>, CommandNode<ClientCommandSource>> nodeMapping = new HashMap<>();
         nodeMapping.put(sourceDispatcher.getRoot(), target.getRoot());
         ClientCommandInternals.copyTree(sourceDispatcher.getRoot(), target.getRoot(), source, nodeMapping);
     }
@@ -109,17 +109,17 @@ public final class ClientCommandInternals {
      *                    used to resolve redirects
      */
     private static void copyTree(
-            CommandNode<MagicCommandSource> origin,
-            CommandNode<MagicCommandSource> target,
-            MagicCommandSource source,
-            Map<CommandNode<MagicCommandSource>, CommandNode<MagicCommandSource>> nodeMapping
+            CommandNode<ClientCommandSource> origin,
+            CommandNode<ClientCommandSource> target,
+            ClientCommandSource source,
+            Map<CommandNode<ClientCommandSource>, CommandNode<ClientCommandSource>> nodeMapping
     ) {
-        for (CommandNode<MagicCommandSource> child : origin.getChildren()) {
+        for (CommandNode<ClientCommandSource> child : origin.getChildren()) {
             if (!child.canUse(source)) {
                 continue;
             }
 
-            CommandNode<MagicCommandSource> copy = ClientCommandInternals.copyNode(child, nodeMapping);
+            CommandNode<ClientCommandSource> copy = ClientCommandInternals.copyNode(child, nodeMapping);
             nodeMapping.put(child, copy);
             target.addChild(copy);
 
@@ -136,16 +136,21 @@ public final class ClientCommandInternals {
      * only used by the suggestion system. Redirects are remapped through
      * {@code nodeMapping}.</p>
      *
+     * <p>The requirement predicate is reset with a raw {@link Predicate}, so that
+     * the copied nodes stay usable when the vanilla suggestion system evaluates
+     * them with its own source type.</p>
+     *
      * @param node        the command node to copy
      * @param nodeMapping the mapping from original nodes to their copies,
      *                    used to resolve redirects
      * @return the copied command node
      */
-    private static CommandNode<MagicCommandSource> copyNode(
-            CommandNode<MagicCommandSource> node,
-            Map<CommandNode<MagicCommandSource>, CommandNode<MagicCommandSource>> nodeMapping
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static CommandNode<ClientCommandSource> copyNode(
+            CommandNode<ClientCommandSource> node,
+            Map<CommandNode<ClientCommandSource>, CommandNode<ClientCommandSource>> nodeMapping
     ) {
-        ArgumentBuilder<MagicCommandSource, ?> builder = node.createBuilder();
+        ArgumentBuilder<ClientCommandSource, ?> builder = node.createBuilder();
         builder.requires((Predicate) s -> true);
 
         if (builder.getCommand() != null) {
@@ -178,7 +183,7 @@ public final class ClientCommandInternals {
      * @param source the client command source
      * @return true if the message was handled by the client-side command system
      */
-    private static boolean handleSyntaxError(CommandSyntaxException e, MagicCommandSource source) {
+    private static boolean handleSyntaxError(CommandSyntaxException e, ClientCommandSource source) {
         if (ClientCommandInternals.shouldFallbackToServer(e.getType())) {
             return false;
         }

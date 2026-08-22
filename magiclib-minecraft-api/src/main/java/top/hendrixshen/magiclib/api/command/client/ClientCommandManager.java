@@ -41,7 +41,7 @@ public final class ClientCommandManager {
      *
      * @param consumer the registration callback that receives the dispatcher
      */
-    public static void register(Consumer<CommandDispatcher<MagicCommandSource>> consumer) {
+    public static void register(Consumer<CommandDispatcher<ClientCommandSource>> consumer) {
         ClientCommandRegistry.getInstance().register(consumer);
     }
 
@@ -51,7 +51,7 @@ public final class ClientCommandManager {
      * @param name the literal name
      * @return the created builder
      */
-    public static LiteralArgumentBuilder<MagicCommandSource> literal(String name) {
+    public static LiteralArgumentBuilder<ClientCommandSource> literal(String name) {
         return LiteralArgumentBuilder.literal(name);
     }
 
@@ -63,7 +63,7 @@ public final class ClientCommandManager {
      * @param <T>  the type of the parsed argument value
      * @return the created builder
      */
-    public static <T> RequiredArgumentBuilder<MagicCommandSource, T> argument(String name, ArgumentType<T> type) {
+    public static <T> RequiredArgumentBuilder<ClientCommandSource, T> argument(String name, ArgumentType<T> type) {
         return RequiredArgumentBuilder.argument(name, type);
     }
 }

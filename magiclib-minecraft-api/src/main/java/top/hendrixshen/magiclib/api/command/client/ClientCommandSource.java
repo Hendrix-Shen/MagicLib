@@ -18,7 +18,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
  * <p>Client-side commands are executed entirely on the client thread, so they
  * work in both singleplayer and multiplayer without being sent to the server.</p>
  */
-public interface MagicCommandSource {
+public interface ClientCommandSource {
     /**
      * Sends a success message to the client chat.
      *

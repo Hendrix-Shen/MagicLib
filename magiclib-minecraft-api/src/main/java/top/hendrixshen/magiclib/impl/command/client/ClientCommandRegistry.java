@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 import com.mojang.brigadier.CommandDispatcher;
 
-import top.hendrixshen.magiclib.api.command.client.MagicCommandSource;
+import top.hendrixshen.magiclib.api.command.client.ClientCommandSource;
 
 import java.util.function.Consumer;
 
@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 public final class ClientCommandRegistry {
     private static final ClientCommandRegistry instance = new ClientCommandRegistry();
 
-    private final CommandDispatcher<MagicCommandSource> dispatcher = new CommandDispatcher<>();
+    private final CommandDispatcher<ClientCommandSource> dispatcher = new CommandDispatcher<>();
 
     /**
      * Gets the singleton instance of the registry.
@@ -32,7 +32,7 @@ public final class ClientCommandRegistry {
      *
      * @param consumer the registration callback that receives the dispatcher
      */
-    public void register(Consumer<CommandDispatcher<MagicCommandSource>> consumer) {
+    public void register(Consumer<CommandDispatcher<ClientCommandSource>> consumer) {
         consumer.accept(this.dispatcher);
     }
 
@@ -41,7 +41,7 @@ public final class ClientCommandRegistry {
      *
      * @return the dispatcher
      */
-    public CommandDispatcher<MagicCommandSource> getDispatcher() {
+    public CommandDispatcher<ClientCommandSource> getDispatcher() {
         return this.dispatcher;
     }
 }
