@@ -45,9 +45,7 @@ public final class MagicLibClientCommand {
         ClientCommandSource source = context.getSource();
         source.sendSuccess(ComponentCompat.translatable(
                 "magiclib.command.client.version",
-                SharedConstants.getMagiclibName(),
-                SharedConstants.getMagiclibVersion(),
-                SharedConstants.getMagiclibVersionType()
+                SharedConstants.getMagiclibVersion()
         ));
         return 1;
     }
