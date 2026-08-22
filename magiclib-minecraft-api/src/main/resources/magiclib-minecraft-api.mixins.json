@@ -18,6 +18,8 @@
     "accessor.ScreenAccessor",
     "accessor.StringSplitterAccessor",
     "accessor.Vector4fAccessor",
+    "command.client.ClientPacketListenerMixin",
+    "command.client.LocalPlayerMixin",
     "compat.FontMixin",
     "event.LanguageManagerMixin",
     "event.MinecraftMixin",
