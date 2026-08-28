@@ -3,6 +3,9 @@ package top.hendrixshen.magiclib.api.command.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if MC >= 1.15
@@ -57,4 +60,31 @@ public interface ClientCommandSource {
     //#else
     //$$ MultiPlayerLevel getLevel();
     //#endif
+
+    /**
+     * Gets the position of the player that used the command.
+     *
+     * @return the position
+     */
+    default Vec3 getPosition() {
+        return this.getPlayer() != null ? this.getPlayer().position() : Vec3.ZERO;
+    }
+
+    /**
+     * Gets the rotation of the player that used the command.
+     *
+     * @return the rotation
+     */
+    default Vec2 getRotation() {
+        return this.getPlayer() != null ? this.getPlayer().getRotationVector() : Vec2.ZERO;
+    }
+
+    /**
+     * Gets the player entity that used the command.
+     *
+     * @return the player entity, or null if the player is not available
+     */
+    default Entity getEntity() {
+        return this.getPlayer();
+    }
 }
