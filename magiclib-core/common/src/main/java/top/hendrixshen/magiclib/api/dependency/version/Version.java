@@ -19,7 +19,7 @@ package top.hendrixshen.magiclib.api.dependency.version;
 import top.hendrixshen.magiclib.impl.dependency.version.VersionParser;
 
 /**
- * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/api/Version.java">FabricLoader</a>
+ * Reference to <a href="https://github.com/FabricMC/fabric-loader/blob/12775fdfe9eb7a0b1e260acf1e27aeb80c930543/src/main/java/net/fabricmc/loader/api/Version.java">FabricLoader</a>.
  *
  * <p>
  * Represents a version of a mod.

@@ -197,6 +197,8 @@ public interface RenderContext {
     //#endif
 
     /**
+     * Gets the GUI component of the render context.
+     *
      * @deprecated Moved to {@link GuiRenderContext#getGuiComponent()}.
      */
     @Deprecated

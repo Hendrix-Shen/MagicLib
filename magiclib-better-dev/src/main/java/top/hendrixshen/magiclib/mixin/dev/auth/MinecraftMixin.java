@@ -35,6 +35,9 @@ import top.hendrixshen.magiclib.impl.dev.MixinPredicates;
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/versions/1.16.5/src/main/java/me/fallenbreath/tweakermore/mixins/util/qol/MinecraftClientMixin.java">TweakerMore</a>.
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.15  : subproject 1.15.2 [dummy]</li>
  * <li>mc1.16 ~ mc1.20.3: subproject 1.16.5 (main project)        &lt;--------</li>
  * <li>mc1.20.4+        : subproject 1.20.4 [dummy]</li>

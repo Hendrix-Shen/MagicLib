@@ -201,6 +201,8 @@ public class FabricUtil {
     }
 
     /**
+     * Checks whether the environment is a Fabric development environment.
+     *
      * @return True if started with Fabric Loom.
      */
     public static boolean isDevelopmentEnvironment() {

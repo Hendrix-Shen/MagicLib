@@ -34,15 +34,15 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 
 import java.util.Map;
 
-// CHECKSTYLE.OFF: JavadocStyle
-
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/7a0d5d807d598418d2e97ee3fc97a252f38e5d6b/versions/26.2/src/main/java/me/fallenbreath/tweakermore/util/render/ImmediateTextDrawer.java">TweakerMore</a>.
+ *
+ * <p>
+ * Preprocessor version guide.
  *
  * <li>mc1.14 ~ mc26.1: subproject 1.16.5 (main project) [dummy]        &lt;--------</li>
  * <li>mc26.2+        : subproject 26.2</li>
  */
-// CHECKSTYLE.ON: JavadocStyle
 @ApiStatus.Internal
 public class ImmediateTextDrawer implements Font.GlyphVisitor, AutoCloseable {
     private static final Matrix4fc IDENTITY_MATRIX = new Matrix4f();

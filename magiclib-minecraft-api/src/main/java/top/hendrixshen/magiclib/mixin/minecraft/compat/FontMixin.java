@@ -21,13 +21,13 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import top.hendrixshen.magiclib.api.fake.compat.FontAccessor;
 
-// CHECKSTYLE.OFF: JavadocStyle
 /**
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.15.2: subproject 1.15.2 [dummy]</li>
  * <li>mc1.15 ~ mc1.21.5: subproject 1.16.5 (main project)        &lt;--------</li>
  * <li>mc1.21.6+        : subproject 1.21.8 [dummy]</li>
  */
-// CHECKSTYLE.ON: JavadocStyle
 @Mixin(Font.class)
 public abstract class FontMixin implements FontAccessor {
     @Shadow

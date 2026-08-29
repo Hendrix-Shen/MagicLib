@@ -61,6 +61,8 @@ public class CameraPositionTransformer {
     }
 
     /**
+     * Applies the camera position transformation to the render context.
+     *
      * @deprecated Use {@link CameraPositionTransformer#apply(LevelRenderContext)} instead.
      */
     @Deprecated
