@@ -15,7 +15,7 @@
 
 [English](./README.md) | 中文
 
-⚠️**警告: 该项目处于重构阶段。**
+⚠️ **警告: 该项目处于重构阶段。**
 
 ❗在报告问题前，请务必尝试最新[测试版](https://github.com/Hendrix-Shen/MagicLib/releases)，检查问题是否依然存在。
 
@@ -25,10 +25,10 @@
 
 ## 依赖库
 
-| 依赖       | 类型 | 环境        | 链接                                                                                                                                   |
-|----------|----|-----------|--------------------------------------------------------------------------------------------------------------------------------------|
-| MaliLib  | 可选 | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                                   |
-| Mod Menu | 可选 | 客户端       | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu)               |
+| 依赖     | 类型 | 环境   | 链接                                                                                                                   |
+|----------|------|--------|------------------------------------------------------------------------------------------------------------------------|
+| MaliLib  | 可选 | 客户端 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib)                                                     |
+| Mod Menu | 可选 | 客户端 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/modmenu) &#124; [Modrinth](https://modrinth.com/mod/modmenu) |
 
 ## 开发
 
@@ -69,6 +69,12 @@
 ### 文档
 
 英文文档与中文文档是逐行对应的。
+
+### 贡献
+
+#### AI 编码
+
+若您使用代理编码，请您让代理遵守我们提供的 agents.md，以便更好的理解我们的项目。
 
 ## 免责声明
 

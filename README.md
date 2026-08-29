@@ -70,6 +70,14 @@ For Minecraft 1.14 - 1.21.11, we are using the **Mojang official** mappings to d
 
 The English doc and the Chinese doc are aligned line by line.
 
+### Contributor
+
+If you use agent coding, please instruct your agents to follow the agents.md file we provide so they can better understand our project.
+
+#### AI Coding
+
+If you use agent coding, please instruct your agents to follow the agents.md we provide so they can better understand our project.
+
 ## Disclaimer
 
 The use of this open-source mod dependency library is entirely at the user's own discretion. Any risks, losses, or consequences that may arise during the use of resources shall be solely borne by the user. We shall not be held responsible for any direct or indirect losses resulting from the use of this project.
