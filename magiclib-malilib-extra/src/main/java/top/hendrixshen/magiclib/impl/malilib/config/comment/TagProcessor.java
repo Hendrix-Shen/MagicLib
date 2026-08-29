@@ -49,7 +49,8 @@ public class TagProcessor {
     }
 
     /**
-     * Tag Syntax:
+     * Processes the tag references in the given comment.
+     *
      * <li>"@tr#my.translation.key@": translation with the given key.</li>
      * <li>"@config#myConfig@": translated and colored name of the given magic config.</li>
      */

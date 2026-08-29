@@ -17,12 +17,12 @@ import top.hendrixshen.magiclib.api.render.context.RenderContext;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-// CHECKSTYLE.OFF: JavadocStyle
 /**
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.12.8: subproject 1.16.5 (main project)        &lt;--------</li>
  * <li>mc1.21.9+        : subproject 1.21.10 [dummy]</li>
  */
-// CHECKSTYLE.ON: JavadocStyle
 public interface RenderEntityListener extends Listener {
     //#if MC > 12105
     //$$ void preRenderEntity(Entity entity, EntityRenderContext renderContext);

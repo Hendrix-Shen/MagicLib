@@ -7,12 +7,12 @@ import net.minecraft.client.gui.GuiComponent;
 
 import top.hendrixshen.magiclib.impl.render.matrix.MinecraftPoseStack;
 
-// CHECKSTYLE.OFF: JavadocStyle
 /**
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.12.8: subproject 1.16.5 (main project)        &lt;--------</li>
  * <li>mc1.21.9+        : subproject 1.21.10 [dummy]</li>
  */
-// CHECKSTYLE.ON: JavadocStyle
 public class EntityRenderContext extends LevelRenderContextImpl {
     public EntityRenderContext(@NotNull MinecraftPoseStack matrixStack) {
         super(matrixStack);

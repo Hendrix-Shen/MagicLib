@@ -4,7 +4,7 @@ import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.platform.DistType;
 
 /**
- * Fabric style ModInitializer
+ * Fabric style ModInitializer.
  *
  * <p>
  * Provide a Fabric-style ModInitializer for cross-platform mod.
