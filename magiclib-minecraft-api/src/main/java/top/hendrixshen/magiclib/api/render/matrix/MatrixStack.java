@@ -44,6 +44,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 public interface MatrixStack {
     //#if MC > 11404
     /**
+     * Gets the pose stack.
+     *
      * @deprecated moved to {@link top.hendrixshen.magiclib.impl.render.matrix.MinecraftPoseStack#getPoseStack()}.
      */
     @Deprecated

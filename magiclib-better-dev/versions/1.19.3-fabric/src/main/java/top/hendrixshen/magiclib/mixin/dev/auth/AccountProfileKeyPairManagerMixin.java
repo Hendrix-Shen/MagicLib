@@ -39,6 +39,9 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Reference to <a href="https://github.com/magistermaks/mod-fungible/blob/9cd81f1d8ebcef43cff3df279aaef9bb68950e7c/src/main/java/net/darktree/fungible/mixin/auth/ProfileKeysImplMixin.java">mod-fungible</a>.
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.19.2: subproject 1.16.5 (main project) [dummy]</li>
  * <li>mc1.19.3+        : subproject 1.19.3        &lt;--------</li>
  */

@@ -39,6 +39,9 @@ import top.hendrixshen.magiclib.impl.render.matrix.MinecraftPoseStack;
  * For those who needs in-game transformation and guiDrawer drawing (mc1.21.6+) (very hacky)
  * </p>
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)        &lt;--------</li>
  * <li>mc1.21.6+        : subproject 1.21.7</li>
  */

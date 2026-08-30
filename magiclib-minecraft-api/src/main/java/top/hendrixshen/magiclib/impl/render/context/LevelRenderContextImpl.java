@@ -104,6 +104,8 @@ public class LevelRenderContextImpl extends RenderContextImpl implements LevelRe
     }
 
     /**
+     * Gets the GUI component of the level render context.
+     *
      * @deprecated it shouldn't be here.
      */
     @Deprecated

@@ -40,13 +40,13 @@ import top.hendrixshen.magiclib.api.fake.compat.FontAccessor;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-// CHECKSTYLE.OFF: JavadocStyle
 /**
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)        &lt;--------</li>
  * <li>mc1.21.6 ~ mc26.1: subproject 1.21.8</li>
  * <li>mc26.2+          : subproject 26.2</li>
  */
-// CHECKSTYLE.ON: JavadocStyle
 public class FontCompatImpl extends AbstractCompat<Font> implements FontCompat {
     public FontCompatImpl(@NotNull Font type) {
         super(type);

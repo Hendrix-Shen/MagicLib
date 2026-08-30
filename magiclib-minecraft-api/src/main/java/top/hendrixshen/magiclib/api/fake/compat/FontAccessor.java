@@ -19,13 +19,13 @@ import com.mojang.math.Matrix4f;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-// CHECKSTYLE.OFF: JavadocStyle
 /**
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.15.2: subproject 1.15.2 [dummy]</li>
  * <li>mc1.16 ~ mc1.21.5: subproject 1.16.5 (main project)        &lt;--------</li>
  * <li>mc1.21.6+        : subproject 1.21.8 [dummy]</li>
  */
-// CHECKSTYLE.ON: JavadocStyle
 public interface FontAccessor {
     //#if MC > 12101
     //$$ default int magiclib$drawInternal(

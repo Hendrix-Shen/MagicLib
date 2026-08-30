@@ -214,6 +214,8 @@ public class TextRenderer {
         //$$             backgroundColor = 0;
         //$$         }
         //$$     }
+        //$$
+        //$$     drawer.draw();
         //$$ }
         //#else
         for (int i = 0; i < lineNum; i++) {
@@ -348,6 +350,8 @@ public class TextRenderer {
     }
 
     /**
+     * Sets the text color.
+     *
      * @param color the text color in the 0xAARRGGBB format.
      */
     public TextRenderer color(int color) {
@@ -356,6 +360,8 @@ public class TextRenderer {
     }
 
     /**
+     * Sets the background color.
+     *
      * @param backgroundColor the background color in the 0xAARRGGBB format.
      */
     public TextRenderer bgColor(int backgroundColor) {
@@ -364,6 +370,8 @@ public class TextRenderer {
     }
 
     /**
+     * Sets the text and background colors.
+     *
      * @param color           the text color in the 0xAARRGGBB format.
      * @param backgroundColor the background color in the 0xAARRGGBB format.
      */

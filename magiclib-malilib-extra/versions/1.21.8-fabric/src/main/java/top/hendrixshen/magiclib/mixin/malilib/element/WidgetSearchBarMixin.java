@@ -9,12 +9,12 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import top.hendrixshen.magiclib.api.fake.malilib.WidgetSearchBarOpenStateAccessor;
 
-// CHECKSTYLE.OFF: JavadocStyle
 /**
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project) [dummy]</li>
  * <li>mc1.21.6+        : subproject 1.21.8        &lt;--------</li>
  */
-// CHECKSTYLE.ON: JavadocStyle
 @Mixin(value = WidgetSearchBar.class, remap = false)
 public abstract class WidgetSearchBarMixin implements WidgetSearchBarOpenStateAccessor {
     @Shadow

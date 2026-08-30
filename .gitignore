@@ -28,7 +28,13 @@ bin/
 
 *.DS_Store
 
-# fabric
+# loom
 publish/
 run/
 local.properties
+
+# Temp
+.tmp/
+
+# Deepseek harness
+.dsh-meow/

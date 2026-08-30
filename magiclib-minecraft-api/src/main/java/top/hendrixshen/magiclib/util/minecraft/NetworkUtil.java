@@ -149,6 +149,8 @@ public class NetworkUtil {
     }
 
     /**
+     * Reads an NBT compound from the buffer.
+     *
      * @deprecated Use {@link #readNbtAuto(FriendlyByteBuf)} instead.
      */
     @Deprecated

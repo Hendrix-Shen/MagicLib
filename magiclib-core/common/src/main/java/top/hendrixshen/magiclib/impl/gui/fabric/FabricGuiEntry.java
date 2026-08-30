@@ -102,6 +102,8 @@ public final class FabricGuiEntry {
     }
 
     /**
+     * Displays a critical error dialog.
+     *
      * @param exitAfter If true then this will call {@link System#exit(int)} after showing the gui, otherwise this will
      *                  return normally.
      */

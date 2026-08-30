@@ -44,6 +44,9 @@ import java.util.Map;
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/fanetlib/blob/20335b54fda0bc38cf52552878ad84755d9a66f9/versions/1.20.2/src/main/java/me/fallenbreath/fanetlib/mixins/register/CustomPayloadC2SPacketMixin.java">fanetlib</a>.
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.20.1  : subproject 1.16.5 (main project) [dummy]</li>
  * <li>mc1.20.2 ~ mc1.20.5: subproject 1.20.2        &lt;--------</li>
  * <li>mc1.20.6+          : subproject 1.20.6</li>

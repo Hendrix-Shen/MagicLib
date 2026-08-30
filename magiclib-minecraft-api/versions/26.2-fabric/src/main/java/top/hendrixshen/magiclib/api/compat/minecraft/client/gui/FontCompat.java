@@ -9,13 +9,13 @@ import net.minecraft.network.chat.Component;
 
 import top.hendrixshen.magiclib.impl.compat.minecraft.client.gui.FontCompatImpl;
 
-// CHECKSTYLE.OFF: JavadocStyle
 /**
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.21.5: subproject 1.16.5 (main project)</li>
  * <li>mc1.21.6 ~ mc26.1: subproject 1.21.8</li>
  * <li>mc26.2+          : subproject 26.2        &lt;--------</li>
  */
-// CHECKSTYLE.ON: JavadocStyle
 public interface FontCompat {
     ImmutableBiMap<DisplayMode, DisplayMode> displayModeMappings = ImmutableBiMap.of(
             DisplayMode.NORMAL, Font.DisplayMode.NORMAL,

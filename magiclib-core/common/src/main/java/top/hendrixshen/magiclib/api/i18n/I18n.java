@@ -3,7 +3,7 @@ package top.hendrixshen.magiclib.api.i18n;
 import top.hendrixshen.magiclib.impl.i18n.MagicLanguageManager;
 
 /**
- * Note:
+ * Provides localized text translation.
  *
  * <li>
  * <b>Un-suffixed Translation Method</b>:
