@@ -28,6 +28,9 @@ import java.util.concurrent.CompletableFuture;
  * method uses a {@link CommandContext} of {@link ClientCommandSource} instead of
  * {@code CommandSourceStack}.</p>
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.19.2  : subproject 1.16.5 (main project)</li>
  * <li>mc1.19.3 ~ mc1.20.4: subproject 1.19.3        &lt;--------</li>
  * <li>mc1.20.5+          : subproject 1.20.6</li>

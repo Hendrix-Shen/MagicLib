@@ -18,6 +18,9 @@ import java.util.UUID;
  * command source. Only the getter method uses a {@link CommandContext} of
  * {@link ClientCommandSource} instead of {@code CommandSourceStack}.</p>
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.15: subproject 1.15.2</li>
  * <li>mc1.16+        : subproject 1.16.5 (main project)        &lt;--------</li>
  */

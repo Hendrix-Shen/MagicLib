@@ -19,6 +19,9 @@ import top.hendrixshen.magiclib.impl.command.client.ClientCommandInternals;
  * Intercepts the LocalPlayer's chat messages, so that client-side commands
  * are executed on the client instead of being sent to the server.
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.19.2: subproject 1.16.5 (main project)        &lt;--------</li>
  * <li>mc1.19.3+        : subproject 1.19.3 [dummy]</li>
  */

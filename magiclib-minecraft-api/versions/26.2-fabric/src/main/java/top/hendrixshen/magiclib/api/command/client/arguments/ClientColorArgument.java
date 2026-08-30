@@ -25,6 +25,9 @@ import java.util.concurrent.CompletableFuture;
  * {@code ChatFormatting}. The parsing and suggestion logic is identical to the vanilla
  * implementation.</p>
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc26.1: subproject 1.16.5 (main project)</li>
  * <li>mc26.2+        : subproject 26.2        &lt;--------</li>
  */

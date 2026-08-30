@@ -23,6 +23,9 @@ import java.util.concurrent.CompletableFuture;
  * <p>The parsing logic is delegated to the vanilla implementation. Only the getter method uses a
  * {@link CommandContext} of {@link ClientCommandSource} instead of {@code CommandSourceStack}.</p>
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.20.4: subproject 1.16.5 (main project)</li>
  * <li>mc1.20.5+        : subproject 1.20.6        &lt;--------</li>
  */

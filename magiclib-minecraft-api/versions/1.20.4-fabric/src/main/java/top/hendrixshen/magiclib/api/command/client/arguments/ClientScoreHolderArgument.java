@@ -28,6 +28,9 @@ import java.util.function.Supplier;
  * {@link CommandContext} of {@link ClientCommandSource} instead of {@code CommandSourceStack},
  * resolving the score holders from the client level.</p>
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.20.2: subproject 1.16.5 (main project)</li>
  * <li>mc1.20.3+         : subproject 1.20.4        &lt;--------</li>
  */

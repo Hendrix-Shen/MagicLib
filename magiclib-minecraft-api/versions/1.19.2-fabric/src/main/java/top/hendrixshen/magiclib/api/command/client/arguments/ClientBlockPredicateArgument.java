@@ -25,6 +25,9 @@ import java.util.function.Predicate;
  * dependency (only a {@link CommandBuildContext}) and its getter returns a plain
  * {@link Predicate}, it can be reused almost as-is for client-side commands.</p>
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.18: subproject 1.16.5 (main project)</li>
  * <li>mc1.19+        : subproject 1.19.2        &lt;--------</li>
  */

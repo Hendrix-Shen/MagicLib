@@ -21,6 +21,9 @@ import java.util.concurrent.CompletableFuture;
  * depend on the command source. Only the getter method uses a {@link CommandContext} of
  * {@link ClientCommandSource} instead of {@code CommandSourceStack}.</p>
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.18: subproject 1.16.5 (main project)        &lt;--------</li>
  * <li>mc1.19+        : subproject 1.19.2</li>
  */

@@ -21,6 +21,9 @@ import java.util.concurrent.CompletableFuture;
  * dimension {@link ResourceLocation} from the context, and no dimension suggestions are provided to
  * the client.</p>
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.15: subproject 1.15.2        &lt;--------</li>
  * <li>mc1.16+        : subproject 1.16.5 (main project)</li>
  */

@@ -24,6 +24,9 @@ import java.util.concurrent.CompletableFuture;
  * <p>Since MC 1.20.2 the vanilla argument returns a {@link DisplaySlot} enum instead of an
  * {@code int}. The parsing and suggestion logic is identical to the vanilla implementation.</p>
  *
+ * <p>
+ * Preprocessor version guide.
+ *
  * <li>mc1.14 ~ mc1.20.1: subproject 1.16.5 (main project)</li>
  * <li>mc1.20.2+        : subproject 1.20.2        &lt;--------</li>
  */
