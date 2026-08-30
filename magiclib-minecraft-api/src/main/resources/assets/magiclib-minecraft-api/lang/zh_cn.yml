@@ -1,4 +1,10 @@
 magiclib:
+  command:
+    client:
+      version: "魔法类库 %1$s"
+      dump:
+        success: "客户端命令已导出至 %1$s"
+        fail: "导出客户端命令至 %1$s 失败"
   util:
     minecraft:
       color:
