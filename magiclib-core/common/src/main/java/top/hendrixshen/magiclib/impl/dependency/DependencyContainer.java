@@ -49,25 +49,29 @@ public class DependencyContainer<T> {
     }
 
     @SuppressWarnings("unchecked")
+    private static <T> @NotNull SimplePredicate<T> instantiatePredicate(@NotNull String predicateClassName) {
+        try {
+            Class<?> clazz = Class.forName(predicateClassName);
+
+            if (clazz.isInterface()) {
+                throw new IllegalStateException(String.format("Predicate class %s is a interface, excepted implementation class.",
+                        clazz.getName()));
+            }
+
+            return (SimplePredicate<T>) clazz.getConstructor().newInstance();
+        } catch (IllegalStateException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalStateException(String.format("Failed to instantiate a Predicate from class %s",
+                    predicateClassName), e);
+        }
+    }
+
     public static <T> @NotNull DependencyContainer<T> of(@NotNull Dependency dependency, T obj) {
         SimplePredicate<T> predicate = null;
 
         if (dependency.dependencyType() == DependencyType.PREDICATE) {
-            try {
-                Class<?> clazz = Class.forName(dependency.predicate().getName());
-
-                if (clazz.isInterface()) {
-                    throw new IllegalStateException(String.format("Predicate class %s is a interface, excepted implementation class.",
-                            clazz.getName()));
-                } else {
-                    predicate = (SimplePredicate<T>) clazz.getConstructor().newInstance();
-                }
-            } catch (IllegalStateException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new IllegalStateException(String.format("Failed to instantiate a Predicate from class %s: %s",
-                        dependency.predicate().getName(), e));
-            }
+            predicate = DependencyContainer.instantiatePredicate(dependency.predicate().getName());
         }
 
         // TODO: Remove this in the future
@@ -85,7 +89,6 @@ public class DependencyContainer<T> {
                 predicate, dependency.optional(), obj);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> @NotNull DependencyContainer<T> of(AnnotationNode annotationNode, T obj) {
         SimplePredicate<T> predicate = null;
         DependencyType dependencyType = Annotations.getValue(annotationNode, "dependencyType",
@@ -95,22 +98,7 @@ public class DependencyContainer<T> {
             Type type = Annotations.getValue(annotationNode, "predicate");
             Objects.requireNonNull(type,
                     "Dependency type is set to PREDICATE mode, which requires the predicate field to be specified!");
-
-            try {
-                Class<?> clazz = Class.forName(type.getClassName());
-
-                if (clazz.isInterface()) {
-                    throw new IllegalStateException(String.format("Predicate class %s is a interface, excepted implementation class.",
-                            clazz.getName()));
-                } else {
-                    predicate = (SimplePredicate<T>) clazz.getConstructor().newInstance();
-                }
-            } catch (IllegalStateException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new IllegalStateException(String.format("Failed to instantiate a Predicate from class %s",
-                        type.getClassName()), e);
-            }
+            predicate = DependencyContainer.instantiatePredicate(type.getClassName());
         }
 
         return new DependencyContainer<>(

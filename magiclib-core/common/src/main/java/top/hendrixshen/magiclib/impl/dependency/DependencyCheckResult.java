@@ -1,13 +1,13 @@
 package top.hendrixshen.magiclib.impl.dependency;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
-
-@Getter
-@ToString
-@AllArgsConstructor
-public class DependencyCheckResult {
-    private final boolean success;
-    private final String reason;
+/**
+ * The implementation level result type, kept for backward compatibility.
+ *
+ * @deprecated Use {@link top.hendrixshen.magiclib.api.dependency.DependencyCheckResult} instead.
+ */
+@Deprecated
+public class DependencyCheckResult extends top.hendrixshen.magiclib.api.dependency.DependencyCheckResult {
+    public DependencyCheckResult(boolean success, String reason) {
+        super(success, reason);
+    }
 }
