@@ -68,7 +68,7 @@ public @interface Dependency {
      * The value is used if {@link Dependency#dependencyType()} == {@link DependencyType#MOD_ID}
      *
      * <p>
-     * The condition is satisfied when the testing version matches any versionPredicate, or no
+     * The condition is satisfied when the testing version matches every versionPredicate, or no
      * versionPredicate is given.
      * </p>
      */
