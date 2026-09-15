@@ -5,9 +5,9 @@ import com.google.gson.JsonObject;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import top.hendrixshen.magiclib.api.dependency.DependencyCheckResult;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.impl.dependency.DependenciesContainer;
+import top.hendrixshen.magiclib.impl.dependency.DependencyCheckResult;
 import top.hendrixshen.magiclib.util.collect.InfoNode;
 
 import java.io.IOException;
@@ -67,8 +67,8 @@ public class MiscUtil {
         InfoNode compositeNode;
 
         for (DependenciesContainer<?> container : dependencies) {
-            List<? extends DependencyCheckResult> conflictResults = container.checkConflict();
-            List<? extends DependencyCheckResult> requireResults = container.checkRequire();
+            List<DependencyCheckResult> conflictResults = container.checkConflict();
+            List<DependencyCheckResult> requireResults = container.checkRequire();
             boolean renderConflict = MiscUtil.shouldRender(showSatisfiedDependencies, conflictResults);
             boolean renderRequire = MiscUtil.shouldRender(showSatisfiedDependencies, requireResults);
 
@@ -119,7 +119,7 @@ public class MiscUtil {
     }
 
     private static boolean shouldRender(boolean showSatisfiedDependencies,
-                                        @NotNull List<? extends DependencyCheckResult> results) {
+                                        @NotNull List<DependencyCheckResult> results) {
         if (results.isEmpty()) {
             return false;
         }

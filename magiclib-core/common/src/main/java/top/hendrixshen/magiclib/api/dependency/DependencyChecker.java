@@ -6,6 +6,7 @@ import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import top.hendrixshen.magiclib.impl.dependency.DependenciesContainer;
+import top.hendrixshen.magiclib.impl.dependency.DependencyCheckResult;
 import top.hendrixshen.magiclib.util.DependencyUtil;
 import top.hendrixshen.magiclib.util.MiscUtil;
 import top.hendrixshen.magiclib.util.collect.InfoNode;
