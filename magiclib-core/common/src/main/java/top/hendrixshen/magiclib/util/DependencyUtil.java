@@ -22,39 +22,37 @@ import java.util.stream.Stream;
 
 public class DependencyUtil {
     public static <T> List<DependenciesContainer<T>> parseDependencies(ClassNode classNode, T instance) {
-        List<DependenciesContainer<T>> composite = DependencyUtil.convertCompositeDependencies(ValueContainer
-                .ofNullable(Annotations.getVisible(classNode, CompositeDependencies.class)), instance);
-
-        if (!composite.isEmpty()) {
-            return composite;
-        }
-
-        return DependencyUtil.convertDependencies(ValueContainer.ofNullable(Annotations.getVisible(classNode,
-                Dependencies.class)), instance);
+        return DependencyUtil.parseDependencies(
+                ValueContainer.ofNullable(Annotations.getVisible(classNode, CompositeDependencies.class)),
+                ValueContainer.ofNullable(Annotations.getVisible(classNode, Dependencies.class)),
+                instance);
     }
 
     public static @NotNull <T> List<DependenciesContainer<T>> parseDependencies(MethodNode methodNode, T instance) {
-        List<DependenciesContainer<T>> composite = DependencyUtil.convertCompositeDependencies(ValueContainer
-                .ofNullable(Annotations.getVisible(methodNode, CompositeDependencies.class)), instance);
-
-        if (!composite.isEmpty()) {
-            return composite;
-        }
-
-        return DependencyUtil.convertDependencies(ValueContainer.ofNullable(Annotations.getVisible(methodNode,
-                Dependencies.class)), instance);
+        return DependencyUtil.parseDependencies(
+                ValueContainer.ofNullable(Annotations.getVisible(methodNode, CompositeDependencies.class)),
+                ValueContainer.ofNullable(Annotations.getVisible(methodNode, Dependencies.class)),
+                instance);
     }
 
     public static @NotNull <T> List<DependenciesContainer<T>> parseDependencies(FieldNode fieldNode, T instance) {
-        List<DependenciesContainer<T>> composite = DependencyUtil.convertCompositeDependencies(ValueContainer
-                .ofNullable(Annotations.getVisible(fieldNode, CompositeDependencies.class)), instance);
+        return DependencyUtil.parseDependencies(
+                ValueContainer.ofNullable(Annotations.getVisible(fieldNode, CompositeDependencies.class)),
+                ValueContainer.ofNullable(Annotations.getVisible(fieldNode, Dependencies.class)),
+                instance);
+    }
 
-        if (!composite.isEmpty()) {
-            return composite;
+    private static <T> List<DependenciesContainer<T>> parseDependencies(
+            @NotNull ValueContainer<AnnotationNode> composite,
+            @NotNull ValueContainer<AnnotationNode> dependencies,
+            T instance) {
+        List<DependenciesContainer<T>> compositeList = DependencyUtil.convertCompositeDependencies(composite, instance);
+
+        if (!compositeList.isEmpty()) {
+            return compositeList;
         }
 
-        return DependencyUtil.convertDependencies(ValueContainer.ofNullable(Annotations.getVisible(fieldNode,
-                Dependencies.class)), instance);
+        return DependencyUtil.convertDependencies(dependencies, instance);
     }
 
     private static <T> List<DependenciesContainer<T>> convertCompositeDependencies(

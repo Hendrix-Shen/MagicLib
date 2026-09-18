@@ -6,15 +6,26 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * CompositeDependencies annotation.
+ * The container annotation that bundles multiple {@link Dependencies} declared on the same element.
+ *
+ * <p>
+ * {@link Dependencies} is repeatable, so repeating it on an element is equivalent to declaring a
+ * {@code @CompositeDependencies}. Every {@link Dependencies} in the value is an alternative: the annotated
+ * element is satisfied when any of the groups passes (logical or).
+ * </p>
  */
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CompositeDependencies {
     /**
-     * The dependencies located in this list are logical and.
+     * The dependency groups declared on the element.
      *
-     * @return Dependencies list.
+     * <p>
+     * Each group is satisfied when all of its required dependencies pass and none of its conflict
+     * dependencies is triggered; the element is satisfied when any group passes.
+     * </p>
+     *
+     * @return The dependency groups.
      */
     Dependencies[] value() default {};
 }

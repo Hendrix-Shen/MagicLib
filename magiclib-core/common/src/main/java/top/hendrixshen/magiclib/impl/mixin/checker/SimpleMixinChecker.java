@@ -49,20 +49,21 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
             return false;
         }
 
-        List<DependenciesContainer<ClassNode>> nodes = DependencyUtil.parseDependencies(mixinClassNode, targetClassNode);
+        List<DependenciesContainer<ClassNode>> dependencies = DependencyUtil.parseDependencies(
+                mixinClassNode, targetClassNode);
 
-        if (nodes.isEmpty()) {
-            return true;
-        }
-
-        if (nodes.stream().anyMatch(DependenciesContainer::isSatisfied)) {
+        if (dependencies.isEmpty() || dependencies.stream().anyMatch(DependenciesContainer::isSatisfied)) {
             return true;
         }
 
         InfoNode rootNode = new InfoNode(null, I18n.tr("magiclib.dependency.checker.mixin.title",
                 mixinClassName, targetClassName));
-        MiscUtil.generateDependencyCheckMessage(nodes, rootNode);
-        this.onCheckFailure(targetClassName, mixinClassName, new DependencyCheckException(rootNode.toString()));
+        MiscUtil.generateDependencyCheckMessage(dependencies, rootNode);
+
+        if (this.failureCallback != null) {
+            this.failureCallback.callback(targetClassName, mixinClassName,
+                    new DependencyCheckException(rootNode.toString()));
+        }
 
         return false;
     }
@@ -70,11 +71,5 @@ public class SimpleMixinChecker implements MixinDependencyChecker {
     @Override
     public void setCheckFailureCallback(MixinDependencyCheckFailureCallback callback) {
         this.failureCallback = callback;
-    }
-
-    private void onCheckFailure(String targetClassName, String mixinClassName, DependencyCheckException result) {
-        if (this.failureCallback != null) {
-            this.failureCallback.callback(targetClassName, mixinClassName, result);
-        }
     }
 }

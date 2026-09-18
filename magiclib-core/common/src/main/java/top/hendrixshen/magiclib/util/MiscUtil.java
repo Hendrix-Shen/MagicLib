@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class MiscUtil {
     public static @NotNull String getSystemLanguageCode() {
@@ -29,19 +30,61 @@ public class MiscUtil {
 
     public static <T> void generateDependencyCheckMessage(@NotNull List<DependenciesContainer<T>> dependencies,
                                                           InfoNode rootNode) {
-        boolean first = true;
-        boolean composite = false;
-        InfoNode compositeNode = new InfoNode(null, I18n.tr("magiclib.dependency.label.composite"));
+        MiscUtil.generateDependencyCheckMessage(dependencies, rootNode, false,
+                text -> text, result -> result.getReason());
+    }
 
-        for (DependenciesContainer<?> dependenciesContainer : dependencies) {
-            boolean conflictSatisfied = dependenciesContainer.isConflictSatisfied();
-            boolean requireSatisfied = dependenciesContainer.isRequireSatisfied();
+    /**
+     * Builds the dependency check failure message tree.
+     *
+     * <p>
+     * Every {@link DependenciesContainer} in the list is an alternative (OR), while the require and conflict
+     * dependencies inside one container must all pass (AND). Each container is only evaluated once, and its
+     * check results are rendered as a tree of {@code composite / or / require / conflict} nodes under the
+     * given root node.
+     * </p>
+     *
+     * <p>
+     * A section is only rendered when the container declares the corresponding dependencies
+     * ({@code showSatisfiedDependencies == true}, e.g. the config GUI) or when at least one of its checks
+     * failed ({@code showSatisfiedDependencies == false}, e.g. failure messages).
+     * </p>
+     *
+     * @param dependencies The dependency containers to render.
+     * @param rootNode The root node of the message tree.
+     * @param showSatisfiedDependencies Whether to render sections whose checks all passed.
+     * @param labelDecorator Decorates section labels, e.g. with GUI color codes.
+     * @param resultDecorator Decorates each check result line.
+     * @param <T> The type of the checked object.
+     */
+    public static <T> void generateDependencyCheckMessage(@NotNull List<DependenciesContainer<T>> dependencies,
+                                                          InfoNode rootNode,
+                                                          boolean showSatisfiedDependencies,
+                                                          @NotNull Function<String, String> labelDecorator,
+                                                          @NotNull Function<DependencyCheckResult, String> resultDecorator) {
+        boolean firstRendered = true;
+        boolean composite = false;
+        InfoNode compositeNode;
+
+        for (DependenciesContainer<?> container : dependencies) {
+            List<DependencyCheckResult> conflictResults = container.checkConflict();
+            List<DependencyCheckResult> requireResults = container.checkRequire();
+            boolean renderConflict = MiscUtil.shouldRender(showSatisfiedDependencies, conflictResults);
+            boolean renderRequire = MiscUtil.shouldRender(showSatisfiedDependencies, requireResults);
+
+            if (!renderConflict && !renderRequire) {
+                continue;
+            }
+
             InfoNode orNode = null;
 
-            if (first) {
-                first = false;
-            } else if (!conflictSatisfied || !requireSatisfied) {
+            if (firstRendered) {
+                firstRendered = false;
+            } else {
                 if (!composite) {
+                    compositeNode = new InfoNode(null,
+                            labelDecorator.apply(I18n.tr("magiclib.dependency.label.composite")));
+
                     for (InfoNode child : rootNode.getChildren()) {
                         child.moveTo(compositeNode);
                     }
@@ -50,27 +93,42 @@ public class MiscUtil {
                     composite = true;
                 }
 
-                orNode = new InfoNode(rootNode, I18n.tr("magiclib.dependency.label.or"));
+                orNode = new InfoNode(rootNode, labelDecorator.apply(I18n.tr("magiclib.dependency.label.or")));
             }
 
-            if (!conflictSatisfied) {
-                InfoNode conflictNode = new InfoNode(orNode == null ? rootNode : orNode,
-                        I18n.tr("magiclib.dependency.label.conflict"));
+            InfoNode sectionParent = orNode == null ? rootNode : orNode;
 
-                for (DependencyCheckResult result : dependenciesContainer.checkConflict()) {
-                    new InfoNode(conflictNode, result.getReason());
+            if (renderConflict) {
+                InfoNode conflictNode = new InfoNode(sectionParent,
+                        labelDecorator.apply(I18n.tr("magiclib.dependency.label.conflict")));
+
+                for (DependencyCheckResult result : conflictResults) {
+                    new InfoNode(conflictNode, resultDecorator.apply(result));
                 }
             }
 
-            if (!requireSatisfied) {
-                InfoNode requireNode = new InfoNode(orNode == null ? rootNode : orNode,
-                        I18n.tr("magiclib.dependency.label.require"));
+            if (renderRequire) {
+                InfoNode requireNode = new InfoNode(sectionParent,
+                        labelDecorator.apply(I18n.tr("magiclib.dependency.label.require")));
 
-                for (DependencyCheckResult result : dependenciesContainer.checkRequire()) {
-                    new InfoNode(requireNode, result.getReason());
+                for (DependencyCheckResult result : requireResults) {
+                    new InfoNode(requireNode, resultDecorator.apply(result));
                 }
             }
         }
+    }
+
+    private static boolean shouldRender(boolean showSatisfiedDependencies,
+                                        @NotNull List<DependencyCheckResult> results) {
+        if (results.isEmpty()) {
+            return false;
+        }
+
+        if (showSatisfiedDependencies) {
+            return true;
+        }
+
+        return results.stream().anyMatch(result -> !result.isSuccess());
     }
 
     @Deprecated
