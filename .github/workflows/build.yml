@@ -12,7 +12,7 @@ on:
         required: false
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout the sources
         uses: actions/checkout@v7
@@ -58,7 +58,7 @@ jobs:
           name: Maven Local
           path: ~/.m2/repository/top/hendrixshen/
   summary:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs:
       - build
     steps:

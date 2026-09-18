@@ -9,7 +9,7 @@ on:
 jobs:
   sync:
     if: ${{ github.repository_owner == 'Hendrix-Shen' }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout the sources
         uses: actions/checkout@v7
