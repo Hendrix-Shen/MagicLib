@@ -3,7 +3,7 @@ package top.hendrixshen.magiclib.mixin.minecraft.event.render;
 import net.minecraft.client.renderer.GameRenderer;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC >= 12100
+//#if 26.3 > MC && MC > 1.20.6
 //$$ import net.minecraft.client.DeltaTracker;
 //#endif
 
@@ -17,10 +17,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 26.3
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
-import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC < 26.3
+import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
+//#endif
+
 //#if MC >= 12106
 //$$ import top.hendrixshen.magiclib.impl.render.context.InWorldGuiDrawer;
 //#endif
@@ -33,6 +40,7 @@ import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
+    //#if MC < 26.3
     @Inject(method = "render", at = @At("HEAD"))
     private void recordPartialTick(
             CallbackInfo ci,
@@ -55,6 +63,7 @@ public abstract class GameRendererMixin {
     private void clearPartialTick(CallbackInfo ci) {
         RenderUtil.setPartialTick(1.0F);
     }
+    //#endif
 
     //#if MC >= 12106
     //$$ @Inject(method = "close", at = @At("TAIL"))

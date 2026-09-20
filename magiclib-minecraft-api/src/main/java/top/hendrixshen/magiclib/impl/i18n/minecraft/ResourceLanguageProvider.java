@@ -60,7 +60,11 @@ public class ResourceLanguageProvider implements LanguageProvider {
         this.languageMap.clear();
         Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream()
                 .filter(pack -> pack.getId().startsWith("file"))
+                //#if MC >= 26.3
+                //$$ .flatMap(Pack::open)
+                //#else
                 .map(Pack::open)
+                //#endif
                 .map(this::adaptPack)
                 .filter(Objects::nonNull)
                 .forEach(this::initLanguageMap);

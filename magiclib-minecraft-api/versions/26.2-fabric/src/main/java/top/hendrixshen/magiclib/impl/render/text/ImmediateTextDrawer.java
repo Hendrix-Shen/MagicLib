@@ -25,14 +25,32 @@ import org.jetbrains.annotations.ApiStatus;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.3
+//$$ import com.mojang.blaze3d.pipeline.RenderTarget;
+//#endif
 import com.mojang.blaze3d.systems.RenderSystem;
+//#if MC >= 26.3
+//$$ import com.mojang.renderpearl.api.commands.CommandEncoder;
+//$$ import com.mojang.renderpearl.api.commands.RenderPass;
+//$$ import net.minecraft.client.Minecraft;
+//#endif
+
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.font.TextRenderable;
 import net.minecraft.client.renderer.StagedVertexBuffer;
 import net.minecraft.client.renderer.StagedVertexBuffer.Draw;
 import net.minecraft.client.renderer.rendertype.RenderType;
+// CHECKSTYLE.ON: ImportOrder
 
 import java.util.Map;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.3
+//$$ import java.util.Optional;
+//$$ import java.util.OptionalDouble;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/7a0d5d807d598418d2e97ee3fc97a252f38e5d6b/versions/26.2/src/main/java/me/fallenbreath/tweakermore/util/render/ImmediateTextDrawer.java">TweakerMore</a>.
@@ -74,12 +92,33 @@ public class ImmediateTextDrawer implements Font.GlyphVisitor, AutoCloseable {
         }
 
         this.stagedBuffer.upload();
+        //#if MC >= 26.3
+        //$$ RenderTarget renderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
+        //$$ CommandEncoder commandEncoder = RenderSystem.getDevice().createCommandEncoder();
+        //$$
+        //$$ try (RenderPass renderPass = commandEncoder.createRenderPass(
+        //$$         () -> "MagicLib TextRenderer",
+        //$$         renderTarget.getColorTextureView(),
+        //$$         Optional.empty(),
+        //$$         renderTarget.hasDepth() ? renderTarget.getDepthTextureView() : null,
+        //$$         OptionalDouble.empty())) {
+        //$$     this.draws.forEach((renderType, draw) -> {
+        //$$         StagedVertexBuffer.ExecuteInfo executeInfo = this.stagedBuffer.getExecuteInfo(draw);
+        //$$
+        //$$         if (executeInfo != null) {
+        //$$             renderType.prepare().drawFromBuffer(executeInfo, renderPass);
+        //$$         }
+        //$$     });
+        //$$ }
+        //#else
         this.draws.forEach((renderType, draw) -> {
             StagedVertexBuffer.ExecuteInfo executeInfo = this.stagedBuffer.getExecuteInfo(draw);
+
             if (executeInfo != null) {
                 renderType.prepare().drawFromBuffer(executeInfo);
             }
         });
+        //#endif
         this.stagedBuffer.endDraw();
     }
 

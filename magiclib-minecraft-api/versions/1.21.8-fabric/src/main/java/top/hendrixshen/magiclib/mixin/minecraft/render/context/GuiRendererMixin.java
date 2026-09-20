@@ -29,9 +29,16 @@ import org.joml.Matrix4fc;
 // CHECKSTYLE.ON: ImportOrder
 
 import com.mojang.blaze3d.ProjectionType;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.render.GuiRenderer;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.3
+//$$ import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+//#else
+import com.mojang.blaze3d.buffers.GpuBufferSlice;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -64,7 +71,11 @@ public abstract class GuiRendererMixin implements InWorldGuiRendererHook {
             method = "draw",
             at = @At(
                     value = "INVOKE",
+                    //#if MC >= 26.3
+                    //$$ target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lcom/mojang/renderpearl/api/buffers/GpuBufferSlice;Lcom/mojang/blaze3d/ProjectionType;)V"
+                    //#else
                     target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lcom/mojang/blaze3d/ProjectionType;)V"
+                    //#endif
             )
     )
     private boolean skipSetProjectionMatrixForInWorldGuiRendering(GpuBufferSlice gpuBufferSlice, ProjectionType projectionType) {
@@ -75,7 +86,9 @@ public abstract class GuiRendererMixin implements InWorldGuiRendererHook {
             method = "draw",
             at = @At(
                     value = "INVOKE",
-                    //#if MC >= 26.2
+                    //#if MC >= 26.3
+                    //$$ target = "Lnet/minecraft/client/renderer/DynamicGpuData;writeTransform(Lorg/joml/Matrix4f;)Lcom/mojang/renderpearl/api/buffers/GpuBufferSlice;"
+                    //#elseif MC >= 26.2
                     //$$ target = "Lnet/minecraft/client/renderer/DynamicUniforms;writeTransform(Lorg/joml/Matrix4f;)Lcom/mojang/blaze3d/buffers/GpuBufferSlice;"
                     //#elseif MC >= 12111
                     //$$ target = "Lnet/minecraft/client/renderer/DynamicUniforms;writeTransform(Lorg/joml/Matrix4fc;Lorg/joml/Vector4fc;Lorg/joml/Vector3fc;Lorg/joml/Matrix4fc;)Lcom/mojang/blaze3d/buffers/GpuBufferSlice;"

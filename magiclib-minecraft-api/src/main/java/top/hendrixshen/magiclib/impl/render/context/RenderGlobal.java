@@ -46,7 +46,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
  *
  * <li>mc1.14           : subproject 1.14.4</li>
  * <li>mc1.15 ~ mc1.21.4: subproject 1.16.5 (main project)        &lt;--------</li>
- * <li>mc1.21.5+        : subproject 1.21.5</li>
+ * <li>mc1.21.5 ~ mc26.1: subproject 1.21.5</li>
+ * <li>mc26.2+          : subproject 26.2</li>
  */
 //#if 11700 > MC && MC < 11700
 @SuppressWarnings("deprecation")
