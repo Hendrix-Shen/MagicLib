@@ -169,6 +169,7 @@ malilib-mc12110 = "0.26.8"
 malilib-mc12111 = "0.27.16"
 malilib-mc260102 = "0.28.9"
 malilib-mc260200 = "0.29.3"
+malilib-mc260300 = "f7cfb9ee65" # jitpack
 
 mafglib-mc11701 = "0.1.6-mc1.17.1"
 mafglib-mc11802 = "0.1.14-mc1.18.2"
@@ -363,6 +364,7 @@ malilib-mc12110 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc
 malilib-mc12111 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc12111" }
 malilib-mc260102 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc260102" }
 malilib-mc260200 = { module = "maven.modrinth:malilib", version.ref = "malilib-mc260200" }
+malilib-mc260300 = { module = "com.github.sakura-ryoko:malilib", version.ref = "malilib-mc260300" } # Jitpack
 
 mafglib-mc11701 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11701" }
 mafglib-mc11802 = { module = "maven.modrinth:mafglib", version.ref = "mafglib-mc11802" }

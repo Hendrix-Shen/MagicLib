@@ -6,9 +6,12 @@ import fi.dy.masa.malilib.gui.interfaces.IDialogHandler;
 import fi.dy.masa.malilib.render.RenderUtils;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC < 12109
+import org.lwjgl.glfw.GLFW;
+//#endif
+
 //#if MC >= 26.1
 //$$ import org.jetbrains.annotations.NotNull;
 //#endif
@@ -230,11 +233,14 @@ public class GuiVec3iTupleEdit extends GuiBase {
             int modifiers
             //#endif
     ) {
-        //#if MC >= 12109
-        //$$ int keyCode = input.key();
-        //#endif
-
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE && this.dialogHandler != null) {
+        if (
+                //#if MC >= 1.21.9
+                //$$ input.isEscape()
+                //#else
+                keyCode == GLFW.GLFW_KEY_ESCAPE
+                //#endif
+                        && this.dialogHandler != null
+        ) {
             this.dialogHandler.closeDialog();
             return true;
         } else {
