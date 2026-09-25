@@ -4,7 +4,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
 
-//#if MC >= 26.2
+//#if MC >= 26.3
+//$$ import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+//#elseif MC >= 26.2
 //$$ import com.mojang.blaze3d.PrimitiveTopology;
 //#elseif MC > 11605
 //$$ import com.mojang.blaze3d.vertex.VertexFormat;
