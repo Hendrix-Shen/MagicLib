@@ -32,6 +32,10 @@ import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 //$$ import top.hendrixshen.magiclib.impl.render.context.InWorldGuiDrawer;
 //#endif
 
+//#if MC >= 26.2
+//$$ import top.hendrixshen.magiclib.impl.render.text.TextRenderBatch;
+//#endif
+
 //#if MC < 11500
 //$$ import top.hendrixshen.magiclib.impl.event.EventManager;
 //$$ import top.hendrixshen.magiclib.impl.event.minecraft.render.RenderLevelEvent;
@@ -69,6 +73,9 @@ public abstract class GameRendererMixin {
     //$$ @Inject(method = "close", at = @At("TAIL"))
     //$$ private void onClose(CallbackInfo ci) {
     //$$     InWorldGuiDrawer.closeInstance();
+    //$$     //#if MC >= 26.2
+    //$$     //$$ TextRenderBatch.closeSharedBatch();
+    //$$     //#endif
     //$$ }
     //#endif
 

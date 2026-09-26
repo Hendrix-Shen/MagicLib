@@ -35,6 +35,12 @@ import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 import java.util.List;
 
+/**
+ * Preprocessor version guide.
+ *
+ * <li>mc1.14 ~ mc26.1: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc26.2+        : subproject 26.2</li>
+ */
 public class RenderLevelEvent {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Info {
