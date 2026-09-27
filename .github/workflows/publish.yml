@@ -12,7 +12,7 @@ jobs:
   generate_matrix:
     uses: ./.github/workflows/generate_matrix.yml
   release_core:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     # Allow the mod publish step to add assets to release
     # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
     permissions:
@@ -132,7 +132,7 @@ jobs:
           retry-attempts: 3
           retry-delay: 10000
   release:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       matrix: ${{ fromJSON(needs.generate_matrix.outputs.matrix) }}
     needs:
