@@ -4,7 +4,7 @@ import org.apache.groovy.toml.util.TomlConverter
 
 buildscript {
     dependencies {
-        classpath("org.apache.groovy:groovy-toml:5.1.3")
+        classpath("org.apache.groovy:groovy-toml:6.0.0")
     }
 }
 
