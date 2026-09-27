@@ -11,9 +11,12 @@ import fi.dy.masa.malilib.gui.widgets.WidgetBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetContainer;
 import fi.dy.masa.malilib.gui.wrappers.TextFieldWrapper;
 import lombok.AllArgsConstructor;
-import org.lwjgl.glfw.GLFW;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC < 12109
+import org.lwjgl.glfw.GLFW;
+//#endif
+
 //#if MC >= 12111
 //$$ import fi.dy.masa.malilib.render.GuiContext;
 //#endif
@@ -274,11 +277,13 @@ public class WidgetVec3iEdit extends WidgetContainer {
                 return false;
             }
 
-            //#if MC >= 12109
-            //$$ int keyCode = input.key();
-            //#endif
-
-            if (keyCode == GLFW.GLFW_KEY_ENTER) {
+            if (
+                    //#if MC >= 1.21.9
+                    //$$ input.isConfirmation()
+                    //#else
+                    keyCode == GLFW.GLFW_KEY_ENTER
+                //#endif
+            ) {
                 this.applyNewValueToConfig();
                 return true;
             }

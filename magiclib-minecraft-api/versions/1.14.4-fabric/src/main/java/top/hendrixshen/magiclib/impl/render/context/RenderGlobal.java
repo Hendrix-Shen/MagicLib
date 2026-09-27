@@ -33,7 +33,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
  *
  * <li>mc1.14           : subproject 1.14.4        &lt;--------</li>
  * <li>mc1.15 ~ mc1.21.4: subproject 1.16.5 (main project)</li>
- * <li>mc1.21.5+        : subproject 1.21.5</li>
+ * <li>mc1.21.5 ~ mc26.1: subproject 1.21.5</li>
+ * <li>mc26.2+          : subproject 26.2</li>
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RenderGlobal {

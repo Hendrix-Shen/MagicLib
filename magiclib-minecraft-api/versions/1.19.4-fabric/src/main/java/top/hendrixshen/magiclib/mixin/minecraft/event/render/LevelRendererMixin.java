@@ -93,7 +93,10 @@ public abstract class LevelRendererMixin {
             //#endif
             slice = @Slice(
                     from = @At(
-                            //#if MC >= 26.2
+                            //#if MC >= 26.3
+                            //$$ value = "INVOKE",
+                            //$$ target = "Lnet/minecraft/client/renderer/LevelRenderer;addMainPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/renderer/feature/FeatureRenderDispatcher$PreparedFrame;Lcom/mojang/renderpearl/api/buffers/GpuBufferSlice;Lnet/minecraft/client/renderer/chunk/ChunkSectionsToRender;Z)V"
+                            //#elseif MC >= 26.2
                             //$$ value = "INVOKE",
                             //$$ target = "Lnet/minecraft/client/renderer/LevelRenderer;addWeatherPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;)V"
                             //#elseif MC > 12118

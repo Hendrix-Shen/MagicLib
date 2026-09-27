@@ -1,6 +1,8 @@
 package top.hendrixshen.magiclib.event.render.impl;
 
+//#if MC < 12105
 import com.mojang.blaze3d.platform.GlStateManager;
+//#endif
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

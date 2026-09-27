@@ -24,6 +24,12 @@ import com.google.common.collect.Lists;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.2
+//$$ import org.joml.Matrix4fStack;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -35,16 +41,16 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import com.mojang.math.Transformation;
 //#endif
 
+//#if 26.2 > MC && MC > 1.16.5
+//$$ import com.mojang.blaze3d.systems.RenderSystem;
+//#endif
+
 //#if 11700 > MC && MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 //#if MC > 11903
 //$$ import net.minecraft.client.gui.Font;
-//#endif
-
-//#if MC > 11605
-//$$ import com.mojang.blaze3d.systems.RenderSystem;
 //#endif
 
 //#if MC > 11502
@@ -58,13 +64,16 @@ import com.mojang.math.Matrix4f;
 
 import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
-import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
 import top.hendrixshen.magiclib.util.minecraft.PositionUtil;
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if MC >= 26.2
+//$$ import top.hendrixshen.magiclib.impl.render.text.TextRenderBatch;
 //$$ import top.hendrixshen.magiclib.impl.render.text.ImmediateTextDrawer;
+//#endif
+//#if MC < 1.21.5
+import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
 //#endif
 
 //#if MC > 11502
@@ -78,7 +87,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/7a0d5d807d598418d2e97ee3fc97a252f38e5d6b/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderer.java">TweakerMore</a>.
+ * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/55abdaf4944cc0436fa5d94439953a8aef513b9f/src/main/java/me/fallenbreath/tweakermore/util/render/TextRenderer.java">TweakerMore</a>.
  */
 public class TextRenderer {
     public static final double DEFAULT_FONT_SCALE = 0.025;
@@ -105,6 +114,35 @@ public class TextRenderer {
         return new TextRenderer();
     }
 
+    public static void beginBatch() {
+        //#if MC >= 26.2
+        //$$ TextRenderBatch.beginBatch();
+        //#endif
+    }
+
+    public static void endBatch() {
+        //#if MC >= 26.2
+        //$$ TextRenderBatch.endBatch();
+        //#endif
+    }
+
+    public static void flushBatch() {
+        //#if MC >= 26.2
+        //$$ TextRenderBatch.flushActiveBatch();
+        //#endif
+    }
+
+    public static void closeBatch() {
+        //#if MC >= 26.2
+        //$$ TextRenderBatch.closeSharedBatch();
+        //#endif
+    }
+
+    //#if MC >= 26.2
+    //$$ private static LevelRenderContext createLocalMatrixRenderContext(Matrix4fStack matrixStack) {
+    //$$     return RenderContext.level(matrixStack);
+    //$$ }
+    //#else
     private static @NotNull LevelRenderContext createGlobalMatrixRenderContext() {
         // if transformation is applied to the RenderContext's matrix,
         // and the context's matrix (instead of an identity matrix) is used in TextRenderer.draw(),
@@ -119,6 +157,7 @@ public class TextRenderer {
                 //#endif
         );
     }
+    //#endif
 
     private TextRenderer() {
         this.lines = Lists.newArrayList();
@@ -153,25 +192,37 @@ public class TextRenderer {
         }
 
         Minecraft mc = Minecraft.getInstance();
+        //#if MC >= 26.2
+        //$$ Matrix4fStack textMatrixStack = new Matrix4fStack(8);
+        //$$ LevelRenderContext context = TextRenderer.createLocalMatrixRenderContext(textMatrixStack);
+        //#else
         LevelRenderContext context = TextRenderer.createGlobalMatrixRenderContext();
+        //#endif
 
         CameraPositionTransformer positionTransformer = CameraPositionTransformer.create(this.pos);
         positionTransformer.apply(context);
         context.scale(this.fontScale * RenderUtil.getSizeScalingXSign(), -this.fontScale, this.fontScale);
+
         //#if MC < 11700
         RenderGlobal.disableLighting();
         //#endif
 
+        //#if MC < 1.21.5
         if (this.seeThrough) {
             RenderGlobal.disableDepthTest();
         } else {
             RenderGlobal.enableDepthTest();
         }
+        //#endif
 
         //#if MC < 11904
         RenderGlobal.enableTexture();
         //#endif
+
+        //#if MC < 1.21.5
         RenderGlobal.depthMask(true);
+        //#endif
+
         int lineNum = this.lines.size();
         double maxTextWidth = this.lines.stream().mapToInt(TextHolder::getWidth).max().orElse(0);
         double totalTextWidth = maxTextWidth;
@@ -179,25 +230,27 @@ public class TextRenderer {
         context.translate(this.horizontalAlignment.getTranslateX(totalTextWidth),
                 this.verticalAlignment.getTranslateY(totalTextHeight), 0);
         context.translate(this.shiftX, this.shiftY, 0);
-        //#if MC > 11605
-        //#if MC < 12102
+
+        //#if MC >= 1.21.3
+        //$$ // No-op
+        //#elseif MC >= 1.17
         //$$ RenderSystem.applyModelViewMatrix();
-        //#endif
         //#else
         RenderGlobal.enableAlphaTest();
         //#endif
+
         // Enable transparent-able text rendering.
+        //#if MC < 1.21.5
         RenderGlobal.enableBlend();
         RenderGlobal.blendFuncForAlpha();
+        //#endif
+
         //#if MC > 11903
         //$$ Font.DisplayMode displayMode = this.seeThrough ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL;
-        //#else
-        // seeThrough
-        boolean displayMode = true;
         //#endif
 
         //#if MC >= 26.2
-        //$$ try (ImmediateTextDrawer drawer = new ImmediateTextDrawer(displayMode, TextRenderer.FULL_BRIGHT_LIGHT)) {
+        //$$ try (ImmediateTextDrawer drawer = new ImmediateTextDrawer(textMatrixStack, displayMode, TextRenderer.FULL_BRIGHT_LIGHT)) {
         //$$     for (int i = 0; i < lineNum; i++) {
         //$$         TextHolder holder = this.lines.get(i);
         //$$         float textX = (float) this.horizontalAlignment.getTextX(maxTextWidth, holder.getWidth());
@@ -242,7 +295,11 @@ public class TextRenderer {
                         this.shadow,
                         matrix4f,
                         immediate,
-                        displayMode,
+                        //#if MC >= 1.19.4
+                        //$$ displayMode,
+                        //#else
+                        this.seeThrough,
+                        //#endif
                         backgroundColor,
                         0xF000F0
                 );
@@ -265,14 +322,17 @@ public class TextRenderer {
         }
         //#endif
 
+        // TODO check color4f, see if it can replace blendFunc
         //#if MC < 11600
         //$$ RenderGlobal.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         //#endif
-        //TODO check color4f, see if it can replace blendFunc
+
         //#if MC < 11904
         RenderGlobal.enableDepthTest();
         //#endif
+
         positionTransformer.restore();
+
         //#if MC > 11605 && MC < 12102
         //$$ RenderSystem.applyModelViewMatrix();
         //#endif

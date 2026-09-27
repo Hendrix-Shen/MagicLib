@@ -20,11 +20,13 @@
 
 package top.hendrixshen.magiclib.util.minecraft.render;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 26.3
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.ApiStatus;
+//#endif
 
-// CHECKSTYLE.OFF: ImportOrder
 //#if 26.2 > MC && MC > 11404
 import org.jetbrains.annotations.NotNull;
 //#endif
@@ -58,9 +60,11 @@ public class RenderUtil {
     public static final int TEXT_HEIGHT = RenderUtil.TEXT_RENDERER.lineHeight;
     public static final int TEXT_LINE_HEIGHT = RenderUtil.TEXT_HEIGHT + 1;
 
+    //#if MC < 26.3
     @Getter
     @Setter(onMethod_ = @ApiStatus.Internal)
     private static float partialTick = 1.0F;
+    //#endif
 
     public static int getRenderWidth(String text) {
         return RenderUtil.TEXT_RENDERER.width(text);
@@ -70,6 +74,12 @@ public class RenderUtil {
         FontCompat fontCompat = FontCompat.of(RenderUtil.TEXT_RENDERER);
         return fontCompat.width(text);
     }
+
+    //#if MC >= 26.3
+    //$$ public static float getPartialTick() {
+    //$$     return Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+    //$$ }
+    //#endif
 
     public static int getSizeScalingXSign() {
         // Stupid change in 24w21a.

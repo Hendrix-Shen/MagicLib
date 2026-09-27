@@ -23,16 +23,11 @@ package top.hendrixshen.magiclib.impl.render.context;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+// CHECKSTYLE.OFF: ImportOrder
 import com.mojang.blaze3d.opengl.GlConst;
 import com.mojang.blaze3d.opengl.GlStateManager;
-
-// CHECKSTYLE.OFF: ImportOrder
-//#if MC >= 26.2
-//$$ import com.mojang.blaze3d.platform.BlendFactor;
-//#else
 import com.mojang.blaze3d.platform.DestFactor;
 import com.mojang.blaze3d.platform.SourceFactor;
-//#endif
 
 //#if MC >= 26.1
 //$$ import com.mojang.blaze3d.pipeline.ColorTargetState;
@@ -51,7 +46,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
  *
  * <li>mc1.14           : subproject 1.14.4</li>
  * <li>mc1.15 ~ mc1.21.4: subproject 1.16.5 (main project)</li>
- * <li>mc1.21.5+        : subproject 1.21.5        &lt;--------</li>
+ * <li>mc1.21.5 ~ mc26.1: subproject 1.21.5        &lt;--------</li>
+ * <li>mc26.2+          : subproject 26.2</li>
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RenderGlobal {
@@ -68,35 +64,18 @@ public class RenderGlobal {
     }
 
     public static void enableBlend() {
-        //#if MC >= 26.2
-        //$$ // FIXME
-        //$$ GlStateManager._enableBlend(0);
-        //#else
         GlStateManager._enableBlend();
-        //#endif
     }
 
     public static void disableBlend() {
-        //#if MC >= 26.2
-        //$$ // FIXME
-        //$$ GlStateManager._disableBlend(0);
-        //#else
         GlStateManager._disableBlend();
-        //#endif
     }
 
     public static void blendFuncSeparate(
-            //#if MC >= 26.2
-            //$$ BlendFactor sourceFactor,
-            //$$ BlendFactor destFactor,
-            //$$ BlendFactor sourceFactorAlpha,
-            //$$ BlendFactor destFactorAlpha
-            //#else
             SourceFactor sourceFactor,
             DestFactor destFactor,
             SourceFactor sourceFactorAlpha,
             DestFactor destFactorAlpha
-            //#endif
     ) {
         RenderGlobal.blendFuncSeparate(
                 GlConst.toGl(sourceFactor),
@@ -114,22 +93,15 @@ public class RenderGlobal {
     /**
      * Blends with alpha channel.
      * References:
-     * <li>{@link com.mojang.blaze3d.pipeline.BlendFunction#TRANSLUCENT}</li>
-     * <li>{@link com.mojang.blaze3d.opengl.GlCommandEncoder#applyPipelineState}</li>
+     * <li>{@code BlendFunction.TRANSLUCENT}</li>
+     * <li>{@code GlCommandEncoder#applyPipelineState} of the OpenGL backend</li>
      */
     public static void blendFuncForAlpha() {
         RenderGlobal.blendFuncSeparate(
-                //#if MC >= 26.2
-                //$$ BlendFactor.SRC_ALPHA,
-                //$$ BlendFactor.ONE_MINUS_SRC_ALPHA,
-                //$$ BlendFactor.ONE,
-                //$$ BlendFactor.ONE_MINUS_SRC_ALPHA
-                //#else
                 SourceFactor.SRC_ALPHA,
                 DestFactor.ONE_MINUS_SRC_ALPHA,
                 SourceFactor.ONE,
                 DestFactor.ONE_MINUS_SRC_ALPHA
-                //#endif
         );
     }
 
@@ -154,17 +126,10 @@ public class RenderGlobal {
 
     public static void defaultBlendFunc() {
         RenderGlobal.blendFuncSeparate(
-                //#if MC >= 26.2
-                //$$ BlendFactor.SRC_ALPHA,
-                //$$ BlendFactor.ONE_MINUS_SRC_ALPHA,
-                //$$ BlendFactor.ONE,
-                //$$ BlendFactor.ZERO
-                //#else
                 SourceFactor.SRC_ALPHA,
                 DestFactor.ONE_MINUS_SRC_ALPHA,
                 SourceFactor.ONE,
                 DestFactor.ZERO
-                //#endif
         );
     }
 }
