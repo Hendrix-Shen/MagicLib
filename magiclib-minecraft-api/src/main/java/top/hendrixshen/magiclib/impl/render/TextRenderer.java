@@ -41,7 +41,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import com.mojang.math.Transformation;
 //#endif
 
-//#if 1.21.2 > MC && MC > 1.16.5
+//#if 26.2 > MC && MC > 1.16.5
 //$$ import com.mojang.blaze3d.systems.RenderSystem;
 //#endif
 
