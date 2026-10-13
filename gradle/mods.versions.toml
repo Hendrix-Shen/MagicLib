@@ -185,7 +185,7 @@ mafglib-mc12108 = "0.4.5+mc1.21.8"
 mafglib-mc12110 = "0.4.11+mc1.21.10"
 mafglib-mc12111 = "YYGyVQ5h" # 0.4.6+mc1.21.11
 mafglib-mc260102 = "kGWEcTQS" # 0.5.6+mc26.1.2
-mafglib-mc260200 = "ce12b79a80" # jitpack 0.5.5+mc26.2
+mafglib-mc260200 = "25w14craftmine-0.24.49-craftmine" # jitpack 0.5.5+mc26.2
 
 # libraries will be removed after the migration to build-logic.
 [libraries]
