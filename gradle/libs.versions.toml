@@ -11,7 +11,7 @@ yamlang = { id = "me.fallenbreath.yamlang", version.ref = "yamlang" }
 asm = "9.11"
 checkstyle = "14.3.0"
 commons-lang3 = "3.21.0"
-essential-loom = "1.15.50"
+essential-loom = "1.15.51"
 fabric-loader = "0.19.5"
 grgit = "5.3.3"
 gson = "2.14.0"
